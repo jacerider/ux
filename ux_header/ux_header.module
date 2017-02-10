@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Contains ux_header.module.
+ */
+
+/**
+ * Implements theme_preprocess_region().
+ */
+function ux_header_preprocess_region__header(&$variables) {
+  $variables['#attached']['library'][] = 'ux_header/ux_header';
+}

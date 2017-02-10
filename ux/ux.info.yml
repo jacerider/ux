@@ -1,0 +1,5 @@
+name: UX
+type: module
+description: A suite of UI elements and components to improve user experience.
+core: 8.x
+package: User Experience

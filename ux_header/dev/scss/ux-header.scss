@@ -1,0 +1,16 @@
+$shadow-color: rgba(0, 0, 0, 0.2);
+
+.ux-header {
+  position: fixed;
+  z-index: 500;
+  transition: transform 400ms;
+
+  &.ux-header-hide {
+    transform: translate(0, -100%);
+  }
+
+  .ux-blur & {
+    // When #ux-content is blurred fixed positioning fails.
+    position: static !important;
+  }
+}

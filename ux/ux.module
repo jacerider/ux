@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Contains ux.module.
+ */
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function ux_element_info_alter(&$type) {
+  if (isset($type['page'])) {
+    $type['page']['#theme_wrappers']['ux_wrapper'] = [
+      '#attributes' => ['class' => ['ux-wrapper']],
+      '#weight' => -1000,
+    ];
+    \Drupal::moduleHandler()->alter('ux_wrapper', $type['page']['#theme_wrappers']['ux_wrapper']);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ux_theme($existing, $type, $theme, $path) {
+  $themes = array();
+  $themes['ux_wrapper'] = [
+    'variables' => [
+      'children' => NULL,
+      'attributes' => NULL,
+      'pre_render' => [],
+      'window_before' => [],
+      'window_after' => [],
+    ],
+  ];
+  // Form elements.
+  $themes['ux_select_as_checkbox'] = [
+    'render element' => 'element',
+    'file' => 'ux.theme.inc',
+  ];
+  return $themes;
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function ux_library_info_alter(&$libraries, $extension) {
+  // if ($extension == 'core' && isset($libraries['drupal.tableheader'])) {
+  //   $new_js['/' . drupal_get_path('module', 'ux') . '/js/ux.tableheader.js'] = [];
+  //   $libraries['drupal.tableheader']['js'] = $new_js;
+  // }
+}

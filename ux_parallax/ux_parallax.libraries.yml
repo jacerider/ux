@@ -1,0 +1,21 @@
+ux_parallax:
+  version: VERSION
+  css:
+    component:
+      css/ux-parallax.css: {}
+  js:
+    js/ux-parallax.lib.js: { minified: true }
+    js/ux-parallax.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+    - ux/gsap
+    - ux_parallax/animus
+
+animus:
+  version: VERSION
+  js:
+    lib/animus/animus.js: {minified: true}
+

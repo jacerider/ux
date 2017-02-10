@@ -1,0 +1,7 @@
+name: UX | Dialog
+type: module
+description: Provides a dialog API.
+core: 8.x
+package: User Experience
+dependencies:
+  - ux

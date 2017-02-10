@@ -1,0 +1,3 @@
+.ux-header{position:fixed;z-index:500;transition:transform 400ms}.ux-header.ux-header-hide{transform:translate(0, -100%)}.ux-blur .ux-header{position:static !important}
+
+/*# sourceMappingURL=ux-header.css.map */

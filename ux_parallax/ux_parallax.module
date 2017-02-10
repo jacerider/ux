@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Contains ux_parallax.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ux_parallax_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ux_parallax module.
+    case 'help.page.ux_parallax':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides a parallax API.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Defines default parallax options.
+ */
+function ux_parallax_defaults() {
+  return array(
+    'animation' => 'y',
+    'animate' => 'TweenLite',
+    'optimize' => 1,
+    'initialAnimationDuration' => 1,
+    'orientation' => 'vertical',
+    'factor' => 0.5,
+    'perspective' => 800,
+    'perspectiveOrigin' => '50% 50%',
+    'preload' => 1,
+    'normalizeTop' => 1,
+    'overflow' => 0,
+    'size' => 'auto',
+    'anchor' => 'center',
+  );
+}

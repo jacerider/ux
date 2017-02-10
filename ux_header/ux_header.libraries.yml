@@ -1,0 +1,12 @@
+ux_header:
+  version: VERSION
+  css:
+    component:
+      css/ux-header.css: {}
+  js:
+    js/ux-header.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - ux/ux

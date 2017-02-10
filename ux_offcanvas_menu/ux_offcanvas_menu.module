@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Contains ux_offcanvas_menu.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ux_offcanvas_menu_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ux_offcanvas_menu module.
+    case 'help.page.ux_offcanvas_menu':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides an offcanvas menu block.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ux_offcanvas_menu_theme($module_path) {
+  $themes = array();
+  $themes['ux_offcanvas_menu_wrapper'] = [
+    'variables' => [
+      'menu' => NULL,
+      'header' => NULL,
+      'footer' => NULL,
+    ],
+    'file' => 'ux_offcanvas_menu.theme.inc',
+  ];
+  $themes['ux_offcanvas_menu'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'items' => [],
+      'attributes' => [],
+    ],
+    'file' => 'ux_offcanvas_menu.theme.inc',
+  ];
+  return $themes;
+}

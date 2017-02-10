@@ -1,0 +1,18 @@
+<div class="ux-offcanvas-menu-wrapper">
+  <div class="ux-offcanvas-menu-top">
+    <div class="ux-offcanvas-menu-trail"></div>
+  </div>
+  {% if header %}
+    <div class="ux-offcanvas-menu-header">
+      {{ header }}
+    </div>
+  {% endif %}
+  <div class="ux-offcanvas-menu-content">
+    {{ menu }}
+  </div>
+  {% if footer %}
+    <div class="ux-offcanvas-menu-footer">
+      {{ footer }}
+    </div>
+  {% endif %}
+</div>

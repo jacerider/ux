@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains ux_filters.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ux_filters_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ux_filters module.
+    case 'help.page.ux_filters':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides advanced options for exposed Views widgets.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

@@ -1,0 +1,41 @@
+@charset 'UTF-8';
+@import 'ux-parallax/mixins';
+
+$white: #fff;
+
+.ux-parallax-canvas {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  padding: 0;
+  margin: 0;
+  height: 600px;
+  height: 100vh; // sass-lint:disable-line no-duplicate-properties
+}
+
+.ux-parallax-animated {
+  transform-style: preserve-3d;
+}
+
+.ux-parallax-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+
+  &.ux-parallax-horizontal {
+    height: 100%;
+    width: auto;
+  }
+}
+
+.ux-parallax > div {
+  // Fix flashing bug in Firefox.
+  transform: translateZ(0);
+}
+
+@import 'ux-parallax/auto';
+@import 'ux-parallax/content';
+@import 'ux-parallax/canvas';
+@import 'ux-parallax/loader';

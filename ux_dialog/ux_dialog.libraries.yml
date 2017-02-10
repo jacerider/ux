@@ -1,0 +1,14 @@
+ux_dialog:
+  version: VERSION
+  css:
+    component:
+      css/ux-dialog.css: {}
+  js:
+    js/ux-dialog.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - ux/ux.ajax
+    - core/drupal.announce
+    - core/drupal.dialog
+    - core/drupal.dialog.ajax

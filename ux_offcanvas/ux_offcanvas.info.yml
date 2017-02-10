@@ -1,0 +1,7 @@
+name: UX | Offcanvas
+type: module
+description: Provides an offcanvas API.
+core: 8.x
+package: User Experience
+dependencies:
+  - ux

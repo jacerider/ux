@@ -1,0 +1,25 @@
+// Content
+.ux-parallax-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: table;
+  z-index: 99;
+
+  &.ux-parallax-content-center > .ux-parallax-content-container {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &.ux-parallax-content-top > .ux-parallax-content-container {
+    display: table-cell;
+    vertical-align: top;
+  }
+
+  &.ux-parallax-content-bottom > .ux-parallax-content-container {
+    display: table-cell;
+    vertical-align: bottom;
+  }
+}

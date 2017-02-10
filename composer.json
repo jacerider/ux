@@ -1,0 +1,14 @@
+{
+  "name": "drupal/ux",
+  "type": "drupal-module",
+  "description": "A suite of UI elements and components to improve user experience.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/ux",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/ux",
+    "source": "http://cgit.drupalcode.org/ux"
+  },
+  "require": { }
+}

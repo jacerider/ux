@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a page wrapper.
+ *
+ * For consistent wrapping to {{ page }} render in all themes.
+ *
+ * Available variables:
+ * - children: Contains the child elements of the page.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if children %}
+  {{ attach_library('ux/ux') }}
+  <div id="ux-wrapper"{{ attributes }}>
+    <div id="ux-canvas" class="ux-canvas">
+      {{ window_before }}
+      <div id="ux-content" class="ux-content">
+        {{ children }}
+      </div>
+      <div id="ux-shadow" class="ux-shadow"></div>
+      {{ window_after }}
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains ux_dialog.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ux_dialog_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ux_dialog module.
+    case 'help.page.ux_dialog':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides a dialog API.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

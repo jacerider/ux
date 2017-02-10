@@ -1,0 +1,14 @@
+.ux-parallax-auto {
+  height: auto;
+
+  .ux-parallax-content {
+    position: relative;
+    display: block;
+    height: auto;
+
+    .ux-parallax-content-container {
+      position: relative;
+      display: block;
+    }
+  }
+}

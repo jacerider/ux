@@ -1,0 +1,4 @@
+services:
+  plugin.manager.ux_filter:
+    class: Drupal\ux_filters\Plugin\UxFilterManager
+    parent: default_plugin_manager

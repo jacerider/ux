@@ -1,0 +1,14 @@
+ux_offcanvas_menu:
+  version: VERSION
+  css:
+    component:
+      css/ux-offcanvas-menu.css: {}
+  js:
+    js/ux-offcanvas-menu.js: { minified: true }
+    js/ux-offcanvas-menu.lib.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - ux_offcanvas/ux_offcanvas
+    - ux/gsap

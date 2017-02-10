@@ -1,0 +1,3 @@
+.has-ux-dialog .ux-dialog{opacity:0;transition:transform 400ms, opacity 400ms}.ux-dialog-active .ux-dialog{transform:scale3d(1.15, 1.15, 1)}.ux-dialog-animate .ux-dialog{opacity:1;transform:scale3d(1, 1, 1)}
+
+/*# sourceMappingURL=ux-dialog.css.map */

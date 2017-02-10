@@ -1,0 +1,6 @@
+services:
+  main_content_renderer.ux_dialog:
+    class: Drupal\ux_dialog\Render\MainContent\UxDialogRenderer
+    arguments: ['@title_resolver', '@renderer']
+    tags:
+      - { name: render.main_content_renderer, format: drupal_ux_dialog }

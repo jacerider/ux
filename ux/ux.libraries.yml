@@ -1,0 +1,40 @@
+ux:
+  version: VERSION
+  css:
+    component:
+      css/ux.css: { minified: true }
+  js:
+    js/ux.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupal.debounce
+    - core/drupal.displace
+
+ux.ajax:
+  version: VERSION
+  js:
+    js/ux.ajax.js: { minified: true }
+  dependencies:
+    - core/drupal.ajax
+
+ux.tableheader:
+  version: VERSION
+  js:
+    js/ux.tableheader.js: { minified: true }
+
+ux.select_as_checkbox:
+  version: VERSION
+  js:
+    js/ux.select-as-checkbox.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+
+gsap:
+  version: VERSION
+  js:
+    lib/gsap/tweenlite.js: {minified: true}
+    lib/gsap/plugins/css.js: {minified: true}

@@ -1,0 +1,63 @@
+// Make sure the charset is set appropriately
+@charset 'UTF-8';
+
+$black: #000;
+$white: #fff;
+$transparent: rgba(0, 0, 0, 0);
+
+html,
+body {
+  height: 100%;
+}
+
+.ux-canvas {
+  background: $black;
+}
+
+.ux-content {
+  position: relative;
+  background: $white;
+  z-index: 5;
+
+  &.ux-blur {
+    transition: all 300ms;
+  }
+
+  &.ux-blur-animate {
+    transform: scale3d(0.95, 0.95, 1);
+  }
+}
+
+.ux-shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  opacity: 0;
+  background: $black;
+  z-index: 10;
+  transition: opacity 400ms;
+  -webkit-tap-highlight-color: $transparent; // sass-lint:disable-line no-vendor-prefixes
+
+  &.active {
+    display: block;
+  }
+
+  &.animate {
+    opacity: 0.7;
+  }
+}
+
+.ux-hidden {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+.ux-fullscreen {
+  position: fixed;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-misspelled-properties
+}

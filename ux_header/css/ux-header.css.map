@@ -1,0 +1,1 @@
+{"version":3,"sources":["ux-header.css"],"names":[],"mappings":"AAAA,WAAW,eAAe,YAAY,0BAA0B,CAAC,0BAA0B,6BAA6B,CAAC,oBAAoB,0BAA0B,CAAC","file":"ux-header.css","sourcesContent":[".ux-header{position:fixed;z-index:500;transition:transform 400ms}.ux-header.ux-header-hide{transform:translate(0, -100%)}.ux-blur .ux-header{position:static !important}\n"]}

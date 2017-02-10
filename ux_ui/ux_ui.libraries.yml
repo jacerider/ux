@@ -1,0 +1,25 @@
+ux_ui:
+  version: VERSION
+  css:
+    component:
+      css/ux-ui.css: {}
+  js:
+    js/ux-ui.lib.js: { minified: true }
+    js/ux-ui.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+ux_ui.forms:
+  version: VERSION
+  js:
+    js/ux-ui.forms.js: { minified: true }
+  dependencies:
+    - ux_ui/ux_ui
+
+ux_ui.dropdown:
+  version: VERSION
+  js:
+    js/ux-ui.dropdown.js: { minified: true }
+  dependencies:
+    - ux_ui/ux_ui.forms

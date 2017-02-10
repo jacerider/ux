@@ -1,0 +1,7 @@
+name: UX | Sticky Header
+type: module
+description: Provides sticky header region features.
+core: 8.x
+package: UX
+dependencies:
+  - ux
