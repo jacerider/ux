@@ -50,7 +50,7 @@
       _this.$header.css({
         top: displace.offsets.top,
         left: displace.offsets.left,
-        right: displace.offsets.right,
+        right: displace.offsets.right
       });
     },
 
@@ -59,6 +59,9 @@
       var height = _this.$header.outerHeight();
       var width = _this.$header.outerWidth();
       _this.$wrapper.css({width: width, height: height});
+
+      var offset = _this.$header.offset();
+      _this.$header.css({marginLeft: (offset.left - displace.offsets.left) + 'px', marginRight: (offset.left - displace.offsets.right) + 'px'});
     },
 
     scroll: function () {

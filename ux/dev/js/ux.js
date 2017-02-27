@@ -26,6 +26,8 @@
      */
     setup: function () {
       var _this = this;
+      // Initialize displace.
+      displace();
       // Add document resize callback to resize event stack.
       _this.addResizeCallback($.proxy(_this.onResizeSetDocumentSize, _this));
       // Adjust the document size.
@@ -42,10 +44,13 @@
       // Watch window for scroll and call onScrollCallbacks.
       _this.onScroll();
       _this.$window.on('scroll.ux', {}, function (event) {
-        requestAnimationFrame(function () {
-          _this.onScroll(event);
-        });
+        _this.onScroll(event);
       });
+      // _this.$window.on('scroll.ux', {}, function (event) {
+      //   requestAnimationFrame(function () {
+      //     _this.onScroll(event);
+      //   });
+      // });
     },
 
     /**
@@ -89,11 +94,15 @@
      * @param {Event} event
      *   Triggered event.
      */
+    onScrollTimeout: null,
     onScroll: function (event) {
       var _this = this;
-      _this.onScrollCallbacks.forEach(function (callback) {
-        callback(event);
-      });
+      clearTimeout(_this.onScrollTimeout);
+      _this.onScrollTimeout = setTimeout(function () {
+        _this.onScrollCallbacks.forEach(function (callback) {
+          callback(event);
+        });
+      }, 10);
     },
 
     /**
@@ -119,7 +128,7 @@
       clearTimeout(_this.blurTimeout);
       _this.blurTimeout = setTimeout(function () {
         _this.$uxContent.addClass('ux-blur-animate');
-      },0 );
+      }, 0);
     },
 
     /**
@@ -166,7 +175,7 @@
       _this.shadowTimeout = setTimeout(function () {
         $shadow.removeClass('active');
       }, 400);
-    },
+    }
 
     /**
      * Set element as fullscreen.
@@ -174,19 +183,18 @@
      * @param {Object.<jQuery>} $element
      *   The element to set as fullscreen.
      */
-    setFullscreen: function ($element) {
-      displace();
-      if ($element.length) {
-        $element.css(displace.offsets);
-      }
-    }
+    // setFullscreen: function ($element) {
+    //   if ($element.length) {
+    //     $element.css(displace.offsets);
+    //   }
+    // }
   });
 
   Drupal.behaviors.ux = {
     attach: function (context) {
-      $('.ux-fullscreen', context).once('ux-fullscreen').each(function (e) {
-        Drupal.Ux.setFullscreen($(this));
-      });
+      // $('.ux-fullscreen', context).once('ux-fullscreen').each(function (e) {
+      //   Drupal.Ux.setFullscreen($(this));
+      // });
     }
   };
 

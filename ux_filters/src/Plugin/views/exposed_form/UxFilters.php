@@ -63,6 +63,8 @@ class UxFilters extends ExposedFormPluginBase {
     $options = parent::defineOptions();
     $options['general'] = [
       'default' => [
+        'autosubmit' => FALSE,
+        'autosubmit_hide' => FALSE,
         'allow_secondary' => FALSE,
         'secondary_label' => $this->t('Advanced options'),
       ],
@@ -89,6 +91,27 @@ class UxFilters extends ExposedFormPluginBase {
     /*
      * Add general options for exposed form items.
      */
+
+    // Add the 'autosbumit' functionality from Views 7.x.
+    $form['general']['autosubmit'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Autosubmit'),
+      '#description' => $this->t('Automatically submit the form once an element is changed.'),
+      '#default_value' => $this->options['general']['autosubmit'],
+    );
+
+    $form['general']['autosubmit_hide'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Hide submit button'),
+      '#description' => $this->t('Hide submit button if javascript is enabled.'),
+      '#default_value' => $this->options['general']['autosubmit_hide'],
+      '#states' => array(
+        'visible' => array(
+          ':input[name="exposed_form_options[general][autosubmit]"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
+
     $form['general']['allow_secondary'] = array(
       '#type' => 'checkbox',
       '#title' => t('Enable secondary exposed form options'),
@@ -160,7 +183,8 @@ class UxFilters extends ExposedFormPluginBase {
    */
   public function exposedFormAlter(&$form, FormStateInterface $form_state) {
     parent::exposedFormAlter($form, $form_state);
-    $allow_secondary = $this->options['general']['allow_secondary'];
+    $settings = $this->options;
+    $allow_secondary = $settings['general']['allow_secondary'];
 
     // Some elements may be placed in a secondary details element (eg: "Advanced
     // search options"). Place this after the exposed filters and before the
@@ -174,6 +198,17 @@ class UxFilters extends ExposedFormPluginBase {
       $form['actions']['#weight'] = 1001;
     }
 
+    // Apply autosubmit values.
+    if (!empty($settings['general']['autosubmit'])) {
+      $form = array_merge_recursive($form, array('#attributes' => array('data-ux-auto-submit-full-form' => '')));
+      $form['actions']['submit']['#attributes']['data-ux-auto-submit-click'] = '';
+      $form['#attached']['library'] = ['ux/ux.auto_submit'];
+
+      if (!empty($settings['general']['autosubmit_hide'])) {
+        $form['actions']['submit']['#attributes']['class'][] = 'js-hide';
+      }
+    }
+
     // Go through each filter and alter if necessary.
     foreach ($this->view->display_handler->getHandlers('filter') as $id => $filter) {
       if (!isset($form['#info']["filter-$id"]['value'])) {
@@ -183,7 +218,11 @@ class UxFilters extends ExposedFormPluginBase {
       $format = $this->options[$id]['format'];
       if ($format) {
         $plugin = $this->uxFilterManager->createInstance($format);
-        $plugin->exposedElementAlter($form[$identifier], $form_state, $identifier);
+        $context = [
+          'id' => $identifier,
+          'plugin' => $this,
+        ];
+        $plugin->exposedElementAlter($form[$identifier], $form_state, $context);
       }
       if ($allow_secondary && $this->options[$id]['more']['is_secondary']) {
         if (!empty($form[$identifier])) {

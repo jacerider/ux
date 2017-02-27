@@ -35,17 +35,25 @@ function ux_theme($existing, $type, $theme, $path) {
   // Form elements.
   $themes['ux_select_as_checkbox'] = [
     'render element' => 'element',
-    'file' => 'ux.theme.inc',
+    'file' => 'ux.theme',
+  ];
+  $themes['ux_select_as_links'] = [
+    'render element' => 'element',
+    'file' => 'ux.theme',
   ];
   return $themes;
 }
 
 /**
- * Implements hook_library_info_alter().
+ * Implements template_preprocess_form_element().
  */
-function ux_library_info_alter(&$libraries, $extension) {
-  // if ($extension == 'core' && isset($libraries['drupal.tableheader'])) {
-  //   $new_js['/' . drupal_get_path('module', 'ux') . '/js/ux.tableheader.js'] = [];
-  //   $libraries['drupal.tableheader']['js'] = $new_js;
-  // }
+function ux_preprocess_form_element(&$variables) {
+  $element = &$variables['element'];
+  if (isset($element['#theme']) && $element['#theme'] == 'ux_select_as_checkbox') {
+    // Since the type is changed from select to checkbox, we want to make
+    // sure the wrapper classes are set correctly.
+    $variables['type'] = 'checkbox';
+    $variables['attributes']['class'][] = 'from-select';
+    $variables['label_display'] = 'hidden';
+  }
 }

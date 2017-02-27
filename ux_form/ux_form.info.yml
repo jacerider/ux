@@ -1,0 +1,7 @@
+name: UX | Form
+type: module
+description: Provides form improvements.
+core: 8.x
+package: User Experience
+dependencies:
+  - ux

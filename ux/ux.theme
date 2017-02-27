@@ -1,0 +1,67 @@
+<?php
+
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Element\RenderElement;
+
+/**
+ * Implements hook_preprocess_ux_select_as_checkbox().
+ */
+function template_preprocess_ux_select_as_checkbox(&$variables) {
+  $element = $variables['element'];
+  $variables['attributes']['type'] = 'checkbox';
+  Element::setAttributes($element, array('id', 'name', 'size'));
+  RenderElement::setAttributes($element, array('form-select'));
+
+  $id = $element['#id'];
+
+  $variables['attributes'] = $element['#attributes'];
+  $variables['attributes']['class'] = 'js-hide';
+  $variables['attributes']['id'] = $id . '-select';
+  $variables['options'] = form_select_options($element);
+
+  $variables['ux_attributes']['type'] = 'checkbox';
+  $variables['ux_attributes']['id'] = $id . '-checkbox';
+  $variables['ux_attributes']['class'][] = 'js-show';
+  // $variables['ux_attributes'] = new Attribute($variables['ux_attributes']);
+
+  if ($element['#value'] === '1') {
+    $variables['ux_attributes']['checked'] = 'checked';
+  }
+
+  $variables['#attached']['library'][] = 'ux/ux.select_as_checkbox';
+  $variables['#attached']['drupalSettings']['ux']['theme']['select_as_checkbox'][$id] = $variables['options'];
+
+  $variables['checkbox'] = [
+    '#type' => 'checkbox',
+    '#title' => $element['#title'],
+    '#attributes' => [
+      'id' => $id . '-checkbox',
+      'class' => ['js-show'],
+      'checked' => $element['#value'] == 1,
+    ],
+  ];
+
+  // Add label_display and label variables to template.
+  // $variables['label_display'] = $element['#title_display'];
+  // $variables['label'] = array('#theme' => 'form_element_label');
+  // $variables['label'] += array_intersect_key($element, array_flip(array('#id', '#required', '#title', '#title_display')));
+  // $variables['label']['#title'] = [];
+  // $variables['label']['#title']['title']['#markup'] = $element['#title'];
+  // // '<input type="checkbox"></input> ';
+  // // ksm($variables['label']);
+}
+
+/**
+ * Implements hook_preprocess_ux_select_as_links().
+ */
+function template_preprocess_ux_select_as_links(&$variables) {
+  $element = $variables['element'];
+  Element::setAttributes($element, array('id', 'name', 'size'));
+  RenderElement::setAttributes($element, array('form-select'));
+
+  $variables['name'] = $element['#name'];
+  $variables['attributes'] = $element['#attributes'];
+  $variables['options'] = form_select_options($element);
+  $variables['#attached']['library'][] = 'ux/ux.select_as_links';
+}

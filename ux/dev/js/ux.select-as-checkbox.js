@@ -1,9 +1,9 @@
 /**
  * @file
- * Global ELYSIUM_NAME javascript.
+ * Select as checkbox javascript.
  */
 
-(function ($, document) {
+(function ($, Drupal) {
 
   'use strict';
 
@@ -21,6 +21,9 @@
               else {
                 $select.val('All');
               }
+              if (typeof Drupal.UxForm !== 'undefined') {
+                Drupal.UxForm.updateFields();
+              }
             });
           }
         }
@@ -28,4 +31,4 @@
     }
   };
 
-}(jQuery, document));
+}(jQuery, Drupal));

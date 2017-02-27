@@ -1,0 +1,1 @@
+!function(e,t){"use strict";t.behaviors.uxSelectAsLinks={attach:function(t){e(".ux-select-as-links",t).once("ux-select-as-links").each(function(){var t=e(this).find("select").hide(),a=e(this).find("a");a.on("click",function(i){i.preventDefault();var s=e(this).data("ux-value");t.val(s),t.trigger("change"),a.removeClass("active"),e(this).addClass("active")})})}}}(jQuery,Drupal);

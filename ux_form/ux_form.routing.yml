@@ -1,0 +1,17 @@
+
+ux_form.ux_form_example_form_admin:
+  path: '/admin/ux/form'
+  defaults:
+    _form: '\Drupal\ux_form\Form\UxFormExampleForm'
+    _title: 'UxFormExampleForm'
+  requirements:
+    _permission: 'view ux example form'
+
+ux_form.ux_form_example_form:
+  path: '/ux/form'
+  defaults:
+    _form: '\Drupal\ux_form\Form\UxFormExampleForm'
+    _title: 'UxFormExampleForm'
+  requirements:
+    _permission: 'view ux example form'
+

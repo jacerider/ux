@@ -1,0 +1,1 @@
+!function(t,i,e){"use strict";e.behaviors.uxFormTime={attach:function(e,n){var a=t(e);i.inputtypes.date!==!0&&a.find("input[type=time]").once("datePicker").each(function(){var i=t(this),e={};e.formatSubmit="HH:i:00",i.pickatime(e)})},detach:function(t,i,e){}}}(jQuery,Modernizr,Drupal);

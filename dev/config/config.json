@@ -1,0 +1,25 @@
+{
+  "name": "ux",
+  "description": "A suite of UI elements and components to improve user experience.",
+  "browserSync": {
+    "enabled" : true,
+    "proxy" : "http://localhost",
+    "port" : 3000,
+    "openAutomatically" : false,
+    "notify" : false
+  },
+  "css": {
+    "file" : "ux.scss",
+    "dest": "css",
+    "src": [
+      "../ux*/dev/scss/**/*.scss"
+    ],
+    "includePaths": []
+  },
+  "js": {
+    "dest": "js",
+    "src": [
+      "../ux*/dev/js/**/*.js"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+ux_form:
+  version: VERSION
+  css:
+    component:
+      css/ux-form.css: {}
+  js:
+    js/ux-form.js: { minified: true }
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+    - core/backbone
+
+ux_form.input:
+  version: VERSION
+  js:
+    js/ux-form.input.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+
+ux_form.radio:
+  version: VERSION
+  js:
+    js/ux-form.radio.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+
+ux_form.picker:
+  version: VERSION
+  css:
+    component:
+      lib/pickadate/compressed/themes/default.css: {}
+  js:
+    lib/pickadate/compressed/picker.js: { minified: true }
+  dependencies:
+    - core/jquery
+
+ux_form.date:
+  version: VERSION
+  css:
+    component:
+      lib/pickadate/compressed/themes/default.date.css: {}
+  js:
+    lib/pickadate/compressed/picker.date.js: { minified: true }
+    js/ux-form.date.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+    - core/modernizr
+    - ux_form/ux_form.picker
+
+ux_form.time:
+  version: VERSION
+  css:
+    component:
+      lib/pickadate/compressed/themes/default.time.css: {}
+  js:
+    lib/pickadate/compressed/picker.time.js: { minified: true }
+    js/ux-form.time.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+    - core/modernizr
+    - ux_form/ux_form.picker

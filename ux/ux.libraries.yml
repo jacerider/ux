@@ -18,10 +18,14 @@ ux.ajax:
   dependencies:
     - core/drupal.ajax
 
-ux.tableheader:
+ux.auto_submit:
   version: VERSION
   js:
-    js/ux.tableheader.js: { minified: true }
+    js/ux.auto-submit.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
 
 ux.select_as_checkbox:
   version: VERSION
@@ -32,6 +36,15 @@ ux.select_as_checkbox:
     - core/jquery.once
     - core/drupal
     - core/drupalSettings
+
+ux.select_as_links:
+  version: VERSION
+  js:
+    js/ux.select-as-links.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
 
 gsap:
   version: VERSION

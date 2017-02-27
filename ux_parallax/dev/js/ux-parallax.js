@@ -3,7 +3,7 @@
  * Global ux_offcanvas javascript.
  */
 
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, displace) {
 
   'use strict';
 
@@ -126,7 +126,7 @@
         _this.loaded = true;
         _this.element.triggerHandler('ux_parallax.load', [_this.element]);
         _this.source.addClass('ux-parallax-built');
-        _this.log('Imagine has been initialized.');
+        _this.log('UxParallax has been initialized.');
       });
     },
 
@@ -211,6 +211,7 @@
                 else {
                   animation[key] = 1 - Math.abs(delta_progress_normalized * 2);
                 }
+                animation[key] = animation[key].toFixed(2);
                 break;
               case 'scale':
               case 'scaleX':
@@ -271,6 +272,7 @@
                 else {
                   animation[key] = delta_normalized;
                 }
+                animation[key] = animation[key].toFixed();
                 break;
               default:
                 animation[key] = delta_normalized;
@@ -497,7 +499,7 @@
     },
 
     /*
-    Set default animation parameters for Imagine animation objects
+    Set default animation parameters for UxParallax animation objects
     and create animus model
      */
     init_animus: function () {
@@ -532,7 +534,7 @@
           _this.size['layer'].push(_this.get_size_data('layer', layer, index));
         });
       }
-      _this.log('Imagine data has been processed.');
+      _this.log('UxParallax data has been processed.');
       _this.log(_this.animation);
     },
 
@@ -596,8 +598,7 @@
       }
       else {
         _this.animate.to(_this.background, _this.settings.initialAnimationDuration, {
-          'margin-top': margin_top,
-          'margin-left': margin_left
+          'margin-top': margin_top
         });
       }
       width_ratio = _this.size.element.width / _this.size.background.width;
@@ -920,7 +921,7 @@
       var ux_parallax_style;
       var style;
       if ($('#ux-parallax-style').length === 0) {
-        ux_parallax_style = '.ux-parallax-parent { perspective: ' + _this.settings.perspective + 'px; -moz-perspective: ' + _this.settings.perspective + 'px; -webkit-perspective: ' + _this.settings.perspective + 'px; perspective-origin: ' + _this.settings.perspectiveOrigin + '; -moz-perspective-origin: ' + _this.settings.perspectiveOrigin + '; -webkit-perspective-origin: ' + _this.settings.perspectiveOrigin + '; backface-visibility: hidden; -moz-backface-visibility: hidden; -webkit-backface-visibility: hidden; }';
+        ux_parallax_style = '.ux-parallax-parent, .ux-parallax-background-inside { perspective: ' + _this.settings.perspective + 'px; -moz-perspective: ' + _this.settings.perspective + 'px; -webkit-perspective: ' + _this.settings.perspective + 'px; perspective-origin: ' + _this.settings.perspectiveOrigin + '; -moz-perspective-origin: ' + _this.settings.perspectiveOrigin + '; -webkit-perspective-origin: ' + _this.settings.perspectiveOrigin + '; backface-visibility: hidden; -moz-backface-visibility: hidden; -webkit-backface-visibility: hidden; }';
         style = document.createElement('style');
         style.id = 'ux-parallax-style';
         style.type = 'text/css';
@@ -985,6 +986,15 @@
         if (_this.size.source.height > _this.size.element.height) {
           _this.size.element.width = _this.size.source.height / _this.size.background.height * _this.size.background.width;
           _this.size.element.height = _this.size.source.height;
+        }
+
+        /**
+         * Adjust dimentions of element if source proprotions are different.
+         */
+        var offset = ((_this.size.window.height + _this.size.source.height) / 2) - _this.size.element.height;
+        if (offset > 0) {
+          _this.size.element.width += offset;
+          _this.size.element.height += offset;
         }
         if (_this.loaded) {
           _this.animate.set(_this.background, {
@@ -1105,7 +1115,7 @@
       else {
         translation = 0;
       }
-      in_view_tolerance = _this.position.window[_this.param.half] - translation;
+      in_view_tolerance = _this.size.window[_this.param.half] - translation;
       _this.in_view = !(_this.position.window[_this.param.end] - _this.position.source[_this.param.start] + in_view_tolerance < 0 || _this.position.window[_this.param.start] - _this.position.source[_this.param.end] - in_view_tolerance > 0);
       if (_this.in_view) {
         if (!_this.in_view_eariler) {
@@ -1133,7 +1143,7 @@
     },
 
     /*
-    Logger snippet within Imagine
+    Logger snippet within UxParallax
      */
     log: function (item) {
       var _this = this;
@@ -1141,23 +1151,23 @@
         return;
       }
       if (typeof item === 'object') {
-        console.log('[Imagine ' + _this.id + ']', item);
+        console.log('[UxParallax ' + _this.id + ']', item); // eslint-disable-line no-console
       }
       else {
-        console.log('[Imagine ' + _this.id + '] ' + item);
+        console.log('[UxParallax ' + _this.id + '] ' + item); // eslint-disable-line no-console
       }
     },
 
     /*
-    Error logger snippet within Imagine
+    Error logger snippet within UxParallax
      */
     error: function (item) {
       var _this = this;
       if (typeof item === 'object') {
-        console.error('[Imagine ' + _this.id + ']', item);
+        console.error('[UxParallax ' + _this.id + ']', item); // eslint-disable-line no-console
       }
       else {
-        console.error('[Imagine ' + _this.id + '] ' + item);
+        console.error('[UxParallax ' + _this.id + '] ' + item); // eslint-disable-line no-console
       }
     }
 
@@ -1202,4 +1212,4 @@
   // Expose constructor in the public space.
   Drupal.UxParallax = UxParallax;
 
-})(jQuery, Drupal, document);
+})(jQuery, Drupal, drupalSettings, Drupal.displace);

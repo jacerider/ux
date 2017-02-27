@@ -1,0 +1,79 @@
+
+// .ux-form {
+
+//   .js-form-type-radio {
+
+//     // Hide input.
+//     [type='radio'] {
+//       position: absolute;
+//       left: -9999px;
+//       opacity: 0;
+//     }
+
+//     label {
+//       position: relative;
+//       padding-left: 24px;
+//       cursor: pointer;
+//       display: inline-block;
+//       height: 25px;
+//       line-height: 25px;
+//       font-size: $label-font-size - 0.2rem;
+//       -khtml-user-select: none; /* webkit (konqueror) browsers */
+//       user-select: none;
+
+//       &:before,
+//       &:after {
+//         content: '';
+//         position: absolute;
+//         left: 0;
+//         top: 4px;
+//         width: 18px;
+//         height: 18px;
+//         z-index: 0;
+//         transition: 280ms ease;
+//         border-radius: 50%;
+//         border: 2px solid $radio-empty-color;
+//         box-sizing: border-box;
+//       }
+
+//       &:after {
+//         transform: scale(0);
+//       }
+//     }
+
+//     &.active {
+
+//       label {
+
+//         &:before {
+//           border: 2px solid transparent;
+//         }
+
+//         &:after {
+//           border: $radio-border;
+//           background-color: $radio-color;
+//           transform: scale(1.02);
+//         }
+//       }
+//     }
+
+//     &.form-disabled {
+
+//       label {
+
+//         &:before {
+//           background-color: transparent;
+//           border-color: $input-disabled-color;
+//         }
+//       }
+//     }
+//   }
+
+//   .inline {
+
+//     .js-form-type-radio {
+//       display: inline-block;
+//       padding-right: 15px;
+//     }
+//   }
+// }

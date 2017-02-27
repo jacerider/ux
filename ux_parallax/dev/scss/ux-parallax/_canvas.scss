@@ -39,7 +39,7 @@
 
 .ux-parallax {
   visibility: hidden;
-  will-change: all;
+  will-change: transform;
 
   &.ux-parallax-built {
     visibility: visible;

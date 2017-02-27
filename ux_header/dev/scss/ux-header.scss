@@ -4,13 +4,15 @@ $shadow-color: rgba(0, 0, 0, 0.2);
   position: fixed;
   z-index: 500;
   transition: transform 400ms;
+  transform: translate3d(0, 0, 0);
 
   &.ux-header-hide {
-    transform: translate(0, -100%);
+    transform: translate3d(0, -100%, 0);
   }
 
   .ux-blur & {
     // When #ux-content is blurred fixed positioning fails.
     position: static !important;
+    margin: 0 !important;
   }
 }

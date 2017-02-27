@@ -30,10 +30,15 @@ $white: #fff;
   }
 }
 
-.ux-parallax > div {
-  // Fix flashing bug in Firefox.
-  transform: translateZ(0);
-}
+// .ux-parallax-background-inside {
+//   // Fix flashing bug in Firefox.
+//   // transform: translateZ(0);
+//   // overflow: hidden;
+// }
+
+// .ux-parallax-background {
+//   will-change: transform;
+// }
 
 @import 'ux-parallax/auto';
 @import 'ux-parallax/content';

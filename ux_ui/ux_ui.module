@@ -8,22 +8,6 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
- * Implements hook_help().
- */
-function ux_ui_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the ux_ui module.
-    case 'help.page.ux_ui':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Provides a collection of interface elements and fields.') . '</p>';
-      return $output;
-
-    default:
-  }
-}
-
-/**
  * Implements hook_preprocess_select().
  */
 function ux_ui_preprocess_select(&$variables) {

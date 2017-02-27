@@ -74,7 +74,6 @@
       // Open offcanvas item if we are requested a new item.
       if (currentId !== id) {
         _this.currentId = id;
-        displace();
         _this.$body.addClass('ux-offcanvas-active ux-offcanvas-' + instance.getPosition());
         instance.open();
         _this.stopBodyScrolling(true);

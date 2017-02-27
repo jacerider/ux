@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Contains ux_form.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_preprocess_select().
+ */
+function ux_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'ux_form/ux_form';
+  $form['#attributes']['class'][] = 'ux-form';
+}
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function ux_form_element_info_alter(&$type) {
+  $input_elements = ['textfield', 'textarea', 'number', 'tel', 'url', 'email', 'password', 'date'];
+  foreach ($input_elements as $input_element) {
+    if (isset($type[$input_element])) {
+      $type[$input_element]['#wrapper_attributes']['class'][] = 'ux-form-input';
+      $type[$input_element]['#attached']['library'][] = 'ux_form/ux_form.input';
+    }
+  }
+
+  $input_elements = ['radio', 'radios'];
+  foreach ($input_elements as $input_element) {
+    if (isset($type[$input_element])) {
+      $type[$input_element]['#wrapper_attributes']['class'][] = 'ux-form-radio';
+      $type[$input_element]['#attached']['library'][] = 'ux_form/ux_form.radio';
+    }
+  }
+
+  if (isset($type['date'])) {
+    $type['date']['#process'][] = 'ux_form_date_process';
+  }
+
+  if (isset($type['datetime'])) {
+    $type['datetime']['#process'][] = 'ux_form_datetime_process';
+    $type['datetime']['#theme_wrappers'] = ['form_element'];
+  }
+}
+
+/**
+ * Process date elements.
+ */
+function ux_form_date_process(&$element, FormStateInterface $form_state, &$complete_form) {
+  if (!empty($element['#attached']['library'])) {
+    $element['#attached']['library'] = array_filter($element['#attached']['library'], function ($library) {
+      return $library !== 'core/drupal.date';
+    });
+    $element['#attached']['library'][] = 'ux_form/ux_form.date';
+  }
+  return $element;
+}
+
+/**
+ * Process datetime elements.
+ */
+function ux_form_datetime_process(&$element, FormStateInterface $form_state, &$complete_form) {
+  $element['date']['#attributes']['placeholder'] = t('Date');
+  $element['time']['#attributes']['placeholder'] = t('Time');
+  $element['#attributes']['class'][] = 'ux-form-inline';
+  $element['#attached']['library'][] = 'ux_form/ux_form.time';
+  return $element;
+}
