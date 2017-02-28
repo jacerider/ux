@@ -1,1 +1,265 @@
-!function(t,i,e){"use strict";var s;return s={animate:"TweenLite",position:"left",size:320,speed:.5},t.ux_offcanvas_item=function(e,n,a,o){this.debug=!1,this._defaults=s,this.settings=t.extend(!0,{},this._defaults,o),this.id=this.settings.id,this.offcanvas=t(e),this.trigger=t(a),this.push=t("#ux-document"),this.item=t(n),this.closeLink=t(".ux-offcanvas-close",this.item),this.active=!1,this.param={},this.size=this.settings.size,this.initialize=function(t){return function(){t.set_animator(),t.bind_trigger(),t.bind_close_link(),t.listen_open(),t.listen_close(),t.log("UX Offcanvas has been initialized.")}}(this),this.set_orientation=function(t){return function(){switch(t.param.pushFrom=0,t.param.itemTo=0,this.settings.position){case"left":t.size=t.offcanvas.width()<this.settings.size?t.offcanvas.width()-20:this.settings.size,t.param.axis="x",t.param.size="width",t.param.pushTo=1*t.settings.size,t.param.itemFrom=t.settings.size*-1;break;case"right":t.size=t.offcanvas.width()<this.settings.size?t.offcanvas.width()-20:this.settings.size,t.param.axis="x",t.param.size="width",t.param.pushTo=t.size*-1,t.param.itemFrom=1*t.size;break;case"top":t.size=t.offcanvas.height()<this.settings.size?t.offcanvas.height()-20:this.settings.size,t.param.axis="y",t.param.size="height",t.param.pushTo=1*t.size,t.param.itemFrom=t.size*-1;break;case"bottom":t.size=t.offcanvas.height()<this.settings.size?t.offcanvas.height()-20:this.settings.size,t.param.axis="y",t.param.size="height",t.param.pushTo=t.size*-1,t.param.itemFrom=1*t.size}}}(this),this.set_size=function(t){return function(){t.item[t.param.size](this.size)}}(this),this.open=function(t){return function(i){var e;t.set_orientation(),t.set_size(),t.active=!0,t.trigger.addClass("active"),t.item.addClass("active"),t.log("UX Offcanvas open."),e=t.animation("push"),t.animate.fromTo(t.push,t.settings.speed,e.from,e.to),e=t.animation("item"),t.animate.fromTo(t.item,t.settings.speed,e.from,e.to).eventCallback("onComplete",function(){i&&i.call()})}}(this),this.close=function(t){return function(i){var e;t.active=!1,t.log("UX Offcanvas close."),e=t.animation("push"),e.from.clearProps="transform",t.animate.fromTo(t.push,t.settings.speed,e.to,e.from),e=t.animation("item"),e.from.clearProps="transform",t.animate.fromTo(t.item,t.settings.speed,e.to,e.from).eventCallback("onComplete",function(){t.trigger.removeClass("active"),t.item.removeClass("active"),i&&i.call()})}}(this),this.animation=function(t){return function(i){var e={from:{},to:{}};return e.from[t.param.axis]=t.param[i+"From"],e.to[t.param.axis]=t.param[i+"To"],e}}(this),this.listen_open=function(t){return function(){t.item.on("ux_offcanvas_item.open",function(i,e){t.open(e)})}}(this),this.listen_close=function(t){return function(){t.item.on("ux_offcanvas_item.close",function(i,e){t.close(e)})}}(this),this.bind_trigger=function(t){return function(){t.trigger.on("click",function(i){i.preventDefault(),t.offcanvas.triggerHandler("ux_offcanvas.open",[t.id])})}}(this),this.bind_close_link=function(t){return function(){t.closeLink.on("click",function(i){i.preventDefault(),t.offcanvas.triggerHandler("ux_offcanvas.close",[t.id])})}}(this),this.set_animator=function(t){return function(){t.animate=i[t.settings.animate],t.log("Animating using the "+t.settings.animate+" platform.")}}(this),this.log=function(t){return function(i){t.debug&&("object"==typeof i?console.log("[UX Offcanvas "+t.id+"]",i):console.log("[UX Offcanvas "+t.id+"] "+i))}}(this),this.error=function(t){return function(i){"object"==typeof i?console.error("[UX Parallax "+t.id+"]",i):console.error("[UX Parallax "+t.id+"] "+i)}}(this),this.initialize()},t.fn.ux_offcanvas_item=function(i,s){return this.each(function(n,a){if(s.id&&!t.data(a,"ux_offcanvas_item")){var o=e.getElementById("ux-offcanvas-trigger-"+s.id);if(o)return t.data(o,"ux_offcanvas_item",new t.ux_offcanvas_item(i,a,o,s))}})},t.fn.ux_offcanvas_item}(window.jQuery,window,document);
+(function ($, window, document) {
+
+  'use strict';
+
+  var _defaults;
+  _defaults = {
+    animate: 'TweenLite',
+    position: 'left',
+    size: 320,
+    speed: 0.5
+  };
+
+  $.ux_offcanvas_item = function (offcanvas, item, trigger, options) {
+    this.debug = false;
+    this._defaults = _defaults;
+    this.settings = $.extend(true, {}, this._defaults, options);
+    this.id = this.settings.id;
+    this.offcanvas = $(offcanvas);
+    this.trigger = $(trigger);
+    this.push = $('#ux-document');
+    this.item = $(item);
+    this.closeLink = $('.ux-offcanvas-close', this.item);
+    this.active = false;
+    this.param = {};
+    this.size = this.settings.size;
+
+    /*
+     * Initialize ux_offcanvas_item and gather all the data
+     */
+    this.initialize = (function (_this) {
+      return function () {
+        _this.set_animator();
+        _this.bind_trigger();
+        _this.bind_close_link();
+        _this.listen_open();
+        _this.listen_close();
+        _this.log('UX Offcanvas has been initialized.');
+      };
+    })(this);
+
+    /*
+     * Determine orientation.
+     */
+    this.set_orientation = (function (_this) {
+      return function () {
+        _this.param.pushFrom = 0;
+        _this.param.itemTo = 0;
+        switch (this.settings.position) {
+          case 'left':
+            _this.size = _this.offcanvas.width() < this.settings.size ? _this.offcanvas.width() - 20 : this.settings.size;
+            _this.param.axis = 'x';
+            _this.param.size = 'width';
+            _this.param.pushTo = _this.settings.size * 1;
+            _this.param.itemFrom = _this.settings.size * -1;
+            break;
+          case 'right':
+            _this.size = _this.offcanvas.width() < this.settings.size ? _this.offcanvas.width() - 20 : this.settings.size;
+            _this.param.axis = 'x';
+            _this.param.size = 'width';
+            _this.param.pushTo = _this.size * -1;
+            _this.param.itemFrom = _this.size * 1;
+            break;
+          case 'top':
+            _this.size = _this.offcanvas.height() < this.settings.size ? _this.offcanvas.height() - 20 : this.settings.size;
+            _this.param.axis = 'y';
+            _this.param.size = 'height';
+            _this.param.pushTo = _this.size * 1;
+            _this.param.itemFrom = _this.size * -1;
+            break;
+          case 'bottom':
+            _this.size = _this.offcanvas.height() < this.settings.size ? _this.offcanvas.height() - 20 : this.settings.size;
+            _this.param.axis = 'y';
+            _this.param.size = 'height';
+            _this.param.pushTo = _this.size * -1;
+            _this.param.itemFrom = _this.size * 1;
+            break;
+        }
+      };
+    })(this);
+
+    /**
+     * Set the size of the offcanvas item.
+     */
+    this.set_size = (function (_this) {
+      return function () {
+        _this.item[_this.param.size](this.size);
+      };
+    })(this);
+
+    /**
+     * Open offcanvas element.
+     */
+    this.open = (function (_this) {
+      return function (callback) {
+        var animation;
+
+        _this.set_orientation();
+        _this.set_size();
+
+        _this.active = true;
+        _this.trigger.addClass('active');
+        _this.item.addClass('active');
+        _this.log('UX Offcanvas open.');
+
+        // Push animation.
+        animation = _this.animation('push');
+        _this.animate.fromTo(_this.push, _this.settings.speed, animation.from, animation.to);
+
+        // Item animation.
+        animation = _this.animation('item');
+        _this.animate.fromTo(_this.item, _this.settings.speed, animation.from, animation.to).eventCallback('onComplete', function () {
+          if (callback) {
+            callback.call();
+          }
+        });
+      };
+    })(this);
+
+    /**
+     * Close offcanvas element.
+     */
+    this.close = (function (_this) {
+      return function (callback) {
+        var animation;
+
+        _this.active = false;
+        _this.log('UX Offcanvas close.');
+
+        // Push animation.
+        animation = _this.animation('push');
+        animation.from.clearProps = 'transform';
+        _this.animate.fromTo(_this.push, _this.settings.speed, animation.to, animation.from);
+
+        // Item animation.
+        animation = _this.animation('item');
+        animation.from.clearProps = 'transform';
+        _this.animate.fromTo(_this.item, _this.settings.speed, animation.to, animation.from).eventCallback('onComplete', function () {
+          _this.trigger.removeClass('active');
+          _this.item.removeClass('active');
+          if (callback) {
+            callback.call();
+          }
+        });
+      };
+    })(this);
+
+    /**
+     * Build animation object.
+     */
+    this.animation = (function (_this) {
+      return function (type) {
+        var animation = {
+          from: {},
+          to: {}
+        };
+        animation.from[_this.param.axis] = _this.param[type + 'From'];
+        animation.to[_this.param.axis] = _this.param[type + 'To'];
+
+        return animation;
+      };
+    })(this);
+
+    /**
+     * Listen for open offcanvas event.
+     */
+    this.listen_open = (function (_this) {
+      return function () {
+        _this.item.on('ux_offcanvas_item.open', function (event, callback) {
+          _this.open(callback);
+        });
+      };
+    })(this);
+
+    /**
+     * Open offcanvas element.
+     */
+    this.listen_close = (function (_this) {
+      return function () {
+        _this.item.on('ux_offcanvas_item.close', function (event, callback) {
+          _this.close(callback);
+        });
+      };
+    })(this);
+
+    /**
+     * Bind trigger click handler.
+     */
+    this.bind_trigger = (function (_this) {
+      return function () {
+        _this.trigger.on('click', function (e) {
+          e.preventDefault();
+          _this.offcanvas.triggerHandler('ux_offcanvas.open', [_this.id]);
+        });
+      };
+    })(this);
+
+    /**
+     * Bind trigger click handler.
+     */
+    this.bind_close_link = (function (_this) {
+      return function () {
+        _this.closeLink.on('click', function (e) {
+          e.preventDefault();
+          _this.offcanvas.triggerHandler('ux_offcanvas.close', [_this.id]);
+        });
+      };
+    })(this);
+
+    /*
+     * Setup Animation Platform
+     */
+    this.set_animator = (function (_this) {
+      return function () {
+        _this.animate = window[_this.settings.animate];
+        _this.log('Animating using the ' + _this.settings.animate + ' platform.');
+      };
+    })(this);
+
+    /*
+     * Logger snippet within UX Offcanvas
+     */
+    this.log = (function (_this) {
+      return function (item) {
+        if (!_this.debug) {
+          return;
+        }
+        if (typeof item === 'object') {
+          console.log('[UX Offcanvas ' + _this.id + ']', item); // eslint-disable-line no-console
+        }
+        else {
+          console.log('[UX Offcanvas ' + _this.id + '] ' + item); // eslint-disable-line no-console
+        }
+      };
+    })(this);
+
+    /*
+     * Error logger snippet within UX Offcanvas
+     */
+    this.error = (function (_this) {
+      return function (item) {
+        if (typeof item === 'object') {
+          console.error('[UX Parallax ' + _this.id + ']', item); // eslint-disable-line no-console
+        }
+        else {
+          console.error('[UX Parallax ' + _this.id + '] ' + item); // eslint-disable-line no-console
+        }
+      };
+    })(this);
+
+    this.initialize();
+  };
+
+  $.fn.ux_offcanvas_item = function (offcanvas, opts) {
+    return this.each(function (index, item) {
+      if (opts.id && !$.data(item, 'ux_offcanvas_item')) {
+        var trigger = document.getElementById('ux-offcanvas-trigger-' + opts.id);
+        if (trigger) {
+          return $.data(trigger, 'ux_offcanvas_item', new $.ux_offcanvas_item(offcanvas, item, trigger, opts));
+        }
+      }
+    });
+  };
+  return $.fn.ux_offcanvas_item;
+
+})(window.jQuery, window, document);

@@ -5,10 +5,22 @@ ux_form:
       css/ux-form.css: {}
   js:
     js/ux-form.js: { minified: true }
+    js/models/ElementModel.js: { minified: true }
+    js/collections/ElementCollection.js: { minified: true }
+    js/views/FormView.js: { minified: true }
+    js/views/ElementView.js: { minified: true }
   dependencies:
     - core/drupal
     - core/jquery.once
     - core/backbone
+
+ux_form.dropdown:
+  version: VERSION
+  js:
+    js/ux-form.dropdown.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+    - ux/jquery.easing
 
 ux_form.input:
   version: VERSION
@@ -23,6 +35,23 @@ ux_form.radio:
     js/ux-form.radio.js: { minified: true }
   dependencies:
     - ux_form/ux_form
+
+ux_form.checkbox:
+  version: VERSION
+  js:
+    js/ux-form.checkbox.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+
+ux_form.select:
+  version: VERSION
+  js:
+    js/ux-form.select.js: { minified: true }
+    js/models/SelectModel.js: { minified: true }
+    js/views/SelectView.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+    - ux_form/ux_form.dropdown
 
 ux_form.picker:
   version: VERSION

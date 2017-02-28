@@ -32,14 +32,36 @@ function ux_form_element_info_alter(&$type) {
     if (isset($type[$input_element])) {
       $type[$input_element]['#wrapper_attributes']['class'][] = 'ux-form-radio';
       $type[$input_element]['#attached']['library'][] = 'ux_form/ux_form.radio';
+      if ($input_element == 'radios') {
+        $type[$input_element]['#attributes']['class'][] = 'ux-form-radios';
+      }
     }
   }
 
+  $input_elements = ['checkbox', 'checkboxes'];
+  foreach ($input_elements as $input_element) {
+    if (isset($type[$input_element])) {
+      $type[$input_element]['#wrapper_attributes']['class'][] = 'ux-form-checkbox';
+      $type[$input_element]['#attached']['library'][] = 'ux_form/ux_form.checkbox';
+    }
+  }
+
+  if (isset($type['text_format'])) {
+    $type['text_format']['#wrapper_attributes']['class'][] = 'ux-form-format';
+  }
+
+  if (isset($type['select'])) {
+    $type['select']['#wrapper_attributes']['class'][] = 'ux-form-select';
+    $type['select']['#attached']['library'][] = 'ux_form/ux_form.select';
+  }
+
   if (isset($type['date'])) {
+    $type['date']['#wrapper_attributes']['class'][] = 'ux-form-date';
     $type['date']['#process'][] = 'ux_form_date_process';
   }
 
   if (isset($type['datetime'])) {
+    $type['datetime']['#wrapper_attributes']['class'][] = 'ux-form-time';
     $type['datetime']['#process'][] = 'ux_form_datetime_process';
     $type['datetime']['#theme_wrappers'] = ['form_element'];
   }

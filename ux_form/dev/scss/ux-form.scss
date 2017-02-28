@@ -1,61 +1,90 @@
 @import 'base/variables';
 
-// .ux-form {
+.ux-form {
 
-//   // Resets
-//   .fieldgroup > legend {
-//     margin: 0;
-//   }
+  // Resets
+  .fieldgroup > legend {
+    margin: 0;
+  }
 
-//   // General element margin.
-//   .js-form-item,
-//   tr.odd .js-form-item,
-//   tr.event .js-form.item {
-//     margin: $input-margin;
+  // General element margin.
+  .js-form-item,
+  tr.odd .js-form-item,
+  tr.event .js-form-item {
+    margin: $input-margin;
 
-//     &[disabled],
-//     &.form-disabled {
+    &[disabled],
+    &.form-disabled {
 
-//       label,
-//       > legend .fieldset-legend {
-//         color: lighten($label-color, 40%);
-//         pointer-events: none;
-//       }
-//     }
-//   }
+      label,
+      > legend .fieldset-legend {
+        color: lighten($label-color, 40%);
+        pointer-events: none;
+      }
+    }
+  }
 
-//   // General field labels.
-//   .fieldgroup > legend .fieldset-legend,
-//   .js-form-item label {
-//     color: $label-color;
-//     font-size: $label-font-size;
-//     margin: 0;
-//     padding: 0;
-//     font-weight: normal;
-//   }
+  // General field labels.
+  .fieldgroup > legend .fieldset-legend,
+  .js-form-item label {
+    color: $label-color;
+    font-size: $label-font-size;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
 
-//   .js-form-item input {
-//     margin: 0;
-//     padding: $input-padding;
-//   }
+  .js-form-item input {
+    margin: 0;
+    padding: $input-padding;
+  }
 
-//   .js-form-item .description {
-//     font-size: $description-font-size;
-//     line-height: $description-font-size + 0.4rem;
-//     color: $description-color;
-//   }
-// }
+  .js-form-item .description {
+    font-size: $description-font-size;
+    line-height: $description-font-size + 0.4rem;
+    color: $description-color;
+  }
+}
 
-// .ux-form-inline {
-//   display: flex;
-//   flex-flow: row nowrap;
-//   width: 100%;
+.ux-form-inline {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
 
-//   > div {
-//     display: block;
-//     flex: auto !important;
-//     width: 50%;
-//   }
-// }
+  > div {
+    display: block;
+    flex: auto !important;
+    width: 50%;
+  }
+}
+
+// Z-levels
+%z-depth-0 {
+  box-shadow: none !important;
+}
+
+%z-depth-1 {
+  box-shadow: 0 2px 2px 0 $black-opacity-14, 0 1px 5px 0 $black-opacity-12, 0 3px 1px -2px $black-opacity-2;
+}
+
+%z-depth-1-half {
+  box-shadow: 0 3px 3px 0 $black-opacity-14, 0 1px 7px 0 $black-opacity-12, 0 3px 1px -1px $black-opacity-2;
+}
+
+%z-depth-2 {
+  box-shadow: 0 4px 5px 0 $black-opacity-14, 0 1px 10px 0 $black-opacity-12, 0 2px 4px -1px $black-opacity-3;
+}
+
+%z-depth-3 {
+  box-shadow: 0 6px 10px 0 $black-opacity-14, 0 1px 18px 0 $black-opacity-12, 0 3px 5px -1px $black-opacity-3;
+}
+
+%z-depth-4 {
+  box-shadow: 0 8px 10px 1px $black-opacity-14, 0 3px 14px 2px $black-opacity-12, 0 5px 5px -3px $black-opacity-3;
+}
+
+%z-depth-5 {
+  box-shadow: 0 16px 24px 2px $black-opacity-14, 0 6px 30px 5px $black-opacity-12, 0 8px 10px -5px $black-opacity-3;
+}
 
 @import 'components/*.scss'; // sass-lint:disable-line clean-import-paths

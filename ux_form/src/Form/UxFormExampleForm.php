@@ -4,6 +4,7 @@ namespace Drupal\ux_form\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\NestedArray;
 
 /**
  * Class UxFormExampleForm.
@@ -25,99 +26,76 @@ class UxFormExampleForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['textfield'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield'),
-      '#required' => TRUE,
+    $form['select'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select'),
+      '#options' => ['One', 'Two', 'Three'],
     ];
 
-    $form['textfield2'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield with Description'),
-      '#description' => $this->t('Here is the description'),
-      '#required' => TRUE,
+    $form['select2'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select Multiple'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#multiple' => TRUE,
     ];
 
-    $form['textfield3'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield with Prefix & Suffix'),
-      '#description' => $this->t('Here is the description'),
-      '#field_prefix' => '$',
-      '#field_suffix' => '.00',
-      '#required' => TRUE,
-    ];
-
-    $form['textfield4'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield Required'),
-      '#required' => TRUE,
-    ];
-
-    $form['textfield5'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield Disabled'),
-      '#disabled' => TRUE,
-    ];
-
-    $form['textfield6'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield with Empty Placeholder'),
-      '#attributes' => [
-        'placeholder' => '',
+    $form['select3'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select Group'),
+      '#options' => [
+        'One' => ['One', 'Two', 'Three'],
+        'Two' => ['One', 'Two', 'Three'],
+        'Three' => ['One', 'Two', 'Three'],
       ],
     ];
 
-    $form['textfield7'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield with Placeholder'),
-      '#attributes' => [
-        'placeholder' => $this->t('Placeholder'),
-      ],
-    ];
-
-    $form['radios'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios'),
-      '#options' => ['One', 'Two', 'Three'],
-    ];
-
-    $form['radios2'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios Inline'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
-    ];
-
-    $form['radios3'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios Disabled'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
-      '#disabled' => TRUE,
-    ];
-
-    // $form['text_format'] = [
-    //   '#type' => 'text_format',
-    //   '#title' => $this->t('Text Format'),
-    //   '#format' => 'full_html',
+    // $form['textfield'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => $this->t('Textfield'),
+    //   // '#maxlength' => 5,
+    //   '#attributes' => ['length' => 5],
     // ];
 
-    // $form['date'] = [
-    //   '#type' => 'date',
-    //   '#title' => $this->t('Date'),
+    // $form['textfield2'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => $this->t('Textfield with Description'),
+    //   '#description' => $this->t('Here is the description'),
     // ];
 
-    // $form['datetime'] = [
-    //   '#type' => 'datetime',
-    //   '#title' => $this->t('Date & Time'),
-    //   '#default_value' => NULL,
-    //   '#date_increment' => 1,
-    //   '#date_timezone' => drupal_get_user_timezone(),
+    // $form['textfield3'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => $this->t('Textfield with Prefix & Suffix'),
+    //   '#description' => $this->t('Here is the description'),
+    //   '#field_prefix' => '$',
+    //   '#field_suffix' => '.00',
     // ];
 
-    // $form['textarea'] = [
-    //   '#type' => 'textarea',
-    //   '#title' => $this->t('Textarea'),
+    // $form['textfield4'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => $this->t('Textfield Required'),
+    //   '#required' => TRUE,
+    // ];
+
+    // $form['textfield5'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => $this->t('Textfield Disabled'),
+    //   '#disabled' => TRUE,
+    // ];
+
+    // $form['textfield6'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => $this->t('Textfield with Empty Placeholder'),
+    //   '#attributes' => [
+    //     'placeholder' => '',
+    //   ],
+    // ];
+
+    // $form['textfield7'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => $this->t('Textfield with Placeholder'),
+    //   '#attributes' => [
+    //     'placeholder' => $this->t('Placeholder'),
+    //   ],
     // ];
 
     // $form['checkboxes'] = [
@@ -152,10 +130,82 @@ class UxFormExampleForm extends FormBase {
     //   '#default_value' => TRUE,
     // ];
 
-    // $form['select'] = [
-    //   '#type' => 'select',
-    //   '#title' => $this->t('Select'),
+    // $form['radios'] = [
+    //   '#type' => 'radios',
+    //   '#title' => $this->t('Radios'),
     //   '#options' => ['One', 'Two', 'Three'],
+    // ];
+
+    // $form['radios2'] = [
+    //   '#type' => 'radios',
+    //   '#title' => $this->t('Radios Inline'),
+    //   '#options' => ['One', 'Two', 'Three'],
+    //   '#attributes' => ['class' => ['inline']],
+    //   '#default_value' => 1,
+    // ];
+
+    // $form['radios3'] = [
+    //   '#type' => 'radios',
+    //   '#title' => $this->t('Radios Disabled'),
+    //   '#options' => ['One', 'Two', 'Three'],
+    //   '#attributes' => ['class' => ['inline']],
+    //   '#disabled' => TRUE,
+    // ];
+
+    // $count = $form_state->get('count');
+    // if (empty($count)) {
+    //   $count = 1;
+    //   $form_state->set('count', $count);
+    // }
+
+    // $form['addmore'] = [
+    //   '#type' => 'fieldset',
+    //   '#title' => $this->t('Add More'),
+    //   '#prefix' => '<div id="addmore-wrapper">',
+    //   '#suffix' => '</div>',
+    //   '#tree' => TRUE,
+    // ];
+    // for ($i = 0; $i < $count; $i++) {
+    //   $form['addmore'][$i] = [
+    //     '#title' => t('Textfield dynamic %delta', ['%delta' => $i + 1]),
+    //     '#type' => 'textfield',
+    //   ];
+    // }
+
+    // $form['addmore_add'] = [
+    //   '#type' => 'submit',
+    //   '#value' => t('Add Image Style'),
+    //   '#submit' => [[get_class($this), 'addOneSubmit']],
+    //   '#limit_validation_errors' => array(),
+    //   '#ajax' => [
+    //     'callback' => [get_class($this), 'addOneAjax'],
+    //     'wrapper' => 'addmore-wrapper',
+    //     'effect' => 'fade',
+    //   ],
+    // ];
+
+    // $form['text_format'] = [
+    //   '#type' => 'text_format',
+    //   '#title' => $this->t('Text Format'),
+    //   '#format' => 'full_html',
+    // ];
+
+    // $form['date'] = [
+    //   '#type' => 'date',
+    //   '#title' => $this->t('Date'),
+    // ];
+
+    // $form['datetime'] = [
+    //   '#type' => 'datetime',
+    //   '#title' => $this->t('Date & Time'),
+    //   '#default_value' => NULL,
+    //   '#date_increment' => 1,
+    //   '#date_timezone' => drupal_get_user_timezone(),
+    // ];
+
+    // $form['textarea'] = [
+    //   '#type' => 'textarea',
+    //   '#title' => $this->t('Textarea'),
     // ];
 
     // $form['email'] = [
@@ -212,6 +262,29 @@ class UxFormExampleForm extends FormBase {
     // ];
 
     return $form;
+  }
+
+  /**
+   * Callback for both ajax-enabled buttons.
+   */
+  public static function addOneAjax(array $form, FormStateInterface $form_state) {
+    $button = $form_state->getTriggeringElement();
+
+    // Go one level up in the form, to the widgets container.
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
+    return $element['addmore'];
+  }
+
+  /**
+   * Submit handler for the "add-one-more" button.
+   *
+   * Increments the max counter and causes a rebuild.
+   */
+  public static function addOneSubmit(array $form, FormStateInterface $form_state) {
+    $count = $form_state->get('count');
+    $count = $count + 1;
+    $form_state->set('count', $count);
+    $form_state->setRebuild();
   }
 
   /**

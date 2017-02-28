@@ -1,1 +1,39 @@
-!function(t,i,e){"use strict";e.behaviors.uxFormTime={attach:function(e,n){var a=t(e);i.inputtypes.date!==!0&&a.find("input[type=time]").once("datePicker").each(function(){var i=t(this),e={};e.formatSubmit="HH:i:00",i.pickatime(e)})},detach:function(t,i,e){}}}(jQuery,Modernizr,Drupal);
+/**
+ * @file
+ * Global ux_form javascript.
+ */
+
+(function ($, Modernizr, Drupal) {
+
+  'use strict';
+
+  Drupal.UxForm.models.time = new Drupal.UxForm.ElementModel({
+    selector: '.ux-form-time input.form-time',
+
+    /*
+    On render.
+     */
+    onRender: function () {
+      // Skip if date are supported by the browser.
+      if (Modernizr.inputtypes.date === true) {
+        return;
+      }
+      var _this = this;
+      _this.$el.each(function (index, element) {
+        var $input = $(this);
+        var timepickerSettings = {};
+        timepickerSettings.formatSubmit = 'HH:i:00';
+        $input.pickatime(timepickerSettings);
+      });
+    },
+
+    onRemove: function () {
+      var _this = this;
+      _this.$el.findOnce('datePicker').pickadate('stop');
+    }
+  });
+
+  // Add to collection.
+  Drupal.UxForm.collection.add(Drupal.UxForm.models.time);
+
+})(jQuery, Modernizr, Drupal);

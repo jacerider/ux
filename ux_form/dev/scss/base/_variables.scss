@@ -13,6 +13,14 @@ $error-color: map-get($palette, error) !default;
 $label-color: map-get($palette, label) !default;
 $radio-color: $primary-color !default;
 
+$black-opacity-1: rgba(0, 0, 0, 0.1);
+$black-opacity-2: rgba(0, 0, 0, 0.2);
+$black-opacity-3: rgba(0, 0, 0, 0.3);
+$black-opacity-12: rgba(0, 0, 0, 0.12);
+$black-opacity-14: rgba(0, 0, 0, 0.14);
+$gray-light: #999;
+$off-black: rgba(0, 0, 0, 0.87) !default;
+
 // Text Inputs + Textarea
 $input-height: 2.5rem !default;
 $input-border-color: lighten($secondary-color, 40%) !default;
@@ -51,3 +59,9 @@ $select-focus: 1px solid lighten($secondary-color, 47%) !default;
 $select-padding: 5px !default;
 $select-radius: 2px !default;
 $select-disabled-color: rgba(0, 0, 0, 0.3) !default;
+
+// Dropdown
+$dropdown-bg-color: #fff !default;
+$dropdown-hover-bg-color: #eee !default;
+$dropdown-color: $secondary-color !default;
+$dropdown-item-height: 50px !default;

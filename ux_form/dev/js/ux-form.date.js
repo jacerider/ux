@@ -7,17 +7,22 @@
 
   'use strict';
 
-  Drupal.behaviors.uxFormDate = {
-    attach: function (context, settings) {
-      var $context = $(context);
+  Drupal.UxForm.models.date = new Drupal.UxForm.ElementModel({
+    selector: '.ux-form-date input.form-date',
+
+    /*
+    On render.
+     */
+    onRender: function () {
       // Skip if date are supported by the browser.
       if (Modernizr.inputtypes.date === true) {
         return;
       }
-      $context.find('input[data-drupal-date-format]').once('datePicker').each(function () {
-        var $input = $(this);
+      var _this = this;
+      _this.$el.each(function (index, element) {
+        var $element = $(this);
         var datepickerSettings = {};
-        var dateFormat = $input.data('drupalDateFormat');
+        var dateFormat = $element.data('drupalDateFormat');
         datepickerSettings.format = 'mmmm d, yyyy';
         // The date format is saved in PHP style, we need to convert to jQuery
         // datepicker.
@@ -26,20 +31,23 @@
           .replace('m', 'mm')
           .replace('d', 'dd');
         // Add min and max date if set on the input.
-        if ($input.attr('min')) {
-          datepickerSettings.min = $input.attr('min');
+        if ($element.attr('min')) {
+          datepickerSettings.min = $element.attr('min');
         }
-        if ($input.attr('max')) {
-          datepickerSettings.max = $input.attr('max');
+        if ($element.attr('max')) {
+          datepickerSettings.max = $element.attr('max');
         }
-        $input.pickadate(datepickerSettings);
+        $element.pickadate(datepickerSettings);
       });
     },
-    detach: function (context, settings, trigger) {
-      if (trigger === 'unload') {
-        $(context).find('input[data-drupal-date-format]').findOnce('datePicker').pickadate('destroy');
-      }
+
+    onRemove: function () {
+      var _this = this;
+      _this.$el.findOnce('datePicker').pickadate('stop');
     }
-  };
+  });
+
+  // Add to collection.
+  Drupal.UxForm.collection.add(Drupal.UxForm.models.date);
 
 })(jQuery, Modernizr, Drupal);

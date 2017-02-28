@@ -46,6 +46,11 @@ ux.select_as_links:
     - core/jquery.once
     - core/drupal
 
+jquery.easing:
+  version: VERSION
+  js:
+    lib/easing/jquery.easing.min.js: {minified: true}
+
 gsap:
   version: VERSION
   js:

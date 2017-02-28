@@ -1,1 +1,227 @@
-!function(t,e,n,s){"use strict";function o(e,n){this.settings=n,this.$window=t(window),this.$document=t(document),this.$offcanvas=e,this.$trigger=t("#ux-offcanvas-trigger-"+n.id),this.setup()}t.extend(o,{$body:t("body"),$wrapper:t("#ux-offcanvas"),instances:{},currentId:null,getInstance:function(t){var e=this;return e.instances[t]},open:function(t){var n=this,s=n.currentId,o=n.getInstance(t);s&&n.close(),s!==t&&(n.currentId=t,n.$body.addClass("ux-offcanvas-active ux-offcanvas-"+o.getPosition()),o.open(),n.stopBodyScrolling(!0),e.Ux.blurContent(),e.Ux.showShadow(function(t){n.close()}))},close:function(t){var n=this;t=t||n.currentId;var s=n.getInstance(t);n.currentId=null,n.$body.removeClass("ux-offcanvas-active ux-offcanvas-"+s.getPosition()),s.close(),n.stopBodyScrolling(!1),e.Ux.focusContent(),e.Ux.hideShadow()},stopBodyScrolling:function(t){var e=this;if(t===!0){var n=function(t){t.preventDefault()};e.$body.on("touchmove.ux-offcanvas",n)}else e.$body.off("touchmove.ux-offcanvas")}}),t.extend(o.prototype,{_defaults:{position:"left",size:320},isActive:!1,setup:function(){var e=this;switch(e.settings=t.extend(!0,{},e._defaults,e.settings),e.settings.position){case"left":case"right":e.$offcanvas.width(e.settings.size);break;default:e.$offcanvas.height(e.settings.size)}e.$trigger.length&&e.$trigger.on("click.ux-offcanvas",function(t){t.preventDefault(),o.open(e.getId())}),e.$offcanvas.find(".ux-offcanvas-close").on("click.ux-offcanvas",function(t){t.preventDefault(),o.close(e.getId())})},getId:function(){var t=this;return t.settings.id},getPosition:function(){var t=this;return t.settings.position},getSize:function(){var t=this;return t.settings.size},open:function(){var t=this;t.isActive=!0,t.$offcanvas.addClass("active").css(t.getOffset()),t.$offcanvas.trigger("ux_offcanvas_item.open"),t.$trigger.addClass("active"),t.$document.on("keyup.ux-offcanvas",function(e){27===e.keyCode&&(e.preventDefault(),o.close(t.getId()))})},close:function(t,e){var n=this;n.isActive=!1,n.$offcanvas.removeClass("active"),n.$offcanvas.trigger("ux_offcanvas_item.close"),n.$trigger.removeClass("active"),n.$document.off("keyup.ux-offcanvas")},getOffset:function(){var t=this,e=t.settings.position,n={left:"right",right:"left",top:"bottom",bottom:"top"},o=s.offsets;switch(e){case"top":case"bottom":o.maxHeight=t.$window.height()-o.top-o.bottom}return delete o[n[e]],o}}),e.behaviors.uxOffcanvas={attach:function(e,n){if(n.ux&&n.ux.offcanvas&&n.ux.offcanvas.items){var s,a,i=t("#ux-offcanvas").once("ux-offcanvas");if(i.length)for(var f in n.ux.offcanvas.items)n.ux.offcanvas.items[f]&&(s=n.ux.offcanvas.items[f],a=t("#ux-offcanvas-"+s.id,e),o.instances[f]=new o(a,n.ux.offcanvas.items[f]))}}},e.UxOffcanvas=o}(jQuery,Drupal,drupalSettings,Drupal.displace);
+/**
+ * @file
+ * Global ux_offcanvas javascript.
+ */
+
+/* eslint-disable no-alert, no-console */
+(function ($, Drupal, drupalSettings, displace) {
+
+  'use strict';
+
+  function UxOffcanvas($offcanvas, settings) {
+    this.settings = settings;
+    this.$window = $(window);
+    this.$document = $(document);
+    this.$offcanvas = $offcanvas;
+    this.$trigger = $('#ux-offcanvas-trigger-' + settings.id);
+    this.setup();
+  }
+
+  /**
+   * Global offcanvas object.
+   */
+  $.extend(UxOffcanvas, /** @lends Drupal.UxOffcanvas */{
+    /**
+     * The body element.
+     *
+     * @type {Object.<jQuery>}
+     */
+    $body: $('body'),
+
+    /**
+     * The #ux-offcanvas element.
+     *
+     * @type {Object.<jQuery>}
+     */
+    $wrapper: $('#ux-offcanvas'),
+
+    /**
+     * Holds references to instantiated UxOffcanvas objects.
+     *
+     * @type {Array.<Drupal.UxOffcanvas>}
+     */
+    instances: {},
+
+    /**
+     * The currently active offcanvas item.
+     *
+     * @type {String}
+     */
+    currentId: null,
+
+    /**
+     * Get the offcanvas item instance.
+     *
+     * @param {Integer} id
+     *   The offcanvas id.
+     *
+     * @return {Object.<UxOffcanvas>}
+     *   The offcanvas object.
+     */
+    getInstance: function (id) {
+      var _this = this;
+      return _this.instances[id];
+    },
+
+    open: function (id) {
+      var _this = this;
+      var currentId = _this.currentId;
+      var instance = _this.getInstance(id);
+      // If we have a currently open offcanvas, close it.
+      if (currentId) {
+        _this.close();
+      }
+      // Open offcanvas item if we are requested a new item.
+      if (currentId !== id) {
+        _this.currentId = id;
+        _this.$body.addClass('ux-offcanvas-active ux-offcanvas-' + instance.getPosition());
+        instance.open();
+        _this.stopBodyScrolling(true);
+        Drupal.Ux.blurContent();
+        Drupal.Ux.showShadow(function (e) {
+          _this.close();
+        });
+      }
+    },
+
+    close: function (id) {
+      var _this = this;
+      id = id || _this.currentId;
+      var instance = _this.getInstance(id);
+      _this.currentId = null;
+      _this.$body.removeClass('ux-offcanvas-active ux-offcanvas-' + instance.getPosition());
+      instance.close();
+      _this.stopBodyScrolling(false);
+      Drupal.Ux.focusContent();
+      Drupal.Ux.hideShadow();
+    },
+
+    stopBodyScrolling: function (bool) {
+      var _this = this;
+      if (bool === true) {
+        var freezeVp = function (e) {
+          e.preventDefault();
+        };
+        _this.$body.on('touchmove.ux-offcanvas', freezeVp);
+      }
+      else {
+        _this.$body.off('touchmove.ux-offcanvas');
+      }
+    }
+  });
+
+  /**
+   * Individual offcanvas items.
+   */
+  $.extend(UxOffcanvas.prototype, /** @lends Drupal.UxOffcanvas# */{
+    _defaults: {
+      position: 'left',
+      size: 320
+    },
+    isActive: false,
+
+    setup: function () {
+      var _this = this;
+      _this.settings = $.extend(true, {}, _this._defaults, _this.settings);
+
+      switch (_this.settings.position) {
+        case 'left':
+        case 'right':
+          _this.$offcanvas.width(_this.settings.size);
+          break;
+
+        default:
+          _this.$offcanvas.height(_this.settings.size);
+          break;
+      }
+
+      if (_this.$trigger.length) {
+        _this.$trigger.on('click.ux-offcanvas', function (e) {
+          e.preventDefault();
+          UxOffcanvas.open(_this.getId());
+        });
+      }
+
+      _this.$offcanvas.find('.ux-offcanvas-close').on('click.ux-offcanvas', function (e) {
+        e.preventDefault();
+        UxOffcanvas.close(_this.getId());
+      });
+    },
+
+    getId: function () {
+      var _this = this;
+      return _this.settings.id;
+    },
+
+    getPosition: function () {
+      var _this = this;
+      return _this.settings.position;
+    },
+
+    getSize: function () {
+      var _this = this;
+      return _this.settings.size;
+    },
+
+    open: function () {
+      var _this = this;
+      _this.isActive = true;
+      _this.$offcanvas.addClass('active').css(_this.getOffset());
+      _this.$offcanvas.trigger('ux_offcanvas_item.open');
+      _this.$trigger.addClass('active');
+      _this.$document.on('keyup.ux-offcanvas', function (e) {
+        if (e.keyCode === 27) {
+          e.preventDefault();
+          UxOffcanvas.close(_this.getId());
+        }
+      });
+    },
+
+    close: function (e, offcanvas) {
+      var _this = this;
+      _this.isActive = false;
+      _this.$offcanvas.removeClass('active');
+      _this.$offcanvas.trigger('ux_offcanvas_item.close');
+      _this.$trigger.removeClass('active');
+      _this.$document.off('keyup.ux-offcanvas');
+    },
+
+    getOffset: function () {
+      var _this = this;
+      var position = _this.settings.position;
+      var opposites = {left: 'right', right: 'left', top: 'bottom', bottom: 'top'};
+      var values = displace.offsets;
+      switch (position) {
+        case 'top':
+        case 'bottom':
+          values.maxHeight = _this.$window.height() - values.top - values.bottom;
+          break;
+      }
+      delete values[opposites[position]];
+      return values;
+    }
+  });
+
+  Drupal.behaviors.uxOffcanvas = {
+    attach: function (context, settings) {
+      if (settings.ux && settings.ux.offcanvas && settings.ux.offcanvas.items) {
+        var $wrapper = $('#ux-offcanvas').once('ux-offcanvas');
+        var config;
+        var $offcanvas;
+        if ($wrapper.length) {
+          for (var id in settings.ux.offcanvas.items) {
+            if (settings.ux.offcanvas.items[id]) {
+              config = settings.ux.offcanvas.items[id];
+              $offcanvas = $('#ux-offcanvas-' + config.id, context);
+              UxOffcanvas.instances[id] = new UxOffcanvas($offcanvas, settings.ux.offcanvas.items[id]);
+            }
+          }
+        }
+      }
+    }
+  };
+
+  // Expose constructor in the public space.
+  Drupal.UxOffcanvas = UxOffcanvas;
+
+})(jQuery, Drupal, drupalSettings, Drupal.displace);

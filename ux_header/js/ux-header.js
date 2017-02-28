@@ -1,1 +1,108 @@
-!function(e,t,i){"use strict";function r(t){this.$header=t,this.$window=e(window),this.$document=e(document),this.initialize()}e.extend(r.prototype,{lastScrollTop:0,delta:100,direction:"",initialize:function(){var r=this;r.$header.wrap('<div class="ux-header-wrapper"></div>'),r.$wrapper=r.$header.parent(),r.resize(),t.Ux.addResizeCallback(e.proxy(function(){r.resize()},r)),r.scroll(),t.Ux.addScrollCallback(e.proxy(function(){r.scroll()},r)),i(),r.$header.addClass("ux-header"),r.position(),r.$document.on("drupalViewportOffsetChange",function(){r.position()})},position:function(){var e=this;e.$header.css({top:i.offsets.top,left:i.offsets.left,right:i.offsets.right})},resize:function(){var e=this,t=e.$header.outerHeight(),r=e.$header.outerWidth();e.$wrapper.css({width:r,height:t});var a=e.$header.offset();e.$header.css({marginLeft:a.left-i.offsets.left+"px",marginRight:a.left-i.offsets.right+"px"})},scroll:function(){var e=this,t=Math.abs(e.$window.scrollTop()),i=e.lastScrollTop,r="";Math.abs(i-t)<=e.delta||(r=t>i?"down":"up",e.direction!==r&&("down"===r?e.$header.addClass("ux-header-hide"):e.$header.removeClass("ux-header-hide"),e.direction=r),e.lastScrollTop=t)}}),t.behaviors.uxStickyHeader={attach:function(t){e("header",t).once("ux-header").each(function(t){new r(e(this))})}}}(jQuery,Drupal,Drupal.displace);
+/**
+ * @file
+ * Global ux_offcanvas javascript.
+ */
+
+(function ($, Drupal, displace) {
+
+  'use strict';
+
+  function UxHeader($header) {
+    this.$header = $header;
+    this.$window = $(window);
+    this.$document = $(document);
+    this.initialize();
+  }
+
+  $.extend(UxHeader.prototype, /** @lends Drupal.UxHeader# */{
+    lastScrollTop: 0,
+    delta: 100,
+    direction: '',
+
+    initialize: function () {
+      var _this = this;
+      _this.$header.wrap('<div class="ux-header-wrapper"></div>');
+      _this.$wrapper = _this.$header.parent();
+
+      // Setup resizing.
+      _this.resize();
+      Drupal.Ux.addResizeCallback($.proxy(function () {
+        _this.resize();
+      }, _this));
+
+      // Setup resizing.
+      _this.scroll();
+      Drupal.Ux.addScrollCallback($.proxy(function () {
+        _this.scroll();
+      }, _this));
+
+      // Position floating bar.
+      displace();
+      _this.$header.addClass('ux-header');
+      _this.position();
+      _this.$document.on('drupalViewportOffsetChange', function () {
+        _this.position();
+      });
+    },
+
+    position: function () {
+      var _this = this;
+      _this.$header.css({
+        top: displace.offsets.top,
+        left: displace.offsets.left,
+        right: displace.offsets.right
+      });
+    },
+
+    resize: function () {
+      var _this = this;
+      var height = _this.$header.outerHeight();
+      var width = _this.$header.outerWidth();
+      _this.$wrapper.css({width: width, height: height});
+
+      var offset = _this.$header.offset();
+      _this.$header.css({marginLeft: (offset.left - displace.offsets.left) + 'px', marginRight: (offset.left - displace.offsets.right) + 'px'});
+    },
+
+    scroll: function () {
+      var _this = this;
+      var scrollTop = Math.abs(_this.$window.scrollTop());
+      var lastScrollTop = _this.lastScrollTop;
+      var currentDirection = '';
+
+      // Make sure scroll is more than delta.
+      if (Math.abs(lastScrollTop - scrollTop) <= _this.delta) {
+        return;
+      }
+
+      // Determine direction.
+      if (scrollTop > lastScrollTop) {
+        currentDirection = 'down';
+      }
+      else {
+        currentDirection = 'up';
+      }
+
+      if (_this.direction !== currentDirection) {
+        if (currentDirection === 'down') {
+          _this.$header.addClass('ux-header-hide');
+        }
+        else {
+          _this.$header.removeClass('ux-header-hide');
+        }
+        _this.direction = currentDirection;
+      }
+
+      _this.lastScrollTop = scrollTop;
+    }
+  });
+
+  Drupal.behaviors.uxStickyHeader = {
+    attach: function (context) {
+      $('header', context).once('ux-header').each(function (e) {
+        new UxHeader($(this));
+      });
+    }
+  };
+
+})(jQuery, Drupal, Drupal.displace);

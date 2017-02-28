@@ -57,7 +57,7 @@ gulp.task('css', function () {
     }))
     .pipe(autoprefix('last 2 versions', '> 1%', 'ie 9', 'ie 10'))
     .pipe(rename(function(path) {
-      path.dirname = '../../' + path.dirname + '/../../' + config.css.dest;
+      path.dirname = '../../' + path.dirname.replace('/dev/scss', '/' + config.css.dest);
     }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(config.css.dest))
@@ -82,10 +82,9 @@ gulp.task('js', function () {
       configFile: 'config/.eslintrc'
     }))
     .pipe(eslint.format())
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(rename(function(path) {
-      console.log(path.dirname);
-      path.dirname = '../../' + path.dirname + '/../../' + config.js.dest;
+      path.dirname = '../../' + path.dirname.replace('/dev/js', '/' + config.js.dest);
     }))
     .pipe(gulp.dest(config.js.dest))
     .pipe(config.browserSync.enabled ? browserSync.reload({

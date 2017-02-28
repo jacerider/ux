@@ -1,0 +1,61 @@
+.ux-form {
+
+  .ux-form-select {
+    position: relative;
+
+    input.select-dropdown {
+      position: relative;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      border-bottom: $input-border;
+      outline: none;
+      height: $input-height;
+      line-height: $input-height;
+      width: 100%;
+      font-size: $input-font-size;
+      margin: $input-margin;
+      padding: 0;
+      display: block;
+    }
+
+    span.caret {
+      color: initial;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      height: 10px;
+      margin: auto 0;
+      font-size: 10px;
+      line-height: 10px;
+
+      &.disabled {
+        color: $input-disabled-color;
+      }
+    }
+
+    label {
+      position: absolute;
+      top: -14px;
+      font-size: $label-font-size;
+    }
+
+    li.optgroup {
+      border-top: 1px solid $dropdown-hover-bg-color;
+
+      &.selected > span {
+        color: rgba(0, 0, 0, .7);
+      }
+
+      & > span {
+        color: rgba(0, 0, 0, .4);
+      }
+
+      & ~ li.optgroup-option {
+        padding-left: 1rem;
+      }
+    }
+
+  }
+}
