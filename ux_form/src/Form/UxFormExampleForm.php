@@ -66,216 +66,216 @@ class UxFormExampleForm extends FormBase {
       '#disabled' => TRUE,
     ];
 
-    // $form['textfield'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield'),
-    //   // '#maxlength' => 5,
-    //   '#attributes' => ['length' => 5],
-    // ];
+    $form['textfield'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+      // '#maxlength' => 5,
+      '#attributes' => ['length' => 5],
+    ];
 
-    // $form['textfield2'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield with Description'),
-    //   '#description' => $this->t('Here is the description'),
-    // ];
+    $form['textfield2'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield with Description'),
+      '#description' => $this->t('Here is the description'),
+    ];
 
-    // $form['textfield3'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield with Prefix & Suffix'),
-    //   '#description' => $this->t('Here is the description'),
-    //   '#field_prefix' => '$',
-    //   '#field_suffix' => '.00',
-    // ];
+    $form['textfield3'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield with Prefix & Suffix'),
+      '#description' => $this->t('Here is the description'),
+      '#field_prefix' => '$',
+      '#field_suffix' => '.00',
+    ];
 
-    // $form['textfield4'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield Required'),
-    //   '#required' => TRUE,
-    // ];
+    $form['textfield4'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield Required'),
+      '#required' => TRUE,
+    ];
 
-    // $form['textfield5'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield Disabled'),
-    //   '#disabled' => TRUE,
-    // ];
+    $form['textfield5'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield Disabled'),
+      '#disabled' => TRUE,
+    ];
 
-    // $form['textfield6'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield with Empty Placeholder'),
-    //   '#attributes' => [
-    //     'placeholder' => '',
-    //   ],
-    // ];
+    $form['textfield6'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield with Empty Placeholder'),
+      '#attributes' => [
+        'placeholder' => '',
+      ],
+    ];
 
-    // $form['textfield7'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield with Placeholder'),
-    //   '#attributes' => [
-    //     'placeholder' => $this->t('Placeholder'),
-    //   ],
-    // ];
+    $form['textfield7'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield with Placeholder'),
+      '#attributes' => [
+        'placeholder' => $this->t('Placeholder'),
+      ],
+    ];
 
-    // $form['checkboxes'] = [
-    //   '#type' => 'checkboxes',
-    //   '#title' => $this->t('Checkboxes'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    // ];
+    $form['checkboxes'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Checkboxes'),
+      '#options' => ['One', 'Two', 'Three'],
+    ];
 
-    // $form['checkboxes2'] = [
-    //   '#type' => 'checkboxes',
-    //   '#title' => $this->t('Checkboxes Inline'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    //   '#attributes' => ['class' => ['inline']],
-    // ];
+    $form['checkboxes2'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Checkboxes Inline'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+    ];
 
-    // $form['checkboxes3'] = [
-    //   '#type' => 'checkboxes',
-    //   '#title' => $this->t('Checkboxes Disabled'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    //   '#attributes' => ['class' => ['inline']],
-    //   '#disabled' => TRUE,
-    // ];
+    $form['checkboxes3'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Checkboxes Disabled'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+      '#disabled' => TRUE,
+    ];
 
-    // $form['checkbox'] = [
-    //   '#type' => 'checkbox',
-    //   '#title' => $this->t('Checkbox'),
-    // ];
+    $form['checkbox'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Checkbox'),
+    ];
 
-    // $form['checkbox2'] = [
-    //   '#type' => 'checkbox',
-    //   '#title' => $this->t('Checkbox Checked'),
-    //   '#default_value' => TRUE,
-    // ];
+    $form['checkbox2'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Checkbox Checked'),
+      '#default_value' => TRUE,
+    ];
 
-    // $form['radios'] = [
-    //   '#type' => 'radios',
-    //   '#title' => $this->t('Radios'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    // ];
+    $form['radios'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios'),
+      '#options' => ['One', 'Two', 'Three'],
+    ];
 
-    // $form['radios2'] = [
-    //   '#type' => 'radios',
-    //   '#title' => $this->t('Radios Inline'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    //   '#attributes' => ['class' => ['inline']],
-    //   '#default_value' => 1,
-    // ];
+    $form['radios2'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios Inline'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+      '#default_value' => 1,
+    ];
 
-    // $form['radios3'] = [
-    //   '#type' => 'radios',
-    //   '#title' => $this->t('Radios Disabled'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    //   '#attributes' => ['class' => ['inline']],
-    //   '#disabled' => TRUE,
-    // ];
+    $form['radios3'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios Disabled'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+      '#disabled' => TRUE,
+    ];
 
-    // $count = $form_state->get('count');
-    // if (empty($count)) {
-    //   $count = 1;
-    //   $form_state->set('count', $count);
-    // }
+    $count = $form_state->get('count');
+    if (empty($count)) {
+      $count = 1;
+      $form_state->set('count', $count);
+    }
 
-    // $form['addmore'] = [
-    //   '#type' => 'fieldset',
-    //   '#title' => $this->t('Add More'),
-    //   '#prefix' => '<div id="addmore-wrapper">',
-    //   '#suffix' => '</div>',
-    //   '#tree' => TRUE,
-    // ];
-    // for ($i = 0; $i < $count; $i++) {
-    //   $form['addmore'][$i] = [
-    //     '#title' => t('Textfield dynamic %delta', ['%delta' => $i + 1]),
-    //     '#type' => 'textfield',
-    //     // '#type' => 'datetime',
-    //     // '#default_value' => DrupalDateTime::createFromTimestamp(time()),
-    //     // '#date_increment' => 1,
-    //     // '#date_timezone' => drupal_get_user_timezone(),
-    //   ];
-    // }
+    $form['addmore'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Add More'),
+      '#prefix' => '<div id="addmore-wrapper">',
+      '#suffix' => '</div>',
+      '#tree' => TRUE,
+    ];
+    for ($i = 0; $i < $count; $i++) {
+      $form['addmore'][$i] = [
+        '#title' => t('Textfield dynamic %delta', ['%delta' => $i + 1]),
+        '#type' => 'textfield',
+        // '#type' => 'datetime',
+        // '#default_value' => DrupalDateTime::createFromTimestamp(time()),
+        // '#date_increment' => 1,
+        // '#date_timezone' => drupal_get_user_timezone(),
+      ];
+    }
 
-    // $form['addmore_add'] = [
-    //   '#type' => 'submit',
-    //   '#value' => t('Add Image Style'),
-    //   '#submit' => [[get_class($this), 'addOneSubmit']],
-    //   '#limit_validation_errors' => array(),
-    //   '#ajax' => [
-    //     'callback' => [get_class($this), 'addOneAjax'],
-    //     'wrapper' => 'addmore-wrapper',
-    //     'effect' => 'fade',
-    //   ],
-    // ];
+    $form['addmore_add'] = [
+      '#type' => 'submit',
+      '#value' => t('Add Image Style'),
+      '#submit' => [[get_class($this), 'addOneSubmit']],
+      '#limit_validation_errors' => array(),
+      '#ajax' => [
+        'callback' => [get_class($this), 'addOneAjax'],
+        'wrapper' => 'addmore-wrapper',
+        'effect' => 'fade',
+      ],
+    ];
 
-    // $form['text_format'] = [
-    //   '#type' => 'text_format',
-    //   '#title' => $this->t('Text Format'),
-    //   '#format' => 'full_html',
-    // ];
+    $form['text_format'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Text Format'),
+      '#format' => 'full_html',
+    ];
 
-    // $form['date'] = [
-    //   '#type' => 'date',
-    //   '#title' => $this->t('Date'),
-    // ];
+    $form['date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Date'),
+    ];
 
-    // $form['datetime'] = [
-    //   '#type' => 'datetime',
-    //   '#title' => $this->t('Date & Time'),
-    //   '#default_value' => NULL,
-    //   '#date_increment' => 1,
-    //   '#date_timezone' => drupal_get_user_timezone(),
-    // ];
+    $form['datetime'] = [
+      '#type' => 'datetime',
+      '#title' => $this->t('Date & Time'),
+      '#default_value' => NULL,
+      '#date_increment' => 1,
+      '#date_timezone' => drupal_get_user_timezone(),
+    ];
 
-    // $form['textarea'] = [
-    //   '#type' => 'textarea',
-    //   '#title' => $this->t('Textarea'),
-    // ];
+    $form['textarea'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Textarea'),
+    ];
 
-    // $form['email'] = [
-    //   '#type' => 'email',
-    //   '#title' => $this->t('Email'),
-    // ];
+    $form['email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('Email'),
+    ];
 
-    // $form['number'] = [
-    //   '#type' => 'number',
-    //   '#title' => $this->t('Number'),
-    // ];
+    $form['number'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Number'),
+    ];
 
-    // $form['tel'] = [
-    //   '#type' => 'tel',
-    //   '#title' => $this->t('Telephone'),
-    // ];
+    $form['tel'] = [
+      '#type' => 'tel',
+      '#title' => $this->t('Telephone'),
+    ];
 
-    // $form['url'] = [
-    //   '#type' => 'url',
-    //   '#title' => $this->t('URL'),
-    // ];
+    $form['url'] = [
+      '#type' => 'url',
+      '#title' => $this->t('URL'),
+    ];
 
-    // $form['password'] = [
-    //   '#type' => 'password',
-    //   '#title' => $this->t('Password'),
-    // ];
+    $form['password'] = [
+      '#type' => 'password',
+      '#title' => $this->t('Password'),
+    ];
 
-    // $form['range'] = [
-    //   '#type' => 'range',
-    //   '#title' => $this->t('Range'),
-    // ];
+    $form['range'] = [
+      '#type' => 'range',
+      '#title' => $this->t('Range'),
+    ];
 
-    // $form['fieldset'] = [
-    //   '#type' => 'fieldset',
-    //   '#title' => $this->t('Fieldset'),
-    // ];
+    $form['fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Fieldset'),
+    ];
 
-    // $form['fieldset']['textfield'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield'),
-    // ];
+    $form['fieldset']['textfield'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+    ];
 
-    // $form['fieldset']['textfield2'] = [
-    //   '#type' => 'textfield',
-    //   '#title' => $this->t('Textfield with Prefix & Suffix'),
-    //   '#description' => $this->t('Here is the description'),
-    //   '#field_prefix' => '$',
-    //   '#field_suffix' => '.00',
-    // ];
+    $form['fieldset']['textfield2'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield with Prefix & Suffix'),
+      '#description' => $this->t('Here is the description'),
+      '#field_prefix' => '$',
+      '#field_suffix' => '.00',
+    ];
 
     $form['submit'] = [
       '#type' => 'submit',

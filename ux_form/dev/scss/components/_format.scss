@@ -4,7 +4,21 @@
   .ux-form-format {
 
     .form-textarea-wrapper {
-      padding-top: $input-padding-size / 2;
+      padding-top: $input-padding-size * 1.5;
     }
+  }
+
+  .filter-wrapper {
+    overflow: visible;
+    position: relative;
+    padding-top: $input-margin-size / 3;
+  }
+
+  .filter-help {
+    float: none;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    z-index: 10;
   }
 }

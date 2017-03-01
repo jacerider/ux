@@ -61,8 +61,13 @@ function ux_form_element_info_alter(&$type) {
  * Process radio elements.
  */
 function ux_form_input_process(&$element, FormStateInterface $form_state, &$complete_form) {
+  $type = $element['#type'];
   $element['#wrapper_attributes']['class'][] = 'ux-form-input';
   $element['#attached']['library'][] = 'ux_form/ux_form.input';
+  if ($type == 'textarea' && !empty($element['#format'])) {
+    $element['#wrapper_attributes']['class'][] = 'ux-form-format';
+    $element['#wrapper_attributes']['class'][] = 'force-active';
+  }
   return $element;
 }
 
@@ -96,7 +101,8 @@ function ux_form_checkbox_process(&$element, FormStateInterface $form_state, &$c
  * Process text format elements.
  */
 function ux_form_text_format_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  $element['#wrapper_attributes']['class'][] = 'ux-form-format';
+  // $element['#attached']['library'][] = 'ux_form/ux_form.select';
+  // $element['#attributes']['class'][] = 'POOP';
   return $element;
 }
 

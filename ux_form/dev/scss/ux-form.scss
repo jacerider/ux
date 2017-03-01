@@ -11,6 +11,7 @@
   .js-form-item,
   tr.odd .js-form-item,
   tr.event .js-form-item {
+    // margin: $input-margin-top 0 0;
     margin: $input-margin;
 
     &[disabled],
