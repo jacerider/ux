@@ -3,16 +3,15 @@ ux_form:
   css:
     component:
       css/ux-form.css: {}
-  js:
-    js/ux-form.js: { minified: true }
-    js/models/ElementModel.js: { minified: true }
-    js/collections/ElementCollection.js: { minified: true }
-    js/views/FormView.js: { minified: true }
-    js/views/ElementView.js: { minified: true }
+  # js:
+  #   js/ux-form.js: { minified: true }
+  #   js/models/ElementModel.js: { minified: true }
+  #   js/collections/ElementCollection.js: { minified: true }
+  #   js/views/FormView.js: { minified: true }
+  #   js/views/ElementView.js: { minified: true }
   dependencies:
     - core/drupal
     - core/jquery.once
-    - core/backbone
 
 ux_form.dropdown:
   version: VERSION
@@ -47,10 +46,11 @@ ux_form.select:
   version: VERSION
   js:
     js/ux-form.select.js: { minified: true }
-    js/models/SelectModel.js: { minified: true }
-    js/views/SelectView.js: { minified: true }
+    # js/models/SelectModel.js: { minified: true }
+    # js/views/SelectView.js: { minified: true }
   dependencies:
     - ux_form/ux_form
+    - ux_form/ux_form.input
     - ux_form/ux_form.dropdown
 
 ux_form.picker:
@@ -73,7 +73,6 @@ ux_form.date:
     js/ux-form.date.js: { minified: true }
   dependencies:
     - ux_form/ux_form
-    - core/modernizr
     - ux_form/ux_form.picker
 
 ux_form.time:
@@ -86,5 +85,4 @@ ux_form.time:
     js/ux-form.time.js: { minified: true }
   dependencies:
     - ux_form/ux_form
-    - core/modernizr
     - ux_form/ux_form.picker

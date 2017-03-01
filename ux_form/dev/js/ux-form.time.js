@@ -1,39 +1,27 @@
-/**
- * @file
- * Global ux_form javascript.
- */
-
-(function ($, Modernizr, Drupal) {
+(function ($, Drupal, window, document) {
 
   'use strict';
 
-  Drupal.UxForm.models.time = new Drupal.UxForm.ElementModel({
-    selector: '.ux-form-time input.form-time',
-
-    /*
-    On render.
-     */
-    onRender: function () {
-      // Skip if date are supported by the browser.
-      if (Modernizr.inputtypes.date === true) {
-        return;
-      }
-      var _this = this;
-      _this.$el.each(function (index, element) {
-        var $input = $(this);
+  Drupal.behaviors.uxFormTime = {
+    attach: function (context) {
+      var $context = $(context);
+      $context.find('.ux-form-time input.form-time').once('ux-form-time').each(function () {
+        var $element = $(this);
         var timepickerSettings = {};
         timepickerSettings.formatSubmit = 'HH:i:00';
-        $input.pickatime(timepickerSettings);
+        // timepickerSettings.format = 'HH:i:00';
+        // timepickerSettings.hiddenName = true;
+        $element.data('value', $element.val());
+        $element.pickatime(timepickerSettings);
       });
     },
-
-    onRemove: function () {
-      var _this = this;
-      _this.$el.findOnce('datePicker').pickadate('stop');
+    detach: function (context) {
+      var $context = $(context);
+      var plugin = $context.find('.ux-form-time input.form-time').pickatime('picker');
+      if (typeof plugin === 'object') {
+        plugin.stop();
+      }
     }
-  });
+  };
 
-  // Add to collection.
-  Drupal.UxForm.collection.add(Drupal.UxForm.models.time);
-
-})(jQuery, Modernizr, Drupal);
+})(jQuery, Drupal, window, document);

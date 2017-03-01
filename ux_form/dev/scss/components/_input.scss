@@ -35,7 +35,9 @@
     flex-flow: row wrap;
     position: relative;
 
-    label {
+    // We use immediate child label in order to not affect elements with
+    // nested labels like UxFormSelect elements.
+    > label {
       display: block;
       position: absolute;
       top: 1rem;
@@ -63,7 +65,8 @@
       overflow: hidden;
     }
 
-    .description {
+    .description,
+    .counter {
       flex-basis: 100%;
     }
 
@@ -107,7 +110,7 @@
     // When a field is in focus.
     &.focus {
 
-      label {
+      > label {
         color: $primary-color;
       }
 
@@ -136,7 +139,7 @@
     // When a field has content.
     &.active {
 
-      label {
+      > label {
         color: lighten($label-color, 20%);
         font-size: $label-font-size - 0.2rem;
         transform: translateY(-140%);
@@ -152,7 +155,7 @@
 
       input,
       textarea {
-        background: transparent;
+        color: $input-disabled-color;
       }
     }
 
@@ -181,9 +184,11 @@
     &.focus.invalid {
 
       input,
+      textarea,
       .field-prefix,
       .field-suffix {
         border-bottom: $input-invalid-border;
+        box-shadow: 0 1px 0 0 $input-error-color;
       }
 
       &:after {
@@ -195,14 +200,14 @@
 
     &.focus.invalid {
 
-      input,
-      textarea,
-      .field-prefix,
-      .field-suffix {
-        box-shadow: 0 1px 0 0 $input-error-color;
-      }
+      // input,
+      // textarea,
+      // .field-prefix,
+      // .field-suffix {
+      //   box-shadow: 0 1px 0 0 $input-error-color;
+      // }
 
-      label {
+      > label {
         color: $input-error-color;
       }
 
@@ -213,7 +218,7 @@
 
     &.ready {
 
-      label {
+      > label {
         transition: 200ms ease-out;
       }
     }

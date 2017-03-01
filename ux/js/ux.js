@@ -175,6 +175,22 @@
       _this.shadowTimeout = setTimeout(function () {
         $shadow.removeClass('active');
       }, 400);
+    },
+
+    /**
+     * Generate a unique id.
+     *
+     * @return {string}
+     *   A unique id.
+     */
+    guid: function () {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+               s4() + '-' + s4() + s4() + s4();
     }
 
     /**

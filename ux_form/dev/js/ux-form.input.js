@@ -1,108 +1,192 @@
-/**
- * @file
- * Global ux_form javascript.
- */
 
-(function ($, Drupal) {
+(function ($, Drupal, window, document) {
 
   'use strict';
 
-  Drupal.UxForm.models.input = new Drupal.UxForm.ElementModel({
-    selector: '.ux-form-input input, .ux-form-input textarea',
-    events: {
-      change: 'onChange',
-      focus: 'onFocus',
-      blur: 'onBlur'
+  var pluginName = 'uxFormInput';
+
+  function Plugin(element, options) {
+    this.element = element;
+    this._name = pluginName;
+    this._defaults = $.fn.uxFormInput.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.init();
+  }
+
+  // Avoid Plugin.prototype conflicts
+  $.extend(Plugin.prototype, {
+
+    /*
+    Initialize plugin instance.
+     */
+    init: function () {
+      this.buildCache();
+      this.bindEvents();
+      this.buildElement();
     },
 
     /*
-    On change.
+    Remove plugin instance complete.
      */
-    onChange: function (e) {
-      var $element = $(e.currentTarget);
-      if ($element.val().length !== 0 || this.hasPlaceholder($element)) {
-        $element.closest('.js-form-item').addClass('active');
-      }
-      this.validate($element);
+    destroy: function () {
+      this.unbindEvents();
+      this.$element.removeData();
     },
 
     /*
-    On focus.
+    Process fields.
      */
-    onFocus: function (e) {
-      var $element = $(e.currentTarget);
-      if (!this.isReadonly($element)) {
-        $element.closest('.js-form-item').addClass('active focus');
-      }
-    },
-
-    /*
-    On blur.
-     */
-    onBlur: function (e) {
-      var $element = $(e.currentTarget);
-      var classes = 'focus';
-      if ($element.val().length === 0 && $element[0].validity.badInput !== true && !this.hasPlaceholder($element)) {
-        classes += ' active';
-      }
-      $element.closest('.js-form-item').removeClass(classes);
-      this.validate($element);
-    },
-
-    /*
-    On render.
-     */
-    onRender: function () {
+    buildElement: function () {
       var _this = this;
-      _this.$el.each(function (index, element) {
-        var $wrapper = $(this).closest('.js-form-item');
-        if ($(element).val().length > 0 || element.autofocus || _this.hasPlaceholder($(this)) || $(element)[0].validity.badInput === true) {
-          $wrapper.addClass('active');
-        }
-        else {
-          $wrapper.removeClass('active');
-        }
-        setTimeout(function () {
-          $wrapper.addClass('ready');
-        });
+      if (this.hasValue() || this.isAutofocus() || this.hasPlaceholder() || !this.isValid()) {
+        this.$element.addClass('active');
+      }
+      setTimeout(function () {
+        _this.$element.addClass('ready');
       });
     },
 
     /*
-    On validate.
+    Cache DOM nodes for performance.
      */
-    onValidate: function ($element) {
-      var $wrapper = $element.closest('.js-form-item');
-      var hasLength = typeof $element.attr('length') !== 'undefined';
-      var lenAttr = hasLength ? parseInt($element.attr('length')) : 0;
-      var len = $element.val().length;
-      if ($element.val().length === 0 && $element[0].validity.badInput === false) {
-        $wrapper.removeClass('valid');
-        $wrapper.removeClass('invalid');
-        $wrapper.removeAttr('data-error');
-        // Check if field is required
-        if ($element[0].validity.valueMissing === true) {
-          $wrapper.addClass('invalid');
-          $wrapper.attr('data-error', $element[0].validationMessage);
+    buildCache: function () {
+      this.$element = $(this.element);
+      this.$field = this.$element.find('input, textarea');
+    },
+
+    /*
+    Bind events that trigger methods.
+    */
+    bindEvents: function () {
+      var _this = this;
+      _this.$field.on('change' + '.' + _this._name, function () {
+        _this.onChange.call(_this);
+      });
+      _this.$field.on('focus' + '.' + _this._name, function () {
+        _this.onFocus.call(_this);
+      });
+      _this.$field.on('blur' + '.' + _this._name, function () {
+        _this.onBlur.call(_this);
+      });
+    },
+
+    /*
+    Unbind events that trigger methods.
+    */
+    unbindEvents: function () {
+      this.$field.off('.' + this._name);
+    },
+
+    /*
+    On change event callback.
+     */
+    onChange: function () {
+      if (this.hasValue() || this.hasPlaceholder()) {
+        this.$element.addClass('active');
+      }
+      this.validate();
+    },
+
+    /*
+    On focus event callback.
+     */
+    onFocus: function () {
+      if (!this.isReadonly()) {
+        this.$element.addClass('active focus');
+      }
+    },
+
+    /*
+    On blur event callback.
+     */
+    onBlur: function () {
+      var classes = 'focus';
+      if (!this.hasValue() && this.isValid() && !this.hasPlaceholder()) {
+        classes += ' active';
+      }
+      this.$element.removeClass(classes);
+      this.validate();
+    },
+
+    /*
+    Validate the field.
+     */
+    validate: function () {
+      this.$element.removeClass('valid invalid').removeAttr('data-error');
+      if (this.isValid()) {
+        if (this.hasValue()) {
+          this.$element.addClass('valid');
         }
       }
       else {
-        // Check for character counter attributes
-        if (($element[0].validity.valid && hasLength && (len <= lenAttr)) || ($element[0].validity.valid && !hasLength)) {
-          $wrapper.removeClass('invalid');
-          $wrapper.addClass('valid');
-          $wrapper.removeAttr('data-error');
-        }
-        else {
-          $wrapper.removeClass('valid');
-          $wrapper.addClass('invalid');
-          $wrapper.attr('data-error', $element[0].validationMessage);
-        }
+        this.$element.addClass('invalid').attr('data-error', this.$field[0].validationMessage);
       }
+    },
+
+    /*
+    Check if element has a placeholder.
+     */
+    hasPlaceholder: function () {
+      var placeholder = this.$field.attr('placeholder');
+      return typeof placeholder !== 'undefined' && placeholder.length > 0;
+    },
+
+    /*
+    Check if element has value.
+     */
+    hasValue: function () {
+      return this.$field.val().length > 0;
+    },
+
+    /*
+    Check if element value is valid.
+     */
+    isValid: function () {
+      return this.$field[0].validity.valid === true;
+    },
+
+    /*
+    Check if element is set as autofocus..
+     */
+    isAutofocus: function () {
+      var autofocus = this.$field.attr('autofocus');
+      return typeof autofocus !== 'undefined';
+    },
+
+    /*
+    Check if element has a placeholder.
+     */
+    isReadonly: function () {
+      var readonly = this.$field.attr('readonly');
+      return typeof readonly !== 'undefined';
     }
+
   });
 
-  // Add to collection.
-  Drupal.UxForm.collection.add(Drupal.UxForm.models.input);
+  $.fn.uxFormInput = function (options) {
+    this.each(function () {
+      if (!$.data(this, pluginName)) {
+        $.data(this, pluginName, new Plugin(this, options));
+      }
+    });
+    return this;
+  };
 
-})(jQuery, Drupal);
+  $.fn.uxFormInput.defaults = {};
+
+  Drupal.behaviors.uxFormInput = {
+    attach: function (context) {
+      var $context = $(context);
+      $context.find('.ux-form-input').once('ux-form-input').uxFormInput();
+    },
+    detach: function (context) {
+      $(context).find('.ux-form-input').each(function () {
+        var plugin = $(this).data('uxFormInput');
+        if (plugin) {
+          plugin.destroy();
+        }
+      });
+    }
+  };
+
+})(jQuery, Drupal, window, document);

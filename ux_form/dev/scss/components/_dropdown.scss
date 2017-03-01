@@ -1,7 +1,6 @@
 .ux-form {
 
-  .dropdown-content {
-    @extend %z-depth-1;
+  .ux-form-dropdown {
     background-color: $dropdown-bg-color;
     margin: 0;
     display: none;
@@ -14,6 +13,7 @@
     will-change: width, height;
     list-style-type: none;
     padding: 0;
+    box-shadow: 0 4px 8px $black-opacity-2;
 
     li {
       clear: both;
@@ -26,12 +26,13 @@
       text-transform: none;
 
       &:hover,
-      &.active,
-      &.selected {
+      &.active:hover,
+      &.selected,
+      &.selected.active {
         background-color: $dropdown-hover-bg-color;
       }
 
-      &.active.selected {
+      &.active {
         background-color: darken($dropdown-hover-bg-color, 5%);
       }
 
@@ -59,6 +60,18 @@
         height: inherit;
         line-height: inherit;
       }
+    }
+
+    &.active {
+      display: block;
+      opacity: 0;
+      transform: translate(0, 20%);
+      transition: opacity 300ms, transform 300ms;
+    }
+
+    &.animate {
+      opacity: 1;
+      transform: translate(0, 0);
     }
   }
 

@@ -5,6 +5,7 @@ namespace Drupal\ux_form\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Class UxFormExampleForm.
@@ -30,6 +31,7 @@ class UxFormExampleForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Select'),
       '#options' => ['One', 'Two', 'Three'],
+      '#empty_option' => '- None -',
     ];
 
     $form['select2'] = [
@@ -41,12 +43,27 @@ class UxFormExampleForm extends FormBase {
 
     $form['select3'] = [
       '#type' => 'select',
+      '#title' => $this->t('Select Multiple with Defaults'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#multiple' => TRUE,
+      '#default_value' => [0, 1],
+    ];
+
+    $form['select4'] = [
+      '#type' => 'select',
       '#title' => $this->t('Select Group'),
       '#options' => [
-        'One' => ['One', 'Two', 'Three'],
-        'Two' => ['One', 'Two', 'Three'],
-        'Three' => ['One', 'Two', 'Three'],
+        'One Label' => ['One 1', 'Two 1', 'Three 1'],
+        'Two Label' => ['One 2', 'Two 2', 'Three 2'],
+        'Three Label' => ['One 3', 'Two 3', 'Three 3'],
       ],
+    ];
+
+    $form['select5'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#disabled' => TRUE,
     ];
 
     // $form['textfield'] = [
@@ -169,6 +186,10 @@ class UxFormExampleForm extends FormBase {
     //   $form['addmore'][$i] = [
     //     '#title' => t('Textfield dynamic %delta', ['%delta' => $i + 1]),
     //     '#type' => 'textfield',
+    //     // '#type' => 'datetime',
+    //     // '#default_value' => DrupalDateTime::createFromTimestamp(time()),
+    //     // '#date_increment' => 1,
+    //     // '#date_timezone' => drupal_get_user_timezone(),
     //   ];
     // }
 
@@ -256,10 +277,10 @@ class UxFormExampleForm extends FormBase {
     //   '#field_suffix' => '.00',
     // ];
 
-    // $form['submit'] = [
-    //   '#type' => 'submit',
-    //   '#value' => $this->t('Submit'),
-    // ];
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+    ];
 
     return $form;
   }
@@ -300,7 +321,14 @@ class UxFormExampleForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Display result.
     foreach ($form_state->getValues() as $key => $value) {
+      if (is_array($value)) {
+        foreach ($value as $i => $v) {
+          drupal_set_message($key . ':' . $i . ': ' . $v);
+        }
+      }
+      else {
         drupal_set_message($key . ': ' . $value);
+      }
     }
 
   }

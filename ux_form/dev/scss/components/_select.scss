@@ -3,23 +3,18 @@
   .ux-form-select {
     position: relative;
 
-    input.select-dropdown {
-      position: relative;
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-      border-bottom: $input-border;
-      outline: none;
-      height: $input-height;
-      line-height: $input-height;
+    select { display: none; }
+
+    .ux-form-select-wrapper {
       width: 100%;
-      font-size: $input-font-size;
-      margin: $input-margin;
-      padding: 0;
-      display: block;
     }
 
-    span.caret {
+    .ux-form-select-input {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .ux-form-select-caret {
       color: initial;
       position: absolute;
       right: 0;
@@ -33,12 +28,6 @@
       &.disabled {
         color: $input-disabled-color;
       }
-    }
-
-    label {
-      position: absolute;
-      top: -14px;
-      font-size: $label-font-size;
     }
 
     li.optgroup {
