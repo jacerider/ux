@@ -29,7 +29,7 @@ $input-background: #fff !default;
 $input-error-color: $error-color !default;
 $input-success-color: $success-color !default;
 $input-focus-color: $secondary-color !default;
-$input-font-size: 1rem !default;
+$input-font-size: 0.9rem !default;
 $input-margin-size: 3rem;
 $input-margin: $input-margin-size / 2 0 0 !default;
 $input-padding-size: 0.625rem !default;
@@ -42,7 +42,7 @@ $input-invalid-border: 1px solid $input-error-color !default;
 $placeholder-text-color: lighten($secondary-color, 20%) !default;
 
 // Label
-$label-font-size: 1rem !default;
+$label-font-size: 0.9rem !default;
 
 // Description
 $description-font-size: 0.7rem !default;
@@ -64,4 +64,4 @@ $select-disabled-color: rgba(0, 0, 0, 0.3) !default;
 $dropdown-bg-color: #fff !default;
 $dropdown-hover-bg-color: #eee !default;
 $dropdown-color: $secondary-color !default;
-$dropdown-item-height: 50px !default;
+$dropdown-item-height: $input-height !default;

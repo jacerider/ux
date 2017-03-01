@@ -3,7 +3,8 @@
 
   .ux-form-format {
 
-    .form-textarea-wrapper {
+    .form-textarea-wrapper,
+    .field-input {
       padding-top: $input-padding-size * 1.5;
     }
   }

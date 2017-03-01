@@ -216,9 +216,9 @@
     },
 
     onNewSelectFocus: function (e) {
-      if ($('ul.ux-form-dropdown').not(this.$options[0]).is(':visible')) {
+      $('ul.ux-form-dropdown:visible').not(this.$options[0]).each(function () {
         $(this).siblings('input.ux-form-select-input').trigger('close');
-      }
+      });
       if (!this.$options.is(':visible')) {
         this.$newSelect.trigger('open', ['focus']);
         var label = this.$newSelect.val();

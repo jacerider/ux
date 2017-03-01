@@ -40,9 +40,9 @@
     > label {
       display: block;
       position: absolute;
-      top: $input-margin-top * 0.7;
+      top: 1rem;
       left: 0;
-      font-size: 1rem;
+      font-size: $label-font-size;
       line-height: 1rem;
       text-transform: none;
       cursor: text;
@@ -142,7 +142,7 @@
 
       > label {
         color: lighten($label-color, 20%);
-        font-size: $label-font-size - 0.2rem;
+        font-size: $label-font-size - 0.1rem;
         transform: translateY(-140%);
       }
 
