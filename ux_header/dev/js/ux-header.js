@@ -18,6 +18,7 @@
     lastScrollTop: 0,
     delta: 100,
     direction: '',
+    fixed: false,
 
     initialize: function () {
       var _this = this;
@@ -25,43 +26,37 @@
       _this.$wrapper = _this.$header.parent();
 
       // Setup resizing.
-      _this.resize();
       Drupal.Ux.addResizeCallback($.proxy(function () {
         _this.resize();
       }, _this));
 
       // Setup resizing.
-      _this.scroll();
       Drupal.Ux.addScrollCallback($.proxy(function () {
         _this.scroll();
       }, _this));
 
       // Position floating bar.
-      displace();
       _this.$header.addClass('ux-header');
-      _this.position();
-      _this.$document.on('drupalViewportOffsetChange', function () {
-        _this.position();
-      });
-    },
-
-    position: function () {
-      var _this = this;
-      _this.$header.css({
-        top: displace.offsets.top,
-        left: displace.offsets.left,
-        right: displace.offsets.right
-      });
+      _this.resize();
     },
 
     resize: function () {
       var _this = this;
+      _this.$header.removeAttr('style');
+
       var height = _this.$header.outerHeight();
       var width = _this.$header.outerWidth();
       _this.$wrapper.css({width: width, height: height});
 
       var offset = _this.$header.offset();
-      _this.$header.css({marginLeft: (offset.left - displace.offsets.left) + 'px', marginRight: (offset.left - displace.offsets.right) + 'px'});
+      _this.$header.css({
+        position: 'fixed',
+        marginLeft: (offset.left - displace.offsets.left),
+        marginRight: (offset.left - displace.offsets.right),
+        top: displace.offsets.top,
+        left: displace.offsets.left,
+        right: displace.offsets.right
+      });
     },
 
     scroll: function () {
@@ -69,6 +64,18 @@
       var scrollTop = Math.abs(_this.$window.scrollTop());
       var lastScrollTop = _this.lastScrollTop;
       var currentDirection = '';
+
+      // Toggle float class.
+      if (scrollTop >= _this.delta) {
+        if (!_this.fixed) {
+          _this.fixed = true;
+          _this.$header.addClass('ux-header-float');
+        }
+      }
+      else if (_this.fixed) {
+        _this.fixed = false;
+        _this.$header.removeClass('ux-header-float');
+      }
 
       // Make sure scroll is more than delta.
       if (Math.abs(lastScrollTop - scrollTop) <= _this.delta) {
@@ -84,6 +91,7 @@
       }
 
       if (_this.direction !== currentDirection) {
+        // Toggle hide class.
         if (currentDirection === 'down') {
           _this.$header.addClass('ux-header-hide');
         }
@@ -99,7 +107,7 @@
 
   Drupal.behaviors.uxStickyHeader = {
     attach: function (context) {
-      $('header', context).once('ux-header').each(function (e) {
+      $('#ux-content header').first().once('ux-header').each(function (e) {
         new UxHeader($(this));
       });
     }

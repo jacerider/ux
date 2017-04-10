@@ -10,5 +10,6 @@ ux_offcanvas_menu:
     - core/jquery
     - core/jquery.once
     - core/drupal
+    - core/drupalSettings
     - ux_offcanvas/ux_offcanvas
     - ux/gsap

@@ -1,0 +1,7 @@
+
+system.admin_config_ux:
+  title: 'User experience'
+  route_name: system.admin_config_ux
+  parent: system.admin_config
+  description: 'Configure the site user experience.'
+  weight: -15

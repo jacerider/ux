@@ -28,29 +28,22 @@
       var _this = this;
       // Initialize displace.
       displace();
+
       // Add document resize callback to resize event stack.
       _this.addResizeCallback($.proxy(_this.onResizeSetDocumentSize, _this));
-      // Adjust the document size.
-      _this.$document.on('drupalViewportOffsetChange.ux', function (event, offsets) {
-        _this.onResizeSetDocumentSize();
-      });
-
-      // Watch window for resizing and call onResizeCallbacks.
       _this.onResize();
-      _this.$window.on('resize.ux', {}, debounce(function (event) {
+      // Adjust the document size. This event happens automatically on
+      // document resize debouce 200.
+      _this.$document.on('drupalViewportOffsetChange.ux', function (event, offsets) {
+        // _this.onResizeSetDocumentSize();
         _this.onResize(event);
-      }, 100));
+      });
 
       // Watch window for scroll and call onScrollCallbacks.
       _this.onScroll();
-      _this.$window.on('scroll.ux', {}, function (event) {
+      _this.$window.on('scroll.ux', function (event) {
         _this.onScroll(event);
       });
-      // _this.$window.on('scroll.ux', {}, function (event) {
-      //   requestAnimationFrame(function () {
-      //     _this.onScroll(event);
-      //   });
-      // });
     },
 
     /**

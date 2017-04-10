@@ -38,7 +38,7 @@
      */
     buildElement: function () {
       var _this = this;
-      if (this.hasValue() || this.isAutofocus() || this.hasPlaceholder() || !this.isValid()) {
+      if (this.hasValue() || this.isAutofocus() || this.hasPlaceholder() || this.hasBadInput()) {
         this.$element.addClass('active');
       }
       setTimeout(function () {
@@ -51,7 +51,8 @@
      */
     buildCache: function () {
       this.$element = $(this.element);
-      this.$field = this.$element.find('input, textarea');
+      this.input_selector = '.ux-form-input-item';
+      this.$field = this.$element.find(this.input_selector);
     },
 
     /*
@@ -136,6 +137,13 @@
      */
     hasValue: function () {
       return this.$field.val().length > 0;
+    },
+
+    /*
+    Check if element has bad input.
+     */
+    hasBadInput: function () {
+      return this.$field[0].validity.badInput === true;
     },
 
     /*

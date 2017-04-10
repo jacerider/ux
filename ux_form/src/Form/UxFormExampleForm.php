@@ -27,59 +27,44 @@ class UxFormExampleForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['select'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#empty_option' => '- None -',
+    $form['select'] = ['#open' => TRUE] + $this->buildSelect($form_state);
+    // $form['textarea'] = $this->buildTextarea($form_state);
+    $form['checkbox'] = $this->buildCheckbox($form_state);
+    // $form['radio'] = $this->buildRadio($form_state);
+    // $form['textfield'] = $this->buildTextfield($form_state);
+    // $form['date'] = $this->buildDate($form_state);
+    // $form['other'] = $this->buildOther($form_state);
+
+    $form['actions']['#type'] = 'actions';
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
     ];
 
-    $form['select2'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select Multiple'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#multiple' => TRUE,
+    return $form;
+  }
+
+  /**
+   * Demo textfields.
+   */
+  protected function buildTextfield(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Textfield'),
     ];
 
-    $form['select3'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select Multiple with Defaults'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#multiple' => TRUE,
-      '#default_value' => [0, 1],
-    ];
-
-    $form['select4'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select Group'),
-      '#options' => [
-        'One Label' => ['One 1', 'Two 1', 'Three 1'],
-        'Two Label' => ['One 2', 'Two 2', 'Three 2'],
-        'Three Label' => ['One 3', 'Two 3', 'Three 3'],
-      ],
-    ];
-
-    $form['select5'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#disabled' => TRUE,
-    ];
-
-    $form['textfield'] = [
+    $element['textfield'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield'),
-      // '#maxlength' => 5,
-      '#attributes' => ['length' => 5],
     ];
 
-    $form['textfield2'] = [
+    $element['textfield2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield with Description'),
       '#description' => $this->t('Here is the description'),
     ];
 
-    $form['textfield3'] = [
+    $element['textfield3'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield with Prefix & Suffix'),
       '#description' => $this->t('Here is the description'),
@@ -87,19 +72,19 @@ class UxFormExampleForm extends FormBase {
       '#field_suffix' => '.00',
     ];
 
-    $form['textfield4'] = [
+    $element['textfield4'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield Required'),
       '#required' => TRUE,
     ];
 
-    $form['textfield5'] = [
+    $element['textfield5'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield Disabled'),
       '#disabled' => TRUE,
     ];
 
-    $form['textfield6'] = [
+    $element['textfield6'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield with Empty Placeholder'),
       '#attributes' => [
@@ -107,126 +92,12 @@ class UxFormExampleForm extends FormBase {
       ],
     ];
 
-    $form['textfield7'] = [
+    $element['textfield7'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield with Placeholder'),
       '#attributes' => [
         'placeholder' => $this->t('Placeholder'),
       ],
-    ];
-
-    $form['checkboxes'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Checkboxes'),
-      '#options' => ['One', 'Two', 'Three'],
-    ];
-
-    $form['checkboxes2'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Checkboxes Inline'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
-    ];
-
-    $form['checkboxes3'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Checkboxes Disabled'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
-      '#disabled' => TRUE,
-    ];
-
-    $form['checkbox'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Checkbox'),
-    ];
-
-    $form['checkbox2'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Checkbox Checked'),
-      '#default_value' => TRUE,
-    ];
-
-    $form['radios'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios'),
-      '#options' => ['One', 'Two', 'Three'],
-    ];
-
-    $form['radios2'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios Inline'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
-      '#default_value' => 1,
-    ];
-
-    $form['radios3'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios Disabled'),
-      '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
-      '#disabled' => TRUE,
-    ];
-
-    $count = $form_state->get('count');
-    if (empty($count)) {
-      $count = 1;
-      $form_state->set('count', $count);
-    }
-
-    $form['addmore'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Add More'),
-      '#prefix' => '<div id="addmore-wrapper">',
-      '#suffix' => '</div>',
-      '#tree' => TRUE,
-    ];
-    for ($i = 0; $i < $count; $i++) {
-      $form['addmore'][$i] = [
-        '#title' => t('Textfield dynamic %delta', ['%delta' => $i + 1]),
-        '#type' => 'textfield',
-        // '#type' => 'datetime',
-        // '#default_value' => DrupalDateTime::createFromTimestamp(time()),
-        // '#date_increment' => 1,
-        // '#date_timezone' => drupal_get_user_timezone(),
-      ];
-    }
-
-    $form['addmore_add'] = [
-      '#type' => 'submit',
-      '#value' => t('Add Image Style'),
-      '#submit' => [[get_class($this), 'addOneSubmit']],
-      '#limit_validation_errors' => array(),
-      '#ajax' => [
-        'callback' => [get_class($this), 'addOneAjax'],
-        'wrapper' => 'addmore-wrapper',
-        'effect' => 'fade',
-      ],
-    ];
-
-    $form['text_format'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Text Format'),
-      '#format' => 'full_html',
-    ];
-
-    $form['date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Date'),
-    ];
-
-    $form['datetime'] = [
-      '#type' => 'datetime',
-      '#title' => $this->t('Date & Time'),
-      '#default_value' => NULL,
-      '#date_increment' => 1,
-      '#date_timezone' => drupal_get_user_timezone(),
-    ];
-
-    $form['textarea'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Textarea'),
     ];
 
     $form['email'] = [
@@ -254,22 +125,17 @@ class UxFormExampleForm extends FormBase {
       '#title' => $this->t('Password'),
     ];
 
-    $form['range'] = [
-      '#type' => 'range',
-      '#title' => $this->t('Range'),
-    ];
-
-    $form['fieldset'] = [
+    $element['fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Fieldset'),
     ];
 
-    $form['fieldset']['textfield'] = [
+    $element['fieldset']['textfield'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield'),
     ];
 
-    $form['fieldset']['textfield2'] = [
+    $element['fieldset']['textfield2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield with Prefix & Suffix'),
       '#description' => $this->t('Here is the description'),
@@ -277,12 +143,265 @@ class UxFormExampleForm extends FormBase {
       '#field_suffix' => '.00',
     ];
 
-    $form['submit'] = [
+    $count = $form_state->get('count');
+    if (empty($count)) {
+      $count = 1;
+      $form_state->set('count', $count);
+    }
+
+    $element['addmore'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Add More'),
+      '#prefix' => '<div id="addmore-wrapper">',
+      '#suffix' => '</div>',
+      '#tree' => TRUE,
+    ];
+    for ($i = 0; $i < $count; $i++) {
+      $element['addmore'][$i] = [
+        '#title' => t('Textfield dynamic %delta', ['%delta' => $i + 1]),
+        '#type' => 'textfield',
+      ];
+    }
+
+    $element['addmore_add'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Submit'),
+      '#value' => t('Add Image Style'),
+      '#submit' => [[get_class($this), 'addOneSubmit']],
+      '#limit_validation_errors' => array(),
+      '#ajax' => [
+        'callback' => [get_class($this), 'addOneAjax'],
+        'wrapper' => 'addmore-wrapper',
+        'effect' => 'fade',
+      ],
     ];
 
-    return $form;
+    return $element;
+  }
+
+  /**
+   * Demo select.
+   */
+  protected function buildSelect(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Select'),
+      '#open' => FALSE,
+    ];
+
+    $element['select'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#empty_option' => '- None -',
+    ];
+
+    // $element['select2'] = [
+    //   '#type' => 'select',
+    //   '#title' => $this->t('Select Multiple'),
+    //   '#options' => ['One', 'Two', 'Three'],
+    //   '#multiple' => TRUE,
+    // ];
+
+    $element['textfield'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+    ];
+
+    $element['select3'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select Multiple with Defaults'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#multiple' => TRUE,
+      '#default_value' => [0, 1],
+    ];
+
+    $element['select4'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select Group'),
+       '#multiple' => TRUE,
+      '#options' => [
+        'One Label' => [11 => 'One 1', 21 => 'Two 1', 31 => 'Three 1'],
+        'Two Label' => [12 => 'One 2', 22 => 'Two 2', 32 => 'Three 2'],
+        'Three Label' => [13 => 'One 3', 23 => 'Two 3', 33 => 'Three 3'],
+      ],
+    ];
+
+    $element['textfield2'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+    ];
+
+    // $element['select5'] = [
+    //   '#type' => 'select',
+    //   '#title' => $this->t('Select'),
+    //   '#options' => ['One', 'Two', 'Three'],
+    //   '#disabled' => TRUE,
+    // ];
+
+    return $element;
+  }
+
+  /**
+   * Demo checkbox.
+   */
+  protected function buildCheckbox(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Checkbox'),
+      '#open' => FALSE,
+    ];
+
+    $element['checkboxes'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Checkboxes'),
+      '#options' => ['One', 'Two', 'Three'],
+    ];
+
+    $element['checkboxes2'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Checkboxes Inline'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+    ];
+
+    $element['checkboxes3'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Checkboxes Disabled'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+      '#disabled' => TRUE,
+    ];
+
+    $element['checkbox'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Checkbox'),
+    ];
+
+    $element['checkbox2'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Checkbox Checked'),
+      '#default_value' => TRUE,
+    ];
+
+    return $element;
+  }
+
+  /**
+   * Demo checkbox.
+   */
+  protected function buildRadio(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Radio'),
+      '#open' => FALSE,
+    ];
+
+    $element['radios'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios'),
+      '#options' => ['One', 'Two', 'Three'],
+    ];
+
+    $element['radios2'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios Inline'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+      '#default_value' => 1,
+    ];
+
+    $element['radios3'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios Disabled'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#attributes' => ['class' => ['inline']],
+      '#disabled' => TRUE,
+    ];
+
+    $element['radios4'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios with Default Value'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#default_value' => 1,
+    ];
+
+    return $element;
+  }
+
+  /**
+   * Demo checkbox.
+   */
+  protected function buildTextarea(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Textarea'),
+      '#open' => FALSE,
+    ];
+
+    $element['textarea'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Textarea'),
+    ];
+
+    $element['text_format'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Text Format'),
+      '#format' => 'full_html',
+    ];
+
+    return $element;
+  }
+
+  /**
+   * Demo date.
+   */
+  protected function buildDate(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Date'),
+      '#open' => FALSE,
+    ];
+
+    $element['date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Date'),
+    ];
+
+    $element['datetime'] = [
+      '#type' => 'datetime',
+      '#title' => $this->t('Date & Time'),
+      '#default_value' => NULL,
+      '#date_increment' => 1,
+      '#date_timezone' => drupal_get_user_timezone(),
+    ];
+
+    $element['datetime2'] = [
+      '#type' => 'datetime',
+      '#title' => $this->t('Date & Time with Default'),
+      '#default_value' => DrupalDateTime::createFromTimestamp(time()),
+      '#date_increment' => 1,
+      '#date_timezone' => drupal_get_user_timezone(),
+    ];
+
+    return $element;
+  }
+
+  /**
+   * Demo other.
+   */
+  protected function buildOther(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Other'),
+      '#open' => FALSE,
+    ];
+
+    $element['range'] = [
+      '#type' => 'range',
+      '#title' => $this->t('Range'),
+    ];
+
+    return $element;
   }
 
   /**

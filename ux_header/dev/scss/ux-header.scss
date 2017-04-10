@@ -1,7 +1,6 @@
 $shadow-color: rgba(0, 0, 0, 0.2);
 
 .ux-header {
-  position: fixed;
   z-index: 500;
   transition: transform 400ms;
   transform: translate3d(0, 0, 0);

@@ -1,17 +1,1 @@
-/**
- * @file
- * Global ux_offcanvas javascript.
- */
-
-/* eslint-disable no-alert, no-console */
-(function ($, Drupal) {
-
-  'use strict';
-
-  Drupal.behaviors.uxOffcanvasMenu = {
-    attach: function (context, settings) {
-      $('.ux-offcanvas-menu-wrapper').once('ux_offcanvas_menu').ux_offcanvas_menu();
-    }
-  };
-
-})(jQuery, Drupal, document);
+!function(a,n,u){"use strict";n.behaviors.uxOffcanvasMenu={attach:function(n,u){a(".ux-offcanvas-menu-wrapper").once("ux_offcanvas_menu").each(function(){var n={};n.trailType=a(this).find(".ux-offcanvas-menu").attr("data-trail"),a(this).ux_offcanvas_menu(n)})}}}(jQuery,Drupal,drupalSettings,document);

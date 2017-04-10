@@ -67,16 +67,19 @@
   a {
     display: inline-block;
 
-    &::after {
-      content: ':';
-      display: inline-block;
-    }
-
-    &:last-child {
-      pointer-events: none;
+    &.trail-type-breadcrumb {
 
       &::after {
-        display: none;
+        content: ':';
+        display: inline-block;
+      }
+
+      &:last-child {
+        pointer-events: none;
+
+        &::after {
+          display: none;
+        }
       }
     }
   }

@@ -1,97 +1,108 @@
 
-.ux-form {
+.ux-form-radios {
 
-  .ux-form-radios {
-
-    .ux-form-radio {
-      margin: 0;
-    }
+  &.fieldgroup {
+    display: block;
   }
 
   .ux-form-radio {
+    margin: 0;
+  }
+}
 
-    // Hide input.
-    .form-radio {
+.ux-form-radio {
+
+  // Hide input.
+  .form-radio {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  label.option {
+    display: inline-block;
+    position: relative;
+    height: $radio-size;
+    line-height: $radio-size;
+    padding: 0 0 0 $radio-size;
+    margin: 0;
+    cursor: pointer;
+    font-size: $radio-font-size;
+    user-select: none;
+    color: $radio-color;
+
+    &:before,
+    &:after {
+      content: '';
       position: absolute;
-      left: -9999px;
-      opacity: 0;
+      left: 0;
+      top: ($radio-size - $radio-element-size) / 2;
+      width: $radio-element-size;
+      height: $radio-element-size;
+      z-index: 0;
+      border-radius: 50%;
+      border: 2px solid $radio-border-color;
+      box-sizing: border-box;
+      background-color: transparent;
     }
 
-    label {
-      position: relative;
-      padding-left: 24px;
-      cursor: pointer;
-      display: inline-block;
-      height: 25px;
-      line-height: 25px;
-      font-size: $label-font-size - 0.2rem;
-      -khtml-user-select: none; /* webkit (konqueror) browsers */
-      user-select: none;
+    &:after {
+      border: $radio-border-color;
+      background-color: $radio-active-color;
+      transform: scale(0);
+    }
+  }
 
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 4px;
-        width: 18px;
-        height: 18px;
-        z-index: 0;
-        border-radius: 50%;
-        border: 2px solid $radio-empty-color;
-        box-sizing: border-box;
-        background-color: transparent;
+  .ux-ripple {
+    position: absolute;
+    top: (($radio-element-size / 2) * -1) + ($radio-size - $radio-element-size) / 2;
+    left: ($radio-element-size / 2) * -1;
+    width: $radio-element-size * 2;
+    height: $radio-element-size * 2;
+  }
+
+  label:active .ux-ripple {
+    @include ux-ripple-active();
+  }
+
+  &.active {
+
+    label.option {
+
+      &:before {
+        // border: 2px solid transparent;
+        border-color: $radio-active-color;
       }
 
       &:after {
-        border: $radio-border;
-        background-color: $radio-color;
-        transform: scale(0);
-      }
-    }
-
-    &.active {
-
-      label {
-
-        &:before {
-          // border: 2px solid transparent;
-        }
-
-        &:after {
-          transform: scale(1.02);
-        }
-      }
-    }
-
-    &.form-disabled {
-
-      label {
-
-        &:before {
-          background-color: transparent;
-          border-color: $input-disabled-color;
-        }
-      }
-    }
-
-    &.ready {
-
-      label {
-
-        &:before,
-        &:after {
-          transition: all 280ms ease;
-        }
+        transform: scale(0.6);
       }
     }
   }
 
-  .inline {
+  &.form-disabled {
 
-    .js-form-type-radio {
-      display: inline-block;
-      padding-right: 15px;
+    label.option {
+      color: $radio-disabled-color;
     }
+  }
+
+  &.ready {
+
+    label.option {
+
+      &:before,
+      &:after {
+        transition: all $form-item-speed ease;
+      }
+    }
+  }
+}
+
+.inline {
+
+  .ux-form-radio {
+    display: inline-block;
+    padding-right: $form-padding / 2;
   }
 }

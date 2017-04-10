@@ -1,94 +1,137 @@
 
-.ux-form {
+.ux-form-checkboxes {
 
-  .form-checkboxes {
-
-    .ux-form-checkbox {
-      margin: 0;
-    }
+  &.fieldgroup {
+    display: block;
   }
 
   .ux-form-checkbox {
+    margin: 0;
+  }
+}
 
-    &:not(.form-no-label) {
+.ux-form-checkbox,
+.ux-select-checkbox {
 
-      // Hide input.
-      [type='checkbox'] {
+  // Hide input.
+  .form-checkbox {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .ux-ripple {
+    position: absolute;
+    top: (($checkbox-element-size / 2) * -1) + ($checkbox-size - $checkbox-element-size) / 2;
+    left: ($checkbox-element-size / 2) * -1;
+    width: $checkbox-element-size * 2;
+    height: $checkbox-element-size * 2;
+  }
+
+  label {
+
+    &.option {
+      display: inline-block;
+      position: relative;
+      height: $checkbox-size;
+      line-height: $checkbox-size;
+      padding: 0 0 0 $checkbox-size;
+      margin: 0;
+      cursor: pointer;
+      font-size: $checkbox-font-size;
+      user-select: none;
+      color: $checkbox-color;
+
+      &:before,
+      &:after {
+        content: '';
         position: absolute;
-        left: -9999px;
+        left: 0;
+        top: ($checkbox-size - $checkbox-element-size) / 2;
+        width: $checkbox-element-size;
+        height: $checkbox-element-size;
+        z-index: 0;
+        border: 2px solid $checkbox-border-color;
+        box-sizing: border-box;
+        background-color: transparent;
+      }
+
+      &:before {
+        border-radius: 2px;
+      }
+
+      &:after {
+        top: $checkbox-element-size / 7;
+        left: 0;
+        width: $checkbox-element-size / 2.5;
+        height: $checkbox-element-size / 1.2;
+        border-top: 2px solid transparent;
+        border-left: 2px solid transparent;
+        border-right: 2px solid $white;
+        border-bottom: 2px solid $white;
+        transform: rotate(40deg) scale(0);
+        backface-visibility: hidden;
+        transform-origin: 100% 100%;
         opacity: 0;
-        height: 1px;
       }
+    }
 
-      label {
-        position: relative;
-        padding-left: 24px;
-        cursor: pointer;
-        display: inline-block;
-        height: 25px;
-        line-height: 25px;
-        font-size: $label-font-size - 0.2rem;
-        user-select: none;
+    &:active {
 
-        &:before,
-        &:after {
-          content: '';
-          position: absolute;
-          top: 2px;
-          left: 0;
-          width: 18px;
-          height: 18px;
-          z-index: 0;
-          border: 2px solid $radio-empty-color;
-          border-radius: 1px;
-          margin-top: 2px;
-          box-sizing: border-box;
+      .ux-ripple {
+        @include ux-ripple-active();
+      }
+    }
+  }
+
+  &.active {
+
+    label {
+
+      &.option {
+
+        &:before {
+          border-color: $checkbox-active-color;
+          background: $checkbox-active-color;
         }
 
         &:after {
-          border: 0;
-          transform: scale(0);
-        }
-      }
-
-      &.active {
-
-        label {
-
-          &:before {
-            top: -4px;
-            left: -5px;
-            width: 12px;
-            height: 22px;
-            border-top: 2px solid transparent;
-            border-left: 2px solid transparent;
-            border-right: $radio-border;
-            border-bottom: $radio-border;
-            transform: rotate(40deg);
-            backface-visibility: hidden;
-            transform-origin: 100% 100%;
-          }
-        }
-      }
-
-      &.ready {
-
-        label {
-
-          &:before,
-          &:after {
-            transition: all 200ms;
-          }
+          opacity: 1;
+          transform: rotate(40deg) scale(1);
         }
       }
     }
   }
 
-  .inline {
+  &.form-disabled {
 
-    .js-form-type-checkbox {
-      display: inline-block;
-      padding-right: 15px;
+    label {
+
+      &.option {
+        color: $checkbox-disabled-color;
+      }
     }
+  }
+
+  &.ready {
+
+    label {
+
+      &.option {
+
+        &:before,
+        &:after {
+          transition: all $form-item-speed ease;
+        }
+      }
+    }
+  }
+}
+
+.inline {
+
+  .ux-form-checkbox {
+    display: inline-block;
+    padding-right: $form-padding / 2;
   }
 }

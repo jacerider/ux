@@ -16,7 +16,8 @@ function template_preprocess_ux_select_as_checkbox(&$variables) {
   $id = $element['#id'];
 
   $variables['attributes'] = $element['#attributes'];
-  $variables['attributes']['class'] = 'js-hide';
+  $variables['attributes']['class'][] = 'js-hide';
+  $variables['attributes']['class'][] = 'browser-default';
   $variables['attributes']['id'] = $id . '-select';
   $variables['options'] = form_select_options($element);
 
@@ -34,22 +35,16 @@ function template_preprocess_ux_select_as_checkbox(&$variables) {
 
   $variables['checkbox'] = [
     '#type' => 'checkbox',
-    '#title' => $element['#title'],
+    '#title' => '<div class="ux-ripple"></div>' . $element['#title'],
+    '#wrapper_attributes' => [
+      'class' => ['ux-form-checkbox'],
+    ],
     '#attributes' => [
       'id' => $id . '-checkbox',
       'class' => ['js-show'],
       'checked' => $element['#value'] == 1,
     ],
   ];
-
-  // Add label_display and label variables to template.
-  // $variables['label_display'] = $element['#title_display'];
-  // $variables['label'] = array('#theme' => 'form_element_label');
-  // $variables['label'] += array_intersect_key($element, array_flip(array('#id', '#required', '#title', '#title_display')));
-  // $variables['label']['#title'] = [];
-  // $variables['label']['#title']['title']['#markup'] = $element['#title'];
-  // // '<input type="checkbox"></input> ';
-  // // ksm($variables['label']);
 }
 
 /**

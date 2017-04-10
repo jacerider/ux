@@ -51,7 +51,8 @@ gulp.task('css', function () {
     }))
     .pipe(sourcemaps.init())
     .pipe(sass({
-      outputStyle: 'compressed',
+      // outputStyle: 'compressed',
+      outputStyle: 'expanded',
       errLogToConsole: true,
       includePaths: config.css.includePaths
     }))
@@ -82,7 +83,7 @@ gulp.task('js', function () {
       configFile: 'config/.eslintrc'
     }))
     .pipe(eslint.format())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(rename(function(path) {
       path.dirname = '../../' + path.dirname.replace('/dev/js', '/' + config.js.dest);
     }))

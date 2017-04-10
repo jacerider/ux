@@ -68,7 +68,7 @@
     Unbind events that trigger methods.
     */
     unbindEvents: function () {
-      this.$element.off('.' + this._name);
+      this.$field.off('.' + this._name);
     },
 
     /*

@@ -1,258 +1,246 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Selectors
+////////////////////////////////////////////////////////////////////////////////
+
+.ux-form-input {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  position: relative;
+
+  > label {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: $input-font-size;
+    line-height: $input-height;
+    text-transform: none;
+    pointer-events: none;
+  }
+
+  .ux-form-input-item,
+  .field-prefix,
+  .field-suffix {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    height: $input-height;
+    line-height: $input-height;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: $input-font-size;
+    color: $input-color;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-image: linear-gradient($input-focus-color, $input-focus-color), linear-gradient($input-border-color, $input-border-color);
+    background-size: 0 2px, 100% 1px;
+    background-repeat: no-repeat;
+    background-position: center bottom, center calc(100% - 1px);
+
+    &:focus {
+      border: 0;
+      outline: 0;
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    ////// SIMPLE
+    /// Used if field should not change colors.
+    &.simple {
+      background-image: none !important;
+    }
+  }
+
+  > .ux-form-input-item {
+    flex: 1 1 10%;
+    width: auto;
+  }
+
+  .field-input {
+    flex: 1 1 10%;
+    width: auto;
+
+    .ux-form-input-item {
+      flex: auto;
+      width: 100%;
+    }
+  }
+
+  .field-prefix,
+  .field-suffix {
+    width: auto;
+    text-align: center;
+    color: transparent;
+  }
+
+  .field-prefix {
+    padding-right: rem-calc(5);
+  }
+
+  .field-suffix {
+    padding-right: rem-calc(5);
+  }
+
+  .description,
+  .counter {
+    flex-basis: 100%;
+  }
+
+  .form-textarea-wrapper {
+    width: 100%;
+  }
+
+  textarea {
+
+    &.ux-form-input-item {
+      height: auto;
+      min-height: $input-height;
+    }
+  }
+
+  ////// MESSAGE AREA
+  &:after {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    font-size: $form-item-description-size;
+    line-height: $input-height;
+    color: $form-item-description-color;
+    text-transform: uppercase;
+    transition: all $form-item-speed ease-out;
+    transform: translateY($form-item-margin-size * -0.8);
+  }
+
+  ////// HOVER
+  &:hover {
+
+    > label {
+      color: $label-hover-color;
+    }
+  }
+
+  ////// ACTIVE
+  &.active,
+  &.force-active {
+
+    > label {
+      font-size: $label-font-size;
+      transform: translateY($form-item-margin-size * -0.8);
+    }
+
+    .field-prefix,
+    .field-suffix {
+      color: $input-prefix-suffix-color;
+    }
+  }
+
+  ////// FOCUS
+  &.focus {
+
+    > label {
+      color: $input-focus-color;
+    }
+
+    .ux-form-input-item,
+    .field-prefix,
+    .field-suffix {
+      background-image: linear-gradient($input-focus-color, $input-focus-color), linear-gradient($input-border-color, $input-border-color);
+      background-size: 100% 2px, 100% 1px;
+    }
+  }
+
+  ////// VALID
+  &.valid,
+  &.valid.focus {
+
+    .ux-form-input-item,
+    .field-prefix,
+    .field-suffix {
+      background-image: linear-gradient($input-focus-color, $input-focus-color), linear-gradient($input-success-color, $input-success-color);
+    }
+  }
+
+  ////// INVALID
+  &.invalid,
+  &.invalid.focus {
+
+    .ux-form-input-item,
+    .field-prefix,
+    .field-suffix {
+      background-image: linear-gradient($input-focus-color, $input-focus-color), linear-gradient($input-error-color, $input-error-color);
+    }
+
+    &:after {
+      content: attr(data-error);
+      color: $input-error-color;
+      opacity: 1;
+    }
+  }
+
+  ////// DISABLED
+  &.form-disabled {
+
+    > label {
+      color: $input-disabled-color;
+    }
+
+    .ux-form-input-item {
+      background-color: transparent;
+      color: $input-disabled-color;
+    }
+  }
+
+  ////// READY
+  &.ready {
+
+    > label {
+      transition: all $form-item-speed ease-out;
+    }
+
+    .ux-form-input-item,
+    .field-prefix,
+    .field-suffix {
+      transition: all $form-item-speed ease-out;
+    }
+  }
+}
+
 .ux-form {
 
   ::-webkit-input-placeholder {
-    color: $placeholder-text-color;
+    color: $input-placeholder-color;
     font-style: italic;
     font-weight: 200;
   }
 
   :-moz-placeholder {
-    color: $placeholder-text-color;
+    color: $input-placeholder-color;
     font-style: italic;
     font-weight: 200;
   }
 
   ::-moz-placeholder {
-    color: $placeholder-text-color;
+    color: $input-placeholder-color;
     font-style: italic;
     font-weight: 200;
   }
 
   :-ms-input-placeholder {
-    color: $placeholder-text-color;
+    color: $input-placeholder-color;
     font-style: italic;
     font-weight: 200;
   }
 
   ::placeholder {
-    color: $placeholder-text-color;
+    color: $input-placeholder-color;
     font-style: italic;
     font-weight: 200;
-  }
-
-  .ux-form-input {
-    display: flex;
-    flex-flow: row wrap;
-    position: relative;
-
-    // We use immediate child label in order to not affect elements with
-    // nested labels like UxFormSelect elements.
-    > label {
-      display: block;
-      position: absolute;
-      top: 1rem;
-      left: 0;
-      font-size: $label-font-size;
-      line-height: 1rem;
-      text-transform: none;
-      cursor: text;
-      pointer-events: none;
-    }
-
-    input,
-    textarea {
-      background-color: transparent;
-      border: 0;
-      border-bottom: $input-border;
-      border-radius: 0;
-      outline: none;
-      height: $input-height;
-      width: 100%;
-      font-size: $input-font-size;
-      box-shadow: none;
-      transition: $input-transition;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .description,
-    .counter {
-      flex-basis: 100%;
-    }
-
-    // .field-input is not a default element. input sits at the root of default
-    // themes.
-    .field-input,
-    input {
-      flex: 1 1 10%;
-      width: auto;
-
-      input {
-        width: 100%;
-      }
-    }
-
-    .field-prefix,
-    .field-suffix {
-      display: block;
-      border: 0;
-      border-bottom: $input-border;
-      height: $input-height;
-      line-height: $input-height - $input-padding-size;
-      font-size: $input-font-size;
-      font-weight: normal;
-      margin: 0;
-      padding: $input-padding;
-      box-shadow: none;
-      transition: $input-transition;
-      box-sizing: border-box;
-      color: transparent;
-    }
-
-    .field-prefix {
-      padding-right: $input-padding-size / 2;
-    }
-
-    .field-suffix {
-      padding-left: $input-padding-size / 2;
-    }
-
-    // When a field is in focus.
-    &.focus {
-
-      > label {
-        color: $primary-color;
-      }
-
-      input,
-      textarea,
-      .field-prefix,
-      .field-suffix {
-        // margin-bottom: 0;
-        // border-bottom-width: 2px;
-        // border-bottom-color: $primary-color;
-        border-bottom: 1px solid $primary-color;
-        box-shadow: 0 1px 0 0 $primary-color;
-      }
-
-      .field-prefix,
-      .field-suffix {
-        color: $primary-color;
-      }
-
-      // .description {
-      //   visibility: visible;
-      //   opacity: 1;
-      // }
-    }
-
-    // When a field has content.
-    &.active,
-    &.force-active {
-
-      > label {
-        color: lighten($label-color, 20%);
-        font-size: $label-font-size - 0.1rem;
-        transform: translateY(-140%);
-      }
-
-      .field-prefix,
-      .field-suffix {
-        color: $label-color;
-      }
-    }
-
-    &.form-disabled {
-
-      input,
-      textarea {
-        background: none;
-        color: $input-disabled-color;
-      }
-    }
-
-    &.valid,
-    &.focus.valid {
-
-      input,
-      textarea,
-      .field-prefix,
-      .field-suffix {
-        border-bottom-color: $input-success-color;
-      }
-    }
-
-    &.focus.valid {
-
-      input,
-      textarea,
-      .field-prefix,
-      .field-suffix {
-        box-shadow: 0 1px 0 0 $input-success-color;
-      }
-    }
-
-    &.invalid,
-    &.focus.invalid {
-
-      input,
-      textarea,
-      .field-prefix,
-      .field-suffix {
-        border-bottom: $input-invalid-border;
-        box-shadow: 0 1px 0 0 $input-error-color;
-      }
-
-      &:after {
-        content: attr(data-error);
-        color: $input-error-color;
-        opacity: 1;
-      }
-    }
-
-    &.focus.invalid {
-
-      // input,
-      // textarea,
-      // .field-prefix,
-      // .field-suffix {
-      //   box-shadow: 0 1px 0 0 $input-error-color;
-      // }
-
-      > label {
-        color: $input-error-color;
-      }
-
-      &:after {
-        opacity: 0;
-      }
-    }
-
-    &.ready {
-
-      > label {
-        transition: 200ms ease-out;
-      }
-    }
-
-    &:after {
-      display: block;
-      content: '';
-      position: absolute;
-      top: -4px;
-      right: 0;
-      opacity: 0;
-      font-size: $description-font-size - 0.1;
-      line-height: $description-font-size - 0.1;
-      color: $description-color;
-      text-transform: uppercase;
-      transition: 0.2s opacity ease-out, 0.2s color ease-out;
-    }
-
-  }
-
-  .js-form-type-textarea {
-
-    .form-textarea-wrapper {
-      width: 100%;
-    }
-
-    textarea {
-      height: auto;
-      min-height: $input-height;
-      overflow-y: hidden; /* prevents scroll bar flash */
-      padding: 0.8rem 0 0; /* prevents text jump on Enter keypress */
-      resize: none;
-    }
   }
 }

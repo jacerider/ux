@@ -38,6 +38,11 @@
      */
     buildElement: function () {
       var _this = this;
+      if (this.$element.hasClass('form-no-label')) {
+        var label = this.$element.find('label');
+        label.removeClass('visually-hidden');
+        label.html('<span class="visually-hidden">' + label.html() + '</span>');
+      }
       if (this.$field.is(':checked')) {
         this.$element.addClass('active');
       }
@@ -51,7 +56,7 @@
      */
     buildCache: function () {
       this.$element = $(this.element);
-      this.$field = this.$element.find('input');
+      this.$field = this.$element.find('input.form-checkbox');
     },
 
     /*
@@ -68,7 +73,7 @@
     Unbind events that trigger methods.
     */
     unbindEvents: function () {
-      this.$element.off('.' + this._name);
+      this.$field.off('.' + this._name);
     },
 
     /*

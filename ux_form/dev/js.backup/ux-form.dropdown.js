@@ -85,12 +85,6 @@
     },
 
     /*
-    On change event callback.
-     */
-    onChange: function () {
-    },
-
-    /*
     Show dropdown.
      */
     show: function (eventType) {

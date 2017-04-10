@@ -1,50 +1,179 @@
-.ux-form {
 
-  .ux-form-select {
+.ux-form-select {
+
+  select {
+    display: none;
+    background-color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+    border: 0;
+    border-bottom: 1px solid $input-border-color;
+    // background-size: 0 2px, 100% 1px;
+    // background-repeat: no-repeat;
+    // background-position: center bottom, center calc(100% - 1px);
+
+    &:focus {
+      border-bottom-color: $input-focus-color;
+    }
+  }
+
+  &.invalid {
+
+    select {
+      display: block;
+    }
+  }
+
+  .ux-form-select-wrapper {
     position: relative;
+  }
 
-    select { display: none; }
+  .ux-form-select-caret {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 10px;
+    margin: auto 0;
+    font-size: 10px;
+    line-height: 10px;
+    color: $select-caret-color;
 
-    .ux-form-select-wrapper {
+    &.disabled {
+      color: $input-disabled-color;
+    }
+  }
+
+  .ux-form-select-hidden {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .ux-form-select-dropdown {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    min-width: 100px;
+    max-height: 650px;
+    background-color: $select-bg-color;
+    margin: 0;
+    display: none;
+    overflow-y: auto;
+    opacity: 0;
+    z-index: 999;
+    will-change: width, height;
+    list-style-type: none;
+    padding: 0;
+    box-shadow: 0 4px 8px shade(20);
+
+    li {
+      display: block;
+      clear: both;
       width: 100%;
+      text-align: left;
+      font-size: $select-font-size;
+      text-transform: none;
+      color: $select-option-color;
+      transition: all $form-item-speed;
+
+      > span {
+        display: block;
+        padding: 0 $form-padding / 2;
+
+        > label {
+          font-size: $select-font-size;
+        }
+      }
     }
 
-    .ux-form-select-input {
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .ux-form-select-caret {
-      color: initial;
+    .close {
       position: absolute;
-      right: 0;
       top: 0;
-      bottom: 0;
-      height: 10px;
-      margin: auto 0;
-      font-size: 10px;
-      line-height: 10px;
+      right: 0;
+      width: $input-height;
+      height: $input-height;
+      font-size: $input-height * 0.7;
+      line-height: $input-height * 0.85;
+      vertical-align: middle;
+      text-align: center;
+      color: $select-close-color;
+      cursor: pointer;
+      background-color: $select-bg-color;
 
-      &.disabled {
-        color: $input-disabled-color;
+      &:hover {
+        color: $select-close-hover-color;
       }
     }
 
-    li.optgroup {
-      border-top: 1px solid $dropdown-hover-bg-color;
+    .search {
 
-      &.selected > span {
-        color: rgba(0, 0, 0, .7);
-      }
-
-      & > span {
-        color: rgba(0, 0, 0, .4);
-      }
-
-      & ~ li.optgroup-option {
-        padding-left: 1rem;
+      input {
+        padding-left: $form-padding / 2;
+        padding-right: $form-padding / 2;
       }
     }
 
+    .optgroup {
+      font-size: $select-option-font-size;
+      text-transform: uppercase;
+      border-top: 1px solid gray(10);
+
+      > span {
+        cursor: default;
+        line-height: $select-option-height;
+        min-height: $select-option-height;
+      }
+    }
+
+    .selector {
+      color: $select-item-color;
+
+      > span {
+        cursor: pointer;
+        line-height: $select-item-height;
+        min-height: $select-item-height;
+
+        > label {
+          color: $select-item-color;
+        }
+      }
+
+      &:hover {
+        background: $select-hover-color;
+      }
+    }
+
+    &.is-single {
+
+      .selected {
+        color: $select-selected-color;
+        background: $select-selected-bg;
+
+        &:hover {
+          background: darken($select-selected-bg, 5%);
+        }
+      }
+    }
+  }
+
+  &.active {
+
+    .ux-form-select-dropdown {
+      display: block;
+      opacity: 0;
+      transform: translate(0, 20%);
+      transition: opacity 300ms, transform 300ms;
+    }
+  }
+
+  &.animate {
+
+    .ux-form-select-dropdown {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
   }
 }

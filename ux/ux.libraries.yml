@@ -51,6 +51,11 @@ jquery.easing:
   js:
     lib/easing/jquery.easing.min.js: {minified: true}
 
+jquery.mobile-events:
+  version: VERSION
+  js:
+    lib/mobile-events/jquery.mobile-events.min.js: {minified: true}
+
 gsap:
   version: VERSION
   js:

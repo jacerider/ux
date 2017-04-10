@@ -1,0 +1,7 @@
+system.admin_config_ux:
+  path: '/admin/config/ux'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'User experience'
+  requirements:
+    _permission: 'access administration pages'

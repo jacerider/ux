@@ -36,9 +36,10 @@ $white: #fff;
 //   // overflow: hidden;
 // }
 
-// .ux-parallax-background {
-//   will-change: transform;
-// }
+.ux-parallax-background {
+  // transition: transform 100ms;
+  will-change: transform;
+}
 
 @import 'ux-parallax/auto';
 @import 'ux-parallax/content';

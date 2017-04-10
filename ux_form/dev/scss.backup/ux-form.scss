@@ -1,0 +1,74 @@
+@import 'base/variables';
+
+.ux-form {
+
+  // Resets
+  .fieldgroup > legend {
+    margin: 0;
+  }
+
+  // General element margin.
+  .js-form-item.form-item {
+    margin: $input-margin;
+
+    &[disabled],
+    &.form-disabled {
+
+      label,
+      > legend .fieldset-legend {
+        color: lighten($label-color, 40%);
+        pointer-events: none;
+        text-rendering: optimizeLegibility;
+      }
+    }
+  }
+
+  tr {
+
+    &,
+    &.odd,
+    &.even {
+
+      .js-form-item {
+        margin: 0;
+      }
+    }
+  }
+
+  // General field labels.
+  .fieldgroup > legend .fieldset-legend,
+  .js-form-item label {
+    color: $label-color;
+    font-size: $label-font-size;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
+
+  // .js-form-item input {
+  //   margin: 0;
+  //   padding: $input-padding;
+  // }
+
+  .js-form-item .description,
+  .js-form-item .counter {
+    font-size: $description-font-size;
+    line-height: $description-font-size + 0.4rem;
+    color: $description-color;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+.ux-form-inline {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+
+  > div {
+    display: block;
+    flex: auto !important;
+    width: 50%;
+  }
+}
+
+@import 'components/*.scss'; // sass-lint:disable-line clean-import-paths

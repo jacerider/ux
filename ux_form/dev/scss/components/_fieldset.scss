@@ -1,0 +1,31 @@
+
+.ux-form {
+
+  fieldset {
+
+    &:not(.fieldgroup) {
+      display: block;
+      position: relative;
+      background-color: $fieldset-bg-color;
+      padding: $form-padding * 2 $form-padding $form-padding;
+
+      > legend {
+        position: absolute;
+        top: $form-padding;
+        left: $form-padding;
+      }
+    }
+  }
+
+  details {
+    padding: $form-padding;
+
+    > summary {
+      padding: 0;
+    }
+
+    > .details-wrapper {
+      padding: 0;
+    }
+  }
+}

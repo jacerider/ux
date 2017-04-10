@@ -1,0 +1,67 @@
+$palette: (
+  primary: #1c98c1,
+  secondary: #777,
+  success: #86c13d,
+  error: #e54040,
+  label: #3f3f3f,
+);
+
+$primary-color: map-get($palette, primary) !default;
+$secondary-color: map-get($palette, secondary) !default;
+$success-color: map-get($palette, success) !default;
+$error-color: map-get($palette, error) !default;
+$label-color: map-get($palette, label) !default;
+$radio-color: $primary-color !default;
+
+$black-opacity-1: rgba(0, 0, 0, 0.1);
+$black-opacity-2: rgba(0, 0, 0, 0.2);
+$black-opacity-3: rgba(0, 0, 0, 0.3);
+$black-opacity-12: rgba(0, 0, 0, 0.12);
+$black-opacity-14: rgba(0, 0, 0, 0.14);
+$gray-light: #999;
+$off-black: rgba(0, 0, 0, 0.87) !default;
+
+// Text Inputs + Textarea
+$input-height: 2.5rem !default;
+$input-border-color: lighten($secondary-color, 40%) !default;
+$input-border: 1px solid $input-border-color !default;
+$input-background: #fff !default;
+$input-error-color: $error-color !default;
+$input-success-color: $success-color !default;
+$input-focus-color: $secondary-color !default;
+$input-font-size: 0.9rem !default;
+$input-margin-size: 3rem;
+$input-margin: $input-margin-size / 2 0 0 !default;
+$input-padding-size: 0.625rem !default;
+$input-padding: $input-padding-size 0 0 !default;
+$input-transition: all 300ms !default;
+$input-disabled-color: rgba(0, 0, 0, 0.26) !default;
+$input-disabled-solid-color: #bdbdbd !default;
+$input-disabled-border: 1px dotted $input-disabled-color !default;
+$input-invalid-border: 1px solid $input-error-color !default;
+$placeholder-text-color: lighten($secondary-color, 20%) !default;
+
+// Label
+$label-font-size: 0.9rem !default;
+
+// Description
+$description-font-size: 0.7rem !default;
+$description-color: lighten($secondary-color, 15%) !default;
+
+// Radio Buttons
+$radio-empty-color: $secondary-color !default;
+$radio-border: 2px solid $radio-color !default;
+
+// Select
+$select-border: 1px solid #f2f2f2 !default;
+$select-background: rgba(255, 255, 255, 0.9) !default;
+$select-focus: 1px solid lighten($secondary-color, 47%) !default;
+$select-padding: 5px !default;
+$select-radius: 2px !default;
+$select-disabled-color: rgba(0, 0, 0, 0.3) !default;
+
+// Dropdown
+$dropdown-bg-color: #fff !default;
+$dropdown-hover-bg-color: #eee !default;
+$dropdown-color: $secondary-color !default;
+$dropdown-item-height: $input-height !default;

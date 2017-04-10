@@ -3,12 +3,6 @@ ux_form:
   css:
     component:
       css/ux-form.css: {}
-  # js:
-  #   js/ux-form.js: { minified: true }
-  #   js/models/ElementModel.js: { minified: true }
-  #   js/collections/ElementCollection.js: { minified: true }
-  #   js/views/FormView.js: { minified: true }
-  #   js/views/ElementView.js: { minified: true }
   dependencies:
     - core/drupal
     - core/jquery.once
@@ -42,16 +36,23 @@ ux_form.checkbox:
   dependencies:
     - ux_form/ux_form
 
+ux_form.file:
+  version: VERSION
+  js:
+    js/ux-form.file.js: { minified: true }
+  dependencies:
+    - ux_form/ux_form
+    - ux_form/ux_form.input
+
 ux_form.select:
   version: VERSION
   js:
     js/ux-form.select.js: { minified: true }
-    # js/models/SelectModel.js: { minified: true }
-    # js/views/SelectView.js: { minified: true }
   dependencies:
+    - ux/jquery.mobile-events
     - ux_form/ux_form
     - ux_form/ux_form.input
-    - ux_form/ux_form.dropdown
+    # - ux_form/ux_form.checkbox
 
 ux_form.picker:
   version: VERSION

@@ -1,0 +1,18 @@
+
+.ux-form {
+
+  .js-form-type-date,
+  .js-form-type-datetime {
+
+    .picker {
+
+      div {
+        display: block;
+      }
+    }
+
+    .js-form-item {
+      margin-top: 0;
+    }
+  }
+}

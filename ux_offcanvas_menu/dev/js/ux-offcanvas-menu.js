@@ -4,14 +4,18 @@
  */
 
 /* eslint-disable no-alert, no-console */
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
 
   'use strict';
 
   Drupal.behaviors.uxOffcanvasMenu = {
     attach: function (context, settings) {
-      $('.ux-offcanvas-menu-wrapper').once('ux_offcanvas_menu').ux_offcanvas_menu();
+      $('.ux-offcanvas-menu-wrapper').once('ux_offcanvas_menu').each(function () {
+        var options = {};
+        options.trailType = $(this).find('.ux-offcanvas-menu').attr('data-trail');
+        $(this).ux_offcanvas_menu(options);
+      });
     }
   };
 
-})(jQuery, Drupal, document);
+})(jQuery, Drupal, drupalSettings, document);

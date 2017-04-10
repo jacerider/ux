@@ -11,6 +11,8 @@ use Drupal\Core\Menu\MenuActiveTrail;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\ux_offcanvas\UxOffcanvasManagerInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Menu\MenuLinkTreeElement;
+use Drupal\ux_offcanvas_menu\UxOffcanvasMenuLink;
 
 /**
  * Provides a 'UxOffcanvasMenu' block.
@@ -82,7 +84,7 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $this->menuActiveTrail = $menu_active_trail;
     $this->entityTypeManager = $entity_type_manager;
     $this->uxOffcanvasManager = $ux_offcanvas_manager;
-    $this->uxOffcanvas = $this->uxOffcanvasManager->addOffcanvas('offcanvas_menu')
+    $this->uxOffcanvas = $this->uxOffcanvasManager->addOffcanvas($plugin_id)
       ->addCacheTags($this->getCacheTags())
       ->addCacheContexts($this->getCacheContexts());
   }
@@ -109,7 +111,9 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     return [
       'menu' => 'main',
       'secondary_menu' => '',
+      'secondary_menu_title' => '',
       'depth' => 3,
+      'trail' => 'breadcrumb',
       'text' => $this->t('Menu'),
       'icon' => '',
       'icon_only' => FALSE,
@@ -152,8 +156,21 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       '#type' => 'select',
       '#title' => $this->t('Secondary menu'),
       '#description' => $this->t('An additional menu that can be appended to the mobile menu.'),
-      '#options' => ['- None -'] + $this->getMenuOptions(),
+      '#options' => $this->getMenuOptions(),
+      '#empty_option' => $this->t('- None -'),
       '#default_value' => $this->configuration['secondary_menu'],
+    ];
+
+    $form['menus']['secondary_menu_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Secondary menu item title'),
+      '#description' => $this->t('The secondary menu can be contained within a root link.'),
+      '#default_value' => $this->configuration['secondary_menu_title'],
+      '#states' => [
+        'visible' => [
+          ':input[name="settings[menus][secondary_menu]"]' => ['!value' => ''],
+        ],
+      ],
     ];
 
     $form['menus']['depth'] = [
@@ -164,6 +181,17 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
         [1, 2, 3, 4, 5, 6, 7, 8, 9],
         [1, 2, 3, 4, 5, 6, 7, 8, 9]
       ),
+      '#required' => TRUE,
+    ];
+
+    $form['menus']['trail'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Trail type'),
+      '#default_value' => $this->configuration['trail'],
+      '#options' => [
+        'breadcrumb' => $this->t('Breadcrumb'),
+        'back' => $this->t('Simple Back Link'),
+      ],
       '#required' => TRUE,
     ];
 
@@ -292,7 +320,14 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
 
     // If secondary menu is added.
     if ($secondary_menu_name = $this->configuration['secondary_menu']) {
-      $tree += $this->buildMenuTree($secondary_menu_name);
+      $secondary_tree = $this->buildMenuTree($secondary_menu_name);
+      if ($secondary_menu_title = $this->configuration['secondary_menu_title']) {
+        $link = new UxOffcanvasMenuLink($secondary_menu_title);
+        $secondary_tree = [
+          'ux-offcanvas-menu' => new MenuLinkTreeElement($link, (bool) count($secondary_tree), 0, FALSE, $secondary_tree),
+        ];
+      }
+      $tree += $secondary_tree;
       if (empty(array_filter($active_trail))) {
         $active_trail = $this->menuActiveTrail->getActiveTrailIds($secondary_menu_name);
       }
@@ -301,6 +336,7 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $menu = $this->menuLinkTree->build($tree);
     $menu['#theme'] = 'ux_offcanvas_menu';
     $menu['#attributes']['data-depth'] = count(array_filter($active_trail)) - 1;
+    $menu['#trail'] = $this->configuration['trail'];
 
     return $menu;
   }
