@@ -42,6 +42,7 @@
 
     resize: function () {
       var _this = this;
+      _this.$wrapper.removeAttr('style');
       _this.$header.removeAttr('style');
 
       var height = _this.$header.outerHeight();
@@ -53,6 +54,7 @@
         position: 'fixed',
         marginLeft: (offset.left - displace.offsets.left),
         marginRight: (offset.left - displace.offsets.right),
+        maxWidth: width,
         top: displace.offsets.top,
         left: displace.offsets.left,
         right: displace.offsets.right

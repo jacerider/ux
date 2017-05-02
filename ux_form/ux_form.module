@@ -141,10 +141,13 @@ function ux_form_checkbox_process(&$element, FormStateInterface $form_state, &$c
  */
 function ux_form_select_process(&$element, FormStateInterface $form_state, &$complete_form) {
   if (ux_form_access()) {
-    $element['#wrapper_attributes']['class'][] = 'ux-form-select';
-    $element['#attached']['library'][] = 'ux_form/ux_form.select';
-    if (isset($element['#multiple']) && $element['#multiple']) {
-      $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
+    // Make sure this is not a UX | Select as links.
+    if (!isset($element['#theme']) || $element['#theme'] != 'ux_select_as_links') {
+      $element['#wrapper_attributes']['class'][] = 'ux-form-select';
+      $element['#attached']['library'][] = 'ux_form/ux_form.select';
+      if (isset($element['#multiple']) && $element['#multiple']) {
+        $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
+      }
     }
   }
   return $element;
