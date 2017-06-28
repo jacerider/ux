@@ -1,0 +1,53 @@
+options:
+  trigger:
+    text: 'Trigger' # Title in aside's trigger
+    icon: '' # Icon id that will be displayed in aside trigger.
+    iconOnly: false # Force the trigger to only be an icon.
+  content:
+    title: '' # Title in aside's header.
+    subtitle: '' # Caption below aside's title.
+    headerColor: '#88a0b9' # Color to fill the header background, will also be applied to the bottom edge of the aside.
+    theme: '' # Theme of the aside, can be empty or "light".
+    icon: null # Icon class (font-icon of your choice) that will be displayed in aside header.
+    iconText: null # Icon text (font-icon using html) that will be displayed in aside header.
+    iconColor: '#ffffff' #Color of the header icon.
+    width: 600 # Fixed width of the aside. You can use %, px, em or cm. If not using a measure unity, PX will be assumed as measurement unit.
+    top: null # Bottom static margin.
+    bottom: null # Bottom static margin.
+    left: null # Left static margin.
+    right: null # Right static margin.
+    borderBottom: true # Enable/disable border bottom.
+    padding: 0 # Aside inner margin.
+    radius: 3 # Border-radius that will be applied in aside.
+    iframe: false # If true, an Iframe will be used inside the aside.
+    iframeHeight: 400 #Fixed height of the iframe.
+    iframeURL: null # Address that will open in the iframe inside the aside, if not set, the user can alternatively use the href link responsible for opening it.
+    focusInput: true # If set true, whenever you open a aside, the first visible field is active.
+    group: '' # Create a group with same 'group' name, so can navigate between them.
+    loop: false # It allows loop with asides of the same group.
+    navigateCaption: true # Displays arrows to navigate.
+    navigateArrows: true # Change arrows position to navigate between the asides. It can be: 'closeToModal' or 'closeScreenEdge'.
+    history: false # Enable browsing history with hash.
+    restoreDefaultContent: false # Reset the aside to default to be opened again.
+    autoOpen: false # If true, the aside opens automatically with any user action. Or you can set a delay time (in milliseconds) to open.
+    bodyOverflow: false # Forcing overflow hidden in the document when opening the aside, closing the aside, overflow will be restored.
+    fullscreen: false # Show a button in aside header to expand.
+    openFullscreen: false # Force to open aside in fullscreen.
+    openTall: false # Force to open aside with 100% height
+    closeOnEscape: true # If set true, you can close the aside only pressing the escape key.
+    closeButton: true # Display close button in the header.
+    overlay: true # Enable or disable background overlay.
+    overlayClose: true # If set true, the aside will be closed clicking outside of it.
+    overlayColor: '#000000'
+    timeout: 0 # Amount in milliseconds to close the aside or false to disable.
+    timeoutProgressbar: false # Enable timeout progress bar.
+    timeoutProgressbarColor: '#ffffff' # Progress bar color.
+    pauseOnHover: false # Pause the progress bar when mouse cursor hover the aside.
+    transitionIn: 'comingIn' # Aside opening default transition. Can be: comingIn, bounceInDown, bounceInUp, fadeInDown, fadeInUp, fadeInLeft, fadeInRight, flipInX.
+    transitionOut: 'comingOut' # Aside closing default transition. Can be: comingOut, bounceOutDown, bounceOutUp, fadeOutDown, fadeOutUp, , fadeOutLeft, fadeOutRight, flipOutX.
+    transitionInOverlay: 'fadeIn' # Default transition of overlay opening.
+    transitionOutOverlay: 'fadeOut' # Default transition of overlay closure.
+    attachTop: false # Attach aside to top of page.
+    attachBottom: false # Attach aside to bottom of page.
+    attachLeft: false # Attach aside to left of page.
+    attachRight: false # Attach aside to right of page.

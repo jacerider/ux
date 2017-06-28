@@ -1,0 +1,17 @@
+ux_aside:
+  version: VERSION
+  css:
+    component:
+      css/ux-aside.lib.css: {}
+      css/ux-aside.css: {}
+  js:
+    js/ux-aside.lib.js: { minified: true }
+    js/ux-aside.js: { minified: true }
+  dependencies:
+    - ux/ux
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+    - core/drupal.displace
+    # - ux/gsap

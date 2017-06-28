@@ -1,0 +1,13 @@
+services:
+  ux_aside.manager:
+    class: Drupal\ux_aside\UxAsideManager
+    arguments: ['@ux_aside.options']
+  twig.ux_aside:
+    class: 'Drupal\ux_aside\TwigExtension\UxAside'
+    arguments: ['@ux_aside.manager']
+    tags:
+      - { name: twig.extension }
+  ux_aside.options:
+    class: Drupal\ux_aside\UxAsideOptions
+    arguments: ['@config.factory']
+

@@ -1,0 +1,7 @@
+name: UX | Aside
+type: module
+description: Provides a modal API.
+core: 8.x
+package: User Experience
+dependencies:
+  - ux

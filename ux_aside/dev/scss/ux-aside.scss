@@ -1,0 +1,76 @@
+.ux-asides {
+  display: none;
+  position: relative;
+  z-index: 1000;
+
+  &.active {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+  }
+}
+
+.uxAside-isOpen {
+
+  .ux-asides {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.uxAside {
+  position: relative;
+  width: 100%;
+  transition: margin-top 0.3s ease, height 0.3s ease, max-width 0.3s ease;
+
+  &.isTall {
+    height: 100% !important;
+  }
+
+  &.isFullscreen {
+    height: 100% !important;
+  }
+
+  &.isAttachedTop {
+
+    .uxAside-button-wrapper {
+      top: 100%;
+      bottom: auto;
+    }
+  }
+
+  .uxAside-header {
+
+    .uxAside-header-icon {
+      line-height: 40px;
+    }
+
+    &.uxAside-noTitle {
+      height: 26px;
+      padding: 0;
+
+      .uxAside-header-icon {
+        font-size: 16px;
+        line-height: 16px;
+        padding: 4px 0 0 10px;
+      }
+
+      .uxAside-header-buttons {
+        right: 6px;
+        margin: -11px 0 0;
+      }
+
+      .uxAside-button {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
+}
