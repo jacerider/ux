@@ -106,13 +106,15 @@
       var $context = $(context);
       $context.find('.ux-form-checkbox').once('ux-form-checkbox').uxFormCheckbox();
     },
-    detach: function (context) {
-      $(context).find('.ux-form-checkbox').each(function () {
-        var plugin = $(this).data('uxFormCheckbox');
-        if (plugin) {
-          plugin.destroy();
-        }
-      });
+    detach: function (context, setting, trigger) {
+      if (trigger === 'unload') {
+        $(context).find('.ux-form-checkbox').each(function () {
+          var plugin = $(this).data('uxFormCheckbox');
+          if (plugin) {
+            plugin.destroy();
+          }
+        });
+      }
     }
   };
 

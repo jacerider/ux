@@ -99,13 +99,15 @@
       var $context = $(context);
       $context.find('.ux-form-radio').once('ux-form-radio').uxFormRadio();
     },
-    detach: function (context) {
-      $(context).find('.ux-form-radio').each(function () {
-        var plugin = $(this).data('uxFormRadio');
-        if (plugin) {
-          plugin.destroy();
-        }
-      });
+    detach: function (context, setting, trigger) {
+      if (trigger === 'unload') {
+        $(context).find('.ux-form-radio').each(function () {
+          var plugin = $(this).data('uxFormRadio');
+          if (plugin) {
+            plugin.destroy();
+          }
+        });
+      }
     }
   };
 

@@ -9,16 +9,16 @@
     this.element = element;
     this.$element = $(this.element);
 
-    if (this.isSupported()) {
-      this._name = pluginName;
-      this._defaults = $.fn.uxFormSelect.defaults;
-      this.options = $.extend({}, this._defaults, options);
-      this.uniqueId = Drupal.Ux.guid();
-      this.init();
-    }
-    else {
-      this.$element.addClass('invalid');
-    }
+    // if (this.isSupported()) {
+    this._name = pluginName;
+    this._defaults = $.fn.uxFormSelect.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.uniqueId = Drupal.Ux.guid();
+    this.init();
+    // }
+    // else {
+    //   this.$element.addClass('invalid');
+    // }
   }
 
   // Avoid Plugin.prototype conflicts
@@ -30,6 +30,7 @@
     init: function () {
       this.buildCache();
       this.buildElement();
+      this.evaluateElement();
       this.bindEvents();
     },
 
@@ -46,9 +47,9 @@
      */
     buildCache: function () {
       this.$field = this.$element.find('select');
-      this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input"></div>');
+      this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input ux-form-input-js"></div>');
       this.$caret = $('<span class="ux-form-select-caret">&#9660;</span>');
-      this.$trigger = $('<input class="ux-form-input-item" readonly="true"></input>');
+      this.$trigger = $('<input class="ux-form-input-item ux-form-input-item-js" ' + (this.isDisabled() ? 'disabled' : '') + '></input>');
       this.$hidden = $('<input class="ux-form-select-hidden"></input>');
       this.$dropdown = $('<ul class="ux-form-select-dropdown"></ul>');
       this.multiple = (this.$field.attr('multiple')) ? true : false;
@@ -66,20 +67,20 @@
      */
     buildElement: function () {
       var _this = this;
-      this.loadOptionsFromSelect();
-      this.updateTrigger();
-      Drupal.attachBehaviors(this.$element[0]);
+      _this.loadOptionsFromSelect();
+      _this.updateTrigger();
+      Drupal.attachBehaviors(_this.$element[0]);
 
-      if (this.options.debug) {
-        this.$field.show();
+      if (_this.options.debug) {
+        _this.$field.show();
         setTimeout(function () {
           _this.$trigger.trigger('tap');
         }, 500);
       }
 
       // Copy tabindex
-      if (this.$field.attr('tabindex')) {
-        this.$trigger.attr('tabindex', this.$field.attr('tabindex'));
+      if (_this.$field.attr('tabindex')) {
+        _this.$trigger.attr('tabindex', _this.$field.attr('tabindex'));
       }
 
       setTimeout(function () {
@@ -88,76 +89,37 @@
     },
 
     /*
+    Evaluate element. Runs on init and state changes.
+     */
+    evaluateElement: function () {
+      var _this = this;
+
+      // Check if field is required.
+      if (_this.isRequired()) {
+        _this.$field.removeAttr('required');
+        _this.$trigger.attr('required', 'required');
+      }
+    },
+
+    /*
     Bind events that trigger methods.
     */
     bindEvents: function () {
       var _this = this;
-      // _this.$trigger.on('tap' + '.' + _this._name, function (e) {
-      //   _this.populateDropdown.call(_this);
-      //   _this.showDropdown.call(_this);
-      // });
-      // _this.$trigger.on('tapstart' + '.' + _this._name, function (e) {
-      //   // e.preventDefault();
-      //   // e.stopPropagation();
-      //   // _this.$trigger.blur();
-      // }).on('tap' + '.' + _this._name, function (e, touch) {
-      //   e.preventDefault();
-      //   e.stopPropagation();
-      //   // $(document).trigger('tap');
-      //   // _this.$trigger.blur();
-      //   // _this.$trigger.focus();
-      //   _this.populateDropdown.call(_this);
-      //   _this.showDropdown.call(_this);
-      //   // _this.$trigger.focus();
-      // }).on('focus' + '.' + _this._name, function (e) {
-      //   clearTimeout(_this.timeout);
-      //   console.log('focus');
-      // }).on('blur' + '.' + _this._name, function (e) {
-      //   console.log('blur');
-      //   _this.timeout = setTimeout(function() {
-      //     console.log('blur trigger');
-      //   }, 101);
-      // });
-      // _this.$dropdown.on('tap' + '.' + _this._name, '.selector', function (e) {
-      //   _this.onItemTap.call(_this, e);
-      //   setTimeout(function () {
 
-      //     // clearTimeout(_this.timeout);
-      //     _this.$trigger.focus();
-      //   }, 10);
-      // });
-      // _this.$dropdown.on('blur' + '.' + _this._name, function (e) {
-      //   console.log('BLUR DROPDOWN');
-      // });
-      // _this.$dropdown.on('keydown' + '.' + _this._name, function (e) {
-      //   console.log('ugh', e.which);
-
-      //   // TAB - switch to another input
-      //   if (e.which === 9) {
-      //     _this.closeDropdown.call(_this, e);
-      //     return;
-      //   }
-      // });
-      // _this.$dropdown.on('keyup' + '.' + _this._name, '.search-input', function (e) {
-      //   _this.onSearch.call(_this, e);
-      // });
-      // _this.$dropdown.on('tap' + '.' + _this._name, '.close', function (e) {
-      //   _this.closeDropdown.call(_this, e);
-      // });
-      // _this.$hidden.on('focus' + '.' + _this._name, function (e) {
-      //   e.preventDefault();
-      //   e.stopPropagation();
-      //   // _this.$trigger.trigger('tap');
-      //   _this.$trigger.focus();
-      //   _this.populateDropdown.call(_this);
-      //   _this.showDropdown.call(_this);
-      //   // _this.populateDropdown.call(_this);
-      //   // _this.showDropdown.call(_this);
-      // });
-
-      _this.$trigger.on('tap', function (e) {
-        _this.populateDropdown.call(_this);
-        _this.showDropdown.call(_this);
+      _this.$trigger.on('focus' + '.' + _this._name, function (e) {
+        // We blur as soon as the focus happens to avoid the cursor showing
+        // momentarily within the field.
+        $(this).blur();
+      }).on('tap' + '.' + _this._name, function (e) {
+        if (_this.isSupported()) {
+          _this.populateDropdown.call(_this);
+          _this.showDropdown.call(_this);
+        }
+        else {
+          e.preventDefault();
+          _this.$field.show().focus().hide();
+        }
       });
       _this.$dropdown.on('tap' + '.' + _this._name, '.selector', function (e) {
         _this.onItemTap.call(_this, e);
@@ -171,26 +133,25 @@
         _this.showDropdown.call(_this);
         _this.$trigger.focus();
       });
-      _this.$element.on('focusout', function (e) {
-        // if ($(e.target).closest(_this.$dropdown).length) {
-        //   _this.closeDropdown.call(_this);
-        // }
-        // var target = $(e.target);
-        // console.log('focusout', target);
-        // console.log('find', _this.$element.find(e.target).length);
-        // if ($(e.target, _this.$element).length === 0) {
-        //   _this.closeDropdown.call(_this);
-        // }
+
+      _this.$field.on('state:disabled' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
+      }).on('state:required' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
+      }).on('state:visible' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
+      }).on('state:collapsed' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
       });
 
-
-      // this.$field.on('change input',function(e,internal){
-      //   console.log('WTF');
-      //   // if (internal) return;
-      //   // return load(function(){
-      //   //   return this.$dropdown.find('.search-input').this.$trigger('keyup');
-      //   // });
-      // });
+      if (!_this.isSupported()) {
+        // On unsupported devies we rely on the device select widget and need
+        // to update the trigger upon change.
+        this.$field.on('change' + '.' + _this._name, function (e) {
+          _this.loadOptionsFromSelect();
+          _this.updateTrigger();
+        });
+      }
     },
 
     /*
@@ -199,6 +160,7 @@
     unbindEvents: function () {
       this.$element.off('.' + this._name);
       this.$dropdown.off('.' + this._name);
+      this.$field.off('.' + this._name);
       $(document).off('.' + this._name);
     },
 
@@ -340,7 +302,14 @@
     },
 
     updateTrigger: function () {
-      this.$trigger.val(this.htmlDecode(this.getSelectedOptions('text').join(', ')));
+      var value = this.getSelectedOptions('value').join('');
+      if (value === null || value === '' || value === '_none') {
+        this.$trigger.val('');
+        this.$trigger.attr('placeholder', this.htmlDecode(this.getSelectedOptions('text').join(', ')));
+      }
+      else {
+        this.$trigger.val(this.htmlDecode(this.getSelectedOptions('text').join(', ')));
+      }
     },
 
     updateSearch: function () {
@@ -443,6 +412,21 @@
       _this.$hidden.attr('readonly', false);
     },
 
+    /*
+    Check if element is required.
+     */
+    isRequired: function () {
+      var required = this.$field.attr('required');
+      return typeof required !== 'undefined';
+    },
+
+    /*
+    Check if element is disabled.
+     */
+    isDisabled: function () {
+      return this.$field.is(':disabled');
+    },
+
     isSupported: function () {
       if (window.navigator.appName === 'Microsoft Internet Explorer') {
         return document.documentMode >= 8;
@@ -481,13 +465,15 @@
       var $context = $(context);
       $context.find('.ux-form-select').once('ux-form-select').uxFormSelect();
     },
-    detach: function (context) {
-      $(context).find('.ux-form-select').each(function () {
-        var plugin = $(this).data('uxFormSelect');
-        if (plugin) {
-          plugin.destroy();
-        }
-      });
+    detach: function (context, setting, trigger) {
+      if (trigger === 'unload') {
+        $(context).find('.ux-form-select').each(function () {
+          var plugin = $(this).data('uxFormSelect');
+          if (plugin) {
+            plugin.destroy();
+          }
+        });
+      }
     }
   };
 

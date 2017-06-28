@@ -8,9 +8,4 @@
   transform: translate3d(0, -100%, 0);
 }
 
-.ux-blur .ux-header {
-  position: static !important;
-  margin: 0 !important;
-}
-
 /*# sourceMappingURL=ux-header.css.map */

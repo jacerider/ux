@@ -27,13 +27,14 @@ class UxFormExampleForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['select'] = ['#open' => TRUE] + $this->buildSelect($form_state);
-    // $form['textarea'] = $this->buildTextarea($form_state);
-    $form['checkbox'] = $this->buildCheckbox($form_state);
-    // $form['radio'] = $this->buildRadio($form_state);
-    // $form['textfield'] = $this->buildTextfield($form_state);
-    // $form['date'] = $this->buildDate($form_state);
-    // $form['other'] = $this->buildOther($form_state);
+    $form['mix'] = ['#open' => TRUE] + $this->buildMix($form_state);
+    // $form['select'] = ['#open' => TRUE] + $this->buildSelect($form_state);
+    // $form['textarea'] = ['#open' => TRUE] + $this->buildTextarea($form_state);
+    // $form['checkbox'] = ['#open' => TRUE] + $this->buildCheckbox($form_state);
+    // $form['radio'] = ['#open' => TRUE] + $this->buildRadio($form_state);
+    // $form['textfield'] = ['#open' => TRUE] + $this->buildTextfield($form_state);
+    // $form['date'] = ['#open' => TRUE] + $this->buildDate($form_state);
+    // $form['other'] = ['#open' => TRUE] + $this->buildOther($form_state);
 
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = [
@@ -42,6 +43,57 @@ class UxFormExampleForm extends FormBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * Demo mix.
+   */
+  protected function buildMix(FormStateInterface $form_state) {
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Mix'),
+    ];
+
+    $element['textfield'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+    ];
+
+    $element['select'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#empty_option' => '- None -',
+    ];
+
+    $element['textfield2'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+    ];
+
+    $element['radios'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Radios'),
+      '#options' => ['One', 'Two', 'Three'],
+    ];
+
+    $element['textfield3'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+    ];
+
+    $element['checkboxes'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Checkboxes'),
+      '#options' => ['One', 'Two', 'Three'],
+    ];
+
+    $element['textfield4'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield'),
+    ];
+
+    return $element;
   }
 
   /**
@@ -195,16 +247,11 @@ class UxFormExampleForm extends FormBase {
       '#empty_option' => '- None -',
     ];
 
-    // $element['select2'] = [
-    //   '#type' => 'select',
-    //   '#title' => $this->t('Select Multiple'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    //   '#multiple' => TRUE,
-    // ];
-
-    $element['textfield'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield'),
+    $element['select2'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select Multiple'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#multiple' => TRUE,
     ];
 
     $element['select3'] = [
@@ -226,17 +273,12 @@ class UxFormExampleForm extends FormBase {
       ],
     ];
 
-    $element['textfield2'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Textfield'),
+    $element['select5'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#disabled' => TRUE,
     ];
-
-    // $element['select5'] = [
-    //   '#type' => 'select',
-    //   '#title' => $this->t('Select'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    //   '#disabled' => TRUE,
-    // ];
 
     return $element;
   }
@@ -432,6 +474,8 @@ class UxFormExampleForm extends FormBase {
     */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+
+    $form_state->setError($form['select'], $this->t('Select error'));
   }
 
   /**

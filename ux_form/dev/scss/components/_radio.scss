@@ -3,6 +3,18 @@
 
   &.fieldgroup {
     display: block;
+
+    > legend {
+
+      > .fieldset-legend {
+        @include label;
+        // @include label-active;
+      }
+    }
+
+    > .fieldset-wrapper {
+      margin: 0;
+    }
   }
 
   .ux-form-radio {
@@ -46,6 +58,13 @@
       background-color: transparent;
     }
 
+    &:before {
+
+      .error & {
+        border-color: $error-color;
+      }
+    }
+
     &:after {
       border: $radio-border-color;
       background-color: $radio-active-color;
@@ -75,7 +94,7 @@
       }
 
       &:after {
-        transform: scale(0.6);
+        transform: scale(0.55);
       }
     }
   }
@@ -84,6 +103,10 @@
 
     label.option {
       color: $radio-disabled-color;
+    }
+
+    .ux-ripple {
+      display: none;
     }
   }
 

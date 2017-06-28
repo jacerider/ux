@@ -2,17 +2,20 @@
 
 namespace Drupal\ux_offcanvas_menu\Plugin\Block;
 
+use Drupal\ux_aside\Plugin\Block\UxAsideBlockBase;
+use Drupal\ux_aside\UxAsideManagerInterface;
+
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Menu\MenuLinkTree;
-use Drupal\Core\Menu\MenuActiveTrail;
+use Drupal\Core\Menu\MenuLinkTreeInterface;
+use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\ux_offcanvas\UxOffcanvasManagerInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\ux_offcanvas_menu\UxOffcanvasMenuLink;
+use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * Provides a 'UxOffcanvasMenu' block.
@@ -22,7 +25,7 @@ use Drupal\ux_offcanvas_menu\UxOffcanvasMenuLink;
  *  admin_label = @Translation("Offcanvas Menu"),
  * )
  */
-class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterface {
+class UxOffcanvasMenu extends UxAsideBlockBase {
 
   /**
    * Drupal\Core\Menu\MenuLinkTree definition.
@@ -38,27 +41,6 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
   protected $menuActiveTrail;
 
   /**
-   * The entity manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The offcanvas manager.
-   *
-   * @var \Drupal\ux_offcanvas\UxOffcanvasManagerInterface
-   */
-  protected $uxOffcanvasManager;
-
-  /**
-   * The offcanvas object.
-   *
-   * @var \Drupal\ux_offcanvas\UxOffcanvas
-   */
-  protected $uxOffcanvas;
-
-  /**
    * Construct.
    *
    * @param array $configuration
@@ -67,26 +49,15 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
    *   The plugin_id for the plugin instance.
    * @param string $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\ux_aside\UxAsideManagerInterface $ux_aside_manager
+   *   The aside manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    MenuLinkTree $menu_link_tree,
-    MenuActiveTrail $menu_active_trail,
-    EntityTypeManagerInterface $entity_type_manager,
-    UxOffcanvasManagerInterface $ux_offcanvas_manager
-  ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, UxAsideManagerInterface $ux_aside_manager, EntityTypeManagerInterface $entity_type_manager, MenuLinkTreeInterface $menu_link_tree, MenuActiveTrailInterface $menu_active_trail) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $ux_aside_manager, $entity_type_manager);
     $this->menuLinkTree = $menu_link_tree;
     $this->menuActiveTrail = $menu_active_trail;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->uxOffcanvasManager = $ux_offcanvas_manager;
-    $this->uxOffcanvas = $this->uxOffcanvasManager->addOffcanvas($plugin_id)
-      ->addCacheTags($this->getCacheTags())
-      ->addCacheContexts($this->getCacheContexts());
   }
 
   /**
@@ -97,10 +68,10 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('menu.link_tree'),
-      $container->get('menu.active_trail'),
+      $container->get('ux_aside.manager'),
       $container->get('entity_type.manager'),
-      $container->get('ux_offcanvas.manager')
+      $container->get('menu.link_tree'),
+      $container->get('menu.active_trail')
     );
   }
 
@@ -114,29 +85,17 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       'secondary_menu_title' => '',
       'depth' => 3,
       'trail' => 'breadcrumb',
-      'text' => $this->t('Menu'),
-      'icon' => '',
-      'icon_only' => FALSE,
-      'position' => 'left',
+      'animation' => 'slide',
       'header' => '',
       'footer' => '',
     ] + parent::defaultConfiguration();
-
   }
 
   /**
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state) {
-    // Get the theme.
-    $theme = $form_state->get('block_theme');
-    $theme_blocks = $this->entityTypeManager->getStorage('block')->loadByProperties(['theme' => $theme]);
-    $block_options = [];
-    if (!empty($theme_blocks)) {
-      foreach ($theme_blocks as $block) {
-        $block_options[$block->id()] = $block->label();
-      }
-    }
+    $form = parent::blockForm($form, $form_state);
 
     $form['menus'] = [
       '#type' => 'details',
@@ -195,69 +154,45 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       '#required' => TRUE,
     ];
 
-    if (!empty($block_options)) {
+    $form['menus']['animation'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Menu animation'),
+      '#default_value' => $this->configuration['animation'],
+      '#options' => [
+        'slide' => $this->t('Slide'),
+        'fade' => $this->t('Fade'),
+      ],
+      '#required' => TRUE,
+    ];
 
+
+    // Get the theme.
+    $theme = $form_state->get('block_theme');
+    $options = $this->getBlockOptions($theme);
+    if (!empty($options)) {
       $form['blocks'] = [
         '#type' => 'details',
         '#title' => $this->t('Blocks'),
         '#open' => TRUE,
       ];
-      $form['blocks']['header'] = array(
+      $form['blocks']['header'] = [
         '#type' => 'select',
         '#title' => t('Header'),
         '#description' => t('A block placed in the header of the mobile menu element.'),
-        '#options' => ['' => t('- None -')] + $block_options,
+        '#options' => ['' => t('- None -')] + $options,
         '#default_value' => $this->configuration['header'],
-      );
-      $form['blocks']['footer'] = array(
+      ];
+      $form['blocks']['footer'] = [
         '#type' => 'select',
         '#title' => t('Footer'),
         '#description' => t('A block placed in the footer of the mobile menu element.'),
-        '#options' => ['' => t('- None -')] + $block_options,
+        '#options' => ['' => t('- None -')] + $options,
         '#default_value' => $this->configuration['footer'],
-      );
-    }
-
-    $form['offcanvas'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Offcanvas Settings'),
-      '#open' => TRUE,
-    ];
-
-    $form['offcanvas']['text'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Menu trigger link text'),
-      '#description' => $this->t('The text to be placed within the link that will trigger the offcanvas element.'),
-      '#default_value' => $this->configuration['text'],
-      '#required' => TRUE,
-    ];
-
-    if (\Drupal::moduleHandler()->moduleExists('micon') && function_exists('micon')) {
-      $form['offcanvas']['icon'] = [
-        '#type' => 'micon',
-        '#title' => $this->t('Icon'),
-        '#default_value' => $this->configuration['icon'],
-
-      ];
-      $form['offcanvas']['icon_only'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Icon Only'),
-        '#default_value' => $this->configuration['icon_only'],
       ];
     }
-
-    $form['offcanvas']['position'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Offcanvas element position'),
-      '#default_value' => $this->configuration['position'],
-      '#options' => [
-        'left' => $this->t('Left'),
-        'right' => $this->t('Right'),
-        'top' => $this->t('Top'),
-        'bottom' => $this->t('Bottom'),
-      ],
-      '#required' => TRUE,
-    ];
+    else {
+      $form['block']['#markup'] = $this->t('No blocks are available for selection.');
+    }
 
     return $form;
   }
@@ -266,8 +201,9 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
+    parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
-    foreach (['menus', 'blocks', 'offcanvas'] as $key) {
+    foreach (['menus', 'blocks'] as $key) {
       foreach ($values[$key] as $id => $value) {
         $this->configuration[$id] = $value;
       }
@@ -278,24 +214,48 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function build() {
-    $text = $this->configuration['text'];
-    $icon = $this->configuration['icon'];
-    $position = $this->configuration['position'];
-    $header = $this->configuration['header'];
-    $footer = $this->configuration['footer'];
+    $build = [];
 
     $content = [
       '#theme' => 'ux_offcanvas_menu_wrapper',
       '#menu' => $this->buildMenu(),
     ];
 
+    $build = $this->uxAside->setContent($content)->toRenderArray();
+    // if ($block = $this->loadBlock()) {
+    //   $content = $this->entityTypeManager->getViewBuilder('block')->view($block);
+    //   $build = $this->uxAside->setContent($content)->toRenderArray();
+    // }
+    return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function _build() {
+    $text = $this->configuration['text'];
+    $icon = $this->configuration['icon'];
+    $position = $this->configuration['position'];
+    $size = $this->configuration['size'];
+    $header = $this->configuration['header'];
+    $footer = $this->configuration['footer'];
+    $cacheable_metadata = new CacheableMetadata();
+
+    $content = [
+      '#theme' => 'ux_offcanvas_menu_wrapper',
+      '#menu' => $this->buildMenu(),
+    ];
+    $cacheable_metadata = $cacheable_metadata->merge(CacheableMetadata::createFromRenderArray($content['#menu']));
+
     if ($header || $footer) {
       $block_storage = $this->entityTypeManager->getStorage('block');
       if ($header && $block = $block_storage->load($header)) {
         $content['#header']['block'] = $this->entityTypeManager->getViewBuilder('block')->view($block);
+        $cacheable_metadata = $cacheable_metadata->merge(CacheableMetadata::createFromRenderArray($content['#header']['block']));
       }
       if ($footer && $block = $block_storage->load($footer)) {
         $content['#footer']['block'] = $this->entityTypeManager->getViewBuilder('block')->view($block);
+        $cacheable_metadata = $cacheable_metadata->merge(CacheableMetadata::createFromRenderArray($content['#footer']['block']));
       }
     }
 
@@ -303,9 +263,12 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       $text = micon($text)->setIcon($icon)->setIconOnly($this->configuration['icon_only']);
     }
 
+    $cacheable_metadata->applyTo($content);
+
     return $this->uxOffcanvas->setTriggerText($text)
       ->setContent($content)
       ->setPosition($position)
+      ->setSize($size)
       ->toRenderableTrigger();
   }
 
@@ -336,7 +299,11 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $menu = $this->menuLinkTree->build($tree);
     $menu['#theme'] = 'ux_offcanvas_menu';
     $menu['#attributes']['data-depth'] = count(array_filter($active_trail)) - 1;
-    $menu['#trail'] = $this->configuration['trail'];
+    $settings = [
+      'trail' => $this->configuration['trail'],
+      'animation' => $this->configuration['animation'],
+    ];
+    $menu['#attached']['drupalSettings']['ux']['offcanvasMenu']['items'][$this->uxAside->id()] = $settings;
 
     return $menu;
   }
@@ -350,14 +317,14 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $parameters->setMaxDepth($depth);
     $parameters->expandedParents = [];
     $tree = $this->menuLinkTree->load($menu_name, $parameters);
-    $manipulators = array(
+    $manipulators = [
       // Show links to nodes that are accessible for the current user.
-      array('callable' => 'menu.default_tree_manipulators:checkNodeAccess'),
+      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
       // Only show links that are accessible for the current user.
-      array('callable' => 'menu.default_tree_manipulators:checkAccess'),
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       // Use the default sorting of menu links.
-      array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
-    );
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
     return $this->menuLinkTree->transform($tree, $manipulators);
   }
 
@@ -372,10 +339,31 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
    */
   protected function getMenuOptions(array $menu_names = NULL) {
     $menus = $this->entityTypeManager->getStorage('menu')->loadMultiple($menu_names);
-    $options = array();
+    $options = [];
     /** @var \Drupal\system\MenuInterface[] $menus */
     foreach ($menus as $menu) {
       $options[$menu->id()] = $menu->label();
+    }
+    return $options;
+  }
+
+  /**
+   * Load configured block.
+   */
+  protected function loadBlock($id) {
+    return $this->entityTypeManager->getStorage('block')->load($id);
+  }
+
+  /**
+   * Get available blocks as options.
+   */
+  protected function getBlockOptions($theme) {
+    $theme_blocks = $this->entityTypeManager->getStorage('block')->loadByProperties(['theme' => $theme]);
+    $options = [];
+    if (!empty($theme_blocks)) {
+      foreach ($theme_blocks as $block) {
+        $options[$block->id()] = $block->label();
+      }
     }
     return $options;
   }

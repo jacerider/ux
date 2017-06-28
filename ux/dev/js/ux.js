@@ -28,6 +28,9 @@
       var _this = this;
       // Initialize displace.
       displace();
+      var currentOffsets = displace.offsets;
+      var currentWidth = this.$window.width();
+      var currentHeight = this.$window.height();
 
       // Add document resize callback to resize event stack.
       _this.addResizeCallback($.proxy(_this.onResizeSetDocumentSize, _this));
@@ -35,8 +38,22 @@
       // Adjust the document size. This event happens automatically on
       // document resize debouce 200.
       _this.$document.on('drupalViewportOffsetChange.ux', function (event, offsets) {
-        // _this.onResizeSetDocumentSize();
-        _this.onResize(event);
+        // drupalViewportOffsetChange is called event with the sizing of the
+        // window nor the offsets have changed. We check for this so that we
+        // only call out resizing when necessary.
+        var width = _this.$window.width();
+        var height = _this.$window.height();
+        if (
+          offsets.top !== currentOffsets.top
+          || offsets.right !== currentOffsets.right
+          || offsets.bottom !== currentOffsets.bottom
+          || offsets.left !== currentOffsets.left
+          || width !== currentWidth
+          || height !== currentHeight
+        ) {
+          _this.onResize(event);
+          currentOffsets = offsets;
+        }
       });
 
       // Watch window for scroll and call onScrollCallbacks.

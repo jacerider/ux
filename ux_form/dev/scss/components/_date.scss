@@ -1,10 +1,18 @@
 
-// .ux-form-date {
-// }
+.ux-form-date {
+
+  .ux-form-input-item {
+    cursor: text;
+  }
+}
 
 .ux-form-time {
 
   .ux-form-input {
     margin: 0;
+  }
+
+  .ux-form-input-item {
+    cursor: text;
   }
 }

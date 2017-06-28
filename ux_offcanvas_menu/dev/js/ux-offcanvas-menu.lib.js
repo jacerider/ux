@@ -21,9 +21,8 @@
     this._defaults = _defaults;
     this.settings = $.extend(true, {}, this._defaults, options);
     this.element = $(element);
-    this.offcanvas = $(element).closest('.ux-offcanvas-item');
-    this.trail = $(this.settings.selector.trail, element).addClass('trail-type-' + this.settings.trailType);
-    this.menu = $(this.settings.selector.menu, element);
+    this.menu = $(this.settings.selector.menu, element).addClass('animation-type-' + this.settings.animation);
+    this.trail = $(this.settings.selector.trail, element).addClass('trail-type-' + this.settings.trail);
     this.links = $(this.settings.selector.links, element);
     this.trail_links = [];
 
@@ -33,16 +32,18 @@
     this.initialize = (function (_this) {
       return function () {
         _this.set_animator();
-        _this.offcanvas.on('ux_offcanvas_item.open', function () {
+        _this.element.on('opening', function () {
           if (!_this.initialized) {
             _this.bind_links();
             _this.show_level();
+            _this.initial_level = _this.level_get();
+            _this.initial_trail = $(_this.menu).find('.active-trail');
           }
           _this.visible = true;
           _this.initialized = true;
         });
-        _this.offcanvas.on('ux_offcanvas_item.close', function () {
-          _this.level_revert('0');
+        _this.element.on('closed', function () {
+          _this.level_revert();
           _this.visible = false;
         });
         _this.log('UX Offcanvas Menu has been initialized.');
@@ -52,7 +53,7 @@
     /*
      * Get current level.
      */
-    this.get_level = (function (_this) {
+    this.level_get = (function (_this) {
       return function () {
         var level = _this.menu.attr('data-depth');
         return level > 0 ? level : 0;
@@ -62,10 +63,25 @@
     /*
      * Get current level.
      */
-    this.set_level = (function (_this) {
+    this.level_set = (function (_this) {
       return function (level) {
         level = level > 0 ? level : 0;
         _this.menu.attr('data-depth', level);
+      };
+    })(this);
+
+    /**
+     * Revert to a level.
+     */
+    this.level_revert = (function (_this) {
+      return function () {
+        var level = _this.initial_level;
+        var width = _this.menu.width() * level;
+        setTimeout(function () {
+          _this.animate.to(_this.menu, 0, {x: width * -1});
+          _this.initial_trail.addClass('active-trail');
+          _this.show_level(level);
+        }, _this.settings.speed);
       };
     })(this);
 
@@ -74,15 +90,34 @@
      */
     this.show_level = (function (_this) {
       return function (level) {
-        level = level || _this.get_level();
+        level = level || _this.level_get();
         var width = _this.menu.width() * level;
         var speed = _this.visible ? _this.settings.speed : 0.1;
-        _this.set_level(level);
-        _this.trail_build(level);
-        _this.animate.to(_this.menu, speed, {x: width * -1}).eventCallback('onComplete', function () {
-          $('ul[data-level="' + level + '"] li.active-trail', _this.menu).removeClass('active-trail');
-        });
+        _this.element.find('.current').removeClass('current');
 
+        var afterAnimation = function () {
+          $('ul[data-level="' + level + '"] .active-trail', _this.menu).removeClass('active-trail');
+
+          if (parseInt(level) === 0) {
+            _this.menu.addClass('current');
+          }
+          else {
+            _this.menu.find('.active-trail').last().addClass('current');
+          }
+        };
+
+        _this.level_set(level);
+        _this.trail_build(level);
+        if (this.settings.animation === 'fade') {
+          _this.animate.fromTo(_this.menu, speed / 2, {opacity: 1}, {opacity: 0}).eventCallback('onComplete', function () {
+            _this.animate.to(_this.menu, 0, {x: width * -1});
+            _this.animate.fromTo(_this.menu, speed / 2, {opacity: 0}, {opacity: 1});
+            afterAnimation();
+          });
+        }
+        else {
+          _this.animate.to(_this.menu, speed, {x: width * -1}).eventCallback('onComplete', afterAnimation);
+        }
       };
     })(this);
 
@@ -94,7 +129,7 @@
         var i;
         var link;
         var links = [];
-        level = level || _this.get_level();
+        level = level || _this.level_get();
 
         var trail_click = function (e) {
           e.preventDefault();
@@ -102,7 +137,7 @@
         };
 
         // Simple back trail.
-        if (_this.settings.trailType === 'back') {
+        if (_this.settings.trail === 'back') {
           _this.trail.html('');
           link = $('<a>Back</a>');
           if (level > 0) {
@@ -114,7 +149,12 @@
             links.push(1);
           }
           else {
-            _this.animate.to(link, _this.settings.speed, {opacity: 0});
+            if (_this.trail_links.length === 0) {
+              link.css({opacity: 0});
+            }
+            else {
+              _this.animate.to(link, _this.settings.speed, {opacity: 0});
+            }
           }
           link.appendTo(_this.trail);
         }
@@ -177,21 +217,21 @@
           var path = $(this).attr('href');
           // If we are set to show at the base level BUT we have a URL match,
           // we want to set the active trail.
-          if (!_this.get_level() && path === windowPath) {
+          if (!_this.level_get() && path === windowPath) {
             $(this).parents('.children').addClass('active-trail');
-            var closestLevel = $(this).next('[data-level]').attr('data-level');
+            var closestLevel = $(this).siblings('[data-level]').attr('data-level');
             if (!closestLevel) {
               // If we do not have a child menu, use the parent level.
               closestLevel = $(this).closest('[data-level]').attr('data-level');
             }
             if (closestLevel) {
-              _this.set_level(closestLevel);
+              _this.level_set(closestLevel);
             }
           }
           // If parent items are actual links, we want to append them to the
           // children so they are still accessible.
           if (path) {
-            var child = $(this).next('ul[data-level]');
+            var child = $(this).siblings('[data-level]');
             if (child.length) {
               $(this).clone().prependTo(child).wrap('<li class="parent"></li>');
             }
@@ -199,7 +239,7 @@
         });
 
         _this.links.on('click', function (e) {
-          var child = $(this).next('[data-level]');
+          var child = $(this).siblings('[data-level]');
           if (child.length) {
             _this.log('Child Found:', child);
             e.preventDefault();
@@ -210,20 +250,6 @@
           else {
             _this.log('No Child Found');
           }
-        });
-      };
-    })(this);
-
-    /**
-     * Revert to a level.
-     */
-    this.level_revert = (function (_this) {
-      return function (level) {
-        var width = _this.menu.width() * level;
-        _this.set_level(level);
-        _this.animate.to(_this.menu, _this.settings.speed, {x: width * -1}).eventCallback('onComplete', function () {
-          // $('ul[data-level="' + level + '"] li.active-trail', _this.menu).removeClass('active-trail');
-          // _this.trail_build();
         });
       };
     })(this);
@@ -279,7 +305,7 @@
 
   $.fn.ux_offcanvas_menu = function (opts) {
     return this.each(function (index, element) {
-      if (!$.data(element, 'ux_offcanvas')) {
+      if (!$.data(element, 'ux_offcanvas_menu')) {
         return $.data(element, 'ux_offcanvas_menu', new $.ux_offcanvas_menu(element, opts));
       }
     });

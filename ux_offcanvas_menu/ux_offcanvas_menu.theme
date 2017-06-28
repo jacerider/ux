@@ -8,7 +8,8 @@ use Drupal\Core\Template\Attribute;
 function ux_offcanvas_menu_preprocess_ux_offcanvas_menu(&$variables) {
   $variables['#attached']['library'][] = 'ux_offcanvas_menu/ux_offcanvas_menu';
   $variables['attributes']['class'][] = 'ux-offcanvas-menu';
-  $variables['attributes']['data-trail'] = $variables['trail'];
+  // $variables['attributes']['data-trail'] = $variables['trail'];
+  // $variables['attributes']['data-animation'] = $variables['animation'];
   // Appending parent items has been moved to javascript.
   // ux_offcanvas_menu_mobile_append_parent($variables['items']);
 }

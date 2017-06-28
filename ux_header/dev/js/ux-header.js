@@ -16,18 +16,20 @@
 
   $.extend(UxHeader.prototype, /** @lends Drupal.UxHeader# */{
     lastScrollTop: 0,
-    delta: 100,
+    delta: 50,
     direction: '',
     fixed: false,
+    offset: {},
 
     initialize: function () {
       var _this = this;
       _this.$header.wrap('<div class="ux-header-wrapper"></div>');
       _this.$wrapper = _this.$header.parent();
+      _this.reset();
 
       // Setup resizing.
       Drupal.Ux.addResizeCallback($.proxy(function () {
-        _this.resize();
+        _this.onResize();
       }, _this));
 
       // Setup resizing.
@@ -37,28 +39,54 @@
 
       // Position floating bar.
       _this.$header.addClass('ux-header');
-      _this.resize();
+      setTimeout(function () {
+        _this.onResize();
+      }, 100);
     },
 
-    resize: function () {
+    reset: function () {
       var _this = this;
       _this.$wrapper.removeAttr('style');
       _this.$header.removeAttr('style');
+      _this.$header.removeClass('ux-header-float ux-header-hide');
+    },
 
-      var height = _this.$header.outerHeight();
-      var width = _this.$header.outerWidth();
-      _this.$wrapper.css({width: width, height: height});
+    calcSize: function () {
+      var _this = this;
+      _this.offset = _this.$header.offset();
+      _this.width = _this.$header.outerWidth();
+      _this.height = _this.$header.outerHeight();
+    },
 
-      var offset = _this.$header.offset();
+    setSize: function () {
+      var _this = this;
+      _this.$wrapper.css({width: _this.width, height: _this.height});
+    },
+
+    float: function () {
+      var _this = this;
       _this.$header.css({
+        display: 'none',
         position: 'fixed',
-        marginLeft: (offset.left - displace.offsets.left),
-        marginRight: (offset.left - displace.offsets.right),
-        maxWidth: width,
+        marginLeft: (_this.offset.left - displace.offsets.left),
+        marginRight: (_this.offset.left - displace.offsets.right),
+        maxWidth: _this.width,
         top: displace.offsets.top,
         left: displace.offsets.left,
         right: displace.offsets.right
       });
+      _this.$header.addClass('ux-header-hide ux-header-float ux-header-alt');
+      setTimeout(function () {
+        _this.$header.css({display: ''});
+      }, 10);
+    },
+
+    onResize: function () {
+      var _this = this;
+      _this.reset();
+      _this.calcSize();
+      _this.setSize();
+
     },
 
     scroll: function () {
@@ -66,41 +94,48 @@
       var scrollTop = Math.abs(_this.$window.scrollTop());
       var lastScrollTop = _this.lastScrollTop;
       var currentDirection = '';
+      var endFloat = (_this.offset.top - displace.offsets.top);
+      endFloat = endFloat >= 0 ? endFloat : 0;
+      var startFloat = endFloat + _this.height;
 
-      // Toggle float class.
-      if (scrollTop >= _this.delta) {
-        if (!_this.fixed) {
+      if (scrollTop > startFloat) {
+        if (_this.fixed === false) {
           _this.fixed = true;
-          _this.$header.addClass('ux-header-float');
+          _this.float();
         }
-      }
-      else if (_this.fixed) {
-        _this.fixed = false;
-        _this.$header.removeClass('ux-header-float');
-      }
 
-      // Make sure scroll is more than delta.
-      if (Math.abs(lastScrollTop - scrollTop) <= _this.delta) {
-        return;
-      }
+        // Make sure scroll is more than delta.
+        if (Math.abs(lastScrollTop - scrollTop) <= _this.delta) {
+          return;
+        }
 
-      // Determine direction.
-      if (scrollTop > lastScrollTop) {
-        currentDirection = 'down';
-      }
-      else {
-        currentDirection = 'up';
-      }
-
-      if (_this.direction !== currentDirection) {
-        // Toggle hide class.
-        if (currentDirection === 'down') {
-          _this.$header.addClass('ux-header-hide');
+        // Determine direction.
+        if (scrollTop > lastScrollTop) {
+          currentDirection = 'down';
         }
         else {
-          _this.$header.removeClass('ux-header-hide');
+          currentDirection = 'up';
         }
-        _this.direction = currentDirection;
+
+        if (_this.direction !== currentDirection) {
+          // Toggle hide class.
+          if (currentDirection === 'down') {
+            _this.$header.addClass('ux-header-hide');
+          }
+          else {
+            _this.$header.removeClass('ux-header-hide');
+          }
+          _this.direction = currentDirection;
+        }
+
+      }
+      else if (_this.fixed === true) {
+        _this.$header.removeClass('ux-header-alt');
+        if (scrollTop <= endFloat) {
+          _this.fixed = false;
+          _this.reset();
+          _this.setSize();
+        }
       }
 
       _this.lastScrollTop = scrollTop;

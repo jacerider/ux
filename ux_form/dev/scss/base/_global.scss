@@ -9,17 +9,51 @@
     text-rendering: optimizeLegibility;
   }
 
+  label {
+    @include label;
+  }
+
+  // .ux-form-element {
+  //   position: relative;
+  // }
+
+  .required label,
+  label.form-required, // sass-lint:disable-line no-qualifying-elements
+  [required] .fieldset-legend {
+
+    &:after {
+      content: '*';
+      color: $error-color;
+      display: inline-block;
+      padding-left: rem-calc(3);
+      font-size: 13px;
+    }
+  }
+
+  .field-error {
+    color: $error-color;
+    padding: 0 0 10px;
+    font-weight: bold;
+    font-size: $label-font-size;
+  }
+
   .form-item {
     margin: $form-item-margin;
     padding: 0;
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
     .description {
       font-size: $form-item-description-size;
       color: $form-item-description-color;
+    }
+  }
+
+  // Will affect field API fields.
+  .field-wrapper {
+    margin: $form-item-margin;
+    padding: 0;
+
+    .form-item {
+      margin: 0;
     }
   }
 }

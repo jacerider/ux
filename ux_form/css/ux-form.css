@@ -1,9 +1,34 @@
 .ux-form label,
 .ux-form .fieldgroup > legend .fieldset-legend {
-  font-size: 0.75rem;
-  color: #9e9e9e;
+  font-size: 0.875rem;
+  color: #666666;
   font-weight: normal;
   text-rendering: optimizeLegibility;
+}
+
+.ux-form label {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 0.875rem;
+  text-transform: none;
+  padding-bottom: 6px;
+}
+
+.ux-form .required label:after,
+.ux-form label.form-required:after,
+.ux-form [required] .fieldset-legend:after {
+  content: '*';
+  color: #e54040;
+  display: inline-block;
+  padding-left: 0.1875rem;
+  font-size: 13px;
+}
+
+.ux-form .field-error {
+  color: #e54040;
+  padding: 0 0 10px;
+  font-weight: bold;
+  font-size: 0.875rem;
 }
 
 .ux-form .form-item {
@@ -11,13 +36,18 @@
   padding: 0;
 }
 
-.ux-form .form-item:last-child {
-  margin-bottom: 0;
-}
-
 .ux-form .form-item .description {
   font-size: 0.6875rem;
   color: #b3b3b3;
+}
+
+.ux-form .field-wrapper {
+  margin: 1.875rem 0;
+  padding: 0;
+}
+
+.ux-form .field-wrapper .form-item {
+  margin: 0;
 }
 
 .ux-form-inline {
@@ -58,6 +88,18 @@
 
 .ux-form-checkboxes.fieldgroup {
   display: block;
+}
+
+.ux-form-checkboxes.fieldgroup > legend > .fieldset-legend {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 0.875rem;
+  text-transform: none;
+  padding-bottom: 6px;
+}
+
+.ux-form-checkboxes.fieldgroup > .fieldset-wrapper {
+  margin: 0;
 }
 
 .ux-form-checkboxes .ux-form-checkbox {
@@ -117,6 +159,11 @@
   border-radius: 2px;
 }
 
+.error .ux-form-checkbox label.option:before, .error
+.ux-select-checkbox label.option:before {
+  border-color: #e54040;
+}
+
 .ux-form-checkbox label.option:after,
 .ux-select-checkbox label.option:after {
   top: 0.17857rem;
@@ -158,6 +205,11 @@
   color: #b3b3b3;
 }
 
+.ux-form-checkbox.form-disabled .ux-ripple,
+.ux-select-checkbox.form-disabled .ux-ripple {
+  display: none;
+}
+
 .ux-form-checkbox.ready label.option:before, .ux-form-checkbox.ready label.option:after,
 .ux-select-checkbox.ready label.option:before,
 .ux-select-checkbox.ready label.option:after {
@@ -169,21 +221,38 @@
   padding-right: 0.9375rem;
 }
 
+.ux-form-date .ux-form-input-item {
+  cursor: text;
+}
+
 .ux-form-time .ux-form-input {
   margin: 0;
+}
+
+.ux-form-time .ux-form-input-item {
+  cursor: text;
 }
 
 .ux-form fieldset:not(.fieldgroup) {
   display: block;
   position: relative;
   background-color: #f7f7f7;
-  padding: 3.75rem 1.875rem 1.875rem;
+  padding: 3.75rem 0 0;
 }
 
 .ux-form fieldset:not(.fieldgroup) > legend {
   position: absolute;
   top: 1.875rem;
   left: 1.875rem;
+  font-weight: 700;
+}
+
+.ux-form .fieldset-wrapper {
+  margin: 1.875rem;
+}
+
+.ux-form .fieldset-wrapper > *:last-child {
+  margin-bottom: 0;
 }
 
 .ux-form details {
@@ -192,10 +261,19 @@
 
 .ux-form details > summary {
   padding: 0;
+  font-weight: 700;
 }
 
 .ux-form details > .details-wrapper {
   padding: 0;
+}
+
+.ux-form details > *:last-child {
+  margin-bottom: 0;
+}
+
+.ux-form details > *:last-child > *:last-child {
+  margin-bottom: 0;
 }
 
 .ux-form-format .form-textarea-wrapper {
@@ -207,6 +285,8 @@
   display: flex;
   -ms-flex-flow: row wrap;
       flex-flow: row wrap;
+  -ms-flex-align: end;
+      align-items: flex-end;
   width: 100%;
   position: relative;
 }
@@ -218,14 +298,23 @@
   left: 0;
   font-size: 1rem;
   line-height: 2.5rem;
-  text-transform: none;
   pointer-events: none;
+  padding: 0 0.9375rem;
+}
+
+.ux-form-input .ux-form-input-line {
+  display: block;
+  height: 2px;
+  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#d9d9d9, #d9d9d9);
+  background-size: 0 2px, 100% 1px;
+  background-repeat: no-repeat;
+  background-position: center bottom, center calc(100% - 1px);
 }
 
 .ux-form-input .ux-form-input-item,
 .ux-form-input .field-prefix,
 .ux-form-input .field-suffix {
-  background-color: transparent;
+  background-color: #d9d9d9;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -234,15 +323,12 @@
   line-height: 2.5rem;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0 0.9375rem;
   font-size: 1rem;
   color: #333333;
   overflow: hidden;
   box-sizing: border-box;
-  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#d9d9d9, #d9d9d9);
-  background-size: 0 2px, 100% 1px;
-  background-repeat: no-repeat;
-  background-position: center bottom, center calc(100% - 1px);
+  transition: background 300ms;
 }
 
 .ux-form-input .ux-form-input-item:focus,
@@ -251,7 +337,7 @@
   border: 0;
   outline: 0;
   box-shadow: none;
-  background-color: transparent;
+  background-color: #d9d9d9;
 }
 
 .ux-form-input .ux-form-input-item.simple,
@@ -276,6 +362,7 @@
   -ms-flex: auto;
       flex: auto;
   width: 100%;
+  padding: 0 0.9375rem;
 }
 
 .ux-form-input .field-prefix,
@@ -285,15 +372,8 @@
   color: transparent;
 }
 
-.ux-form-input .field-prefix {
-  padding-right: 0.3125rem;
-}
-
-.ux-form-input .field-suffix {
-  padding-right: 0.3125rem;
-}
-
 .ux-form-input .description,
+.ux-form-input .ux-form-input-line,
 .ux-form-input .counter {
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
@@ -316,20 +396,27 @@
   right: 0;
   opacity: 0;
   font-size: 0.6875rem;
-  line-height: 2.5rem;
+  line-height: 0.875rem;
   color: #b3b3b3;
   text-transform: uppercase;
-  transition: all 350ms ease-out;
-  transform: translateY(-1.5rem);
+  transition: opacity 350ms ease-out;
+  transform: translateY(-1.21875rem);
+  white-space: nowrap;
 }
 
 .ux-form-input:hover > label {
   color: #757575;
 }
 
+.ux-form-input:hover .ux-form-input-item {
+  background-color: #e0e0e0;
+}
+
 .ux-form-input.active > label, .ux-form-input.force-active > label {
-  font-size: 0.75rem;
-  transform: translateY(-1.5rem);
+  font-size: 0.875rem;
+  line-height: 0.875rem;
+  transform: translateY(-1.21875rem);
+  padding: 0;
 }
 
 .ux-form-input.active .field-prefix,
@@ -342,26 +429,16 @@
   color: #1c98c1;
 }
 
-.ux-form-input.focus .ux-form-input-item,
-.ux-form-input.focus .field-prefix,
-.ux-form-input.focus .field-suffix {
+.ux-form-input.focus .ux-form-input-line {
   background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#d9d9d9, #d9d9d9);
   background-size: 100% 2px, 100% 1px;
 }
 
-.ux-form-input.valid .ux-form-input-item,
-.ux-form-input.valid .field-prefix,
-.ux-form-input.valid .field-suffix, .ux-form-input.valid.focus .ux-form-input-item,
-.ux-form-input.valid.focus .field-prefix,
-.ux-form-input.valid.focus .field-suffix {
+.ux-form-input.valid .ux-form-input-line, .ux-form-input.valid.focus .ux-form-input-line {
   background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#86c13d, #86c13d);
 }
 
-.ux-form-input.invalid .ux-form-input-item,
-.ux-form-input.invalid .field-prefix,
-.ux-form-input.invalid .field-suffix, .ux-form-input.invalid.focus .ux-form-input-item,
-.ux-form-input.invalid.focus .field-prefix,
-.ux-form-input.invalid.focus .field-suffix {
+.ux-form-input.invalid .ux-form-input-line, .ux-form-input.invalid.focus .ux-form-input-line {
   background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#e54040, #e54040);
 }
 
@@ -376,7 +453,7 @@
 }
 
 .ux-form-input.form-disabled .ux-form-input-item {
-  background-color: transparent;
+  background-color: #d9d9d9;
   color: #b3b3b3;
 }
 
@@ -384,38 +461,64 @@
   transition: all 350ms ease-out;
 }
 
-.ux-form-input.ready .ux-form-input-item,
-.ux-form-input.ready .field-prefix,
-.ux-form-input.ready .field-suffix {
+.ux-form-input.ready .ux-form-input-line {
   transition: all 350ms ease-out;
 }
 
 .ux-form ::-webkit-input-placeholder {
-  color: #999999;
+  color: #4d4d4d;
   font-style: italic;
   font-weight: 200;
 }
 
 .ux-form ::-moz-placeholder {
-  color: #999999;
+  color: #4d4d4d;
   font-style: italic;
   font-weight: 200;
 }
 
 .ux-form :-ms-input-placeholder {
-  color: #999999;
+  color: #4d4d4d;
   font-style: italic;
   font-weight: 200;
 }
 
 .ux-form ::placeholder {
-  color: #999999;
+  color: #4d4d4d;
   font-style: italic;
   font-weight: 200;
 }
 
+.password-strength .is-weak {
+  background-color: #c1ba3d;
+}
+
+.password-strength .is-fair {
+  background-color: #b2c13d;
+}
+
+.password-strength .is-good {
+  background-color: #9cc13d;
+}
+
+.password-strength .is-strong {
+  background-color: #86c13d;
+}
+
 .ux-form-radios.fieldgroup {
   display: block;
+}
+
+.ux-form-radios.fieldgroup > legend > .fieldset-legend {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 0.875rem;
+  text-transform: none;
+  padding-bottom: 6px;
+}
+
+.ux-form-radios.fieldgroup > .fieldset-wrapper {
+  margin: 0;
 }
 
 .ux-form-radios .ux-form-radio {
@@ -458,6 +561,10 @@
   background-color: transparent;
 }
 
+.error .ux-form-radio label.option:before {
+  border-color: #e54040;
+}
+
 .ux-form-radio label.option:after {
   border: #bfbfbf;
   background-color: #1c98c1;
@@ -483,11 +590,15 @@
 }
 
 .ux-form-radio.active label.option:after {
-  transform: scale(0.6);
+  transform: scale(0.55);
 }
 
 .ux-form-radio.form-disabled label.option {
   color: #b3b3b3;
+}
+
+.ux-form-radio.form-disabled .ux-ripple {
+  display: none;
 }
 
 .ux-form-radio.ready label.option:before, .ux-form-radio.ready label.option:after {
@@ -516,8 +627,41 @@
   display: block;
 }
 
+.ux-form-select .ux-form-input-item {
+  cursor: default;
+}
+
+.ux-form-select .ajax-progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  background: #fff;
+  padding: 0 10px 0 20px;
+  border-radius: 3px;
+  height: 2.5rem;
+  line-height: 2.5rem;
+}
+
+.ux-form-select .ajax-progress .throbber {
+  padding: 0 16px 0 0;
+}
+
+.ux-form-select.form-disabled > label {
+  color: #b3b3b3;
+}
+
+.ux-form-select.form-disabled .ux-form-input-item {
+  background-color: transparent;
+  color: #b3b3b3;
+}
+
 .ux-form-select .ux-form-select-wrapper {
   position: relative;
+}
+
+.ux-form-select .ux-form-select-wrapper:hover .ux-form-select-caret {
+  opacity: 1;
 }
 
 .ux-form-select .ux-form-select-caret {
@@ -530,6 +674,9 @@
   font-size: 10px;
   line-height: 10px;
   color: #b3b3b3;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 300ms;
 }
 
 .ux-form-select .ux-form-select-caret.disabled {
@@ -655,6 +802,14 @@
 .ux-form-select.animate .ux-form-select-dropdown {
   opacity: 1;
   transform: translate(0, 0);
+}
+
+.ux-form-text-format.filter-wrapper {
+  margin-top: -1.25rem;
+  margin-bottom: 1.875rem;
+  padding: 0;
+  border: 0;
+  overflow: visible;
 }
 
 /*# sourceMappingURL=ux-form.css.map */

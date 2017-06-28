@@ -13,6 +13,8 @@ use Drupal\Core\Form\FormStateInterface;
  *   label = @Translation("Checkboxes"),
  *   fieldTypes = {
  *     "list_field",
+ *     "taxonomy_index_tid",
+ *     "eref_node_titles",
  *   }
  * )
  */

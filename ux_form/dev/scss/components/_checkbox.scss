@@ -3,6 +3,18 @@
 
   &.fieldgroup {
     display: block;
+
+    > legend {
+
+      > .fieldset-legend {
+        @include label;
+        // @include label-active;
+      }
+    }
+
+    > .fieldset-wrapper {
+      margin: 0;
+    }
   }
 
   .ux-form-checkbox {
@@ -58,6 +70,10 @@
 
       &:before {
         border-radius: 2px;
+
+        .error & {
+          border-color: $error-color;
+        }
       }
 
       &:after {
@@ -110,6 +126,10 @@
       &.option {
         color: $checkbox-disabled-color;
       }
+    }
+
+    .ux-ripple {
+      display: none;
     }
   }
 

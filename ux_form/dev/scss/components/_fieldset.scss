@@ -7,12 +7,24 @@
       display: block;
       position: relative;
       background-color: $fieldset-bg-color;
-      padding: $form-padding * 2 $form-padding $form-padding;
+      padding: $form-padding * 2 0 0;
 
       > legend {
         position: absolute;
         top: $form-padding;
         left: $form-padding;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .fieldset-wrapper {
+    margin: $form-padding;
+
+    > * {
+
+      &:last-child {
+        margin-bottom: 0;
       }
     }
   }
@@ -22,10 +34,25 @@
 
     > summary {
       padding: 0;
+      font-weight: 700;
     }
 
     > .details-wrapper {
       padding: 0;
+    }
+
+    > * {
+
+      &:last-child {
+        margin-bottom: 0;
+
+        > * {
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
     }
   }
 }

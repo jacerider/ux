@@ -40,10 +40,10 @@ $form-item-font-size: rem-calc(16);
 /// Labels
 ////////////////////////////////////////////////////////////////////////////////
 
-$label-font-size: rem-calc(12);
-// $label-font-size: $form-item-font-size;
-$label-color: gray(38);
+$label-font-size: rem-calc(14);
+$label-color: gray(60);
 $label-hover-color: gray(54);
+$label-transform: translateY($form-item-margin-size * -0.65);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Inputs
@@ -58,7 +58,9 @@ $input-focus-color: $primary-color;
 $input-success-color: $success-color;
 $input-error-color: $error-color;
 $input-disabled-color: $form-item-disabled-color;
-$input-placeholder-color: gray(40);
+$input-placeholder-color: gray(70);
+$input-bg-color: gray(15);
+$input-bg-hover-color: gray(12);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Fieldset

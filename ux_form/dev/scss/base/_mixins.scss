@@ -1,0 +1,19 @@
+
+@mixin label() {
+  display: block;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  font-size: $label-font-size;
+  line-height: $label-font-size;
+  // line-height: $input-height;
+  text-transform: none;
+  padding-bottom: 6px;
+}
+
+@mixin label-active() {
+  font-size: $label-font-size;
+  line-height: $label-font-size;
+  transform: $label-transform;
+  // line-height: $input-font-size;
+}

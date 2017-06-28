@@ -8,6 +8,11 @@
       var $context = $(context);
       $context.find('.ux-form-date input.form-date').once('ux-form-date').each(function () {
         var $element = $(this);
+        $element.on('focus.ux-form-date', function (e) {
+          // We blur as soon as the focus happens to avoid the cursor showing
+          // momentarily within the field.
+          $(this).blur();
+        });
         var datepickerSettings = {};
         var dateFormat = $element.data('drupalDateFormat');
         datepickerSettings.format = 'mmmm d, yyyy';
@@ -35,14 +40,18 @@
     formatDateAsArray: function (string) {
       return string.split('-');
     },
-    detach: function (context) {
-      $(context).find('.ux-form-date input.form-date').each(function () {
-        var plugin = $(this).pickadate('picker');
-        if (typeof plugin === 'object') {
-          plugin.$node.val($(plugin._hidden).val());
-          plugin.stop();
-        }
-      });
+    detach: function (context, setting, trigger) {
+      if (trigger === 'unload') {
+        $(context).find('.ux-form-date input.form-date').each(function () {
+          var $element = $(this);
+          $element.off('.ux-form-date');
+          var plugin = $element.pickadate('picker');
+          if (typeof plugin === 'object') {
+            plugin.$node.val($(plugin._hidden).val());
+            plugin.stop();
+          }
+        });
+      }
     }
   };
 

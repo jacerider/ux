@@ -76,7 +76,8 @@
         _this.currentId = id;
         _this.$body.addClass('ux-offcanvas-active ux-offcanvas-' + instance.getPosition());
         instance.open();
-        _this.stopBodyScrolling(true);
+        // Not using as causes issues on mobile.
+        // _this.stopBodyScrolling(true);
         Drupal.Ux.blurContent();
         Drupal.Ux.showShadow(function (e) {
           _this.close();
@@ -123,17 +124,7 @@
     setup: function () {
       var _this = this;
       _this.settings = $.extend(true, {}, _this._defaults, _this.settings);
-
-      switch (_this.settings.position) {
-        case 'left':
-        case 'right':
-          _this.$offcanvas.width(_this.settings.size);
-          break;
-
-        default:
-          _this.$offcanvas.height(_this.settings.size);
-          break;
-      }
+      _this.size();
 
       if (_this.$trigger.length) {
         _this.$trigger.on('click.ux-offcanvas', function (e) {
@@ -148,6 +139,21 @@
       });
     },
 
+    size: function () {
+      var _this = this;
+      _this.$offcanvas.css(_this.getOffset());
+      switch (_this.settings.position) {
+        case 'left':
+        case 'right':
+          _this.$offcanvas.width(_this.getWidth());
+          break;
+
+        default:
+          _this.$offcanvas.height(_this.getHeight());
+          break;
+      }
+    },
+
     getId: function () {
       var _this = this;
       return _this.settings.id;
@@ -158,15 +164,23 @@
       return _this.settings.position;
     },
 
-    getSize: function () {
+    getWidth: function () {
       var _this = this;
-      return _this.settings.size;
+      var winSize = this.$window.width();
+      return _this.settings.size === 0 || _this.settings.size > winSize ? winSize : winSize;
+    },
+
+    getHeight: function () {
+      var _this = this;
+      var winSize = this.$window.height();
+      return _this.settings.size === 0 || _this.settings.size > winSize ? winSize : winSize;
     },
 
     open: function () {
       var _this = this;
       _this.isActive = true;
-      _this.$offcanvas.addClass('active').css(_this.getOffset());
+      _this.$offcanvas.addClass('active');
+      _this.size();
       _this.$offcanvas.trigger('ux_offcanvas_item.open');
       _this.$trigger.addClass('active');
       _this.$document.on('keyup.ux-offcanvas', function (e) {
@@ -190,7 +204,7 @@
       var _this = this;
       var position = _this.settings.position;
       var opposites = {left: 'right', right: 'left', top: 'bottom', bottom: 'top'};
-      var values = displace.offsets;
+      var values = jQuery.extend({}, displace.offsets);
       switch (position) {
         case 'top':
         case 'bottom':
@@ -206,17 +220,24 @@
     attach: function (context, settings) {
       if (settings.ux && settings.ux.offcanvas && settings.ux.offcanvas.items) {
         var $wrapper = $('#ux-offcanvas').once('ux-offcanvas');
-        var config;
         var $offcanvas;
         if ($wrapper.length) {
           for (var id in settings.ux.offcanvas.items) {
             if (settings.ux.offcanvas.items[id]) {
-              config = settings.ux.offcanvas.items[id];
-              $offcanvas = $('#ux-offcanvas-' + config.id, context);
-              UxOffcanvas.instances[id] = new UxOffcanvas($offcanvas, settings.ux.offcanvas.items[id]);
+              $offcanvas = $('#ux-offcanvas-' + id, context);
+              if ($offcanvas.length) {
+                UxOffcanvas.instances[id] = new UxOffcanvas($offcanvas, settings.ux.offcanvas.items[id]);
+              }
             }
           }
         }
+        Drupal.Ux.addResizeCallback(function () {
+          for (var i in UxOffcanvas.instances) {
+            if (UxOffcanvas.instances[i]) {
+              UxOffcanvas.instances[i].size();
+            }
+          }
+        });
       }
     }
   };

@@ -26,13 +26,15 @@ class UxOffcanvasManager implements UxOffcanvasManagerInterface, RefinableCachea
    *   The text of the trigger link.
    * @param mixed[] $content
    *   A render array.
+   * @param array $attributes
+   *   The attributes to add to the group wrapper.
    *
    * @return \Drupal\ux_offcanvas\UxOffcanvas
    *   An offcanvas object.
    */
-  public function addOffcanvas($id, $trigger_text = NULL, $content = NULL) {
+  public function addOffcanvas($id, $trigger_text = NULL, array $content = NULL, array $attributes = []) {
     $id = Html::getId($id);
-    self::$offcanvas[$id] = new UxOffcanvas($id, $trigger_text, $content);
+    self::$offcanvas[$id] = new UxOffcanvas($id, $trigger_text, $content, $attributes);
     return self::$offcanvas[$id];
   }
 

@@ -5,3 +5,9 @@ core: 8.x
 package: User Experience
 dependencies:
   - ux
+
+libraries-override:
+  # Replace an asset with another.
+  webform.element.inputmask:
+    js:
+      js/webform.element.inputmask.js: js/modules/webform/js/webform.element.inputmask.js

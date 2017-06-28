@@ -10,11 +10,16 @@
 
   Drupal.behaviors.uxOffcanvasMenu = {
     attach: function (context, settings) {
-      $('.ux-offcanvas-menu-wrapper').once('ux_offcanvas_menu').each(function () {
-        var options = {};
-        options.trailType = $(this).find('.ux-offcanvas-menu').attr('data-trail');
-        $(this).ux_offcanvas_menu(options);
-      });
+      if (settings.ux && settings.ux.offcanvasMenu && settings.ux.offcanvasMenu.items) {
+        for (var id in settings.ux.offcanvasMenu.items) {
+          if (settings.ux.offcanvasMenu.items[id]) {
+            var $element = $('#ux-aside-' + id);
+            if ($element.length) {
+              $element.ux_offcanvas_menu(settings.ux.offcanvasMenu.items[id]);
+            }
+          }
+        }
+      }
     }
   };
 

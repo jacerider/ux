@@ -20,12 +20,24 @@
   -ms-flex: auto;
       flex: auto;
   position: relative;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
+}
+
+.ux-offcanvas-menu-content .current > [data-level] {
+  overflow: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.ux-offcanvas-menu ul {
+.ux-offcanvas-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.ux-offcanvas-menu [data-level] {
   position: absolute;
   top: 0;
   left: 0;
@@ -37,12 +49,12 @@
   width: 100%;
 }
 
-.ux-offcanvas-menu ul ul {
+.ux-offcanvas-menu [data-level] [data-level] {
   display: none;
   left: 100%;
 }
 
-.ux-offcanvas-menu ul .active-trail > ul {
+.ux-offcanvas-menu [data-level] .active-trail > [data-level] {
   display: block;
 }
 
@@ -54,16 +66,16 @@
   display: inline-block;
 }
 
-.ux-offcanvas-menu-trail a.trail-type-breadcrumb::after {
+.ux-offcanvas-menu-trail.trail-type-breadcrumb a::after {
   content: ':';
   display: inline-block;
 }
 
-.ux-offcanvas-menu-trail a.trail-type-breadcrumb:last-child {
+.ux-offcanvas-menu-trail.trail-type-breadcrumb a:last-child {
   pointer-events: none;
 }
 
-.ux-offcanvas-menu-trail a.trail-type-breadcrumb:last-child::after {
+.ux-offcanvas-menu-trail.trail-type-breadcrumb a:last-child::after {
   display: none;
 }
 

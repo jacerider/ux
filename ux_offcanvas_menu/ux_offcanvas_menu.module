@@ -41,7 +41,8 @@ function ux_offcanvas_menu_theme($module_path) {
       'menu_name' => NULL,
       'items' => [],
       'attributes' => [],
-      'trail' => 'breadcrumb',
+      // 'trail' => 'breadcrumb',
+      // 'animation' => 'slide',
     ],
     'file' => 'ux_offcanvas_menu.theme',
   ];
