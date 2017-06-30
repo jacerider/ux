@@ -17,16 +17,16 @@
     openCount: 0,
 
     attach: function (context, settings) {
-      var self = this;
+      var _this = this;
       if (settings.ux && settings.ux.aside && settings.ux.aside.items) {
-        $(document).once('ux-aside').on('drupalViewportOffsetChange.ux-aside', self.resize());
-        self.resize();
+        $(document).once('ux-aside').on('drupalViewportOffsetChange.ux-aside', _this.resize());
+        _this.resize();
 
         for (var id in settings.ux.aside.items) {
           if (settings.ux.aside.items[id]) {
             var $element = $('#ux-aside-' + id).once('ux-aside');
             if ($element.length) {
-              var options = self.getOptions(settings, id);
+              var options = _this.getOptions(settings.ux.aside, id);
               $element.uxAside(options);
             }
             var $trigger = $('.ux-aside-trigger-' + id).once('ux-aside');
@@ -60,12 +60,12 @@
     },
 
     getOptions: function (settings, id) {
-      var self = this;
-      var options = $.extend({}, self._defaults, settings.ux.aside.options, settings.ux.aside.items[id]);
+      var _this = this;
+      var options = $.extend({}, _this._defaults, settings.options, settings.items[id]);
 
       // Callbacks
-      options.onOpening = self.onOpening;
-      options.onClosed = self.onClosed;
+      options.onOpening = _this.onOpening;
+      options.onClosed = _this.onClosed;
       if (options.attachTop && options.attachTop !== null && options.attachTop !== false) {
         options.top = 0;
       }

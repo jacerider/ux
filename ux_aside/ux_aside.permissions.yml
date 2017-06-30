@@ -1,2 +1,6 @@
+administer ux aside settings:
+  title: 'Administer UX Aside settings'
+  description: 'Configure site-wide UX Aside settings.'
+  restrict access: true
 view ux example asides:
   title: 'View UX Example Asides'

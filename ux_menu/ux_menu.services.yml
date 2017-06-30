@@ -1,0 +1,8 @@
+services:
+  ux_menu.link_tree:
+    class: Drupal\ux_menu\UxMenuLinkTree
+    arguments: ['@menu.tree_storage', '@plugin.manager.menu.link', '@router.route_provider', '@menu.active_trail', '@controller_resolver']
+  ux_menu.options:
+    class: Drupal\ux_menu\UxMenuOptions
+    arguments: ['@config.factory']
+

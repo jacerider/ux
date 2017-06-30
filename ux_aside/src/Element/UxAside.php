@@ -6,7 +6,7 @@ use Drupal\Core\Render\Element\RenderElement;
 use Drupal\ux_aside\UxAsideInterface;
 
 /**
- * Provides a render element for an aside..
+ * Provides a render element for an aside.
  *
  * @RenderElement("ux_aside")
  */
@@ -16,7 +16,6 @@ class UxAside extends RenderElement {
    * {@inheritdoc}
    */
   public function getInfo() {
-    $class = get_class($this);
     return [
       '#theme' => 'ux_aside',
       '#aside' => NULL,

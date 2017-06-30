@@ -15,7 +15,6 @@ class UxAsides extends RenderElement {
    * {@inheritdoc}
    */
   public function getInfo() {
-    $class = get_class($this);
     return [
       '#pre_render' => [
         [get_class(), 'generateLazyBuilder'],

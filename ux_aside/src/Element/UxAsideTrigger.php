@@ -16,7 +16,6 @@ class UxAsideTrigger extends RenderElement {
    * {@inheritdoc}
    */
   public function getInfo() {
-    $class = get_class($this);
     return [
       '#theme' => 'ux_aside_trigger',
       '#aside' => NULL,

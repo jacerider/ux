@@ -15,7 +15,6 @@ function ux_aside_theme($existing, $type, $theme, $path) {
         'content' => [],
         'attributes' => [],
       ],
-      'file' => 'ux_aside.theme',
     ],
     'ux_aside' => [
       'variables' => [
@@ -23,14 +22,12 @@ function ux_aside_theme($existing, $type, $theme, $path) {
         'attributes' => [],
         'content_attributes' => [],
       ],
-      'file' => 'ux_aside.theme',
     ],
     'ux_aside_trigger' => [
       'variables' => [
         'label' => [],
         'attributes' => [],
       ],
-      'file' => 'ux_aside.theme',
     ],
   ];
 }

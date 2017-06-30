@@ -1,0 +1,7 @@
+name: UX | Menu
+type: module
+description: Provides advanced menu features.
+core: 8.x
+package: User Experience
+dependencies:
+  - ux

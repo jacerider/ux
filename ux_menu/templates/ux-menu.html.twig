@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a UX menu.
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{attributes}}>
+  {% if header %}
+    <div class="ux-menu-header">
+      {{ header }}
+    </div>
+  {% endif %}
+  {{ nav }}
+  {% if footer %}
+    <div class="ux-menu-footer">
+      {{ footer }}
+    </div>
+  {% endif %}
+</div>

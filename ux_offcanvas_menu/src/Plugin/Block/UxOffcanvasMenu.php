@@ -54,8 +54,8 @@ class UxOffcanvasMenu extends UxAsideBlockBase {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, UxAsideManagerInterface $ux_aside_manager, EntityTypeManagerInterface $entity_type_manager, MenuLinkTreeInterface $menu_link_tree, MenuActiveTrailInterface $menu_active_trail) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $ux_aside_manager, $entity_type_manager);
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, UxAsideManagerInterface $ux_aside_manager, MenuLinkTreeInterface $menu_link_tree, MenuActiveTrailInterface $menu_active_trail) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $ux_aside_manager);
     $this->menuLinkTree = $menu_link_tree;
     $this->menuActiveTrail = $menu_active_trail;
   }
@@ -68,8 +68,8 @@ class UxOffcanvasMenu extends UxAsideBlockBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('ux_aside.manager'),
       $container->get('entity_type.manager'),
+      $container->get('ux_aside.manager'),
       $container->get('menu.link_tree'),
       $container->get('menu.active_trail')
     );

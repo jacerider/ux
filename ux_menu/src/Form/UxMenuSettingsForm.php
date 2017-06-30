@@ -1,33 +1,33 @@
 <?php
 
-namespace Drupal\ux_aside\Form;
+namespace Drupal\ux_menu\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\ux_aside\UxAsideOptions;
+use Drupal\ux_menu\UxMenuOptions;
 
 /**
- * Class UxAsideSettingsForm.
+ * Class UxMenuSettingsForm.
  *
- * @package Drupal\ux_aside\Form
+ * @package Drupal\ux_menu\Form
  */
-class UxAsideSettingsForm extends ConfigFormBase {
+class UxMenuSettingsForm extends ConfigFormBase {
 
   /**
-   * Drupal\ux_aside\UxAsideOptions definition.
+   * Drupal\ux_menu\UxMenuOptions definition.
    *
-   * @var \Drupal\ux_aside\UxAsideOptions
+   * @var \Drupal\ux_menu\UxMenuOptions
    */
-  protected $uxAsideOptions;
+  protected $uxMenuOptions;
 
   /**
-   * Constructs a new UxAsideSettingsForm object.
+   * Constructs a new UxMenuSettingsForm object.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, UxAsideOptions $ux_aside_options) {
+  public function __construct(ConfigFactoryInterface $config_factory, UxMenuOptions $ux_menu_options) {
     parent::__construct($config_factory);
-    $this->uxAsideOptions = $ux_aside_options;
+    $this->uxMenuOptions = $ux_menu_options;
   }
 
   /**
@@ -36,7 +36,7 @@ class UxAsideSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('ux_aside.options')
+      $container->get('ux_menu.options')
     );
   }
 
@@ -45,7 +45,7 @@ class UxAsideSettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'ux_aside.settings',
+      'ux_menu.settings',
     ];
   }
 
@@ -53,20 +53,20 @@ class UxAsideSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'ux_aside_settings';
+    return 'ux_menu_settings';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('ux_aside.settings');
+    $config = $this->config('ux_menu.settings');
 
     $form['options'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Default options'),
       '#tree' => TRUE,
-    ] + $this->uxAsideOptions->form();
+    ] + $this->uxMenuOptions->form();
 
     return parent::buildForm($form, $form_state);
   }

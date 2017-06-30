@@ -5,8 +5,8 @@ namespace Drupal\ux_aside\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\ux_aside\UxAsideInterface;
-use Drupal\ux_aside\UxAsideManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\ux_aside\UxAsideManagerInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -59,16 +59,16 @@ abstract class UxAsideBlockBase extends BlockBase implements ContainerFactoryPlu
    *   The plugin_id for the plugin instance.
    * @param string $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\ux_aside\UxAsideManagerInterface $ux_aside_manager
-   *   The aside manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\ux_aside\UxAsideManagerInterface $ux_aside_manager
+   *   The aside manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, UxAsideManagerInterface $ux_aside_manager, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, UxAsideManagerInterface $ux_aside_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entity_type_manager;
     $this->uxAsideManager = $ux_aside_manager;
     $this->uxAsideOptions = $ux_aside_manager->getOptionsService();
-    $this->entityTypeManager = $entity_type_manager;
     // The aside element is instantiated in the constructor due to caching.
     $uxAside = $this->buildAside();
     if ($uxAside instanceof UxAsideInterface) {
@@ -84,8 +84,8 @@ abstract class UxAsideBlockBase extends BlockBase implements ContainerFactoryPlu
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('ux_aside.manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('ux_aside.manager')
     );
   }
 

@@ -2,10 +2,7 @@
 
 namespace Drupal\ux_aside;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Component\Serialization\Yaml;
-use Drupal\Component\Utility\NestedArray;
+use Drupal\ux\UxOptionsBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Color;
 
@@ -14,66 +11,17 @@ use Drupal\Component\Utility\Color;
  *
  * @package Drupal\ux_aside
  */
-class UxAsideOptions implements UxAsideOptionsInterface {
-  use StringTranslationTrait;
+class UxAsideOptions extends UxOptionsBase {
 
   /**
-   * The options.
-   *
-   * @var Drupal\Core\Config\ImmutableConfig
+   * {@inheritdoc}
    */
-  protected $options;
-
-  /**
-   * The option defaults.
-   *
-   * @var array
-   */
-  protected static $defaults;
-
-  /**
-   * Constructs a new UxAsideOptions object.
-   */
-  public function __construct(ConfigFactoryInterface $options_factory) {
-    $this->options = $options_factory->get('ux_aside.settings');
+  public function getModuleId() {
+    return 'ux_aside';
   }
 
   /**
-   * Get default options as defined in the base settings yml file.
-   *
-   * @return array
-   *   The options array.
-   */
-  public function getDefaults() {
-    if (!isset(self::$defaults)) {
-      $file = drupal_get_path('module', 'ux_aside') . '/config/install/ux_aside.settings.yml';
-      $options = Yaml::decode(file_get_contents($file));
-      self::$defaults = isset($options['options']) ? $options['options'] : [];
-    }
-    return self::$defaults;
-  }
-
-  /**
-   * Get options as defined by site optionsuration.
-   *
-   * These defaults are set via the aside optionsuration form and merged with
-   * the module defined defaults.
-   *
-   * @return array
-   *   The options array.
-   */
-  public function getOptions() {
-    return NestedArray::mergeDeep($this->getDefaults(), $this->options->get('options'));
-  }
-
-  /**
-   * Preprocess options as needed.
-   *
-   * @param array $options
-   *   Options that will be sent when redering an aside.
-   *
-   * @return array
-   *   The options array.
+   * {@inheritdoc}
    */
   public function prepareOptions(array $options) {
     $defaults = $this->getDefaults();
@@ -116,16 +64,9 @@ class UxAsideOptions implements UxAsideOptionsInterface {
   }
 
   /**
-   * Generate an options optionsuration form.
-   *
-   * @param array $defaults
-   *   The default form options.
-   *
-   * @return array
-   *   The form definition array.
+   * {@inheritdoc}
    */
-  public function form(array $defaults = []) {
-    $defaults = $this->optionsMerge($defaults);
+  protected function optionsForm(array $defaults = []) {
 
     $form = [
       '#type' => 'fieldset',
@@ -495,93 +436,11 @@ class UxAsideOptions implements UxAsideOptionsInterface {
   }
 
   /**
-   * Form API callback: Processes the field element.
-   *
-   * Adjusts the #parents of fieldsets to save its children at the top level.
+   * {@inheritdoc}
    */
   public static function processParents(&$element, FormStateInterface $form_state, &$complete_form) {
     array_pop($element['#parents']);
     return $element;
-  }
-
-  /**
-   * Check if micon is installed.
-   */
-  public function hasIconSupport() {
-    return \Drupal::moduleHandler()->moduleExists('micon');
-  }
-
-  /**
-   * Merge options with defaults.
-   *
-   * @param array $options
-   *   The options to merge into the default options.
-   */
-  public function optionsMerge(array $options) {
-    return NestedArray::mergeDeep($this->getOptions(), $options);
-  }
-
-  /**
-   * Multidimentional options diff.
-   *
-   * Will compare an options array against the global configured options and
-   * return only those that are different.
-   *
-   * @param array $options
-   *   The options to compare against the default options.
-   *
-   * @return array
-   *   The options containing only the results that differ.
-   */
-  public function optionsDiff(array $options) {
-    return $this->optionsDeepDiff($options, $this->getOptions());
-  }
-
-  /**
-   * Multidimentional default options diff.
-   *
-   * Will compare an options array against the system default options
-   * and return only those that are different.
-   *
-   * @return array
-   *   The options containing only the results that differ.
-   */
-  public function optionsDefaultDiff(array $options) {
-    return $this->optionsDeepDiff($options, $this->getDefaults());
-  }
-
-  /**
-   * Compare a options array to another and return that which differs.
-   *
-   * @param array $options1
-   *   First options array.
-   * @param array $options2
-   *   Second options array.
-   *
-   * @return array
-   *   The options containing only the results that differ.
-   */
-  protected function optionsDeepDiff(array $options1, array $options2) {
-    $return = [];
-    foreach ($options1 as $key => $value) {
-      if (array_key_exists($key, $options2)) {
-        if (is_array($value)) {
-          $aRecursiveDiff = $this->optionsDeepDiff($value, $options2[$key]);
-          if (count($aRecursiveDiff)) {
-            $return[$key] = $aRecursiveDiff;
-          }
-        }
-        else {
-          if ($value != $options2[$key]) {
-            $return[$key] = $value;
-          }
-        }
-      }
-      else {
-        $return[$key] = $value;
-      }
-    }
-    return $return;
   }
 
 }

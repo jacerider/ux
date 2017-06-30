@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a UX menu navigation.
+ *
+ * @ingroup themeable
+ */
+#}
+{% import _self as menus %}
+
+{#
+  We call a macro which calls itself to render the full tree.
+  @see http://twig.sensiolabs.org/doc/tags/macro.html
+#}
+<nav{{ attributes }}>
+  {% if options.breadcrumbNav or options.backNav %}
+    <div class="ux-menu-nav-header"></div>
+  {% endif %}
+  <div class="ux-menu-wrap">
+    {% for level in levels %}
+      {{ menus.menu_links(level.items, level.attributes) }}
+    {% endfor %}
+  </div>
+</nav>
+
+{% macro menu_links(items, attributes) %}
+  {% import _self as menus %}
+  {% if items %}
+    <ul{{ attributes.addClass('ux-menu-level') }}>
+    {% for item in items %}
+      <li{{ item.attributes.addClass('ux-menu-item') }}>
+        {% if item.url.toString()|length %}
+          {{ link(item.title, item.url) }}
+        {% else %}
+          <a {{ item.link_attributes.addClass('nolink') }}>{{ item.title|raw }}</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

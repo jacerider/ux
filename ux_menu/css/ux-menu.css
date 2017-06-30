@@ -1,0 +1,182 @@
+.ux-menu-nav {
+  position: relative;
+}
+
+.ux-menu-nav [class^='animate-'], .ux-menu-nav [class*=' animate-'] {
+  visibility: visible;
+}
+
+.ux-menu-wrap {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  transition: height 300ms;
+}
+
+.ux-menu-level {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  overflow: hidden;
+  overflow-y: scroll;
+  width: calc(100% + 50px);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.ux-menu-level:focus {
+  outline: none;
+}
+
+.ux-menu-level.ux-menu-level--current {
+  visibility: visible;
+}
+
+.ux-menu-item {
+  display: block;
+  width: calc(100% - 50px);
+}
+
+.ux-menu-link {
+  position: relative;
+  display: block;
+  transition: color 100ms;
+}
+
+.ux-menu-link[data-submenu] {
+  font-weight: bold;
+}
+
+.ux-menu-nav-header {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  height: 40px;
+  line-height: 40px;
+}
+
+.ux-menu-breadcrumbs {
+  -ms-flex: auto;
+      flex: auto;
+}
+
+.ux-menu-breadcrumbs a {
+  display: inline-block;
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: 0 10px 0 0;
+  transition: opacity 300ms;
+}
+
+.ux-menu-breadcrumbs a.animate-fadeIn {
+  animation: fadeIn 0.6s;
+}
+
+.ux-menu-breadcrumbs a.animate-fadeOut {
+  animation: fadeOut 0.6s;
+}
+
+.ux-menu-breadcrumbs a:last-child {
+  pointer-events: none;
+}
+
+.ux-menu-back {
+  z-index: 100;
+  cursor: pointer;
+  text-transform: uppercase;
+  opacity: 0;
+}
+
+.ux-menu-back.animate-fadeIn {
+  animation: fadeIn 0.6s;
+  opacity: 1;
+}
+
+.ux-menu-back.animate-fadeOut {
+  pointer-events: none;
+  animation: fadeOut 0.6s;
+}
+
+.ux-menu-back:hover, .ux-menu-back:focus {
+  outline: none;
+}
+
+.ux-menu-back--hidden {
+  pointer-events: none;
+  animation: fadeOut 0.6s;
+}
+
+.animate-outToRight .ux-menu-item {
+  animation: outToRight 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.animate-outToLeft .ux-menu-item {
+  animation: outToLeft 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.animate-inFromLeft .ux-menu-item {
+  animation: inFromLeft 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.animate-inFromRight .ux-menu-item {
+  animation: inFromRight 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes outToRight {
+  to {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes outToLeft {
+  to {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes inFromLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes inFromRight {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/*# sourceMappingURL=ux-menu.css.map */

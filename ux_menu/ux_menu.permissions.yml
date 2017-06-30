@@ -1,0 +1,4 @@
+administer ux menu settings:
+  title: 'Administer UX Menu settings'
+  description: 'Configure site-wide UX Menu settings.'
+  restrict access: true

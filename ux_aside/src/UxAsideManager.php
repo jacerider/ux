@@ -2,6 +2,7 @@
 
 namespace Drupal\ux_aside;
 
+use Drupal\ux\UxOptionsInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Component\Utility\Html;
@@ -17,7 +18,7 @@ class UxAsideManager implements UxAsideManagerInterface, RefinableCacheableDepen
   /**
    * The aside options service.
    *
-   * @var \Drupal\ux_aside\UxAsideOptionsInterface
+   * @var \Drupal\ux_aside\UxOptionsInterface
    */
   protected $uxAsideOptions;
 
@@ -31,7 +32,7 @@ class UxAsideManager implements UxAsideManagerInterface, RefinableCacheableDepen
   /**
    * Constructs a new UxAsideManager object.
    */
-  public function __construct(UxAsideOptionsInterface $ux_aside_options) {
+  public function __construct(UxOptionsInterface $ux_aside_options) {
     $this->uxAsideOptions = $ux_aside_options;
     $this->addCacheTags(['config:ux_aside.settings']);
   }
@@ -56,7 +57,7 @@ class UxAsideManager implements UxAsideManagerInterface, RefinableCacheableDepen
   /**
    * Get UxAsideOptions service.
    *
-   * @return \Drupal\ux_aside\UxAsideOptionsInterface
+   * @return \Drupal\ux_aside\UxOptionsInterface
    *   The UxAsideOptions service.
    */
   public function getOptionsService() {

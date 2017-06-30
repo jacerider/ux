@@ -1,0 +1,6 @@
+options:
+  backNav: false
+  breadcrumbNav: true
+  breadcrumbInitialText: 'All'
+  itemsDelayInterval: 60
+  direction: 'rtl'
