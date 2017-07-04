@@ -15,8 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a 'UxAsideBlockTest' block.
  *
  * @Block(
- *  id = "ux_aside_test",
- *  admin_label = @Translation("UX | Aside Cache Test"),
+ *   id = "ux_aside_test",
+ *   admin_label = @Translation("UX | Aside Cache Test"),
+ *   category = @Translation("User Experience"),
  * )
  */
 class UxAsideBlockTest extends BlockBase implements ContainerFactoryPluginInterface {

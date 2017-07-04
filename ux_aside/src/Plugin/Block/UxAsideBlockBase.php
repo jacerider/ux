@@ -4,7 +4,6 @@ namespace Drupal\ux_aside\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\ux_aside\UxAsideInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\ux_aside\UxAsideManagerInterface;
 use Drupal\Core\Cache\Cache;
@@ -70,10 +69,7 @@ abstract class UxAsideBlockBase extends BlockBase implements ContainerFactoryPlu
     $this->uxAsideManager = $ux_aside_manager;
     $this->uxAsideOptions = $ux_aside_manager->getOptionsService();
     // The aside element is instantiated in the constructor due to caching.
-    $uxAside = $this->buildAside();
-    if ($uxAside instanceof UxAsideInterface) {
-      $this->uxAside = $uxAside;
-    }
+    $this->uxAside = $this->buildAside();
   }
 
   /**
@@ -96,14 +92,14 @@ abstract class UxAsideBlockBase extends BlockBase implements ContainerFactoryPlu
     return [
       'aside' => [],
     ] + parent::defaultConfiguration();
-
   }
 
   /**
    * {@inheritdoc}
    */
   protected function buildAside() {
-    return $this->uxAsideManager->create($this->getPluginId())
+    $unique_id = $this->getPluginId() . md5(json_encode($this->configuration['aside']));
+    return $this->uxAsideManager->create($unique_id)
       ->setOptions($this->configuration['aside']);
   }
 
@@ -121,15 +117,7 @@ abstract class UxAsideBlockBase extends BlockBase implements ContainerFactoryPlu
    * {@inheritdoc}
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
-    $values = $form_state->getValues();
-    $this->configuration['aside'] = $this->uxAsideOptions->optionsDiff($values['aside']);
-  }
-
-  /**
-   * Check if micon is installed.
-   */
-  protected function hasIconSupport() {
-    return \Drupal::moduleHandler()->moduleExists('micon');
+    $this->configuration['aside'] = $this->uxAsideOptions->optionsDiff($form_state->getValue('aside'));
   }
 
   /**
@@ -137,7 +125,7 @@ abstract class UxAsideBlockBase extends BlockBase implements ContainerFactoryPlu
    */
   public function getCacheTags() {
     $tags = parent::getCacheTags();
-    if (isset($this->uxAside)) {
+    if ($this->uxAside) {
       $tags = Cache::mergeTags($tags, $this->uxAside->getCacheTags());
     }
     return $tags;
@@ -148,7 +136,7 @@ abstract class UxAsideBlockBase extends BlockBase implements ContainerFactoryPlu
    */
   public function getCacheContexts() {
     $contexts = parent::getCacheContexts();
-    if (isset($this->uxAside)) {
+    if ($this->uxAside) {
       $contexts = Cache::mergeContexts($contexts, $this->uxAside->getCacheContexts());
     }
     return $contexts;

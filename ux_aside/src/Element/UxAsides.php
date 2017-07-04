@@ -73,14 +73,22 @@ class UxAsides extends RenderElement {
         ],
       ],
     ];
-    // Add base options.
-    $element['#attached']['drupalSettings']['ux']['aside']['options'] = $aside_manager->getOptions('content', TRUE);
 
-    foreach ($aside_manager->getAll() as $id => $aside) {
-      $element['#content'][$id] = [
-        '#type' => 'ux_aside',
-        '#aside' => $aside,
-      ];
+    $asides = $aside_manager->getAll();
+    if (!empty($asides)) {
+      $options = $aside_manager->getOptions('content', TRUE, TRUE);
+      // Add base options.
+      $element['#attached']['drupalSettings']['ux']['aside']['options'] = $options;
+      if (!empty($options['theme'])) {
+        $element['#attached']['library'][] = 'ux_aside/ux_aside.theme.' . $options['theme'];
+      }
+
+      foreach ($aside_manager->getAll() as $id => $aside) {
+        $element['#content'][$id] = [
+          '#type' => 'ux_aside',
+          '#aside' => $aside,
+        ];
+      }
     }
     return $element;
   }

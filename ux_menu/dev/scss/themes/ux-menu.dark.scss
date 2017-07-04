@@ -1,0 +1,53 @@
+
+$white: #fff;
+$black: #1c1d22;
+$global-padding: 30px;
+
+.uxMenu--theme-dark {
+  background: $black;
+
+  .uxMenu-top {
+    padding: $global-padding / 2;
+    font-size: 12px;
+    line-height: 12px;
+
+    a {
+      color: $white;
+    }
+
+    .micon {
+      color: darken($white, 60%);
+    }
+  }
+
+  .uxMenu-item {
+    border-bottom: 1px dotted darken($black, 10%);
+
+    &:first-child {
+
+      .uxMenu-link {
+        border-top: 1px dotted darken($black, 10%);
+      }
+    }
+  }
+
+  .uxMenu-link {
+    padding: $global-padding / 2;
+    font-weight: 600;
+    transition: background 300ms;
+
+    .micon {
+      float: right;
+      opacity: 0;
+      transition: opacity 300ms;
+    }
+
+    &:hover {
+      background: darken($black, 3%);
+
+      .micon {
+        opacity: 1;
+      }
+    }
+  }
+}

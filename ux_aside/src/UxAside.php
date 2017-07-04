@@ -6,6 +6,7 @@ use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Template\Attribute;
 
 /**
  * Class UxAside.
@@ -37,6 +38,13 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
   protected $options = [];
 
   /**
+   * The content Attribute object.
+   *
+   * @var \Drupal\Core\Template\Attribute
+   */
+  protected $contentAttributes;
+
+  /**
    * Constructs a \Drupal\ux_aside\UxAside object.
    *
    * @param string $id
@@ -45,6 +53,7 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
   public function __construct($id) {
     $this->id = $id;
     $this->options = self::uxAsideOptions()->getOptions();
+    $this->contentAttributes = new Attribute();
     $this->addCacheTags(['config:ux_aside.settings']);
   }
 
@@ -131,6 +140,44 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
   }
 
   /**
+   * Returns the aside content attributes.
+   *
+   * @return \Drupal\Core\Template\Attribute
+   *   An attributes object.
+   */
+  public function getContentAttributes() {
+    return $this->contentAttributes;
+  }
+
+  /**
+   * Adds classes or merges them on to array of existing CSS classes.
+   *
+   * @param string|array ...
+   *   CSS classes to add to the class attribute array.
+   *
+   * @return $this
+   */
+  public function addContentClass($classes) {
+    $this->contentAttributes->addClass($classes);
+    return $this;
+  }
+
+  /**
+   * Sets values for an attribute key.
+   *
+   * @param string $attribute
+   *   Name of the attribute.
+   * @param string|array $value
+   *   Value(s) to set for the given attribute key.
+   *
+   * @return $this
+   */
+  public function setContentAttribute($attribute, $value) {
+    $this->contentAttributes->setAttribute($attribute, $value);
+    return $this;
+  }
+
+  /**
    * Set the aside options.
    *
    * @param array $options
@@ -188,7 +235,7 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
    */
   public function prepareToRender() {
     if (!isset($this->prepared)) {
-      $this->options = self::uxAsideOptions()->prepareOptions($this->options);
+      $this->options = self::uxAsideOptions()->processOptions($this->options);
       $this->prepared = TRUE;
     }
   }

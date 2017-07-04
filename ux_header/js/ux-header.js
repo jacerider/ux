@@ -1,1 +1,153 @@
-!function(e,t,i){"use strict";function a(t){this.$header=t,this.$window=e(window),this.$document=e(document),this.initialize()}e.extend(a.prototype,{lastScrollTop:0,delta:50,direction:"",fixed:!1,offset:{},initialize:function(){var i=this;i.$header.wrap('<div class="ux-header-wrapper"></div>'),i.$wrapper=i.$header.parent(),i.reset(),t.Ux.addResizeCallback(e.proxy(function(){i.onResize()},i)),t.Ux.addScrollCallback(e.proxy(function(){i.scroll()},i)),i.$header.addClass("ux-header"),setTimeout(function(){i.onResize()},100)},reset:function(){var e=this;e.$wrapper.removeAttr("style"),e.$header.removeAttr("style"),e.$header.removeClass("ux-header-float ux-header-hide")},calcSize:function(){var e=this;e.offset=e.$header.offset(),e.width=e.$header.outerWidth(),e.height=e.$header.outerHeight()},setSize:function(){var e=this;e.$wrapper.css({width:e.width,height:e.height})},float:function(){var e=this;e.$header.css({display:"none",position:"fixed",marginLeft:e.offset.left-i.offsets.left,marginRight:e.offset.left-i.offsets.right,maxWidth:e.width,top:i.offsets.top,left:i.offsets.left,right:i.offsets.right}),e.$header.addClass("ux-header-hide ux-header-float ux-header-alt"),setTimeout(function(){e.$header.css({display:""})},10)},onResize:function(){var e=this;e.reset(),e.calcSize(),e.setSize()},scroll:function(){var e=this,t=Math.abs(e.$window.scrollTop()),a=e.lastScrollTop,r="",s=e.offset.top-i.offsets.top;s=s>=0?s:0;var o=s+e.height;if(t>o){if(e.fixed===!1&&(e.fixed=!0,e.float()),Math.abs(a-t)<=e.delta)return;r=t>a?"down":"up",e.direction!==r&&("down"===r?e.$header.addClass("ux-header-hide"):e.$header.removeClass("ux-header-hide"),e.direction=r)}else e.fixed===!0&&(e.$header.removeClass("ux-header-alt"),t<=s&&(e.fixed=!1,e.reset(),e.setSize()));e.lastScrollTop=t}}),t.behaviors.uxStickyHeader={attach:function(t){e("#ux-content header").first().once("ux-header").each(function(t){new a(e(this))})}}}(jQuery,Drupal,Drupal.displace);
+/**
+ * @file
+ * Global ux_offcanvas javascript.
+ */
+
+(function ($, Drupal, displace) {
+
+  'use strict';
+
+  function UxHeader($header) {
+    this.$header = $header;
+    this.$window = $(window);
+    this.$document = $(document);
+    this.initialize();
+  }
+
+  $.extend(UxHeader.prototype, /** @lends Drupal.UxHeader# */{
+    lastScrollTop: 0,
+    delta: 50,
+    direction: '',
+    fixed: false,
+    offset: {},
+
+    initialize: function () {
+      var _this = this;
+      _this.$header.wrap('<div class="ux-header-wrapper"></div>');
+      _this.$wrapper = _this.$header.parent();
+      _this.reset();
+
+      // Setup resizing.
+      Drupal.Ux.addResizeCallback($.proxy(function () {
+        _this.onResize();
+      }, _this));
+
+      // Setup resizing.
+      Drupal.Ux.addScrollCallback($.proxy(function () {
+        _this.scroll();
+      }, _this));
+
+      // Position floating bar.
+      _this.$header.addClass('ux-header');
+      setTimeout(function () {
+        _this.onResize();
+      }, 100);
+    },
+
+    reset: function () {
+      var _this = this;
+      _this.$wrapper.removeAttr('style');
+      _this.$header.removeAttr('style');
+      _this.$header.removeClass('ux-header-float ux-header-hide');
+    },
+
+    calcSize: function () {
+      var _this = this;
+      _this.offset = _this.$header.offset();
+      _this.width = _this.$header.outerWidth();
+      _this.height = _this.$header.outerHeight();
+    },
+
+    setSize: function () {
+      var _this = this;
+      _this.$wrapper.css({width: _this.width, height: _this.height});
+    },
+
+    float: function () {
+      var _this = this;
+      _this.$header.css({
+        display: 'none',
+        position: 'fixed',
+        marginLeft: (_this.offset.left - displace.offsets.left),
+        marginRight: (_this.offset.left - displace.offsets.right),
+        maxWidth: _this.width,
+        top: displace.offsets.top,
+        left: displace.offsets.left,
+        right: displace.offsets.right
+      });
+      _this.$header.addClass('ux-header-hide ux-header-float ux-header-alt');
+      setTimeout(function () {
+        _this.$header.css({display: ''});
+      }, 10);
+    },
+
+    onResize: function () {
+      var _this = this;
+      _this.reset();
+      _this.calcSize();
+      _this.setSize();
+
+    },
+
+    scroll: function () {
+      var _this = this;
+      var scrollTop = Math.abs(_this.$window.scrollTop());
+      var lastScrollTop = _this.lastScrollTop;
+      var currentDirection = '';
+      var endFloat = (_this.offset.top - displace.offsets.top);
+      endFloat = endFloat >= 0 ? endFloat : 0;
+      var startFloat = endFloat + _this.height;
+
+      if (scrollTop > startFloat) {
+        if (_this.fixed === false) {
+          _this.fixed = true;
+          _this.float();
+        }
+
+        // Make sure scroll is more than delta.
+        if (Math.abs(lastScrollTop - scrollTop) <= _this.delta) {
+          return;
+        }
+
+        // Determine direction.
+        if (scrollTop > lastScrollTop) {
+          currentDirection = 'down';
+        }
+        else {
+          currentDirection = 'up';
+        }
+
+        if (_this.direction !== currentDirection) {
+          // Toggle hide class.
+          if (currentDirection === 'down') {
+            _this.$header.addClass('ux-header-hide');
+          }
+          else {
+            _this.$header.removeClass('ux-header-hide');
+          }
+          _this.direction = currentDirection;
+        }
+
+      }
+      else if (_this.fixed === true) {
+        _this.$header.removeClass('ux-header-alt');
+        if (scrollTop <= endFloat) {
+          _this.fixed = false;
+          _this.reset();
+          _this.setSize();
+        }
+      }
+
+      _this.lastScrollTop = scrollTop;
+    }
+  });
+
+  Drupal.behaviors.uxStickyHeader = {
+    attach: function (context) {
+      $('#ux-content header').first().once('ux-header').each(function (e) {
+        new UxHeader($(this));
+      });
+    }
+  };
+
+})(jQuery, Drupal, Drupal.displace);

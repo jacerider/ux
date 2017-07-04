@@ -12,3 +12,19 @@ ux_menu:
     - core/jquery.once
     - core/drupal
     - core/drupalSettings
+
+ux_menu.theme.light:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-menu.light.css: {}
+  dependencies:
+    - ux_menu/ux_menu
+
+ux_menu.theme.dark:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-menu.dark.css: {}
+  dependencies:
+    - ux_menu/ux_menu

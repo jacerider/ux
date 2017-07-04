@@ -147,15 +147,16 @@
       }
 
       if (options.iframe === true) {
-        this.$element.html('<div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content"><iframe class="' + PLUGIN_NAME + '-iframe"></iframe>' + this.content + "</div></div>");
+        this.$element.html('<div class="' + PLUGIN_NAME + '-flex"><div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content"><iframe class="' + PLUGIN_NAME + '-iframe"></iframe>' + this.content + "</div></div></div>");
 
         if (options.iframeHeight !== null) {
           this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', options.iframeHeight);
         }
       } else {
-        this.$element.html('<div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content">' + this.content + '</div></div>');
+        this.$element.html('<div class="' + PLUGIN_NAME + '-flex"><div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content">' + this.content + '</div></div></div>');
       }
 
+      this.$flex = this.$element.find('.' + PLUGIN_NAME + '-flex');
       this.$wrap = this.$element.find('.' + PLUGIN_NAME + '-wrap');
 
       if (options.zindex !== null && !isNaN(parseInt(options.zindex))) {
@@ -173,11 +174,7 @@
       }
 
       if (options.theme !== "") {
-        if (options.theme === "light") {
-          this.$element.addClass(PLUGIN_NAME + '-light');
-        } else {
-          this.$element.addClass(options.theme);
-        }
+        this.$element.addClass(PLUGIN_NAME + '--theme-' + options.theme);
       }
 
       if (options.rtl === true) {
@@ -241,7 +238,7 @@
           }
           this.$header.css('background', this.options.headerColor);
         }
-        this.$element.css('overflow', 'hidden').prepend(this.$header);
+        this.$flex.css('overflow', 'hidden').prepend(this.$header);
       }
     },
 
@@ -357,6 +354,10 @@
         this.$element.attr('aria-hidden', 'false');
 
         // console.info('[ '+PLUGIN_NAME+' | '+this.id+' ] Opening...');
+
+        if (this.options.contentTransition === false) {
+          that.$element.addClass(PLUGIN_NAME + '-no-transition');
+        }
 
         if (this.options.iframe === true) {
 
@@ -623,7 +624,7 @@
             this.classes,
             PLUGIN_NAME,
             transitionOut,
-            this.options.theme == 'light' ? PLUGIN_NAME + '-light' : this.options.theme,
+            this.options.theme ? PLUGIN_NAME + '--theme-' + this.options.theme : '',
             this.isFullscreen === true ? 'isFullscreen' : '',
             this.isTall === true ? 'isTall' : '',
             this.options.rtl ? PLUGIN_NAME + '-rtl' : ''
@@ -1092,7 +1093,7 @@
     recalcLayout: function() {
 
       var that = this,
-        windowHeight = $window.height(),
+        windowHeight = $window.height() - that.options.offsets.top - that.options.offsets.bottom,
         modalHeight = this.$element.outerHeight(),
         modalWidth = this.$element.outerWidth(),
         contentHeight = this.$element.find('.' + PLUGIN_NAME + '-content')[0].scrollHeight,
@@ -1187,8 +1188,9 @@
 
         (function applyScroll() {
           if (contentHeight > wrapperHeight && outerHeight > windowHeight) {
+            var height = modalHeight - (that.headerHeight + borderSize);
             that.$element.addClass('hasScroll');
-            that.$wrap.css('height', modalHeight - (that.headerHeight + borderSize));
+            that.$wrap.css('height', height);
           } else {
             that.$element.removeClass('hasScroll');
             that.$wrap.css('height', 'auto');
@@ -1424,10 +1426,12 @@
     timeoutProgressbar: false,
     pauseOnHover: false,
     timeoutProgressbarColor: 'rgba(255,255,255,0.5)',
+    contentTransition: true, // enable, disable the transition animations within the content
     transitionIn: 'comingIn', // comingIn, bounceInDown, bounceInUp, fadeInDown, fadeInUp, fadeInLeft, fadeInRight, flipInX
     transitionOut: 'comingOut', // comingOut, bounceOutDown, bounceOutUp, fadeOutDown, fadeOutUp, , fadeOutLeft, fadeOutRight, flipOutX
     transitionInOverlay: 'fadeIn',
     transitionOutOverlay: 'fadeOut',
+    offsets: {top: 0, right: 0, bottom: 0, left: 0},
     onFullscreen: function() {},
     onResize: function() {},
     onOpening: function() {},

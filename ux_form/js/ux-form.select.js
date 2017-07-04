@@ -1,1 +1,480 @@
-!function(e,t,i,n){"use strict";function s(i,n){this.element=i,this.$element=e(this.element),this._name=o,this._defaults=e.fn.uxFormSelect.defaults,this.options=e.extend({},this._defaults,n),this.uniqueId=t.Ux.guid(),this.init()}var o="uxFormSelect";e.extend(s.prototype,{init:function(){this.buildCache(),this.buildElement(),this.evaluateElement(),this.bindEvents()},destroy:function(){this.unbindEvents(),this.$element.removeData()},buildCache:function(){this.$field=this.$element.find("select"),this.$wrapper=e('<div class="ux-form-select-wrapper ux-form-input ux-form-input-js"></div>'),this.$caret=e('<span class="ux-form-select-caret">&#9660;</span>'),this.$trigger=e('<input class="ux-form-input-item ux-form-input-item-js" '+(this.isDisabled()?"disabled":"")+"></input>"),this.$hidden=e('<input class="ux-form-select-hidden"></input>'),this.$dropdown=e('<ul class="ux-form-select-dropdown"></ul>'),this.multiple=!!this.$field.attr("multiple"),this.placeholder=this.$field.attr("placeholder")||(this.multiple?"Select Multiple":"Select One"),this.$trigger.addClass("ux-form-select-trigger"),this.$trigger.attr("placeholder",this.placeholder),this.$wrapper.insertAfter(this.$field),this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown).append(this.$field),this.$dropdown.addClass(this.multiple?"is-multiple":"is-single")},buildElement:function(){var e=this;e.loadOptionsFromSelect(),e.updateTrigger(),t.attachBehaviors(e.$element[0]),e.options.debug&&(e.$field.show(),setTimeout(function(){e.$trigger.trigger("tap")},500)),e.$field.attr("tabindex")&&e.$trigger.attr("tabindex",e.$field.attr("tabindex")),setTimeout(function(){e.$element.addClass("ready")})},evaluateElement:function(){var e=this;e.isRequired()&&(e.$field.removeAttr("required"),e.$trigger.attr("required","required"))},bindEvents:function(){var t=this;t.$trigger.on("focus."+t._name,function(t){e(this).blur()}).on("tap."+t._name,function(e){t.isSupported()?(t.populateDropdown.call(t),t.showDropdown.call(t)):(e.preventDefault(),t.$field.show().focus().hide())}),t.$dropdown.on("tap."+t._name,".selector",function(e){t.onItemTap.call(t,e),t.$trigger.focus()}),t.$dropdown.on("tap."+t._name,".close",function(e){t.closeDropdown.call(t,e)}),t.$hidden.on("focus",function(e){t.populateDropdown.call(t),t.showDropdown.call(t),t.$trigger.focus()}),t.$field.on("state:disabled."+t._name,function(e){t.evaluateElement()}).on("state:required."+t._name,function(e){t.evaluateElement()}).on("state:visible."+t._name,function(e){t.evaluateElement()}).on("state:collapsed."+t._name,function(e){t.evaluateElement()}),t.isSupported()||this.$field.on("change."+t._name,function(e){t.loadOptionsFromSelect(),t.updateTrigger()})},unbindEvents:function(){this.$element.off("."+this._name),this.$dropdown.off("."+this._name),this.$field.off("."+this._name),e(n).off("."+this._name)},onItemTap:function(t){var i,n=e(t.currentTarget),s=n.data("option");return this.multiple?(this.$dropdown.find(".selector.selected").removeClass("selected"),n.is(".active")?(i="remove",n.removeClass("active"),n.find("input").prop("checked",!1).trigger("change")):(i="add",n.addClass("active"),n.find("input").prop("checked",!0).trigger("change"),n.addClass("selected")),this.changeSelected(s,i)):(this.changeSelected(s,"add"),this.closeDropdown())},onSearch:function(t){var i=e(t.currentTarget),n=i.val().toLowerCase();n?this.$dropdown.find(".selector").each(function(){var t=e(this).data("option").text.toLowerCase();t.indexOf(n)>=0?e(this).show():e(this).hide()}):this.$dropdown.find(".selector").show()},populateDropdown:function(){this.$dropdown.find("li").remove(),0===this.$dropdown.children().length&&this.$dropdown.append('<li class="close">&times;</li>').append('<li class="search"><input type="text" class="ux-form-input-item simple search-input" tabindex="-1"></input></li>').find(".search-input").attr("placeholder",this.placeholder),this.$trigger.val()?this.$dropdown.find(".search-input").attr("placeholder",this.$trigger.val()):this.$dropdown.find(".search-input").attr("placeholder",this.placeholder);for(var i=this.getAllOptions(),n=0;n<i.length;n++){var s=i[n],o=e("<li></li>");s.group?(o.addClass("optgroup"),o.html("<span>"+s.text+"</span>")):this.multiple?(o.addClass("selector ux-select-checkbox ready"),o.html('<span><input type="checkbox" class="form-checkbox"><label class="option">'+s.text+"</label></span>")):(o.addClass("selector"),o.html("<span>"+s.text+"</span>")),s.selected&&(o.addClass("active"),o.find("input").prop("checked",!0)),o.data("option",s),this.$dropdown.append(o)}this.$dropdown.find(".selector.active:eq(0)").addClass("selected"),t.attachBehaviors(this.$dropdown[0])},loadOptionsFromSelect:function(){var t=this;this.selected=[],this.$field.find("option, optgroup").each(function(){var i={value:"",text:"",selected:!1,group:!1};e(this).is("optgroup")?(i.text=e(this).attr("label"),i.group=!0):(i.value=e(this).attr("value"),i.text=e(this).html(),i.selected=e(this).is(":selected")),t.selected.push(i)})},getAllOptions:function(e){if(!e)return this.selected;for(var t=[],i=0;i<this.selected.length;i++)t.push(this.selected[i][e]);return t},updateTrigger:function(){var e=this.getSelectedOptions("value").join("");null===e||""===e||"_none"===e?(this.$trigger.val(""),this.$trigger.attr("placeholder",this.htmlDecode(this.getSelectedOptions("text").join(", ")))):this.$trigger.val(this.htmlDecode(this.getSelectedOptions("text").join(", ")))},updateSearch:function(){this.$dropdown.find(".search-input").attr("placeholder",this.getSelectedOptions("text").join(", "))},getSelectedOptions:function(e){for(var t=[],i=0;i<this.selected.length;i++)this.selected[i].selected&&(e?t.push(this.selected[i][e]):t.push(this.selected[i]));return t},changeSelected:function(e,t){for(var i=!1,n=0;n<this.selected.length;n++)this.multiple||(this.selected[n].selected=!1),this.selected[n].value===e.value&&(i=!0,"add"===t?this.selected[n].selected=!0:"remove"===t&&(this.selected[n].selected=!1));this.updateTrigger(),this.multiple&&this.updateSearch(),this.updateSelect(i?null:e)},updateSelect:function(t){if(t){var i=e("<option></option>").attr("value",t.value).html(t.text);this.$field.append(i)}this.$field.val(this.getSelectedOptions("value")),this.$field.trigger("change",[!0]),this.$field.trigger("input",[!0])},showDropdown:function(){var t=this;return e(n).trigger("tap"),this.open?this.closeDropdown():(this.open=!0,this.$element.addClass("active"),setTimeout(function(){t.$element.addClass("animate"),t.$dropdown.focus()},50),t.$hidden.attr("readonly",!0),void this.windowHideDropdown())},windowHideDropdown:function(){var t=this;e(n).on("tap."+t.uniqueId,function(i){t.open&&(e(i.target).closest(t.$dropdown).length||t.closeDropdown())})},closeDropdown:function(){var t=this;this.open=!1,this.$dropdown.find(".search-input").val(""),this.$element.removeClass("animate"),e(n).off("."+t.uniqueId),setTimeout(function(){t.open===!1&&t.$element.removeClass("active")},350),t.$hidden.attr("readonly",!1)},isRequired:function(){var e=this.$field.attr("required");return"undefined"!=typeof e},isDisabled:function(){return this.$field.is(":disabled")},isSupported:function(){return"Microsoft Internet Explorer"===i.navigator.appName?n.documentMode>=8:!(/iP(od|hone)/i.test(i.navigator.userAgent)||/IEMobile/i.test(i.navigator.userAgent)||/Windows Phone/i.test(i.navigator.userAgent)||/BlackBerry/i.test(i.navigator.userAgent)||/BB10/i.test(i.navigator.userAgent)||/Android.*Mobile/i.test(i.navigator.userAgent))},htmlDecode:function(t){return e("<div/>").html(t).text()}}),e.fn.uxFormSelect=function(t){return this.each(function(){var i=e(this);i.hasClass("browser-default")||i.find("select").hasClass("browser-default")||e.data(this,o)||e.data(this,o,new s(this,t))}),this},e.fn.uxFormSelect.defaults={debug:!1},t.behaviors.uxFormSelect={attach:function(t){var i=e(t);i.find(".ux-form-select").once("ux-form-select").uxFormSelect()},detach:function(t,i,n){"unload"===n&&e(t).find(".ux-form-select").each(function(){var t=e(this).data("uxFormSelect");t&&t.destroy()})}}}(jQuery,Drupal,window,document);
+
+(function ($, Drupal, window, document) {
+
+  'use strict';
+
+  var pluginName = 'uxFormSelect';
+
+  function Plugin(element, options) {
+    this.element = element;
+    this.$element = $(this.element);
+
+    // if (this.isSupported()) {
+    this._name = pluginName;
+    this._defaults = $.fn.uxFormSelect.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.uniqueId = Drupal.Ux.guid();
+    this.init();
+    // }
+    // else {
+    //   this.$element.addClass('invalid');
+    // }
+  }
+
+  // Avoid Plugin.prototype conflicts
+  $.extend(Plugin.prototype, {
+
+    /*
+    Initialize plugin instance.
+     */
+    init: function () {
+      this.buildCache();
+      this.buildElement();
+      this.evaluateElement();
+      this.bindEvents();
+    },
+
+    /*
+    Remove plugin instance complete.
+     */
+    destroy: function () {
+      this.unbindEvents();
+      this.$element.removeData();
+    },
+
+    /*
+    Cache DOM nodes for performance.
+     */
+    buildCache: function () {
+      this.$field = this.$element.find('select');
+      this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input ux-form-input-js"></div>');
+      this.$caret = $('<span class="ux-form-select-caret">&#9660;</span>');
+      this.$trigger = $('<input class="ux-form-input-item ux-form-input-item-js" ' + (this.isDisabled() ? 'disabled' : '') + '></input>');
+      this.$hidden = $('<input class="ux-form-select-hidden"></input>');
+      this.$dropdown = $('<ul class="ux-form-select-dropdown"></ul>');
+      this.multiple = (this.$field.attr('multiple')) ? true : false;
+      this.placeholder = this.$field.attr('placeholder') || (this.multiple ? 'Select Multiple' : 'Select One');
+
+      this.$trigger.addClass('ux-form-select-trigger');
+      this.$trigger.attr('placeholder', this.placeholder);
+      this.$wrapper.insertAfter(this.$field);
+      this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown).append(this.$field);
+      this.$dropdown.addClass((this.multiple ? 'is-multiple' : 'is-single'));
+    },
+
+    /*
+    Process fields.
+     */
+    buildElement: function () {
+      var _this = this;
+      _this.loadOptionsFromSelect();
+      _this.updateTrigger();
+      Drupal.attachBehaviors(_this.$element[0]);
+
+      if (_this.options.debug) {
+        _this.$field.show();
+        setTimeout(function () {
+          _this.$trigger.trigger('tap');
+        }, 500);
+      }
+
+      // Copy tabindex
+      if (_this.$field.attr('tabindex')) {
+        _this.$trigger.attr('tabindex', _this.$field.attr('tabindex'));
+      }
+
+      setTimeout(function () {
+        _this.$element.addClass('ready');
+      });
+    },
+
+    /*
+    Evaluate element. Runs on init and state changes.
+     */
+    evaluateElement: function () {
+      var _this = this;
+
+      // Check if field is required.
+      if (_this.isRequired()) {
+        _this.$field.removeAttr('required');
+        _this.$trigger.attr('required', 'required');
+      }
+    },
+
+    /*
+    Bind events that trigger methods.
+    */
+    bindEvents: function () {
+      var _this = this;
+
+      _this.$trigger.on('focus' + '.' + _this._name, function (e) {
+        // We blur as soon as the focus happens to avoid the cursor showing
+        // momentarily within the field.
+        $(this).blur();
+      }).on('tap' + '.' + _this._name, function (e) {
+        if (_this.isSupported()) {
+          _this.populateDropdown.call(_this);
+          _this.showDropdown.call(_this);
+        }
+        else {
+          e.preventDefault();
+          _this.$field.show().focus().hide();
+        }
+      });
+      _this.$dropdown.on('tap' + '.' + _this._name, '.selector', function (e) {
+        _this.onItemTap.call(_this, e);
+        _this.$trigger.focus();
+      });
+      _this.$dropdown.on('tap' + '.' + _this._name, '.close', function (e) {
+        _this.closeDropdown.call(_this, e);
+      });
+      _this.$hidden.on('focus', function (e) {
+        _this.populateDropdown.call(_this);
+        _this.showDropdown.call(_this);
+        _this.$trigger.focus();
+      });
+
+      _this.$field.on('state:disabled' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
+      }).on('state:required' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
+      }).on('state:visible' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
+      }).on('state:collapsed' + '.' + _this._name, function (e) {
+        _this.evaluateElement();
+      });
+
+      if (!_this.isSupported()) {
+        // On unsupported devies we rely on the device select widget and need
+        // to update the trigger upon change.
+        this.$field.on('change' + '.' + _this._name, function (e) {
+          _this.loadOptionsFromSelect();
+          _this.updateTrigger();
+        });
+      }
+    },
+
+    /*
+    Unbind events that trigger methods.
+    */
+    unbindEvents: function () {
+      this.$element.off('.' + this._name);
+      this.$dropdown.off('.' + this._name);
+      this.$field.off('.' + this._name);
+      $(document).off('.' + this._name);
+    },
+
+    /*
+    Click event of inidividual dropdown item.
+     */
+    onItemTap: function (e) {
+      var $item = $(e.currentTarget);
+      var option = $item.data('option');
+      var action;
+
+      if (!this.multiple) {
+        this.changeSelected(option, 'add');
+        return this.closeDropdown();
+      }
+
+      this.$dropdown.find('.selector.selected').removeClass('selected');
+      if ($item.is('.active')) {
+        action = 'remove';
+        $item.removeClass('active');
+        $item.find('input').prop('checked', false).trigger('change');
+      }
+      else {
+        action = 'add';
+        $item.addClass('active');
+        $item.find('input').prop('checked', true).trigger('change');
+        $item.addClass('selected');
+      }
+      return this.changeSelected(option, action);
+    },
+
+    /*
+    Click event of inidividual dropdown item.
+     */
+    onSearch: function (e) {
+      var $item = $(e.currentTarget);
+      var search = $item.val().toLowerCase();
+      if (search) {
+        this.$dropdown.find('.selector').each(function () {
+          var text = $(this).data('option').text.toLowerCase();
+          if (text.indexOf(search) >= 0) {
+            $(this).show();
+          }
+          else {
+            $(this).hide();
+          }
+        });
+      }
+      else {
+        this.$dropdown.find('.selector').show();
+      }
+    },
+
+    /*
+    Reset and repopulate all dropdown options.
+     */
+    populateDropdown: function () {
+      this.$dropdown.find('li').remove();
+
+      if (this.$dropdown.children().length === 0) {
+        this.$dropdown
+          .append('<li class="close">&times;</li>')
+          .append('<li class="search"><input type="text" class="ux-form-input-item simple search-input" tabindex="-1"></input></li>')
+          .find('.search-input').attr('placeholder', this.placeholder);
+      }
+      if (this.$trigger.val()) {
+        this.$dropdown.find('.search-input').attr('placeholder', this.$trigger.val());
+      }
+      else {
+        this.$dropdown.find('.search-input').attr('placeholder', this.placeholder);
+      }
+      var options = this.getAllOptions();
+      for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+
+        var li = $('<li></li>');
+
+        if (option.group) {
+          li.addClass('optgroup');
+          li.html('<span>' + option.text + '</span>');
+        }
+        else if (this.multiple) {
+          li.addClass('selector ux-select-checkbox ready');
+          li.html('<span><input type="checkbox" class="form-checkbox"><label class="option">' + option.text + '</label></span>');
+        }
+        else {
+          li.addClass('selector');
+          li.html('<span>' + option.text + '</span>');
+        }
+
+        if (option.selected) {
+          li.addClass('active');
+          li.find('input').prop('checked', true);
+        }
+
+        li.data('option', option);
+        this.$dropdown.append(li);
+      }
+
+      this.$dropdown.find('.selector.active:eq(0)').addClass('selected');
+      Drupal.attachBehaviors(this.$dropdown[0]);
+    },
+
+    /*
+    Store all items of a select.
+     */
+    loadOptionsFromSelect: function () {
+      var _this = this;
+      this.selected = [];
+      this.$field.find('option, optgroup').each(function () {
+        var values = {
+          value: '',
+          text: '',
+          selected: false,
+          group: false
+        };
+        if ($(this).is('optgroup')) {
+          values.text = $(this).attr('label');
+          values.group = true;
+        }
+        else {
+          values.value = $(this).attr('value');
+          values.text = $(this).html();
+          values.selected = $(this).is(':selected');
+        }
+        _this.selected.push(values);
+      });
+    },
+
+    getAllOptions: function (field) {
+      if (!field) {
+        return this.selected;
+      }
+      var vals = [];
+      for (var i = 0; i < this.selected.length; i++) {
+        vals.push(this.selected[i][field]);
+      }
+      return vals;
+    },
+
+    updateTrigger: function () {
+      var value = this.getSelectedOptions('value').join('');
+      if (value === null || value === '' || value === '_none') {
+        this.$trigger.val('');
+        this.$trigger.attr('placeholder', this.htmlDecode(this.getSelectedOptions('text').join(', ')));
+      }
+      else {
+        this.$trigger.val(this.htmlDecode(this.getSelectedOptions('text').join(', ')));
+      }
+    },
+
+    updateSearch: function () {
+      this.$dropdown.find('.search-input').attr('placeholder', this.getSelectedOptions('text').join(', '));
+    },
+
+    getSelectedOptions: function (field) {
+      var vals = [];
+      for (var i = 0; i < this.selected.length; i++) {
+        if (this.selected[i].selected) {
+          if (field) {
+            vals.push(this.selected[i][field]);
+          }
+          else {
+            vals.push(this.selected[i]);
+          }
+        }
+      }
+      return vals;
+    },
+
+    changeSelected: function (option, action) {
+      var found = false;
+      for (var i = 0; i < this.selected.length; i++) {
+        if (!this.multiple) {
+          this.selected[i].selected = false;
+        }
+        if (this.selected[i].value === option.value) {
+          found = true;
+          if (action === 'add') {
+            this.selected[i].selected = true;
+          }
+          else if (action === 'remove') {
+            this.selected[i].selected = false;
+          }
+        }
+      }
+
+      this.updateTrigger();
+      if (this.multiple) {
+        this.updateSearch();
+      }
+      this.updateSelect((!found) ? option : null);
+    },
+
+    updateSelect: function (newOption) {
+      if (newOption) {
+        var option = $('<option></option>')
+          .attr('value', newOption.value)
+          .html(newOption.text);
+        this.$field.append(option);
+      }
+
+      this.$field.val(this.getSelectedOptions('value'));
+      this.$field.trigger('change', [true]);
+      this.$field.trigger('input', [true]);
+    },
+
+    showDropdown: function () {
+      var _this = this;
+      $(document).trigger('tap');
+      if (this.open) {
+        return this.closeDropdown();
+      }
+      this.open = true;
+
+      this.$element.addClass('active');
+      setTimeout(function () {
+        _this.$element.addClass('animate');
+        _this.$dropdown.focus();
+      }, 50);
+      _this.$hidden.attr('readonly', true);
+      this.windowHideDropdown();
+    },
+
+    windowHideDropdown: function () {
+      var _this = this;
+      $(document).on('tap' + '.' + _this.uniqueId, function (e) {
+        if (!_this.open) {
+          return;
+        }
+        if ($(e.target).closest(_this.$dropdown).length) {
+          return;
+        }
+        _this.closeDropdown();
+      });
+    },
+
+    closeDropdown: function () {
+      var _this = this;
+      this.open = false;
+      this.$dropdown.find('.search-input').val('');
+      this.$element.removeClass('animate');
+      $(document).off('.' + _this.uniqueId);
+      setTimeout(function () {
+        if (_this.open === false) {
+          _this.$element.removeClass('active');
+        }
+      }, 350);
+      _this.$hidden.attr('readonly', false);
+    },
+
+    /*
+    Check if element is required.
+     */
+    isRequired: function () {
+      var required = this.$field.attr('required');
+      return typeof required !== 'undefined';
+    },
+
+    /*
+    Check if element is disabled.
+     */
+    isDisabled: function () {
+      return this.$field.is(':disabled');
+    },
+
+    isSupported: function () {
+      if (window.navigator.appName === 'Microsoft Internet Explorer') {
+        return document.documentMode >= 8;
+      }
+      if (/iP(od|hone)/i.test(window.navigator.userAgent) || /IEMobile/i.test(window.navigator.userAgent) || /Windows Phone/i.test(window.navigator.userAgent) || /BlackBerry/i.test(window.navigator.userAgent) || /BB10/i.test(window.navigator.userAgent) || /Android.*Mobile/i.test(window.navigator.userAgent)) {
+        return false;
+      }
+      return true;
+    },
+
+    htmlDecode: function (value) {
+      return $('<div/>').html(value).text();
+    }
+
+  });
+
+  $.fn.uxFormSelect = function (options) {
+    this.each(function () {
+      var $element = $(this);
+      if ($element.hasClass('browser-default') || $element.find('select').hasClass('browser-default')) {
+        return; // Continue to next (return false breaks out of entire loop)
+      }
+      if (!$.data(this, pluginName)) {
+        $.data(this, pluginName, new Plugin(this, options));
+      }
+    });
+    return this;
+  };
+
+  $.fn.uxFormSelect.defaults = {
+    debug: false
+  };
+
+  Drupal.behaviors.uxFormSelect = {
+    attach: function (context) {
+      var $context = $(context);
+      $context.find('.ux-form-select').once('ux-form-select').uxFormSelect();
+    },
+    detach: function (context, setting, trigger) {
+      if (trigger === 'unload') {
+        $(context).find('.ux-form-select').each(function () {
+          var plugin = $(this).data('uxFormSelect');
+          if (plugin) {
+            plugin.destroy();
+          }
+        });
+      }
+    }
+  };
+
+})(jQuery, Drupal, window, document);

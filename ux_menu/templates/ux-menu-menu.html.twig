@@ -12,11 +12,11 @@
   We call a macro which calls itself to render the full tree.
   @see http://twig.sensiolabs.org/doc/tags/macro.html
 #}
+{% if options.breadcrumbNav or options.backNav %}
+  <div class="uxMenu-top"></div>
+{% endif %}
 <nav{{ attributes }}>
-  {% if options.breadcrumbNav or options.backNav %}
-    <div class="ux-menu-nav-header"></div>
-  {% endif %}
-  <div class="ux-menu-wrap">
+  <div class="uxMenu-wrap">
     {% for level in levels %}
       {{ menus.menu_links(level.items, level.attributes) }}
     {% endfor %}
@@ -26,9 +26,9 @@
 {% macro menu_links(items, attributes) %}
   {% import _self as menus %}
   {% if items %}
-    <ul{{ attributes.addClass('ux-menu-level') }}>
+    <ul{{ attributes.addClass('uxMenu-level') }}>
     {% for item in items %}
-      <li{{ item.attributes.addClass('ux-menu-item') }}>
+      <li{{ item.attributes.addClass('uxMenu-item') }}>
         {% if item.url.toString()|length %}
           {{ link(item.title, item.url) }}
         {% else %}

@@ -1,1 +1,315 @@
-!function(t,e,i){"use strict";var n;return n={animate:"TweenLite",speed:.6,trailType:"breadcrumb",selector:{trail:".ux-offcanvas-menu-trail",menu:".ux-offcanvas-menu",links:".children > a"}},t.ux_offcanvas_menu=function(i,a){this.debug=!1,this.initialized=!1,this.visible=!1,this._defaults=n,this.settings=t.extend(!0,{},this._defaults,a),this.element=t(i),this.menu=t(this.settings.selector.menu,i).addClass("animation-type-"+this.settings.animation),this.trail=t(this.settings.selector.trail,i).addClass("trail-type-"+this.settings.trail),this.links=t(this.settings.selector.links,i),this.trail_links=[],this.initialize=function(e){return function(){e.set_animator(),e.element.on("opening",function(){e.initialized||(e.bind_links(),e.show_level(),e.initial_level=e.level_get(),e.initial_trail=t(e.menu).find(".active-trail")),e.visible=!0,e.initialized=!0}),e.element.on("closed",function(){e.level_revert(),e.visible=!1}),e.log("UX Offcanvas Menu has been initialized.")}}(this),this.level_get=function(t){return function(){var e=t.menu.attr("data-depth");return e>0?e:0}}(this),this.level_set=function(t){return function(e){e=e>0?e:0,t.menu.attr("data-depth",e)}}(this),this.level_revert=function(t){return function(){var e=t.initial_level,i=t.menu.width()*e;setTimeout(function(){t.animate.to(t.menu,0,{x:i*-1}),t.initial_trail.addClass("active-trail"),t.show_level(e)},t.settings.speed)}}(this),this.show_level=function(e){return function(i){i=i||e.level_get();var n=e.menu.width()*i,a=e.visible?e.settings.speed:.1;e.element.find(".current").removeClass("current");var l=function(){t('ul[data-level="'+i+'"] .active-trail',e.menu).removeClass("active-trail"),0===parseInt(i)?e.menu.addClass("current"):e.menu.find(".active-trail").last().addClass("current")};e.level_set(i),e.trail_build(i),"fade"===this.settings.animation?e.animate.fromTo(e.menu,a/2,{opacity:1},{opacity:0}).eventCallback("onComplete",function(){e.animate.to(e.menu,0,{x:n*-1}),e.animate.fromTo(e.menu,a/2,{opacity:0},{opacity:1}),l()}):e.animate.to(e.menu,a,{x:n*-1}).eventCallback("onComplete",l)}}(this),this.trail_build=function(e){return function(i){var n,a,l=[];i=i||e.level_get();var s=function(i){i.preventDefault(),e.show_level(t(this).attr("data-level"))};if("back"===e.settings.trail)e.trail.html(""),a=t("<a>Back</a>"),i>0?(a.attr("data-level",i-1),a.on("click",s),e.visible&&0===e.trail_links.length&&e.animate.fromTo(a,e.settings.speed,{opacity:0},{opacity:1,clearProps:"All"}),l.push(1)):0===e.trail_links.length?a.css({opacity:0}):e.animate.to(a,e.settings.speed,{opacity:0}),a.appendTo(e.trail);else{l.push(t('<a data-level="0">All</a>'));var r,o=t(".active-trail"+this.settings.selector.links,e.menu);for(n=0;n<i;n++)e.trail_links[n+1]?l.push(e.trail_links[n+1]):(r=o.eq(n),l.push(t('<a data-level="'+(n+1)+'">'+t(r).text()+"</a>")));var u=function(e){t(e).remove()};if(l.length>e.trail_links.length)for(n=e.trail_links.length;n<l.length;n++)a=l[n],a.appendTo(e.trail).on("click",s),e.visible&&e.animate.fromTo(a,e.settings.speed,{opacity:0},{opacity:1,clearProps:"All"});else if(l.length<e.trail_links.length)for(n=l.length;n<e.trail_links.length;n++)a=e.trail_links[n],e.visible?e.animate.to(a,e.settings.speed,{opacity:0}).eventCallback("onComplete",u,a):a.remove()}e.trail_links=l}}(this),this.bind_links=function(i){return function(){var n=e.location.pathname;i.menu.find("a").each(function(){var e=t(this).attr("href");if(!i.level_get()&&e===n){t(this).parents(".children").addClass("active-trail");var a=t(this).siblings("[data-level]").attr("data-level");a||(a=t(this).closest("[data-level]").attr("data-level")),a&&i.level_set(a)}if(e){var l=t(this).siblings("[data-level]");l.length&&t(this).clone().prependTo(l).wrap('<li class="parent"></li>')}}),i.links.on("click",function(e){var n=t(this).siblings("[data-level]");if(n.length){i.log("Child Found:",n),e.preventDefault();var a=n.attr("data-level");t(this).parent().addClass("active-trail"),i.show_level(a)}else i.log("No Child Found")})}}(this),this.set_animator=function(t){return function(){t.animate=e[t.settings.animate],t.log("Animating using the "+t.settings.animate+" platform.")}}(this),this.log=function(t){return function(e,i){t.debug&&("object"==typeof e?console.log("[UX Offcanvas Menu]",e):i?console.log("[UX Offcanvas Menu] "+e,i):console.log("[UX Offcanvas Menu] "+e))}}(this),this.error=function(t){return function(t){"object"==typeof t?console.error("[UX Parallax]",t):console.error("[UX Parallax] "+t)}}(this),this.initialize()},t.fn.ux_offcanvas_menu=function(e){return this.each(function(i,n){if(!t.data(n,"ux_offcanvas_menu"))return t.data(n,"ux_offcanvas_menu",new t.ux_offcanvas_menu(n,e))})},t.fn.ux_offcanvas_menu}(jQuery,window,document);
+(function ($, window, document) {
+
+  'use strict';
+
+  var _defaults;
+  _defaults = {
+    animate: 'TweenLite',
+    speed: 0.6,
+    trailType: 'breadcrumb',
+    selector: {
+      trail: '.ux-offcanvas-menu-trail',
+      menu: '.ux-offcanvas-menu',
+      links: '.children > a'
+    }
+  };
+
+  $.ux_offcanvas_menu = function (element, options) {
+    this.debug = false;
+    this.initialized = false;
+    this.visible = false;
+    this._defaults = _defaults;
+    this.settings = $.extend(true, {}, this._defaults, options);
+    this.element = $(element);
+    this.menu = $(this.settings.selector.menu, element).addClass('animation-type-' + this.settings.animation);
+    this.trail = $(this.settings.selector.trail, element).addClass('trail-type-' + this.settings.trail);
+    this.links = $(this.settings.selector.links, element);
+    this.trail_links = [];
+
+    /*
+     * Initialize offcanvas and gather all the data
+     */
+    this.initialize = (function (_this) {
+      return function () {
+        _this.set_animator();
+        _this.element.on('opening', function () {
+          if (!_this.initialized) {
+            _this.bind_links();
+            _this.show_level();
+            _this.initial_level = _this.level_get();
+            _this.initial_trail = $(_this.menu).find('.active-trail');
+          }
+          _this.visible = true;
+          _this.initialized = true;
+        });
+        _this.element.on('closed', function () {
+          _this.level_revert();
+          _this.visible = false;
+        });
+        _this.log('UX Offcanvas Menu has been initialized.');
+      };
+    })(this);
+
+    /*
+     * Get current level.
+     */
+    this.level_get = (function (_this) {
+      return function () {
+        var level = _this.menu.attr('data-depth');
+        return level > 0 ? level : 0;
+      };
+    })(this);
+
+    /*
+     * Get current level.
+     */
+    this.level_set = (function (_this) {
+      return function (level) {
+        level = level > 0 ? level : 0;
+        _this.menu.attr('data-depth', level);
+      };
+    })(this);
+
+    /**
+     * Revert to a level.
+     */
+    this.level_revert = (function (_this) {
+      return function () {
+        var level = _this.initial_level;
+        var width = _this.menu.width() * level;
+        setTimeout(function () {
+          _this.animate.to(_this.menu, 0, {x: width * -1});
+          _this.initial_trail.addClass('active-trail');
+          _this.show_level(level);
+        }, _this.settings.speed);
+      };
+    })(this);
+
+    /**
+     * Show level.
+     */
+    this.show_level = (function (_this) {
+      return function (level) {
+        level = level || _this.level_get();
+        var width = _this.menu.width() * level;
+        var speed = _this.visible ? _this.settings.speed : 0.1;
+        _this.element.find('.current').removeClass('current');
+
+        var afterAnimation = function () {
+          $('ul[data-level="' + level + '"] .active-trail', _this.menu).removeClass('active-trail');
+
+          if (parseInt(level) === 0) {
+            _this.menu.addClass('current');
+          }
+          else {
+            _this.menu.find('.active-trail').last().addClass('current');
+          }
+        };
+
+        _this.level_set(level);
+        _this.trail_build(level);
+        if (this.settings.animation === 'fade') {
+          _this.animate.fromTo(_this.menu, speed / 2, {opacity: 1}, {opacity: 0}).eventCallback('onComplete', function () {
+            _this.animate.to(_this.menu, 0, {x: width * -1});
+            _this.animate.fromTo(_this.menu, speed / 2, {opacity: 0}, {opacity: 1});
+            afterAnimation();
+          });
+        }
+        else {
+          _this.animate.to(_this.menu, speed, {x: width * -1}).eventCallback('onComplete', afterAnimation);
+        }
+      };
+    })(this);
+
+    /**
+     * Bind active trail.
+     */
+    this.trail_build = (function (_this) {
+      return function (level) {
+        var i;
+        var link;
+        var links = [];
+        level = level || _this.level_get();
+
+        var trail_click = function (e) {
+          e.preventDefault();
+          _this.show_level($(this).attr('data-level'));
+        };
+
+        // Simple back trail.
+        if (_this.settings.trail === 'back') {
+          _this.trail.html('');
+          link = $('<a>Back</a>');
+          if (level > 0) {
+            link.attr('data-level', level - 1);
+            link.on('click', trail_click);
+            if (_this.visible && _this.trail_links.length === 0) {
+              _this.animate.fromTo(link, _this.settings.speed, {opacity: 0}, {opacity: 1, clearProps: 'All'});
+            }
+            links.push(1);
+          }
+          else {
+            if (_this.trail_links.length === 0) {
+              link.css({opacity: 0});
+            }
+            else {
+              _this.animate.to(link, _this.settings.speed, {opacity: 0});
+            }
+          }
+          link.appendTo(_this.trail);
+        }
+
+        // Breadcrump trail.
+        else {
+          links.push($('<a data-level="0">All</a>'));
+          var layer;
+          var layers = $('.active-trail' + this.settings.selector.links, _this.menu);
+          for (i = 0; i < level; i++) {
+            if (_this.trail_links[i + 1]) {
+              links.push(_this.trail_links[i + 1]);
+            }
+            else {
+              layer = layers.eq(i);
+              links.push($('<a data-level="' + (i + 1) + '">' + $(layer).text() + '</a>'));
+            }
+          }
+
+          var trail_remove = function (link) {
+            $(link).remove();
+          };
+
+          // Add new links.
+          if (links.length > _this.trail_links.length) {
+            for (i = _this.trail_links.length; i < links.length; i++) {
+              link = links[i];
+              link.appendTo(_this.trail).on('click', trail_click);
+              if (_this.visible) {
+                _this.animate.fromTo(link, _this.settings.speed, {opacity: 0}, {opacity: 1, clearProps: 'All'});
+              }
+            }
+          }
+          // Remove old links.
+          else if (links.length < _this.trail_links.length) {
+            for (i = links.length; i < _this.trail_links.length; i++) {
+              link = _this.trail_links[i];
+              if (_this.visible) {
+                _this.animate.to(link, _this.settings.speed, {opacity: 0}).eventCallback('onComplete', trail_remove, link);
+              }
+              else {
+                link.remove();
+              }
+            }
+          }
+        }
+
+        _this.trail_links = links;
+      };
+    })(this);
+
+    /**
+     * Bind trigger click handler.
+     */
+    this.bind_links = (function (_this) {
+      return function () {
+        var windowPath = window.location.pathname;
+
+        _this.menu.find('a').each(function () {
+          var path = $(this).attr('href');
+          // If we are set to show at the base level BUT we have a URL match,
+          // we want to set the active trail.
+          if (!_this.level_get() && path === windowPath) {
+            $(this).parents('.children').addClass('active-trail');
+            var closestLevel = $(this).siblings('[data-level]').attr('data-level');
+            if (!closestLevel) {
+              // If we do not have a child menu, use the parent level.
+              closestLevel = $(this).closest('[data-level]').attr('data-level');
+            }
+            if (closestLevel) {
+              _this.level_set(closestLevel);
+            }
+          }
+          // If parent items are actual links, we want to append them to the
+          // children so they are still accessible.
+          if (path) {
+            var child = $(this).siblings('[data-level]');
+            if (child.length) {
+              $(this).clone().prependTo(child).wrap('<li class="parent"></li>');
+            }
+          }
+        });
+
+        _this.links.on('click', function (e) {
+          var child = $(this).siblings('[data-level]');
+          if (child.length) {
+            _this.log('Child Found:', child);
+            e.preventDefault();
+            var level = child.attr('data-level');
+            $(this).parent().addClass('active-trail');
+            _this.show_level(level);
+          }
+          else {
+            _this.log('No Child Found');
+          }
+        });
+      };
+    })(this);
+
+    /*
+     * Setup Animation Platform
+     */
+    this.set_animator = (function (_this) {
+      return function () {
+        _this.animate = window[_this.settings.animate];
+        _this.log('Animating using the ' + _this.settings.animate + ' platform.');
+      };
+    })(this);
+
+    /*
+     * Logger snippet within UX Offcanvas
+     */
+    this.log = (function (_this) {
+      return function (item, object) {
+        if (!_this.debug) {
+          return;
+        }
+        if (typeof item === 'object') {
+          console.log('[UX Offcanvas Menu]', item); // eslint-disable-line no-console
+        }
+        else {
+          if (object) {
+            console.log('[UX Offcanvas Menu] ' + item, object); // eslint-disable-line no-console
+          }
+          else {
+            console.log('[UX Offcanvas Menu] ' + item); // eslint-disable-line no-console
+          }
+        }
+      };
+    })(this);
+
+    /*
+     * Error logger snippet within UX Offcanvas
+     */
+    this.error = (function (_this) {
+      return function (item) {
+        if (typeof item === 'object') {
+          console.error('[UX Parallax]', item); // eslint-disable-line no-console
+        }
+        else {
+          console.error('[UX Parallax] ' + item); // eslint-disable-line no-console
+        }
+      };
+    })(this);
+
+    this.initialize();
+  };
+
+  $.fn.ux_offcanvas_menu = function (opts) {
+    return this.each(function (index, element) {
+      if (!$.data(element, 'ux_offcanvas_menu')) {
+        return $.data(element, 'ux_offcanvas_menu', new $.ux_offcanvas_menu(element, opts));
+      }
+    });
+  };
+  return $.fn.ux_offcanvas_menu;
+
+})(jQuery, window, document);

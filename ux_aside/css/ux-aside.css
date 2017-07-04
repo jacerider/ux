@@ -27,11 +27,30 @@
 .uxAside {
   position: relative;
   width: 100%;
+  height: auto;
   transition: margin-top 0.3s ease, height 0.3s ease, max-width 0.3s ease;
 }
 
 .uxAside.isTall {
   height: 100% !important;
+}
+
+.uxAside.isTall .uxAside-flex {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.uxAside.isTall .uxAside-wrap {
+  -ms-flex: 1 1;
+      flex: 1 1;
+  height: auto !important;
 }
 
 .uxAside.isFullscreen {
@@ -41,6 +60,14 @@
 .uxAside.isAttachedTop .uxAside-button-wrapper {
   top: 100%;
   bottom: auto;
+}
+
+.uxAside .uxAside-wrap {
+  width: calc(100% + 50px);
+}
+
+.uxAside .uxAside-wrap .uxAside-content {
+  width: calc(100% - 50px);
 }
 
 .uxAside .uxAside-header .uxAside-header-icon {
@@ -66,6 +93,13 @@
 .uxAside .uxAside-header.uxAside-noTitle .uxAside-button {
   height: 20px;
   width: 20px;
+}
+
+.uxAside.uxAside-no-transition .uxAside-header,
+.uxAside.uxAside-no-transition .uxAside-header *,
+.uxAside.uxAside-no-transition .uxAside-iframe,
+.uxAside.uxAside-no-transition .uxAside-wrap {
+  animation: none !important;
 }
 
 /*# sourceMappingURL=ux-aside.css.map */

@@ -12,25 +12,38 @@ use Drupal\Component\Utility\Html;
  * Implements hook_preprocess_ux_menu().
  */
 function template_preprocess_ux_menu(&$variables) {
-  $id = Html::getUniqueId('ux-menu');
   $uxMenuOptions = \Drupal::service('ux_menu.options');
+  $id = Html::getUniqueId('ux-menu');
   $variables['attributes']['id'] = $id;
-  $variables['attributes']['class'] = 'ux-menu';
+  $variables['attributes']['class'][] = 'uxMenu';
+
+  // Includes options with specific menu overrides.
+  $options = $uxMenuOptions->optionsDiff($variables['options'], TRUE);
+  // Includes globally set options that are different than the defaults.
+  $global_options = $uxMenuOptions->optionsDefaultDiff($uxMenuOptions->getOptions(TRUE));
+  // Includes global options with specific menu overrides.
+  $all_options = $uxMenuOptions->optionsMerge($options, TRUE);
+
+  // Add libraries
   $variables['#attached']['library'][] = 'ux_menu/ux_menu';
+  if ($all_options['theme']) {
+    $variables['attributes']['class'][] = 'uxMenu--theme-' . $all_options['theme'];
+    $variables['#attached']['library'][] = 'ux_menu/ux_menu.theme.' . $all_options['theme'];
+  }
 
   // Add base options.
-  $variables['#attached']['drupalSettings']['ux']['menu']['options'] = $uxMenuOptions->optionsDefaultDiff($uxMenuOptions->getOptions());
-  $variables['#attached']['drupalSettings']['ux']['menu']['items'][$id] = $variables['options'];
+  $variables['#attached']['drupalSettings']['ux']['menu']['options'] = $global_options;
+  $variables['#attached']['drupalSettings']['ux']['menu']['items'][$id] = $options;
 
   // Add all base options to template
-  $variables['options'] = $uxMenuOptions->optionsMerge($variables['options']);
+  $variables['options'] = $all_options;
   // Add to child menu theme as well.
-  $variables['nav']['#options'] = $variables['options'];
+  $variables['menu']['#options'] = $all_options;
 }
 
 /**
- * Implements hook_preprocess_ux_menu_nav().
+ * Implements hook_preprocess_ux_menu_menu().
  */
-function template_preprocess_ux_menu_nav(&$variables) {
-  $variables['attributes']['class'] = 'ux-menu-nav';
+function template_preprocess_ux_menu_menu(&$variables) {
+  $variables['attributes']['class'] = 'uxMenu-menu';
 }

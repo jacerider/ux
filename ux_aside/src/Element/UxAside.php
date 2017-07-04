@@ -38,16 +38,22 @@ class UxAside extends RenderElement {
     $aside = $element['#aside'];
 
     if ($aside instanceof UxAsideInterface) {
+      $options = $aside->getOptions('content', TRUE);
       $element['#cache'] = [
         'keys' => ['ux-asides', 'ux-aside', $aside->id()],
         'tags' => $aside->getCacheTags(),
         'contexts' => $aside->getCacheContexts(),
         'max-age' => $aside->getCacheMaxAge(),
       ];
+      $element['#attributes'] = $aside->getContentAttributes()->toArray();
       $element['#attributes']['id'] = 'ux-aside-' . $aside->id();
+      $element['#attributes']['class'][] = 'uxAside';
       $element['#content'] = $aside->getContent();
-      $element['#content_attributes']['class'][] = 'ux-aside-inner';
-      $element['#attached']['drupalSettings']['ux']['aside']['items'][$aside->id()] = $aside->getOptions('content', TRUE);
+      $element['#content_attributes']['class'][] = 'uxAside-inner';
+      $element['#attached']['drupalSettings']['ux']['aside']['items'][$aside->id()] = $options;
+      if (!empty($options['theme'])) {
+        $element['#attached']['library'][] = 'ux_aside/ux_aside.theme.' . $options['theme'];
+      }
     }
     return $element;
   }

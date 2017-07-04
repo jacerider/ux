@@ -14,10 +14,9 @@
     attach: function (context, settings) {
       var _this = this;
       if (settings.ux && settings.ux.menu && settings.ux.menu.items) {
-        console.log(settings.ux.menu);
         for (var id in settings.ux.menu.items) {
           if (settings.ux.menu.items[id]) {
-            var $element = $('#' + id).once('ux-menu');
+            var $element = $('#' + id + ':visible', context).once('ux-menu');
             if ($element.length) {
               var options = _this.getOptions(settings.ux.menu, id);
               $element.uxMenu(options);
@@ -29,7 +28,7 @@
 
     detach: function (context, setting, trigger) {
       if (trigger === 'unload') {
-        $(context).find('.ux-menu').each(function () {
+        $(context).find('.uxMenu').each(function () {
           var plugin = $(this).data('uxMenu');
           if (plugin) {
             plugin.destroy();

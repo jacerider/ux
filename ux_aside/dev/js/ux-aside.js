@@ -80,6 +80,8 @@
         options.right = 0;
         options.openTall = true;
       }
+
+      options.offsets = displace.offsets;
       return options;
     },
 
@@ -98,6 +100,14 @@
           borderBottomRightRadius: 0,
           borderBottomLeftRadius: 0
         });
+      }
+
+      if (uxAside.options.restoreDefaultContent) {
+        // Wait just a moment before binding so that browser registers
+        // elements as visible.
+        setTimeout(function () {
+          Drupal.attachBehaviors(uxAside.$element.get(0), drupalSettings);
+        }, 10);
       }
 
       uxAside.initialized = true;

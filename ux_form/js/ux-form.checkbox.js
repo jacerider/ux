@@ -1,1 +1,121 @@
-!function(e,t,n,i){"use strict";function s(t,n){this.element=t,this._name=h,this._defaults=e.fn.uxFormCheckbox.defaults,this.options=e.extend({},this._defaults,n),this.init()}var h="uxFormCheckbox";e.extend(s.prototype,{init:function(){this.buildCache(),this.bindEvents(),this.buildElement()},destroy:function(){this.unbindEvents(),this.$element.removeData()},buildElement:function(){var e=this;if(this.$element.hasClass("form-no-label")){var t=this.$element.find("label");t.removeClass("visually-hidden"),t.html('<span class="visually-hidden">'+t.html()+"</span>")}this.$field.is(":checked")&&this.$element.addClass("active"),setTimeout(function(){e.$element.addClass("ready")})},buildCache:function(){this.$element=e(this.element),this.$field=this.$element.find("input.form-checkbox")},bindEvents:function(){var e=this;e.$field.on("change."+e._name,function(){e.onChange.call(e)})},unbindEvents:function(){this.$field.off("."+this._name)},onChange:function(){this.$field.is(":checked")?this.$element.addClass("active"):this.$element.removeClass("active")}}),e.fn.uxFormCheckbox=function(t){return this.each(function(){e.data(this,h)||e.data(this,h,new s(this,t))}),this},e.fn.uxFormCheckbox.defaults={},t.behaviors.uxFormCheckbox={attach:function(t){var n=e(t);n.find(".ux-form-checkbox").once("ux-form-checkbox").uxFormCheckbox()},detach:function(t,n,i){"unload"===i&&e(t).find(".ux-form-checkbox").each(function(){var t=e(this).data("uxFormCheckbox");t&&t.destroy()})}}}(jQuery,Drupal,window,document);
+
+(function ($, Drupal, window, document) {
+
+  'use strict';
+
+  var pluginName = 'uxFormCheckbox';
+
+  function Plugin(element, options) {
+    this.element = element;
+    this._name = pluginName;
+    this._defaults = $.fn.uxFormCheckbox.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.init();
+  }
+
+  // Avoid Plugin.prototype conflicts
+  $.extend(Plugin.prototype, {
+
+    /*
+    Initialize plugin instance.
+     */
+    init: function () {
+      this.buildCache();
+      this.bindEvents();
+      this.buildElement();
+    },
+
+    /*
+    Remove plugin instance complete.
+     */
+    destroy: function () {
+      this.unbindEvents();
+      this.$element.removeData();
+    },
+
+    /*
+    Process fields.
+     */
+    buildElement: function () {
+      var _this = this;
+      if (this.$element.hasClass('form-no-label')) {
+        var label = this.$element.find('label');
+        label.removeClass('visually-hidden');
+        label.html('<span class="visually-hidden">' + label.html() + '</span>');
+      }
+      if (this.$field.is(':checked')) {
+        this.$element.addClass('active');
+      }
+      setTimeout(function () {
+        _this.$element.addClass('ready');
+      });
+    },
+
+    /*
+    Cache DOM nodes for performance.
+     */
+    buildCache: function () {
+      this.$element = $(this.element);
+      this.$field = this.$element.find('input.form-checkbox');
+    },
+
+    /*
+    Bind events that trigger methods.
+    */
+    bindEvents: function () {
+      var _this = this;
+      _this.$field.on('change' + '.' + _this._name, function () {
+        _this.onChange.call(_this);
+      });
+    },
+
+    /*
+    Unbind events that trigger methods.
+    */
+    unbindEvents: function () {
+      this.$field.off('.' + this._name);
+    },
+
+    /*
+    On change event callback.
+     */
+    onChange: function () {
+      if (this.$field.is(':checked')) {
+        this.$element.addClass('active');
+      }
+      else {
+        this.$element.removeClass('active');
+      }
+    }
+
+  });
+
+  $.fn.uxFormCheckbox = function (options) {
+    this.each(function () {
+      if (!$.data(this, pluginName)) {
+        $.data(this, pluginName, new Plugin(this, options));
+      }
+    });
+    return this;
+  };
+
+  $.fn.uxFormCheckbox.defaults = {};
+
+  Drupal.behaviors.uxFormCheckbox = {
+    attach: function (context) {
+      var $context = $(context);
+      $context.find('.ux-form-checkbox').once('ux-form-checkbox').uxFormCheckbox();
+    },
+    detach: function (context, setting, trigger) {
+      if (trigger === 'unload') {
+        $(context).find('.ux-form-checkbox').each(function () {
+          var plugin = $(this).data('uxFormCheckbox');
+          if (plugin) {
+            plugin.destroy();
+          }
+        });
+      }
+    }
+  };
+
+})(jQuery, Drupal, window, document);

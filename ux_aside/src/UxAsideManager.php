@@ -87,10 +87,12 @@ class UxAsideManager implements UxAsideManagerInterface, RefinableCacheableDepen
   /**
    * Get asides.
    */
-  public function getOptions($type = NULL, $only_changed = FALSE) {
-    $options = $this->uxAsideOptions->getOptions();
+  public function getOptions($type = NULL, $only_changed = FALSE, $process = FALSE) {
     if ($only_changed) {
-      $options = $this->uxAsideOptions->optionsDefaultDiff($options);
+      $options = $this->uxAsideOptions->optionsDefaultDiff($this->uxAsideOptions->getOptions(), $process);
+    }
+    else {
+      $options = $this->uxAsideOptions->getOptions($process);
     }
     if ($type) {
       $options = isset($options[$type]) ? $options[$type] : [];

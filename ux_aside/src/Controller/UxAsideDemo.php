@@ -46,7 +46,7 @@ class UxAsideDemo extends ControllerBase {
     $build = [];
 
     $content = [
-      '#markup' => 'WHOA!',
+      '#markup' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Nullam quis risus eget urna mollis ornare vel eu leo.<br><br>Donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor fringilla. Nullam quis risus eget urna mollis ornare vel eu leo. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Maecenas faucibus mollis interdum.<br><br>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Maecenas faucibus mollis interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Vestibulum id ligula porta felis euismod semper.<br><br>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
     ];
 
     $divider = [
@@ -56,13 +56,7 @@ class UxAsideDemo extends ControllerBase {
     $build[] = $divider;
     $build[] = $this->uxAsideManager->create('demo-1')
       ->setTriggerText('Simple')
-      ->setTriggerIcon('fa-user')
       ->setContent($content)
-      ->setOptions([
-        'content' => [
-          'icon' => 'fa-user',
-        ],
-      ])
       ->toRenderArray();
 
     $build[] = $divider;

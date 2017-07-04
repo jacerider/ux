@@ -1,0 +1,47 @@
+.uxMenu--theme-dark {
+  background: #1c1d22;
+}
+
+.uxMenu--theme-dark .uxMenu-top {
+  padding: 15px;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.uxMenu--theme-dark .uxMenu-top a {
+  color: #fff;
+}
+
+.uxMenu--theme-dark .uxMenu-top .micon {
+  color: #666666;
+}
+
+.uxMenu--theme-dark .uxMenu-item {
+  border-bottom: 1px dotted #050506;
+}
+
+.uxMenu--theme-dark .uxMenu-item:first-child .uxMenu-link {
+  border-top: 1px dotted #050506;
+}
+
+.uxMenu--theme-dark .uxMenu-link {
+  padding: 15px;
+  font-weight: 600;
+  transition: background 300ms;
+}
+
+.uxMenu--theme-dark .uxMenu-link .micon {
+  float: right;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.uxMenu--theme-dark .uxMenu-link:hover {
+  background: #15161a;
+}
+
+.uxMenu--theme-dark .uxMenu-link:hover .micon {
+  opacity: 1;
+}
+
+/*# sourceMappingURL=ux-menu.dark.css.map */

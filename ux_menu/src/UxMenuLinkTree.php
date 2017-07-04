@@ -3,7 +3,6 @@
 namespace Drupal\ux_menu;
 
 use Drupal\Core\Menu\MenuLinkTree;
-use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Template\Attribute;
 
@@ -46,8 +45,8 @@ class UxMenuLinkTree extends MenuLinkTree {
         }
       }
 
-      $build['#theme'] = 'ux_menu_nav__' . strtr(implode('_', $menu_names), '-', '_');
-      $build['#menu_name'] = $menu_name;
+      $build['#theme'] = 'ux_menu_menu__' . strtr(implode('_', $menu_names), '-', '_');
+      $build['#menu_name'] = $menu_names;
       foreach ($levels as $key => $items) {
         $build['#levels'][$key]['attributes'] = new Attribute([
           'data-menu' => 'submenu-' . $key,
@@ -79,7 +78,7 @@ class UxMenuLinkTree extends MenuLinkTree {
    * @return array
    *   And array of tree items.
    */
-  protected function buildLevels(array $tree, $levels = [], $level = 1, $section = 0) {
+  protected function buildLevels(array $tree, array $levels = [], $level = 1, $section = 0) {
     $key = '0';
     if ($section) {
       $key = $level . '-' . $section;
@@ -92,14 +91,18 @@ class UxMenuLinkTree extends MenuLinkTree {
       $data->level = $key;
       $data->submenu = NULL;
       $data->subtree = [];
+      $data->isSubmenuParent = FALSE;
 
       if ($subtree) {
         $section++;
         $sublevel = $level + 1;
         $data->submenu = $sublevel . '-' . $section;
 
+        // Add parent to submenu if it is a URL.
         if ($data->link->getUrlObject()->toString()) {
-          $subtree = [$i => clone $data] + $subtree;
+          $parent_data = clone $data;
+          $parent_data->isSubmenuParent = TRUE;
+          $subtree = [$i => $parent_data] + $subtree;
         }
 
         $levels = $this->buildLevels($subtree, $levels, $sublevel, $section);
@@ -141,9 +144,13 @@ class UxMenuLinkTree extends MenuLinkTree {
       if (isset($items[$id])) {
         $element = &$items[$id];
         $options = $element['url']->getOptions();
-        $options['attributes']['class'][] = 'ux-menu-link';
+        $options['attributes']['class'][] = 'uxMenu-link';
         if ($data->submenu) {
+          $options['attributes']['class'][] = 'uxMenu-link--has-submenu';
           $options['attributes']['data-submenu'] = 'submenu-' . $data->submenu;
+        }
+        if ($data->isSubmenuParent) {
+          $options['attributes']['class'][] = 'uxMenu-link--is-submenu-parent';
         }
         $element['url']->setOptions($options);
         $element['link_attributes'] = new Attribute($options['attributes']);

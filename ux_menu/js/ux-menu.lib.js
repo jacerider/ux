@@ -1,1 +1,481 @@
-!function(n,e,t){"use strict";function a(e,t){this.element=e,this._name=s,this._defaults=n.fn.uxMenu.defaults,this.options=n.extend({},this._defaults,t),this.animationEvent=i(),this.init()}function i(){var n,e=t.createElement("fakeelement"),a={animation:"animationend",OAnimation:"oAnimationEnd",MozAnimation:"animationend",WebkitAnimation:"webkitAnimationEnd"};for(n in a)if("undefined"!==e.style[n])return a[n]}var s="uxMenu";n.extend(a.prototype,{init:function(){this.buildCache(),this.buildElement(),this.bindEvents()},destroy:function(){this.unbindEvents(),this.$element.removeData()},buildCache:function(){this.$element=n(this.element),this.$nav=this.$element.find(".ux-menu-nav"),this.$wrap=this.$nav.find(".ux-menu-wrap"),this.$menus=this.$nav.find(".ux-menu-level"),this.menusArr=[],this.breadCrumbs=!1,(this.options.breadcrumbNav||this.options.backNav)&&(this.$navHeader=this.$nav.find(".ux-menu-nav-header"));var e=0;this.$menus.each(function(t){n(this).find(".ux-menu-link.is-active").length&&(e=t)}),this.current_menu=e},buildElement:function(){var e=this,t=[];this.$menus.each(function(a){var i=n(this),s={$menuEl:i,$menuItems:i.find(".ux-menu-item")};e.menusArr.push(s),a===e.current_menu&&(i.addClass("ux-menu-level--current"),e.setWrapHeight(i)),i.find(".ux-menu-link[data-submenu]").each(function(){var e=n(this),i=e.attr("data-submenu"),s={menu:i,name:e.html()};t[a]?t[a].push(s):(t[a]=[],t[a].push(s))})}),this.$menus.each(function(a){var i=n(this),s=i.attr("data-menu");t.forEach(function(n,t){n.forEach(function(n,i){n.menu===s&&(e.log("Parent found for "+n.name+" as "+t),e.menusArr[a].backIdx=t,e.menusArr[a].name=n.name)})})}),e.options.breadcrumbNav&&(e.$breadcrumbNav=n('<nav class="ux-menu-breadcrumbs" aria-label="You are here"></nav>').prependTo(e.$navHeader),e.addBreadcrumb(0),0!==e.menusArr[e.current_menu].backIdx&&0!==e.current_menu&&(e.crawlCrumbs(e.menusArr[e.current_menu].backIdx,e.menusArr),e.breadCrumbs=!0),0!==e.current_menu&&(e.addBreadcrumb(e.current_menu),e.breadCrumbs=!0)),e.options.backNav&&(e.$backNav=n('<button class="ux-menu-back" aria-label="Go back"></button>').appendTo(e.$navHeader),e.$backNav.html('<span class="fa fa-arrow-left"></span> Back'))},bindEvents:function(){for(var e=this,t=0,a=this.menusArr.length;t<a;++t)this.menusArr[t].$menuItems.each(function(t){n(this).find(".ux-menu-link[data-submenu]").on("click",function(a){var i=n(this),s=i.html(),u=i.attr("data-submenu"),r=e.$nav.find('.ux-menu-level[data-menu="'+u+'"]');r.length?(a.preventDefault(),e.openSubMenu(r,t,s)):(e.$nav.find(".ux-menu-link--current").removeClass("ux-menu-link--current"),i.addClass("ux-menu-link--current"))})});this.options.backNav&&this.$backNav.on("click",function(n){e.back()})},addBreadcrumb:function(e){if(!this.options.breadcrumbNav)return!1;var t=this,a=e?this.menusArr[e].name:this.options.breadcrumbInitialText,i=n('<a href="#"></a>').html(a);this.log("Add Crumb "+a+" ("+e+")"),i.on("click",function(n){if(n.preventDefault(),!i.next().length||t.isAnimating)return!1;t.isAnimating=!0,t.menuOut();var a=t.menusArr[e].$menuEl;t.menuIn(a);var s=i.nextAll();s.one(t.animationEvent,function(n){s.remove()}).addClass("animate-fadeOut")}),this.$breadcrumbNav.append(i),i.addClass("animate-fadeIn")},crawlCrumbs:function(n,e){this.log("Crawl Crumbs"),0!==e[n].backIdx&&this.crawlCrumbs(e[n].backIdx,e),this.addBreadcrumb(n)},openSubMenu:function(n,e,t){if(this.isAnimating)return!1;var a=this.$menus.index(n);this.isAnimating=!0,this.menusArr[a].backIdx=this.current_menu,this.menusArr[a].name=t,this.menuOut(e),this.menuIn(n,e)},back:function(){if(this.isAnimating)return!1;this.isAnimating=!0,this.menuOut();var n=this.menusArr[this.menusArr[this.current_menu].backIdx].$menuEl;this.menuIn(n),this.options.breadcrumbNav&&this.$breadcrumbNav.children().last().remove()},menuOut:function(n){var e=this,t=this.menusArr[this.current_menu].$menuEl,a="undefined"==typeof n;this.menusArr[this.current_menu].$menuItems.each(function(t){this.style.WebkitAnimationDelay=this.style.animationDelay=a?parseInt(t*e.options.itemsDelayInterval)+"ms":parseInt(Math.abs(n-t)*e.options.itemsDelayInterval)+"ms"}),"r2l"===this.options.direction?t.addClass(a?"animate-outToRight":"animate-outToLeft"):t.addClass(a?"animate-outToLeft":"animate-outToRight")},setWrapHeight:function(e){var t=0;e.children().each(function(){t+=n(this).outerHeight()}),this.$wrap.height(t)},menuIn:function(e,t){var a=this,i=this.menusArr[this.current_menu].$menuEl,s="undefined"==typeof t,u=this.$menus.index(e),r=this.menusArr[u],m=r.$menuItems,o=m.length;a.setWrapHeight(e),s?0===u&&a.options.backNav&&a.$backNav.removeClass("animate-fadeIn").addClass("animate-fadeOut"):(a.options.backNav&&a.$backNav.removeClass("animate-fadeOut").addClass("animate-fadeIn"),a.addBreadcrumb(u)),m.each(function(r){this.style.WebkitAnimationDelay=this.style.animationDelay=s?parseInt(r*a.options.itemsDelayInterval)+"ms":parseInt(Math.abs(t-r)*a.options.itemsDelayInterval)+"ms";var m=t<=o/2||s?o-1:0;r===m&&n(this).one(a.animationEvent,function(n){"r2l"===a.options.direction?(i.removeClass(s?"animate-outToRight":"animate-outToLeft"),e.removeClass(s?"animate-inFromLeft":"animate-inFromRight")):(i.removeClass(s?"animate-outToLeft":"animate-outToRight"),e.removeClass(s?"animate-inFromRight":"animate-inFromLeft")),i.removeClass("ux-menu-level--current"),e.addClass("ux-menu-level--current"),a.current_menu=u,a.isAnimating=!1,e.focus()})}),"r2l"===this.options.direction?e.addClass(s?"animate-inFromLeft":"animate-inFromRight"):e.addClass(s?"animate-inFromRight":"animate-inFromLeft")},unbindEvents:function(){this.$element.off("."+this._name)},log:function(n){this.options.debug&&("object"==typeof n?console.log("["+this._name+"]",n):console.log("["+this._name+"] "+n))},error:function(n){"object"==typeof n?console.error("["+this._name+"]",n):console.error("["+this._name+"] "+n)}}),n.fn.uxMenu=function(e){return this.each(function(){n.data(this,s)||n.data(this,s,new a(this,e))}),this},n.fn.uxMenu.defaults={debug:!1,breadcrumbNav:!0,breadcrumbInitialText:"All",backNav:!1,itemsDelayInterval:60,direction:"r2l",onItemClick:null}}(jQuery,window,document);
+
+(function ($, window, document) {
+
+  'use strict';
+
+  var pluginName = 'uxMenu';
+
+  function Plugin(element, options) {
+    this.element = element;
+    this._name = pluginName;
+    this._defaults = $.fn.uxMenu.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.animationEvent = whichAnimationEvent();
+    this.init();
+  }
+
+  function whichAnimationEvent() {
+    var t;
+    var el = document.createElement('fakeelement');
+    var animations = {
+      animation: 'animationend',
+      OAnimation: 'oAnimationEnd',
+      MozAnimation: 'animationend',
+      WebkitAnimation: 'webkitAnimationEnd'
+    };
+    for (t in animations) {
+      if (el.style[t] !== 'undefined') {
+        return animations[t];
+      }
+    }
+  }
+
+  // Avoid Plugin.prototype conflicts
+  $.extend(Plugin.prototype, {
+
+    /*
+    Initialize plugin instance.
+     */
+    init: function () {
+      this.buildCache();
+      this.buildElement();
+      this.bindEvents();
+    },
+
+    /*
+    Remove plugin instance complete.
+     */
+    destroy: function () {
+      this.unbindEvents();
+      this.$element.removeData();
+    },
+
+    /*
+    Cache DOM nodes for performance.
+     */
+    buildCache: function () {
+      this.$element = $(this.element);
+      this.$menu = this.$element.find('.' + pluginName + '-menu');
+      this.$wrap = this.$menu.find('.' + pluginName + '-wrap');
+      this.$menus = this.$menu.find('.' + pluginName + '-level');
+      this.menusArr = [];
+      this.breadCrumbs = false;
+
+      if (this.options.breadcrumbNav || this.options.backNav) {
+        this.$menuHeader = this.$element.find('.' + pluginName + '-top');
+      }
+
+      /* Determine what current menu actually is */
+      var current_menu = 0;
+      this.$menus.each(function (pos) {
+        if ($(this).find('.' + pluginName + '-link.is-active').length) {
+          current_menu = pos;
+        }
+      });
+
+      this.current_menu = current_menu;
+    },
+
+    /*
+    Process fields.
+     */
+    buildElement: function () {
+      var _this = this;
+      var submenus = [];
+
+      /* Loops over root level menu items */
+      this.$menus.each(function (pos) {
+        var $menuEl = $(this);
+
+        var menu = {
+          $menuEl: $menuEl,
+          $menuItems: $menuEl.find('.' + pluginName + '-item')
+        };
+        _this.menusArr.push(menu);
+
+        // set current menu class
+        if (pos === _this.current_menu) {
+          $menuEl.addClass(pluginName + '-level--current');
+          // set height of nav based on children
+          _this.setWrapHeight($menuEl);
+        }
+
+        $menuEl.find('.' + pluginName + '-link[data-submenu]').each(function () {
+          var $linkEl = $(this);
+          if (_this.options.itemIcon) {
+            $linkEl.append(_this.options.itemIcon);
+          }
+          var submenu = $linkEl.attr('data-submenu');
+          var pushMe = {
+            menu: submenu,
+            name: $linkEl.html()
+          };
+          if (submenus[pos]) {
+            submenus[pos].push(pushMe);
+          }
+          else {
+            submenus[pos] = [];
+            submenus[pos].push(pushMe);
+          }
+        });
+      });
+
+      /* For each MENU, find their parent MENU */
+      this.$menus.each(function (pos) {
+        var $menuEl = $(this);
+        var menu_x = $menuEl.attr('data-menu');
+        submenus.forEach(function (subMenuEl, menu_root) {
+          subMenuEl.forEach(function (subMenuItem, subPos) {
+            if (subMenuItem.menu === menu_x) {
+              _this.log('Parent found for ' + subMenuItem.name + ' as ' + menu_root);
+              _this.menusArr[pos].backIdx = menu_root;
+              _this.menusArr[pos].name = subMenuItem.name;
+            }
+          });
+        });
+      });
+
+      // create breadcrumbs
+      if (_this.options.breadcrumbNav) {
+        _this.$breadcrumbNav = $('<nav class="' + pluginName + '-breadcrumbs" aria-label="You are here"></nav>').prependTo(_this.$menuHeader);
+        _this.addBreadcrumb(0);
+
+        // Need to add breadcrumbs for all parents of current submenu
+        if (_this.menusArr[_this.current_menu].backIdx !== 0 && _this.current_menu !== 0) {
+          _this.crawlCrumbs(_this.menusArr[_this.current_menu].backIdx, _this.menusArr);
+          _this.breadCrumbs = true;
+        }
+
+        // Create current submenu breadcrumb
+        if (_this.current_menu !== 0) {
+          _this.addBreadcrumb(_this.current_menu);
+          _this.breadCrumbs = true;
+        }
+      }
+
+      // create back button
+      if (_this.options.backNav) {
+        _this.$backNav = $('<a class="' + pluginName + '-back" aria-label="' + _this.options.backText + '" href="#"></a>').appendTo(_this.$menuHeader);
+        var html = _this.options.backText;
+        if (_this.options.backIcon) {
+          html = _this.options.backIcon + ' ' + html;
+        }
+        _this.$backNav.html(html);
+      }
+
+      // if (this.options.breadcrumbNav || this.options.backNav) {
+      //   this.$menu.css({paddingTop: this.$menuHeader.outerHeight()});
+      // }
+
+    },
+
+    /*
+    Bind events that trigger methods.
+    */
+    bindEvents: function () {
+      var _this = this;
+      for (var i = 0, len = this.menusArr.length; i < len; ++i) {
+        this.menusArr[i].$menuItems.each(function (pos) {
+          $(this).find('.' + pluginName + '-link[data-submenu]').on('click', function (e) {
+            var $linkEl = $(this);
+            var itemName = $linkEl.html();
+            var submenu = $linkEl.attr('data-submenu');
+            var $subMenuEl = _this.$menu.find('.' + pluginName + '-level[data-menu="' + submenu + '"]');
+            if ($subMenuEl.length) {
+              e.preventDefault();
+              _this.openSubMenu($subMenuEl, pos, itemName);
+            }
+            else {
+              _this.$menu.find('.' + pluginName + '-link--current').removeClass(pluginName + '-link--current');
+              $linkEl.addClass(pluginName + '-link--current');
+            }
+          });
+        });
+      }
+
+      // back navigation
+      if (this.options.backNav) {
+        this.$backNav.on('click', function (e) {
+          _this.back();
+        });
+      }
+    },
+
+    /*
+    Add a breadcrumb
+     */
+    addBreadcrumb: function (idx) {
+      if (!this.options.breadcrumbNav) {
+        return false;
+      }
+
+      var _this = this;
+      var title = idx ? this.menusArr[idx].name : this.options.breadcrumbText;
+      title = title.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, '');
+      var $bc = $('<span class="uxMenu-breadcrumb">');
+      if (idx && _this.options.breadcrumbIcon) {
+        $bc.html(_this.options.breadcrumbIcon);
+      }
+      var $link = $('<a href="#"></a>').html(title).appendTo($bc);
+
+      $link.on('click', function (e) {
+        e.preventDefault();
+        // do nothing if this breadcrumb is the last one in the list of breadcrumbs
+        if (!$bc.next().length || _this.isAnimating) {
+          return false;
+        }
+
+        _this.isAnimating = true;
+        // current menu slides out
+        _this.menuOut();
+        // next menu slides in
+        var $nextMenu = _this.menusArr[idx].$menuEl;
+        _this.menuIn($nextMenu);
+
+        // remove breadcrumbs that are ahead
+        // $bc.nextAll().remove();
+        var $remaining = $bc.nextAll();
+        $remaining.one(_this.animationEvent, function (e) {
+          $remaining.remove();
+        }).addClass('animate-fadeOut');
+      });
+
+      this.$breadcrumbNav.append($bc);
+      $bc.addClass('animate-fadeIn');
+    },
+
+    crawlCrumbs: function (currentMenu, menuArray) {
+      this.log('Crawl Crumbs');
+      if (menuArray[currentMenu].backIdx !== 0) {
+        this.crawlCrumbs(menuArray[currentMenu].backIdx, menuArray);
+      }
+      // create breadcrumb
+      this.addBreadcrumb(currentMenu);
+    },
+
+    openSubMenu: function ($subMenuEl, clickPosition, subMenuName) {
+      if (this.isAnimating) {
+        return false;
+      }
+      var menuIdx = this.$menus.index($subMenuEl);
+      this.isAnimating = true;
+
+      // save "parent" menu index for back navigation
+      this.menusArr[menuIdx].backIdx = this.current_menu;
+      // save "parent" menu´s name
+      this.menusArr[menuIdx].name = subMenuName;
+      // current menu slides out
+      this.menuOut(clickPosition);
+      // next menu (submenu) slides in
+      this.menuIn($subMenuEl, clickPosition);
+    },
+
+    back: function () {
+      if (this.isAnimating) {
+        return false;
+      }
+      this.isAnimating = true;
+
+      // current menu slides out
+      this.menuOut();
+      // next menu (previous menu) slides in
+      var $backMenu = this.menusArr[this.menusArr[this.current_menu].backIdx].$menuEl;
+      this.menuIn($backMenu);
+
+      // remove last breadcrumb
+      if (this.options.breadcrumbNav) {
+        this.$breadcrumbNav.children().last().remove();
+      }
+    },
+
+    menuOut: function (clickPosition) {
+      var _this = this;
+      var $currentMenu = this.menusArr[this.current_menu].$menuEl;
+      var isBackNavigation = typeof clickPosition == 'undefined' ? true : false;
+
+      // slide out current menu items - first, set the delays for the items
+      this.menusArr[this.current_menu].$menuItems.each(function (pos) {
+        this.style.WebkitAnimationDelay = this.style.animationDelay = isBackNavigation ? parseInt(pos * _this.options.itemDelayInterval) + 'ms' : parseInt(Math.abs(clickPosition - pos) * _this.options.itemDelayInterval) + 'ms';
+      });
+      // animation class
+      if (this.options.direction === 'r2l') {
+        $currentMenu.addClass(!isBackNavigation ? 'animate-outToLeft' : 'animate-outToRight');
+      }
+      else {
+        $currentMenu.addClass(isBackNavigation ? 'animate-outToLeft' : 'animate-outToRight');
+      }
+    },
+
+    /*
+    Set wrap height based on element content.
+     */
+    setWrapHeight: function ($menuEl) {
+      var _this = this;
+      $menuEl = $menuEl || this.$menus.filter('.' + pluginName + '-level--current');
+      var currentHeight = this.$wrap.height();
+      var height = 0;
+      $menuEl.children().each(function () {
+        height += $(this).outerHeight();
+      });
+      if (currentHeight <= height) {
+        this.$wrap.height(height);
+      }
+      else {
+        _this.$menu.animate({scrollTop: 0}, 1000);
+        $menuEl.one(this.animationEvent, function (e) {
+          _this.$wrap.height(height);
+        });
+      }
+    },
+
+    menuIn: function ($nextMenuEl, clickPosition) {
+      var _this = this;
+      var $currentMenu = this.menusArr[this.current_menu].$menuEl;
+      var isBackNavigation = typeof clickPosition == 'undefined' ? true : false;
+      var nextMenuIdx = this.$menus.index($nextMenuEl);
+      var nextMenu = this.menusArr[nextMenuIdx];
+      // var $nextMenuEl = nextMenu.$menuEl;
+      var $nextMenuItems = nextMenu.$menuItems;
+      var nextMenuItemsTotal = $nextMenuItems.length;
+
+      // set height of nav based on children
+      _this.setWrapHeight($nextMenuEl);
+
+      // control back button and breadcrumbs navigation elements
+      if (!isBackNavigation) {
+        // show back button
+        if (_this.options.backNav) {
+          _this.$backNav.removeClass('animate-fadeOut').addClass('animate-fadeIn');
+        }
+        // add breadcrumb
+        _this.addBreadcrumb(nextMenuIdx);
+      }
+      else if (nextMenuIdx === 0 && _this.options.backNav) {
+        // hide back button
+        _this.$backNav.removeClass('animate-fadeIn').addClass('animate-fadeOut');
+      }
+
+      $nextMenuItems.each(function (pos) {
+        this.style.WebkitAnimationDelay = this.style.animationDelay = isBackNavigation ? parseInt(pos * _this.options.itemDelayInterval) + 'ms' : parseInt(Math.abs(clickPosition - pos) * _this.options.itemDelayInterval) + 'ms';
+        var farthestIdx = clickPosition <= nextMenuItemsTotal / 2 || isBackNavigation ? nextMenuItemsTotal - 1 : 0;
+
+        if (pos === farthestIdx) {
+          $(this).one(_this.animationEvent, function (e) {
+            // reset classes
+            if (_this.options.direction === 'r2l') {
+              $currentMenu.removeClass(!isBackNavigation ? 'animate-outToLeft' : 'animate-outToRight');
+              $nextMenuEl.removeClass(!isBackNavigation ? 'animate-inFromRight' : 'animate-inFromLeft');
+            }
+            else {
+              $currentMenu.removeClass(isBackNavigation ? 'animate-outToLeft' : 'animate-outToRight');
+              $nextMenuEl.removeClass(isBackNavigation ? 'animate-inFromRight' : 'animate-inFromLeft');
+            }
+            $currentMenu.removeClass(pluginName + '-level--current');
+            $nextMenuEl.addClass(pluginName + '-level--current');
+
+            _this.current_menu = nextMenuIdx;
+
+            // we can navigate again.
+            _this.isAnimating = false;
+
+            // focus retention
+            $nextMenuEl.focus();
+          });
+        }
+      });
+
+      // animation class
+      if (this.options.direction === 'r2l') {
+        $nextMenuEl.addClass(!isBackNavigation ? 'animate-inFromRight' : 'animate-inFromLeft');
+      }
+      else {
+        $nextMenuEl.addClass(isBackNavigation ? 'animate-inFromRight' : 'animate-inFromLeft');
+      }
+    },
+
+    /*
+    Unbind events that trigger methods.
+    */
+    unbindEvents: function () {
+      this.$element.off('.' + this._name);
+    },
+
+    log: function (item) {
+      if (!this.options.debug) {
+        return;
+      }
+      if (typeof item === 'object') {
+        console.log('[' + this._name + ']', item); // eslint-disable-line no-console
+      }
+      else {
+        console.log('[' + this._name + '] ' + item); // eslint-disable-line no-console
+      }
+    },
+
+    error: function (item) {
+      if (typeof item === 'object') {
+        console.error('[' + this._name + ']', item); // eslint-disable-line no-console
+      }
+      else {
+        console.error('[' + this._name + '] ' + item); // eslint-disable-line no-console
+      }
+    }
+
+  });
+
+  $.fn.uxMenu = function (options) {
+    var args = arguments;
+    if (options === 'undefined' || typeof options === 'object') {
+      return this.each(function () {
+        if (!$.data(this, pluginName)) {
+          $.data(this, pluginName, new Plugin(this, options));
+        }
+      });
+    }
+    else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+      var returns;
+      this.each(function () {
+        var instance = $.data(this, pluginName);
+
+        if (instance instanceof Plugin && typeof instance[options] === 'function') {
+          returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+        }
+
+        // Allow instances to be destroyed via the 'destroy' method
+        if (options === 'destroy') {
+          $.data(this, 'plugin_' + pluginName, null);
+        }
+      });
+
+      return returns !== 'undefined' ? returns : this;
+    }
+  };
+
+  $.fn.uxMenu.defaults = {
+    debug: false,
+    // show back button
+    backNav: false,
+    // back nav text
+    backText: 'Back',
+    // back icon
+    backIcon: '',
+    // show breadcrumbs
+    breadcrumbNav: true,
+    // initial breadcrumb text
+    breadcrumbText: 'All',
+    // breadcrumb icon
+    breadcrumbIcon: '',
+    // icon used to signify menu items that will open a submenu
+    itemIcon: '',
+    // delay between each menu item sliding animation
+    itemDelayInterval: 60,
+    // direction
+    direction: 'r2l',
+    // theme
+    theme: '',
+     // callback: item that doesn´t have a submenu gets clicked -
+     // onItemClick([event], [inner HTML of the clicked item])
+    onItemClick: null
+  };
+
+})(jQuery, window, document);

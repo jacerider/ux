@@ -51,7 +51,14 @@ abstract class UxOptionsBase implements UxOptionsInterface {
    *
    * @var array
    */
-  protected static $defaults;
+  protected $defaults;
+
+  /**
+   * The processed option defaults.
+   *
+   * @var array
+   */
+  protected $defaultsProcessed;
 
   /**
    * The options.
@@ -59,6 +66,13 @@ abstract class UxOptionsBase implements UxOptionsInterface {
    * @var Drupal\Core\Config\ImmutableConfig
    */
   protected $options;
+
+  /**
+   * The processed options.
+   *
+   * @var Drupal\Core\Config\ImmutableConfig
+   */
+  protected $optionsProcessed;
 
   /**
    * Constructs a new UxAsideOptions object.
@@ -73,21 +87,34 @@ abstract class UxOptionsBase implements UxOptionsInterface {
   /**
    * {@inheritdoc}
    */
-  public function getDefaults() {
-    if (!isset(self::$defaults)) {
+  public function getDefaults($process = FALSE) {
+    if (!isset($this->defaults)) {
       $file = drupal_get_path('module', $this->moduleId) . '/config/install/' . $this->configName . '.yml';
       $options = Yaml::decode(file_get_contents($file));
-      self::$defaults = isset($options['options']) ? $options['options'] : [];
+      $this->defaults = isset($options['options']) ? $options['options'] : [];
     }
-    return self::$defaults;
+    if ($process) {
+      if (!isset($this->defaultsProcessed)) {
+        $this->defaultsProcessed = $this->processOptions($this->defaults);
+      }
+      return $this->defaultsProcessed;
+    }
+    return $this->defaults;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getOptions() {
+  public function getOptions($process = FALSE) {
     $options = $this->options->get('options') ?: [];
-    return NestedArray::mergeDeep($this->getDefaults(), $options);
+    $options = NestedArray::mergeDeep($this->getDefaults(), $options);
+    if ($process) {
+      if (!isset($this->optionsProcessed)) {
+        $this->optionsProcessed = $this->processOptions($options);
+      }
+      $options = $this->optionsProcessed;
+    }
+    return $options;
   }
 
   /**
@@ -102,7 +129,7 @@ abstract class UxOptionsBase implements UxOptionsInterface {
   /**
    * {@inheritdoc}
    */
-  public function prepareOptions(array $options) {
+  public function processOptions(array $options) {
     return $options;
   }
 
@@ -137,21 +164,27 @@ abstract class UxOptionsBase implements UxOptionsInterface {
   /**
    * {@inheritdoc}
    */
-  public function optionsMerge(array $options) {
-    return NestedArray::mergeDeep($this->getOptions(), $options);
+  public function optionsMerge(array $options, $is_processed = FALSE) {
+    return NestedArray::mergeDeep($this->getOptions($is_processed), $options);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function optionsDiff(array $options) {
+  public function optionsDiff(array $options, $process = FALSE) {
+    if ($process) {
+      $options = $this->processOptions($options);
+    }
     return $this->optionsDeepDiff($options, $this->getOptions());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function optionsDefaultDiff(array $options) {
+  public function optionsDefaultDiff(array $options, $process = FALSE) {
+    if ($process) {
+      $options = $this->processOptions($options);
+    }
     return $this->optionsDeepDiff($options, $this->getDefaults());
   }
 

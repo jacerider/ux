@@ -68,7 +68,17 @@ class UxMenuSettingsForm extends ConfigFormBase {
       '#tree' => TRUE,
     ] + $this->uxMenuOptions->form();
 
-    return parent::buildForm($form, $form_state);
+    $form = parent::buildForm($form, $form_state);
+
+    $form['actions']['reset'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Reset configuration'),
+      '#submit' => [
+        [$this, 'resetForm'],
+      ],
+    ];
+
+    return $form;
   }
 
   /**
@@ -77,6 +87,13 @@ class UxMenuSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
     $this->uxMenuOptions->saveOptions($form_state->getValue('options'));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function resetForm(array &$form, FormStateInterface $form_state) {
+    $this->uxMenuOptions->saveOptions($this->uxMenuOptions->getDefaults());
   }
 
 }

@@ -1,4 +1,4 @@
-.ux-menu-nav {
+.uxMenu-menu {
   position: relative;
 
   [class^='animate-'], [class*=' animate-'] {
@@ -6,21 +6,68 @@
   }
 }
 
-.ux-menu-wrap {
+.uxMenu-in-uxAside {
+
+  &.isTall {
+
+    &.hasScroll {
+
+      .uxAside-wrap {
+        overflow: hidden !important;
+        // position: static !important;
+      }
+    }
+
+    .uxMenu {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .uxMenu-menu {
+      flex: 1 1;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;  // sass-lint:disable-line no-misspelled-properties
+      overflow-scrolling: touch; // sass-lint:disable-line no-misspelled-properties
+    }
+  }
+
+  // &.hasScroll {
+
+  //   .uxMenu {
+  //     position: absolute;
+  //     top: 0;
+  //     right: 0;
+  //     bottom: 0;
+  //     left: 0;
+  //     display: flex;
+  //     flex-direction: column;
+  //   }
+  // }
+}
+
+.uxMenu-wrap {
   position: relative;
   overflow: hidden;
   width: 100%;
   transition: height 300ms;
 }
 
-.ux-menu-level {
+.uxMenu-level {
   position: absolute;
   top: 0;
   left: 0;
   visibility: hidden;
-  overflow: hidden;
-  overflow-y: scroll;
-  width: calc(100% + 50px);
+  // overflow: hidden;
+  // overflow-y: scroll;
+  // width: calc(100% + 50px);
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -30,43 +77,54 @@
     outline: none;
   }
 
-  &.ux-menu-level--current {
+  &.uxMenu-level--current {
     visibility: visible;
   }
 }
 
-.ux-menu-item {
+.uxMenu-item {
   display: block;
-  width: calc(100% - 50px);
+  // width: calc(100% - 50px);
+  width: 100%;
 }
 
-.ux-menu-link {
+.uxMenu-link {
   position: relative;
   display: block;
   transition: color 100ms;
+  font-size: 16px;
+  line-height: 16px;
 
-  &[data-submenu] {
+  .micon {
+    line-height: 16px;
+  }
+
+  &.uxMenu-link--has-submenu {
     // Submenu styling can go here.
-    font-weight: bold;
   }
 }
 
-.ux-menu-nav-header {
-  position: relative;
+.uxMenu-top {
+  // position: absolute;
   display: flex;
-  height: 40px;
-  line-height: 40px;
+  // top: 0;
+  // right: 0;
+  // left: 0;
 }
 
-.ux-menu-breadcrumbs {
+.uxMenu-breadcrumbs {
   flex: auto;
 
-  a {
+  .uxMenu-breadcrumb {
     display: inline-block;
     cursor: pointer;
     text-transform: uppercase;
-    padding: 0 10px 0 0;
-    transition: opacity 300ms;
+    vertical-align: middle;
+    padding: 0 6px 0 0;
+
+    .micon {
+      padding: 0 2px 0 0;
+    }
 
     &.animate-fadeIn {
       animation: fadeIn 0.6s;
@@ -82,7 +140,7 @@
   }
 }
 
-.ux-menu-back {
+.uxMenu-back {
   z-index: 100;
   cursor: pointer;
   text-transform: uppercase;
@@ -104,25 +162,25 @@
   }
 }
 
-.ux-menu-back--hidden {
+.uxMenu-back--hidden {
   pointer-events: none;
   animation: fadeOut 0.6s;
   // opacity: 0;
 }
 
-.animate-outToRight .ux-menu-item {
+.animate-outToRight .uxMenu-item {
   animation: outToRight 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
 }
 
-.animate-outToLeft .ux-menu-item {
+.animate-outToLeft .uxMenu-item {
   animation: outToLeft 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
 }
 
-.animate-inFromLeft .ux-menu-item {
+.animate-inFromLeft .uxMenu-item {
   animation: inFromLeft 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
 }
 
-.animate-inFromRight .ux-menu-item {
+.animate-inFromRight .uxMenu-item {
   animation: inFromRight 0.6s both cubic-bezier(0.7, 0, 0.3, 1);
 }
 
@@ -130,6 +188,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -139,6 +198,7 @@
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }

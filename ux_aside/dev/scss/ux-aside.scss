@@ -28,10 +28,26 @@
 .uxAside {
   position: relative;
   width: 100%;
+  height: auto;
   transition: margin-top 0.3s ease, height 0.3s ease, max-width 0.3s ease;
 
   &.isTall {
     height: 100% !important;
+
+    .uxAside-flex {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .uxAside-wrap {
+      flex: 1 1;
+      height: auto !important;
+    }
   }
 
   &.isFullscreen {
@@ -43,6 +59,14 @@
     .uxAside-button-wrapper {
       top: 100%;
       bottom: auto;
+    }
+  }
+
+  .uxAside-wrap {
+    width: calc(100% + 50px);
+
+    .uxAside-content {
+      width: calc(100% - 50px);
     }
   }
 
@@ -71,6 +95,16 @@
         height: 20px;
         width: 20px;
       }
+    }
+  }
+
+  &.uxAside-no-transition {
+
+    .uxAside-header,
+    .uxAside-header *,
+    .uxAside-iframe,
+    .uxAside-wrap {
+      animation: none !important;
     }
   }
 }

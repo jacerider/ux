@@ -1,0 +1,47 @@
+.uxMenu--theme-light {
+  background: #fff;
+}
+
+.uxMenu--theme-light .uxMenu-top {
+  padding: 15px;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.uxMenu--theme-light .uxMenu-top a {
+  color: #1c1d22;
+}
+
+.uxMenu--theme-light .uxMenu-top .micon {
+  color: #b1b3bf;
+}
+
+.uxMenu--theme-light .uxMenu-item {
+  border-bottom: 1px dotted #e6e6e6;
+}
+
+.uxMenu--theme-light .uxMenu-item:first-child .uxMenu-link {
+  border-top: 1px dotted #e6e6e6;
+}
+
+.uxMenu--theme-light .uxMenu-link {
+  padding: 15px;
+  font-weight: 600;
+  transition: background 300ms;
+}
+
+.uxMenu--theme-light .uxMenu-link .micon {
+  float: right;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.uxMenu--theme-light .uxMenu-link:hover {
+  background: #f7f7f7;
+}
+
+.uxMenu--theme-light .uxMenu-link:hover .micon {
+  opacity: 1;
+}
+
+/*# sourceMappingURL=ux-menu.light.css.map */

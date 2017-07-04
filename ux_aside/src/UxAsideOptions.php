@@ -23,7 +23,7 @@ class UxAsideOptions extends UxOptionsBase {
   /**
    * {@inheritdoc}
    */
-  public function prepareOptions(array $options) {
+  public function processOptions(array $options) {
     $defaults = $this->getDefaults();
     // Convert trigger icon to micon.
     if (!empty($options['trigger']['icon']) && is_string($options['trigger']['icon']) && $this->hasIconSupport()) {
@@ -31,7 +31,7 @@ class UxAsideOptions extends UxOptionsBase {
     }
     // Convert content icon to micon.
     if (!empty($options['content']['icon']) && is_string($options['content']['icon']) && $this->hasIconSupport()) {
-      $options['content']['iconText'] = micon('')->setIcon($options['content']['icon'])->setIconOnly(TRUE)->render();
+      $options['content']['iconText'] = micon()->setIcon($options['content']['icon'])->setIconOnly(TRUE)->render();
       $options['content']['icon'] = '';
     }
     // Convert overlay color to RGBA.
@@ -69,8 +69,9 @@ class UxAsideOptions extends UxOptionsBase {
   protected function optionsForm(array $defaults = []) {
 
     $form = [
-      '#type' => 'fieldset',
+      '#type' => 'details',
       '#title' => $this->t('Aside Options'),
+      '#open' => TRUE,
     ];
 
     $form['trigger'] = [
@@ -299,11 +300,11 @@ class UxAsideOptions extends UxOptionsBase {
     $form['content']['style']['theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Theme'),
-      '#description' => $this->t('Theme of the aside.'),
       '#options' => [
-        '' => $this->t('Dark'),
         'light' => $this->t('Light'),
+        'dark' => $this->t('Dark'),
       ],
+      '#empty_option' => $this->t('- None -'),
       '#default_value' => $defaults['content']['theme'],
     ];
 

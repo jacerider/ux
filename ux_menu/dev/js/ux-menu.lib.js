@@ -55,20 +55,20 @@
      */
     buildCache: function () {
       this.$element = $(this.element);
-      this.$nav = this.$element.find('.ux-menu-nav');
-      this.$wrap = this.$nav.find('.ux-menu-wrap');
-      this.$menus = this.$nav.find('.ux-menu-level');
+      this.$menu = this.$element.find('.' + pluginName + '-menu');
+      this.$wrap = this.$menu.find('.' + pluginName + '-wrap');
+      this.$menus = this.$menu.find('.' + pluginName + '-level');
       this.menusArr = [];
       this.breadCrumbs = false;
 
       if (this.options.breadcrumbNav || this.options.backNav) {
-        this.$navHeader = this.$nav.find('.ux-menu-nav-header');
+        this.$menuHeader = this.$element.find('.' + pluginName + '-top');
       }
 
       /* Determine what current menu actually is */
       var current_menu = 0;
       this.$menus.each(function (pos) {
-        if ($(this).find('.ux-menu-link.is-active').length) {
+        if ($(this).find('.' + pluginName + '-link.is-active').length) {
           current_menu = pos;
         }
       });
@@ -89,19 +89,22 @@
 
         var menu = {
           $menuEl: $menuEl,
-          $menuItems: $menuEl.find('.ux-menu-item')
+          $menuItems: $menuEl.find('.' + pluginName + '-item')
         };
         _this.menusArr.push(menu);
 
         // set current menu class
         if (pos === _this.current_menu) {
-          $menuEl.addClass('ux-menu-level--current');
+          $menuEl.addClass(pluginName + '-level--current');
           // set height of nav based on children
           _this.setWrapHeight($menuEl);
         }
 
-        $menuEl.find('.ux-menu-link[data-submenu]').each(function () {
+        $menuEl.find('.' + pluginName + '-link[data-submenu]').each(function () {
           var $linkEl = $(this);
+          if (_this.options.itemIcon) {
+            $linkEl.append(_this.options.itemIcon);
+          }
           var submenu = $linkEl.attr('data-submenu');
           var pushMe = {
             menu: submenu,
@@ -134,7 +137,7 @@
 
       // create breadcrumbs
       if (_this.options.breadcrumbNav) {
-        _this.$breadcrumbNav = $('<nav class="ux-menu-breadcrumbs" aria-label="You are here"></nav>').prependTo(_this.$navHeader);
+        _this.$breadcrumbNav = $('<nav class="' + pluginName + '-breadcrumbs" aria-label="You are here"></nav>').prependTo(_this.$menuHeader);
         _this.addBreadcrumb(0);
 
         // Need to add breadcrumbs for all parents of current submenu
@@ -152,9 +155,17 @@
 
       // create back button
       if (_this.options.backNav) {
-        _this.$backNav = $('<button class="ux-menu-back" aria-label="Go back"></button>').appendTo(_this.$navHeader);
-        _this.$backNav.html('<span class="fa fa-arrow-left"></span> Back');
+        _this.$backNav = $('<a class="' + pluginName + '-back" aria-label="' + _this.options.backText + '" href="#"></a>').appendTo(_this.$menuHeader);
+        var html = _this.options.backText;
+        if (_this.options.backIcon) {
+          html = _this.options.backIcon + ' ' + html;
+        }
+        _this.$backNav.html(html);
       }
+
+      // if (this.options.breadcrumbNav || this.options.backNav) {
+      //   this.$menu.css({paddingTop: this.$menuHeader.outerHeight()});
+      // }
 
     },
 
@@ -165,18 +176,18 @@
       var _this = this;
       for (var i = 0, len = this.menusArr.length; i < len; ++i) {
         this.menusArr[i].$menuItems.each(function (pos) {
-          $(this).find('.ux-menu-link[data-submenu]').on('click', function (e) {
+          $(this).find('.' + pluginName + '-link[data-submenu]').on('click', function (e) {
             var $linkEl = $(this);
             var itemName = $linkEl.html();
             var submenu = $linkEl.attr('data-submenu');
-            var $subMenuEl = _this.$nav.find('.ux-menu-level[data-menu="' + submenu + '"]');
+            var $subMenuEl = _this.$menu.find('.' + pluginName + '-level[data-menu="' + submenu + '"]');
             if ($subMenuEl.length) {
               e.preventDefault();
               _this.openSubMenu($subMenuEl, pos, itemName);
             }
             else {
-              _this.$nav.find('.ux-menu-link--current').removeClass('ux-menu-link--current');
-              $linkEl.addClass('ux-menu-link--current');
+              _this.$menu.find('.' + pluginName + '-link--current').removeClass(pluginName + '-link--current');
+              $linkEl.addClass(pluginName + '-link--current');
             }
           });
         });
@@ -199,11 +210,15 @@
       }
 
       var _this = this;
-      var title = idx ? this.menusArr[idx].name : this.options.breadcrumbInitialText;
-      var $bc = $('<a href="#"></a>').html(title);
-      this.log('Add Crumb ' + title + ' (' + idx + ')');
+      var title = idx ? this.menusArr[idx].name : this.options.breadcrumbText;
+      title = title.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, '');
+      var $bc = $('<span class="uxMenu-breadcrumb">');
+      if (idx && _this.options.breadcrumbIcon) {
+        $bc.html(_this.options.breadcrumbIcon);
+      }
+      var $link = $('<a href="#"></a>').html(title).appendTo($bc);
 
-      $bc.on('click', function (e) {
+      $link.on('click', function (e) {
         e.preventDefault();
         // do nothing if this breadcrumb is the last one in the list of breadcrumbs
         if (!$bc.next().length || _this.isAnimating) {
@@ -280,7 +295,7 @@
 
       // slide out current menu items - first, set the delays for the items
       this.menusArr[this.current_menu].$menuItems.each(function (pos) {
-        this.style.WebkitAnimationDelay = this.style.animationDelay = isBackNavigation ? parseInt(pos * _this.options.itemsDelayInterval) + 'ms' : parseInt(Math.abs(clickPosition - pos) * _this.options.itemsDelayInterval) + 'ms';
+        this.style.WebkitAnimationDelay = this.style.animationDelay = isBackNavigation ? parseInt(pos * _this.options.itemDelayInterval) + 'ms' : parseInt(Math.abs(clickPosition - pos) * _this.options.itemDelayInterval) + 'ms';
       });
       // animation class
       if (this.options.direction === 'r2l') {
@@ -295,11 +310,22 @@
     Set wrap height based on element content.
      */
     setWrapHeight: function ($menuEl) {
+      var _this = this;
+      $menuEl = $menuEl || this.$menus.filter('.' + pluginName + '-level--current');
+      var currentHeight = this.$wrap.height();
       var height = 0;
       $menuEl.children().each(function () {
         height += $(this).outerHeight();
       });
-      this.$wrap.height(height);
+      if (currentHeight <= height) {
+        this.$wrap.height(height);
+      }
+      else {
+        _this.$menu.animate({scrollTop: 0}, 1000);
+        $menuEl.one(this.animationEvent, function (e) {
+          _this.$wrap.height(height);
+        });
+      }
     },
 
     menuIn: function ($nextMenuEl, clickPosition) {
@@ -330,7 +356,7 @@
       }
 
       $nextMenuItems.each(function (pos) {
-        this.style.WebkitAnimationDelay = this.style.animationDelay = isBackNavigation ? parseInt(pos * _this.options.itemsDelayInterval) + 'ms' : parseInt(Math.abs(clickPosition - pos) * _this.options.itemsDelayInterval) + 'ms';
+        this.style.WebkitAnimationDelay = this.style.animationDelay = isBackNavigation ? parseInt(pos * _this.options.itemDelayInterval) + 'ms' : parseInt(Math.abs(clickPosition - pos) * _this.options.itemDelayInterval) + 'ms';
         var farthestIdx = clickPosition <= nextMenuItemsTotal / 2 || isBackNavigation ? nextMenuItemsTotal - 1 : 0;
 
         if (pos === farthestIdx) {
@@ -344,8 +370,8 @@
               $currentMenu.removeClass(isBackNavigation ? 'animate-outToLeft' : 'animate-outToRight');
               $nextMenuEl.removeClass(isBackNavigation ? 'animate-inFromRight' : 'animate-inFromLeft');
             }
-            $currentMenu.removeClass('ux-menu-level--current');
-            $nextMenuEl.addClass('ux-menu-level--current');
+            $currentMenu.removeClass(pluginName + '-level--current');
+            $nextMenuEl.addClass(pluginName + '-level--current');
 
             _this.current_menu = nextMenuIdx;
 
@@ -398,26 +424,55 @@
   });
 
   $.fn.uxMenu = function (options) {
-    this.each(function () {
-      if (!$.data(this, pluginName)) {
-        $.data(this, pluginName, new Plugin(this, options));
-      }
-    });
-    return this;
+    var args = arguments;
+    if (options === 'undefined' || typeof options === 'object') {
+      return this.each(function () {
+        if (!$.data(this, pluginName)) {
+          $.data(this, pluginName, new Plugin(this, options));
+        }
+      });
+    }
+    else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+      var returns;
+      this.each(function () {
+        var instance = $.data(this, pluginName);
+
+        if (instance instanceof Plugin && typeof instance[options] === 'function') {
+          returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+        }
+
+        // Allow instances to be destroyed via the 'destroy' method
+        if (options === 'destroy') {
+          $.data(this, 'plugin_' + pluginName, null);
+        }
+      });
+
+      return returns !== 'undefined' ? returns : this;
+    }
   };
 
   $.fn.uxMenu.defaults = {
     debug: false,
+    // show back button
+    backNav: false,
+    // back nav text
+    backText: 'Back',
+    // back icon
+    backIcon: '',
     // show breadcrumbs
     breadcrumbNav: true,
     // initial breadcrumb text
-    breadcrumbInitialText: 'All',
-    // show back button
-    backNav: false,
+    breadcrumbText: 'All',
+    // breadcrumb icon
+    breadcrumbIcon: '',
+    // icon used to signify menu items that will open a submenu
+    itemIcon: '',
     // delay between each menu item sliding animation
-    itemsDelayInterval: 60,
+    itemDelayInterval: 60,
     // direction
     direction: 'r2l',
+    // theme
+    theme: '',
      // callback: item that doesn´t have a submenu gets clicked -
      // onItemClick([event], [inner HTML of the clicked item])
     onItemClick: null

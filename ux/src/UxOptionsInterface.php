@@ -20,10 +20,14 @@ interface UxOptionsInterface {
   /**
    * Get default options as defined in the base settings yml file.
    *
+   * @param bool $process
+   *   Run options through preprocess. This should be used before using options
+   *   for output.
+   *
    * @return array
    *   The options array.
    */
-  public function getDefaults();
+  public function getDefaults($process = FALSE);
 
   /**
    * Get options as defined by site configuration.
@@ -31,10 +35,14 @@ interface UxOptionsInterface {
    * These defaults are set via the module configuration form and merged with
    * the module defined defaults.
    *
+   * @param bool $process
+   *   Run options through preprocess. This should be used before using options
+   *   for output.
+   *
    * @return array
    *   The options array.
    */
-  public function getOptions();
+  public function getOptions($process = FALSE);
 
   /**
    * Save options to the site base configuration.
@@ -55,7 +63,7 @@ interface UxOptionsInterface {
    * @return array
    *   The options array.
    */
-  public function prepareOptions(array $options);
+  public function processOptions(array $options);
 
   /**
    * Generate an options configuration form.
@@ -85,28 +93,37 @@ interface UxOptionsInterface {
   public function optionsMerge(array $options);
 
   /**
-   * Multidimentional default options diff.
-   *
-   * Will compare an options array against the system default options
-   * and return only those that are different.
-   *
-   * @return array
-   *   The options containing only the results that differ.
-   */
-  public function optionsDefaultDiff(array $options);
-
-  /**
    * Multidimentional options diff.
    *
    * Will compare an options array against the global configured options and
    * return only those that are different.
    *
    * @param array $options
-   *   The options to compare against the default options.
+   *   The options to merge into the default options.
+   * @param bool $process
+   *   Run options through preprocess. This should be used before using options
+   *   for output.
    *
    * @return array
    *   The options containing only the results that differ.
    */
-  public function optionsDiff(array $options);
+  public function optionsDiff(array $options, $process = FALSE);
+
+  /**
+   * Multidimentional default options diff.
+   *
+   * Will compare an options array against the system default options
+   * and return only those that are different.
+   *
+   * @param array $options
+   *   The options to merge into the default options.
+   * @param bool $process
+   *   Run options through preprocess. This should be used before using options
+   *   for output.
+   *
+   * @return array
+   *   The options containing only the results that differ.
+   */
+  public function optionsDefaultDiff(array $options, $process = FALSE);
 
 }

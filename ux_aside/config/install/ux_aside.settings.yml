@@ -7,7 +7,7 @@ options:
     title: '' # Title in aside's header.
     subtitle: '' # Caption below aside's title.
     headerColor: '#88a0b9' # Color to fill the header background, will also be applied to the bottom edge of the aside.
-    theme: '' # Theme of the aside, can be empty or "light".
+    theme: '' # Theme of the aside, can be 'dark' or 'light'.
     icon: null # Icon class (font-icon of your choice) that will be displayed in aside header.
     iconText: null # Icon text (font-icon using html) that will be displayed in aside header.
     iconColor: '#ffffff' #Color of the header icon.
@@ -43,6 +43,7 @@ options:
     timeoutProgressbar: false # Enable timeout progress bar.
     timeoutProgressbarColor: '#ffffff' # Progress bar color.
     pauseOnHover: false # Pause the progress bar when mouse cursor hover the aside.
+    contentTransition: true # Enable/disable the transition animations of the aside content.
     transitionIn: 'comingIn' # Aside opening default transition. Can be: comingIn, bounceInDown, bounceInUp, fadeInDown, fadeInUp, fadeInLeft, fadeInRight, flipInX.
     transitionOut: 'comingOut' # Aside closing default transition. Can be: comingOut, bounceOutDown, bounceOutUp, fadeOutDown, fadeOutUp, , fadeOutLeft, fadeOutRight, flipOutX.
     transitionInOverlay: 'fadeIn' # Default transition of overlay opening.

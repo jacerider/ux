@@ -14,4 +14,19 @@ ux_aside:
     - core/drupal
     - core/drupalSettings
     - core/drupal.displace
-    # - ux/gsap
+
+ux_aside.theme.light:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-aside.light.css: {}
+  dependencies:
+    - ux_aside/ux_aside
+
+ux_aside.theme.dark:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-aside.dark.css: {}
+  dependencies:
+    - ux_aside/ux_aside

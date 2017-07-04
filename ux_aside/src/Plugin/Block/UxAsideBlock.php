@@ -8,8 +8,9 @@ use Drupal\Core\Form\FormStateInterface;
  * Provides a 'UxAsideBlock' block.
  *
  * @Block(
- *  id = "ux_aside",
- *  admin_label = @Translation("UX | Aside"),
+ *   id = "ux_aside",
+ *   admin_label = @Translation("UX | Aside"),
+ *   category = @Translation("User Experience"),
  * )
  */
 class UxAsideBlock extends UxAsideBlockBase {
@@ -35,8 +36,8 @@ class UxAsideBlock extends UxAsideBlockBase {
    */
   protected function buildAside() {
     if ($block = $this->loadBlock()) {
-      $id = $this->getPluginId() . '_' . $block->id();
-      return $this->uxAsideManager->create($id)
+      $unique_id = $this->getPluginId() . md5(json_encode($this->configuration['block']) . json_encode($this->configuration['aside']));
+      return $this->uxAsideManager->create($unique_id)
         ->setOptions($this->configuration['aside'])
         ->addCacheableDependency($block);
     }
@@ -82,7 +83,7 @@ class UxAsideBlock extends UxAsideBlockBase {
    */
   public function build() {
     $build = [];
-    if ($block = $this->loadBlock()) {
+    if ($block = $this->loadBlock() && $this->uxAside) {
       $content = $this->entityTypeManager->getViewBuilder('block')->view($block);
       $build = $this->uxAside->setContent($content)->toRenderArray();
     }

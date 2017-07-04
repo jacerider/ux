@@ -17,8 +17,9 @@ use Drupal\Core\Form\FormStateInterface;
  * Provides a 'UxMenuBlock' block.
  *
  * @Block(
- *  id = "ux_menu",
- *  admin_label = @Translation("UX | Menu"),
+ *   id = "ux_menu",
+ *   admin_label = @Translation("UX | Menu"),
+ *   category = @Translation("User Experience"),
  * )
  */
 class UxMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -102,7 +103,7 @@ class UxMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
         'secondary' => '',
         'level' => 1,
         'depth' => 3,
-        'expand' => 0,
+        'expand' => 1,
       ],
       'block' => [
         'header' => '',
@@ -119,8 +120,9 @@ class UxMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $config = $this->configuration;
 
     $form['menu'] = [
-      '#type' => 'fieldset',
+      '#type' => 'details',
       '#title' => $this->t('Menus'),
+      '#open' => TRUE,
     ];
 
     $form['menu']['primary'] = [
@@ -184,7 +186,7 @@ class UxMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $form['block'] = [
         '#type' => 'details',
         '#title' => $this->t('Blocks'),
-        '#open' => TRUE,
+        '#open' => !empty($this->configuration['block']['header']) || !empty($this->configuration['block']['footer']),
       ];
       $form['block']['header'] = [
         '#type' => 'select',
@@ -236,7 +238,7 @@ class UxMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function build() {
     $build = [
       '#theme' => 'ux_menu',
-      '#nav' => $this->buildMenu(),
+      '#menu' => $this->buildMenu(),
       '#options' => $this->configuration['options'],
     ];
 
