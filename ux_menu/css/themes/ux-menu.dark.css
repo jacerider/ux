@@ -3,7 +3,6 @@
 }
 
 .uxMenu--theme-dark .uxMenu-top {
-  padding: 15px;
   font-size: 12px;
   line-height: 12px;
 }
@@ -14,6 +13,11 @@
 
 .uxMenu--theme-dark .uxMenu-top .micon {
   color: #666666;
+}
+
+.uxMenu--theme-dark .uxMenu-breadcrumbs,
+.uxMenu--theme-dark .uxMenu-back {
+  padding: 15px;
 }
 
 .uxMenu--theme-dark .uxMenu-item {
@@ -32,7 +36,7 @@
 
 .uxMenu--theme-dark .uxMenu-link .micon {
   float: right;
-  opacity: 0;
+  opacity: 0.5;
   transition: opacity 300ms;
 }
 

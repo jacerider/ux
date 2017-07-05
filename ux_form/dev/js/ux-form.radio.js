@@ -61,6 +61,10 @@
       var _this = this;
       _this.$field.on('change' + '.' + _this._name, function () {
         _this.onChange.call(_this);
+      }).on('focus' + '.' + _this._name, function () {
+        _this.$element.addClass('focused');
+      }).on('blur' + '.' + _this._name, function () {
+        _this.$element.removeClass('focused');
       });
     },
 
@@ -75,7 +79,9 @@
     On change event callback.
      */
     onChange: function () {
-      this.$element.closest('.ux-form-radios').find('.ux-form-radio.active').removeClass('active');
+      // .form-wrapper is used as sometimes radios are wrapped in other
+      // elements.
+      this.$element.closest('.ux-form-radios, .form-wrapper').find('.ux-form-radio.active').removeClass('active');
       if (this.$field.is(':checked')) {
         this.$element.addClass('active');
       }

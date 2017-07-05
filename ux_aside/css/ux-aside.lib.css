@@ -101,7 +101,11 @@
   margin: -17px 0 0;
 }
 
-.uxAside .uxAside-button {
+.uxAside .uxAside-header-buttons span {
+  float: right;
+}
+
+.uxAside .uxAside-header-buttons a {
   display: block;
   float: right;
   z-index: 2;
@@ -119,7 +123,7 @@
   /* For some Androids */
 }
 
-.uxAside .uxAside-button:hover {
+.uxAside .uxAside-header-buttons a:hover {
   opacity: 0.8;
 }
 
@@ -365,21 +369,13 @@
   overflow-x: hidden;
 }
 
-html.uxAside-isOverflow {
-  overflow: hidden;
-}
-
 html.uxAside-isOverflow body {
-  overflow-y: scroll;
+  overflow: hidden;
   position: relative;
 }
 
-html.uxAside-isAttached {
-  overflow: hidden;
-}
-
 html.uxAside-isAttached body {
-  overflow-y: scroll;
+  overflow: hidden;
   position: relative;
 }
 

@@ -107,28 +107,32 @@ $black: #000;
     top: 50%;
     right: 10px;
     margin: -17px 0 0;
-  }
 
-  .uxAside-button {
-    display: block;
-    float: right;
-    z-index: 2;
-    outline: none;
-    height: 34px;
-    width: 34px;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    opacity: 0.3;
-    border-radius: 50%;
-    transition: transform 0.5s cubic-bezier(0.16, 0.81, 0.32, 1), opacity 0.5s ease;
-    background-size: 67% !important;
-    // -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // sass-lint:disable-line no-vendor-prefixes
-    -webkit-tap-highlight-color: transparent; // sass-lint:disable-line no-vendor-prefixes
-    /* For some Androids */
+    span {
+      float: right;
+    }
 
-    &:hover {
-      opacity: 0.8;
+    a {
+      display: block;
+      float: right;
+      z-index: 2;
+      outline: none;
+      height: 34px;
+      width: 34px;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      opacity: 0.3;
+      border-radius: 50%;
+      transition: transform 0.5s cubic-bezier(0.16, 0.81, 0.32, 1), opacity 0.5s ease;
+      background-size: 67% !important;
+      // -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // sass-lint:disable-line no-vendor-prefixes
+      -webkit-tap-highlight-color: transparent; // sass-lint:disable-line no-vendor-prefixes
+      /* For some Androids */
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 
@@ -388,19 +392,21 @@ $black: #000;
 html {
 
   &.uxAside-isOverflow {
-    overflow: hidden;
+    // overflow: hidden;
 
     body {
-      overflow-y: scroll;
+      overflow: hidden;
+      // overflow-y: scroll;
       position: relative;
     }
   }
 
   &.uxAside-isAttached {
-    overflow: hidden;
+    // overflow: hidden;
 
     body {
-      overflow-y: scroll;
+      overflow: hidden;
+      // overflow-y: scroll;
       position: relative;
     }
   }

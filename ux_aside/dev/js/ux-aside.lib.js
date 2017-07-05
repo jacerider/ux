@@ -101,6 +101,7 @@
       this.isFullscreen = false;
       this.headerHeight = 0;
       this.modalHeight = 0;
+      this.hasScroll = null;
       this.$overlay = $('<div class="' + PLUGIN_NAME + '-overlay" style="background-color:' + options.overlayColor + '"></div>');
       this.$navigate = $('<div class="' + PLUGIN_NAME + '-navigate"><div class="' + PLUGIN_NAME + '-navigate-caption">Use</div><button class="' + PLUGIN_NAME + '-navigate-prev"></button><button class="' + PLUGIN_NAME + '-navigate-next"></button></div>');
       this.group = {
@@ -147,16 +148,16 @@
       }
 
       if (options.iframe === true) {
-        this.$element.html('<div class="' + PLUGIN_NAME + '-flex"><div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content"><iframe class="' + PLUGIN_NAME + '-iframe"></iframe>' + this.content + "</div></div></div>");
+        this.$element.html('<div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content"><iframe class="' + PLUGIN_NAME + '-iframe"></iframe>' + this.content + "</div></div>");
 
         if (options.iframeHeight !== null) {
           this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', options.iframeHeight);
         }
       } else {
-        this.$element.html('<div class="' + PLUGIN_NAME + '-flex"><div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content">' + this.content + '</div></div></div>');
+        this.$element.html('<div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content">' + this.content + '</div></div>');
       }
 
-      this.$flex = this.$element.find('.' + PLUGIN_NAME + '-flex');
+      // this.$flex = this.$element.find('.' + PLUGIN_NAME + '-flex');
       this.$wrap = this.$element.find('.' + PLUGIN_NAME + '-wrap');
 
       if (options.zindex !== null && !isNaN(parseInt(options.zindex))) {
@@ -198,7 +199,7 @@
     },
 
     createHeader: function() {
-      this.$header = $('<div class="' + PLUGIN_NAME + '-header"><h2 class="' + PLUGIN_NAME + '-header-title">' + this.options.title + '</h2><p class="' + PLUGIN_NAME + '-header-subtitle">' + this.options.subtitle + '</p><div class="' + PLUGIN_NAME + '-header-buttons"></div></div>');
+      this.$header = $('<div class="' + PLUGIN_NAME + '-header"><h2 class="' + PLUGIN_NAME + '-header-title">' + this.options.title + '</h2><div class="' + PLUGIN_NAME + '-header-subtitle">' + this.options.subtitle + '</div><div class="' + PLUGIN_NAME + '-header-buttons"></div></div>');
 
       if (this.options.closeButton === true) {
         this.$header.find('.' + PLUGIN_NAME + '-header-buttons').append('<a href="javascript:void(0)" class="' + PLUGIN_NAME + '-button ' + PLUGIN_NAME + '-button-close" data-' + PLUGIN_NAME + '-close></a>');
@@ -206,6 +207,10 @@
 
       if (this.options.fullscreen === true) {
         this.$header.find('.' + PLUGIN_NAME + '-header-buttons').append('<a href="javascript:void(0)" class="' + PLUGIN_NAME + '-button ' + PLUGIN_NAME + '-button-fullscreen" data-' + PLUGIN_NAME + '-fullscreen></a>');
+      }
+
+      if (this.options.buttons !== "") {
+        this.$header.find('.' + PLUGIN_NAME + '-header-buttons').append(this.options.buttons);
       }
 
       if (this.options.timeoutProgressbar === true && !isNaN(parseInt(this.options.timeout)) && this.options.timeout !== false && this.options.timeout !== 0) {
@@ -238,7 +243,7 @@
           }
           this.$header.css('background', this.options.headerColor);
         }
-        this.$flex.css('overflow', 'hidden').prepend(this.$header);
+        this.$element.css('overflow', 'hidden').prepend(this.$header);
       }
     },
 
@@ -600,8 +605,6 @@
         this.state = STATES.CLOSING;
         this.$element.trigger(STATES.CLOSING);
         this.$element.attr('aria-hidden', 'true');
-
-        // console.info('[ '+PLUGIN_NAME+' | '+this.id+' ] Closing...');
 
         clearTimeout(this.timer);
         clearTimeout(this.timerTimeout);
@@ -1171,10 +1174,10 @@
         }
         // If the modal is larger than the height of the window..
         if (outerHeight > windowHeight) {
-          if (this.options.top > 0 && this.options.bottom === null && contentHeight < $window.height()) {
+          if (this.options.top > 0 && this.options.bottom === null && contentHeight < windowHeight) {
             this.$element.addClass('isAttachedBottom');
           }
-          if (this.options.bottom > 0 && this.options.top === null && contentHeight < $window.height()) {
+          if (this.options.bottom > 0 && this.options.top === null && contentHeight < windowHeight) {
             this.$element.addClass('isAttachedTop');
           }
           $('html').addClass(PLUGIN_NAME + '-isAttached');
@@ -1189,11 +1192,17 @@
         (function applyScroll() {
           if (contentHeight > wrapperHeight && outerHeight > windowHeight) {
             var height = modalHeight - (that.headerHeight + borderSize);
-            that.$element.addClass('hasScroll');
-            that.$wrap.css('height', height);
+            if (that.hasScroll !== height) {
+              that.hasScroll = height;
+              that.$element.addClass('hasScroll');
+              that.$wrap.css('height', height);
+            }
           } else {
-            that.$element.removeClass('hasScroll');
-            that.$wrap.css('height', 'auto');
+            if (that.hasScroll) {
+              that.hasScroll = false;
+              that.$element.removeClass('hasScroll');
+              that.$wrap.css('height', 'auto');
+            }
           }
         })();
 
@@ -1419,6 +1428,7 @@
     openFullscreen: false,
     closeOnEscape: true,
     closeButton: true,
+    buttons: '', // any additional markup to add to button area
     overlay: true,
     overlayClose: true,
     overlayColor: 'rgba(0, 0, 0, 0.4)',

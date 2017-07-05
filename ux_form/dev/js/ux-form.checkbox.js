@@ -66,6 +66,10 @@
       var _this = this;
       _this.$field.on('change' + '.' + _this._name, function () {
         _this.onChange.call(_this);
+      }).on('focus' + '.' + _this._name, function () {
+        _this.$element.addClass('focused');
+      }).on('blur' + '.' + _this._name, function () {
+        _this.$element.removeClass('focused');
       });
     },
 

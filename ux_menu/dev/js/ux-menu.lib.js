@@ -62,7 +62,11 @@
       this.breadCrumbs = false;
 
       if (this.options.breadcrumbNav || this.options.backNav) {
-        this.$menuHeader = this.$element.find('.' + pluginName + '-top');
+        this.$breadcrumbWrapper = this.$element.find('.' + pluginName + '-top');
+      }
+
+      if (this.options.backNav) {
+        this.$backWrapper = this.$element.find('.' + pluginName + '-top');
       }
 
       /* Determine what current menu actually is */
@@ -82,6 +86,7 @@
     buildElement: function () {
       var _this = this;
       var submenus = [];
+      var $wrapper = null;
 
       /* Loops over root level menu items */
       this.$menus.each(function (pos) {
@@ -127,7 +132,6 @@
         submenus.forEach(function (subMenuEl, menu_root) {
           subMenuEl.forEach(function (subMenuItem, subPos) {
             if (subMenuItem.menu === menu_x) {
-              _this.log('Parent found for ' + subMenuItem.name + ' as ' + menu_root);
               _this.menusArr[pos].backIdx = menu_root;
               _this.menusArr[pos].name = subMenuItem.name;
             }
@@ -135,38 +139,53 @@
         });
       });
 
-      // create breadcrumbs
-      if (_this.options.breadcrumbNav) {
-        _this.$breadcrumbNav = $('<nav class="' + pluginName + '-breadcrumbs" aria-label="You are here"></nav>').prependTo(_this.$menuHeader);
-        _this.addBreadcrumb(0);
-
-        // Need to add breadcrumbs for all parents of current submenu
-        if (_this.menusArr[_this.current_menu].backIdx !== 0 && _this.current_menu !== 0) {
-          _this.crawlCrumbs(_this.menusArr[_this.current_menu].backIdx, _this.menusArr);
-          _this.breadCrumbs = true;
-        }
-
-        // Create current submenu breadcrumb
-        if (_this.current_menu !== 0) {
-          _this.addBreadcrumb(_this.current_menu);
-          _this.breadCrumbs = true;
-        }
-      }
-
       // create back button
       if (_this.options.backNav) {
-        _this.$backNav = $('<a class="' + pluginName + '-back" aria-label="' + _this.options.backText + '" href="#"></a>').appendTo(_this.$menuHeader);
-        var html = _this.options.backText;
-        if (_this.options.backIcon) {
-          html = _this.options.backIcon + ' ' + html;
+        $wrapper = _this.fetchSelector(_this.options.backSelector);
+        if ($wrapper) {
+          $wrapper.empty();
+          _this.$backNav = $('<a class="' + pluginName + '-back" aria-label="' + _this.options.backText + '" href="#"></a>').prependTo($wrapper);
+          var html = _this.options.backText;
+          if (_this.options.backIcon) {
+            html = _this.options.backIcon + ' ' + html;
+          }
+          _this.$backNav.html(html);
         }
-        _this.$backNav.html(html);
       }
 
-      // if (this.options.breadcrumbNav || this.options.backNav) {
-      //   this.$menu.css({paddingTop: this.$menuHeader.outerHeight()});
-      // }
+      // create breadcrumbs
+      if (_this.options.breadcrumbNav) {
+        $wrapper = _this.fetchSelector(_this.options.breadcrumbSelector);
+        if ($wrapper) {
+          $wrapper.empty();
+          _this.$breadcrumbNav = $('<nav class="' + pluginName + '-breadcrumbs" aria-label="You are here"></nav>').prependTo($wrapper);
+          _this.addBreadcrumb(0);
 
+          // Need to add breadcrumbs for all parents of current submenu
+          if (_this.menusArr[_this.current_menu].backIdx !== 0 && _this.current_menu !== 0) {
+            _this.crawlCrumbs(_this.menusArr[_this.current_menu].backIdx, _this.menusArr);
+            _this.breadCrumbs = true;
+          }
+
+          // Create current submenu breadcrumb
+          if (_this.current_menu !== 0) {
+            _this.addBreadcrumb(_this.current_menu);
+            _this.breadCrumbs = true;
+          }
+        }
+      }
+
+    },
+
+    /*
+    Given a selector, locate the closest.
+     */
+    fetchSelector: function (selector) {
+      var $wrapper = this.$element.find(selector);
+      if (!$wrapper.length) {
+        $wrapper = $(selector).first();
+      }
+      return $wrapper.length ? $wrapper : null;
     },
 
     /*
@@ -317,11 +336,14 @@
       $menuEl.children().each(function () {
         height += $(this).outerHeight();
       });
+
+      // _this.$element.offsetParent().animate({scrollTop: 0}, 1000);
+      // this.$wrap.height(height);
+      _this.$element.offsetParent().animate({scrollTop: 0}, 1000);
       if (currentHeight <= height) {
         this.$wrap.height(height);
       }
       else {
-        _this.$menu.animate({scrollTop: 0}, 1000);
         $menuEl.one(this.animationEvent, function (e) {
           _this.$wrap.height(height);
         });
@@ -461,10 +483,14 @@
     backIcon: '',
     // show breadcrumbs
     breadcrumbNav: true,
+    // the location of this element within the dom
+    backSelector: '.' + pluginName + '-top',
     // initial breadcrumb text
     breadcrumbText: 'All',
     // breadcrumb icon
     breadcrumbIcon: '',
+    // a selector that allows for placing the breadcrumb somehwere else in the dom
+    breadcrumbSelector: '.' + pluginName + '-top',
     // icon used to signify menu items that will open a submenu
     itemIcon: '',
     // delay between each menu item sliding animation
@@ -473,6 +499,7 @@
     direction: 'r2l',
     // theme
     theme: '',
+    relocateNav: '',
      // callback: item that doesn´t have a submenu gets clicked -
      // onItemClick([event], [inner HTML of the clicked item])
     onItemClick: null

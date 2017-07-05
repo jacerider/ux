@@ -96,10 +96,18 @@ class UxMenuAsideBlock extends UxMenuBlock {
   public function defaultConfiguration() {
     return [
       'aside' => [
+        'trigger' => [
+          'text' => 'Menu',
+          'icon' => 'fa-bars',
+        ],
         'content' => [
           'restoreDefaultContent' => TRUE,
           'contentTransition' => FALSE,
         ],
+      ],
+      'options' => [
+        'backText' => '',
+        'backIcon' => '',
       ],
     ] + parent::defaultConfiguration();
   }
@@ -112,8 +120,18 @@ class UxMenuAsideBlock extends UxMenuBlock {
     $form['aside'] = $this->uxAsideOptions->form($this->configuration['aside']) + [
       '#weight' => 10,
     ];
-    $form['options']['#open'] = !empty($this->uxMenuOptions->optionsDiff($this->configuration['options']));
     $form['aside']['#open'] = !empty($this->uxAsideOptions->optionsDiff($this->configuration['aside']));
+    $form['options']['#open'] = !empty($this->uxMenuOptions->optionsDiff($this->configuration['options']));
+
+    // Disabled as we are using them to inject our breadcrumbs and back buttons.
+    $message = $this->t('This field is disabled as it is needed for breadcrumbs and back buttons.');
+    $form['aside']['content']['header']['subtitle']['#disabled'] = TRUE;
+    $form['aside']['content']['header']['subtitle']['#description'] = $message;
+    $form['options']['backText']['#disabled'] = TRUE;
+    $form['options']['backText']['#description'] = $message;
+    $form['options']['backIcon']['#disabled'] = TRUE;
+    $form['options']['backIcon']['#description'] = $message;
+
     return $form;
   }
 
@@ -129,10 +147,27 @@ class UxMenuAsideBlock extends UxMenuBlock {
    * {@inheritdoc}
    */
   public function build() {
-    $build = parent::build();
+    $build = [];
     if ($this->uxAside) {
-      // $build['#menu']['#attributes']['data-uxAside-watch'] = '';
+      $all_options = $this->uxMenuOptions->optionsMerge($this->configuration['options']);
+      $id = $this->uxAside->id();
+
+      // Move the breadcrumbs into the subtitle area of the aside.
+      if ($all_options['breadcrumbNav']) {
+        $this->configuration['aside']['content']['subtitle'] = '<div id="ux-menu-breadcrumbs--' . $id . '"></div>';
+        $this->configuration['options']['breadcrumbSelector'] = '#ux-menu-breadcrumbs--' . $id;
+      }
+
+      // // Move the back button into the buttons area of the aside.
+      if ($all_options['backNav']) {
+        $this->configuration['aside']['content']['buttons'] = '<span id="ux-menu-back--' . $id . '"></span>';
+        $this->configuration['options']['backSelector'] = '#ux-menu-back--' . $id;
+      }
+
+      $build = parent::build();
+
       $build = $this->uxAside
+        ->setOptions($this->configuration['aside'])
         ->setContent($build)
         ->addContentClass('uxMenu-in-uxAside')
         ->toRenderArray();
@@ -144,9 +179,9 @@ class UxMenuAsideBlock extends UxMenuBlock {
    * {@inheritdoc}
    */
   protected function buildAside() {
-    $unique_id = $this->getPluginId() . '_' . md5(json_encode($this->configuration['block']) . json_encode($this->configuration['aside']) . json_encode($this->configuration['options']));
-    return $this->uxAsideManager->create($unique_id)
-      ->setOptions($this->configuration['aside']);
+    $id = md5(json_encode($this->configuration['block']) . json_encode($this->configuration['aside']) . json_encode($this->configuration['options']));
+
+    return $this->uxAsideManager->create($id);
   }
 
   /**

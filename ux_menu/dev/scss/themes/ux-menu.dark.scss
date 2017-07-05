@@ -7,7 +7,6 @@ $global-padding: 30px;
   background: $black;
 
   .uxMenu-top {
-    padding: $global-padding / 2;
     font-size: 12px;
     line-height: 12px;
 
@@ -18,6 +17,11 @@ $global-padding: 30px;
     .micon {
       color: darken($white, 60%);
     }
+  }
+
+  .uxMenu-breadcrumbs,
+  .uxMenu-back {
+    padding: $global-padding / 2;
   }
 
   .uxMenu-item {
@@ -38,7 +42,7 @@ $global-padding: 30px;
 
     .micon {
       float: right;
-      opacity: 0;
+      opacity: 0.5;
       transition: opacity 300ms;
     }
 

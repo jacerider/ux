@@ -8,17 +8,11 @@
   function Plugin(element, options) {
     this.element = element;
     this.$element = $(this.element);
-
-    // if (this.isSupported()) {
     this._name = pluginName;
     this._defaults = $.fn.uxFormSelect.defaults;
     this.options = $.extend({}, this._defaults, options);
     this.uniqueId = Drupal.Ux.guid();
     this.init();
-    // }
-    // else {
-    //   this.$element.addClass('invalid');
-    // }
   }
 
   // Avoid Plugin.prototype conflicts
@@ -46,20 +40,27 @@
     Cache DOM nodes for performance.
      */
     buildCache: function () {
-      this.$field = this.$element.find('select');
+      this.$field = this.$element.find('select').attr('tabindex', '-1');
+      this.$trigger = $('<input class="ux-form-input-item ux-form-input-item-js" ' + (this.isDisabled() ? 'disabled' : '') + ' readonly tabindex="-1"></input>');
       this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input ux-form-input-js"></div>');
       this.$caret = $('<span class="ux-form-select-caret">&#9660;</span>');
-      this.$trigger = $('<input class="ux-form-input-item ux-form-input-item-js" ' + (this.isDisabled() ? 'disabled' : '') + '></input>');
-      this.$hidden = $('<input class="ux-form-select-hidden"></input>');
-      this.$dropdown = $('<ul class="ux-form-select-dropdown"></ul>');
       this.multiple = (this.$field.attr('multiple')) ? true : false;
       this.placeholder = this.$field.attr('placeholder') || (this.multiple ? 'Select Multiple' : 'Select One');
-
       this.$trigger.addClass('ux-form-select-trigger');
       this.$trigger.attr('placeholder', this.placeholder);
       this.$wrapper.insertAfter(this.$field);
-      this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown).append(this.$field);
-      this.$dropdown.addClass((this.multiple ? 'is-multiple' : 'is-single'));
+      this.isSupported = this.isSupported();
+
+      if (this.isSupported) {
+        this.$hidden = $('<input class="ux-form-select-hidden"></input>');
+        this.$dropdown = $('<ul class="ux-form-select-dropdown"></ul>');
+        // this.$wrapper.append(this.$caret).append(this.$trigger).append(this.$dropdown).append(this.$field);
+        this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown).append(this.$field);
+        this.$dropdown.addClass((this.multiple ? 'is-multiple' : 'is-single'));
+      }
+      else {
+        this.$wrapper.append(this.$caret).append(this.$trigger).append(this.$field);
+      }
     },
 
     /*
@@ -79,8 +80,10 @@
       }
 
       // Copy tabindex
-      if (_this.$field.attr('tabindex')) {
-        _this.$trigger.attr('tabindex', _this.$field.attr('tabindex'));
+      if (this.isSupported) {
+        // if (_this.$field.attr('tabindex')) {
+        //   _this.$trigger.attr('tabindex', _this.$field.attr('tabindex'));
+        // }
       }
 
       setTimeout(function () {
@@ -111,8 +114,9 @@
         // We blur as soon as the focus happens to avoid the cursor showing
         // momentarily within the field.
         $(this).blur();
-      }).on('tap' + '.' + _this._name, function (e) {
-        if (_this.isSupported()) {
+      })
+      .on('tap' + '.' + _this._name, function (e) {
+        if (_this.isSupported) {
           _this.populateDropdown.call(_this);
           _this.showDropdown.call(_this);
         }
@@ -120,18 +124,6 @@
           e.preventDefault();
           _this.$field.show().focus().hide();
         }
-      });
-      _this.$dropdown.on('tap' + '.' + _this._name, '.selector', function (e) {
-        _this.onItemTap.call(_this, e);
-        _this.$trigger.focus();
-      });
-      _this.$dropdown.on('tap' + '.' + _this._name, '.close', function (e) {
-        _this.closeDropdown.call(_this, e);
-      });
-      _this.$hidden.on('focus', function (e) {
-        _this.populateDropdown.call(_this);
-        _this.showDropdown.call(_this);
-        _this.$trigger.focus();
       });
 
       _this.$field.on('state:disabled' + '.' + _this._name, function (e) {
@@ -144,7 +136,27 @@
         _this.evaluateElement();
       });
 
-      if (!_this.isSupported()) {
+      if (_this.isSupported) {
+        _this.$dropdown.on('tap' + '.' + _this._name, '.selector', function (e) {
+          _this.onItemTap.call(_this, e);
+        });
+        _this.$dropdown.on('tap' + '.' + _this._name, '.close', function (e) {
+          _this.closeDropdown.call(_this);
+        });
+        _this.$hidden.on('focus' + '.' + _this._name, function (e) {
+          _this.$wrapper.addClass('focus');
+          // Don't trigger dropdown when moving from the .search-input field.
+          if (e.relatedTarget && !$(e.relatedTarget).hasClass('search-input')) {
+            _this.populateDropdown.call(_this);
+            _this.showDropdown.call(_this);
+          }
+        }).on('blur' + '.' + _this._name, function (e) {
+          _this.$wrapper.removeClass('focus');
+        }).on('keydown' + '.' + _this._name, function (e) {
+          _this.onHiddenKeydown.call(_this, e);
+        });
+      }
+      else {
         // On unsupported devies we rely on the device select widget and need
         // to update the trigger upon change.
         this.$field.on('change' + '.' + _this._name, function (e) {
@@ -160,6 +172,7 @@
     unbindEvents: function () {
       this.$element.off('.' + this._name);
       this.$dropdown.off('.' + this._name);
+      this.$dropdown.find('.search-input').off('.' + this._name);
       this.$field.off('.' + this._name);
       $(document).off('.' + this._name);
     },
@@ -174,7 +187,7 @@
 
       if (!this.multiple) {
         this.changeSelected(option, 'add');
-        return this.closeDropdown();
+        return this.closeDropdown(true);
       }
 
       this.$dropdown.find('.selector.selected').removeClass('selected');
@@ -185,9 +198,8 @@
       }
       else {
         action = 'add';
-        $item.addClass('active');
+        $item.addClass('active selected');
         $item.find('input').prop('checked', true).trigger('change');
-        $item.addClass('selected');
       }
       return this.changeSelected(option, action);
     },
@@ -195,22 +207,108 @@
     /*
     Click event of inidividual dropdown item.
      */
-    onSearch: function (e) {
-      var $item = $(e.currentTarget);
-      var search = $item.val().toLowerCase();
-      if (search) {
-        this.$dropdown.find('.selector').each(function () {
-          var text = $(this).data('option').text.toLowerCase();
-          if (text.indexOf(search) >= 0) {
-            $(this).show();
-          }
-          else {
-            $(this).hide();
-          }
-        });
+    onHiddenKeydown: function (e) {
+
+      if (!this.open) {
+        // TAB - switch to another input.
+        if (e.which === 9) {
+          // alert('hit');
+          // return;
+        }
+
+        // ARROW DOWN WHEN SELECT IS CLOSED - open dropdown.
+        if ((e.which === 38 || e.which === 40)) {
+          return this.showDropdown();
+        }
+
+        // ENTER WHEN SELECT IS CLOSED - submit form.
+        if (e.which === 13) {
+          return;
+        }
+
+        if (e.which === 39 || e.which === 37) {
+          e.preventDefault();
+        }
+      }
+    },
+
+    /*
+    Click event of inidividual dropdown item.
+     */
+    onSearchKeydown: function (e) {
+      var _this = this;
+      var $item;
+
+      // TAB - switch to another input.
+      if (e.which === 9) {
+        return this.closeDropdown();
+      }
+
+      // ESC - close dropdown.
+      if (e.which === 27) {
+        return this.closeDropdown(true);
+      }
+
+      // ENTER - select option and close when select this.$options are opened
+      if (e.which === 13) {
+        $item = this.$dropdown.find('.selector.selected');
+        if ($item.length) {
+          $item.trigger('tap');
+        }
+      }
+
+      // ARROW DOWN or RIGHT - move to next not disabled option
+      if (e.which === 40 || e.which === 39) {
+        _this.highlightOption(this.$dropdown.find('.selector.selected').nextAll('.selector').first());
+      }
+
+      // ARROW UP or LEFT - move to next not disabled option
+      if (e.which === 38 || e.which === 37) {
+        _this.highlightOption(this.$dropdown.find('.selector.selected').prevAll('.selector').first());
+      }
+
+      // When user types letters.
+      var letter = String.fromCharCode(e.which).toLowerCase();
+      var nonLetters = [9, 13, 27, 37, 38, 39, 40];
+      if (letter && (nonLetters.indexOf(e.which) === -1)) {
+        $item = $(e.currentTarget);
+        var search = $item.val().toLowerCase();
+        // Backspace
+        if (e.which === 8) {
+          search = search.substring(0, search.length - 1);
+        }
+        else {
+          // we may have issues with strange characters.
+          search += letter;
+        }
+        if (search) {
+          this.$dropdown.find('.selector').each(function () {
+            var text = $(this).data('option').text.toLowerCase();
+            if (text.indexOf(search) >= 0) {
+              $(this).show();
+            }
+            else {
+              $(this).hide();
+            }
+          });
+        }
+        else {
+          _this.$dropdown.find('.selector').show();
+        }
+        _this.highlightOption(this.$dropdown.find('.selector:visible').first());
       }
       else {
-        this.$dropdown.find('.selector').show();
+        e.preventDefault();
+      }
+    },
+
+    /*
+    Highlight an option.
+     */
+    highlightOption: function ($item) {
+      if ($item.length) {
+        this.$dropdown.find('.selector.selected').removeClass('selected');
+        $item.addClass('selected');
       }
     },
 
@@ -218,13 +316,16 @@
     Reset and repopulate all dropdown options.
      */
     populateDropdown: function () {
+      var _this = this;
       this.$dropdown.find('li').remove();
 
       if (this.$dropdown.children().length === 0) {
         this.$dropdown
           .append('<li class="close">&times;</li>')
           .append('<li class="search"><input type="text" class="ux-form-input-item simple search-input" tabindex="-1"></input></li>')
-          .find('.search-input').attr('placeholder', this.placeholder);
+          .find('.search-input').attr('placeholder', this.placeholder).on('keydown' + '.' + this._name, function (e) {
+            _this.onSearchKeydown.call(_this, e);
+          });
       }
       if (this.$trigger.val()) {
         this.$dropdown.find('.search-input').attr('placeholder', this.$trigger.val());
@@ -308,7 +409,7 @@
         this.$trigger.attr('placeholder', this.htmlDecode(this.getSelectedOptions('text').join(', ')));
       }
       else {
-        this.$trigger.val(this.htmlDecode(this.getSelectedOptions('text').join(', ')));
+        this.$trigger.val(this.htmlDecode(this.getSelectedOptions('text').join(', '))).trigger('change');
       }
     },
 
@@ -379,9 +480,8 @@
       this.$element.addClass('active');
       setTimeout(function () {
         _this.$element.addClass('animate');
-        _this.$dropdown.focus();
+        _this.$dropdown.find('.search-input').focus();
       }, 50);
-      _this.$hidden.attr('readonly', true);
       this.windowHideDropdown();
     },
 
@@ -398,7 +498,7 @@
       });
     },
 
-    closeDropdown: function () {
+    closeDropdown: function (focus) {
       var _this = this;
       this.open = false;
       this.$dropdown.find('.search-input').val('');
@@ -407,9 +507,15 @@
       setTimeout(function () {
         if (_this.open === false) {
           _this.$element.removeClass('active');
+          // _this.$hidden.focus();
         }
       }, 350);
-      _this.$hidden.attr('readonly', false);
+      if (focus) {
+        setTimeout(function () {
+          _this.$hidden.trigger('focus', [1]);
+        });
+      }
+      // _this.$trigger.blur();
     },
 
     /*
@@ -427,6 +533,9 @@
       return this.$field.is(':disabled');
     },
 
+    /*
+    Check if device is supported.
+     */
     isSupported: function () {
       if (window.navigator.appName === 'Microsoft Internet Explorer') {
         return document.documentMode >= 8;

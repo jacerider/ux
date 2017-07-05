@@ -51,7 +51,7 @@
       top: ($radio-size - $radio-element-size) / 2;
       width: $radio-element-size;
       height: $radio-element-size;
-      z-index: 0;
+      z-index: 2;
       border-radius: 50%;
       border: 2px solid $radio-border-color;
       box-sizing: border-box;
@@ -95,6 +95,16 @@
 
       &:after {
         transform: scale(0.55);
+      }
+    }
+  }
+
+  &.focused {
+
+    label {
+
+      .ux-ripple {
+        @include ux-ripple-focus();
       }
     }
   }

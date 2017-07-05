@@ -62,10 +62,9 @@
         top: ($checkbox-size - $checkbox-element-size) / 2;
         width: $checkbox-element-size;
         height: $checkbox-element-size;
-        z-index: 0;
+        z-index: 2;
         border: 2px solid $checkbox-border-color;
         box-sizing: border-box;
-        background-color: transparent;
       }
 
       &:before {
@@ -115,6 +114,16 @@
           opacity: 1;
           transform: rotate(40deg) scale(1);
         }
+      }
+    }
+  }
+
+  &.focused {
+
+    label {
+
+      .ux-ripple {
+        @include ux-ripple-focus();
       }
     }
   }
