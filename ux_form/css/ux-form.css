@@ -16,6 +16,7 @@
 
 .ux-form .required label:after,
 .ux-form label.form-required:after,
+.ux-form .required .fieldset-legend:after,
 .ux-form [required] .fieldset-legend:after {
   content: '*';
   color: #e54040;
@@ -106,9 +107,10 @@
   height: 100%;
   background: #1a1a1a;
   border-radius: 50%;
-  transform: scale(1, 1);
+  transform: scale(0, 0);
   opacity: 0;
   overflow: hidden;
+  transition: transform 0.5s, opacity 1s;
 }
 
 .ux-form-checkboxes.fieldgroup {
@@ -129,6 +131,11 @@
 
 .ux-form-checkboxes .ux-form-checkbox {
   margin: 0;
+}
+
+.ux-form-checkbox,
+.ux-select-checkbox {
+  position: relative;
 }
 
 .ux-form-checkbox .form-checkbox,
@@ -227,7 +234,7 @@
 .ux-form-checkbox.focused label .ux-ripple:after,
 .ux-select-checkbox.focused label .ux-ripple:after {
   opacity: 0.1;
-  transition: 0s;
+  transform: scale(1, 1);
 }
 
 .ux-form-checkbox.form-disabled label.option,
@@ -246,6 +253,27 @@
   transition: all 350ms ease;
 }
 
+.ux-form-checkbox:after,
+.ux-select-checkbox:after {
+  display: block;
+  content: '';
+  opacity: 0;
+  font-size: 0.6875rem;
+  line-height: 0.875rem;
+  color: #b3b3b3;
+  text-transform: uppercase;
+  transition: opacity 350ms ease-out;
+  white-space: nowrap;
+}
+
+.ux-form-checkbox.invalid:after, .ux-form-checkbox.invalid.focus:after,
+.ux-select-checkbox.invalid:after,
+.ux-select-checkbox.invalid.focus:after {
+  content: attr(data-error);
+  color: #e54040;
+  opacity: 1;
+}
+
 .inline .ux-form-checkbox {
   display: inline-block;
   padding-right: 0.9375rem;
@@ -261,6 +289,70 @@
 
 .ux-form-time .ux-form-input-item {
   cursor: text;
+}
+
+.field--type-address .country-code,
+.field--type-address3 .country-code {
+  margin-bottom: 3.75rem;
+}
+
+.field--type-address .address-line1,
+.field--type-address3 .address-line1 {
+  margin-bottom: 0;
+}
+
+.field--type-address .address-line2,
+.field--type-address3 .address-line2 {
+  margin: 0;
+}
+
+.field--type-address .address-line3,
+.field--type-address3 .address-line3 {
+  margin: 0;
+}
+
+.field--type-address .postal-code:after,
+.field--type-address3 .postal-code:after {
+  display: none;
+}
+
+.field--type-address .address-container-inline,
+.field--type-address3 .address-container-inline {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: end;
+      align-items: flex-end;
+}
+
+.field--type-address .address-container-inline.container-0,
+.field--type-address3 .address-container-inline.container-0 {
+  display: none;
+}
+
+.field--type-address .address-container-inline .form-item,
+.field--type-address3 .address-container-inline .form-item {
+  margin-top: 0.9375rem;
+}
+
+.field--type-address .address-container-inline > div,
+.field--type-address3 .address-container-inline > div {
+  padding: 0.9375rem 0.9375rem 0;
+}
+
+.field--type-address .address-container-inline > div:first-child,
+.field--type-address3 .address-container-inline > div:first-child {
+  padding-left: 0;
+  -ms-flex: auto;
+      flex: auto;
+}
+
+.field--type-address .address-container-inline > div:last-child,
+.field--type-address3 .address-container-inline > div:last-child {
+  padding-right: 0;
+}
+
+.field--widget-select-or-other-list .form-item {
+  margin-top: 0;
 }
 
 .ux-form fieldset:not(.fieldgroup) {
@@ -443,6 +535,10 @@
 }
 
 .ux-form-input.active > label, .ux-form-input.force-active > label {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
   font-size: 0.875rem;
   line-height: 0.875rem;
   transform: translateY(-1.21875rem);
@@ -496,12 +592,6 @@
 }
 
 .ux-form ::-webkit-input-placeholder {
-  color: #4d4d4d;
-  font-style: italic;
-  font-weight: 200;
-}
-
-.ux-form ::-moz-placeholder {
   color: #4d4d4d;
   font-style: italic;
   font-weight: 200;
@@ -625,7 +715,7 @@
 
 .ux-form-radio.focused label .ux-ripple:after {
   opacity: 0.1;
-  transition: 0s;
+  transform: scale(1, 1);
 }
 
 .ux-form-radio.form-disabled label.option {
@@ -645,6 +735,21 @@
   padding-right: 0.9375rem;
 }
 
+.ux-form-select {
+  position: relative;
+}
+
+.ux-form-select > label {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0.875rem;
+  line-height: 0.875rem;
+  transform: translateY(-1.21875rem);
+  padding: 0;
+}
+
 .ux-form-select select {
   display: none;
   background-color: transparent;
@@ -656,6 +761,10 @@
 
 .ux-form-select select:focus {
   border-bottom-color: #1c98c1;
+}
+
+.ux-form-select select.browser-default {
+  display: block;
 }
 
 .ux-form-select.invalid select {
@@ -724,27 +833,18 @@
   opacity: 0;
 }
 
-.ux-form-select .ux-form-select-dropdown {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  width: 100%;
-  min-width: 100px;
-  max-height: 450px;
-  background-color: #f7f7f7;
-  margin: 0;
-  display: none;
+.ux-form-select .ux-form-select-scroll {
+  display: relative;
   overflow-y: auto;
-  opacity: 0;
-  z-index: 999;
-  will-change: width, height;
   list-style-type: none;
   padding: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  min-width: 100px;
+  max-height: 25rem;
+  will-change: width, height;
 }
 
-.ux-form-select .ux-form-select-dropdown li {
+.ux-form-select .ux-form-select-scroll li {
   display: block;
   clear: both;
   width: 100%;
@@ -752,16 +852,30 @@
   font-size: 0.875rem;
   text-transform: none;
   color: #b3b3b3;
-  transition: all 350ms;
 }
 
-.ux-form-select .ux-form-select-dropdown li > span {
+.ux-form-select .ux-form-select-scroll li > span {
   display: block;
   padding: 0 0.9375rem;
 }
 
-.ux-form-select .ux-form-select-dropdown li > span > label {
+.ux-form-select .ux-form-select-scroll li > span > label {
   font-size: 0.875rem;
+}
+
+.ux-form-select .ux-form-select-dropdown {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-color: #f7f7f7;
+  display: none;
+  opacity: 0;
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .ux-form-select .ux-form-select-dropdown .close {
@@ -784,6 +898,7 @@
 }
 
 .ux-form-select .ux-form-select-dropdown .search input {
+  cursor: text;
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
 }
@@ -804,6 +919,11 @@
   color: #1c98c1;
 }
 
+.ux-form-select .ux-form-select-dropdown .selector.selected {
+  background: rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
 .ux-form-select .ux-form-select-dropdown .selector > span {
   cursor: pointer;
   line-height: 2.5rem;
@@ -816,6 +936,11 @@
 
 .ux-form-select .ux-form-select-dropdown .selector:hover {
   background: rgba(0, 0, 0, 0.05);
+}
+
+.ux-form-select .ux-form-select-dropdown .selector.hide {
+  max-height: 0;
+  transition-duration: 0;
 }
 
 .ux-form-select .ux-form-select-dropdown.is-single .selected {

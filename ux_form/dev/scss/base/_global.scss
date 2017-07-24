@@ -19,6 +19,7 @@
 
   .required label,
   label.form-required, // sass-lint:disable-line no-qualifying-elements
+  .required .fieldset-legend,
   [required] .fieldset-legend {
 
     &:after {
@@ -49,11 +50,13 @@
 
   // Will affect field API fields.
   .field-wrapper {
+    // margin: 0;
     margin: $form-item-margin;
     padding: 0;
 
     .form-item {
       margin: 0;
+      // margin-bottom: 0;
     }
   }
 }

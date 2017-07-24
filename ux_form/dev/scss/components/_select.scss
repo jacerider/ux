@@ -1,8 +1,9 @@
 
 .ux-form-select {
+  position: relative;
 
   > label {
-    // @include label-active;
+    @include label-active;
   }
 
   select {
@@ -15,6 +16,10 @@
 
     &:focus {
       border-bottom-color: $input-focus-color;
+    }
+
+    &.browser-default{
+      display: block;
     }
   }
 
@@ -94,24 +99,15 @@
     opacity: 0;
   }
 
-  .ux-form-select-dropdown {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    width: 100%;
-    min-width: 100px;
-    max-height: 450px;
-    background-color: $select-bg-color;
-    margin: 0;
-    display: none;
+  .ux-form-select-scroll {
+    display: relative;
     overflow-y: auto;
-    opacity: 0;
-    z-index: 999;
-    will-change: width, height;
     list-style-type: none;
     padding: 0;
-    box-shadow: 0 4px 8px shade(20);
+    margin: 0;
+    min-width: 100px;
+    max-height: $select-item-height * 10;
+    will-change: width, height;
 
     li {
       display: block;
@@ -121,7 +117,7 @@
       font-size: $select-font-size;
       text-transform: none;
       color: $select-option-color;
-      transition: all $form-item-speed;
+      // transition: all $form-item-speed;
 
       > span {
         display: block;
@@ -132,6 +128,21 @@
         }
       }
     }
+  }
+
+  .ux-form-select-dropdown {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    background-color: $select-bg-color;
+    display: none;
+    opacity: 0;
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 1px 2px shade(30);
 
     .close {
       position: absolute;
@@ -155,6 +166,7 @@
     .search {
 
       input {
+        cursor: text;
         padding-left: $form-padding / 2;
         padding-right: $form-padding / 2;
       }
@@ -175,6 +187,24 @@
     .selector {
       color: $select-item-color;
 
+      &.selected {
+        background: $select-hover-color;
+        overflow: hidden;
+
+        label {
+          // color: $select-selected-color;
+
+          // &:before {
+          //   border-color: darken($select-selected-bg, 10%);
+          //   background: darken($select-selected-bg, 10%);
+          // }
+        }
+
+        // &:hover {
+        //   background: darken($select-selected-bg, 5%);
+        // }
+      }
+
       > span {
         cursor: pointer;
         line-height: $select-item-height;
@@ -187,6 +217,11 @@
 
       &:hover {
         background: $select-hover-color;
+      }
+
+      &.hide {
+        max-height: 0;
+        transition-duration: 0;
       }
     }
 

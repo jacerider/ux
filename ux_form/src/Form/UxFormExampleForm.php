@@ -33,7 +33,7 @@ class UxFormExampleForm extends FormBase {
     // $form['checkbox'] = ['#open' => TRUE] + $this->buildCheckbox($form_state);
     // $form['radio'] = ['#open' => TRUE] + $this->buildRadio($form_state);
     // $form['textfield'] = ['#open' => TRUE] + $this->buildTextfield($form_state);
-    // $form['date'] = ['#open' => TRUE] + $this->buildDate($form_state);
+    $form['date'] = ['#open' => TRUE] + $this->buildDate($form_state);
     // $form['other'] = ['#open' => TRUE] + $this->buildOther($form_state);
 
     $form['actions']['#type'] = 'actions';
@@ -62,8 +62,16 @@ class UxFormExampleForm extends FormBase {
     $element['select'] = [
       '#type' => 'select',
       '#title' => $this->t('Select'),
-      '#options' => ['One', 'Two', 'Three'],
+      '#options' => ['One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three', 'One', 'Two', 'Four', 'One', 'Two', 'Three'],
       '#empty_option' => '- None -',
+    ];
+
+    $element['select2'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select Multiple with Defaults'),
+      '#options' => ['One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three', 'One', 'Two', 'Four', 'One', 'Two', 'Three'],
+      '#multiple' => TRUE,
+      '#default_value' => [0, 1],
     ];
 
     $element['textfield2'] = [

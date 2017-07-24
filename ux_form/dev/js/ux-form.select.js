@@ -40,7 +40,7 @@
     Cache DOM nodes for performance.
      */
     buildCache: function () {
-      this.$field = this.$element.find('select').attr('tabindex', '-1');
+      this.$field = this.$element.find('select');
       this.$trigger = $('<input class="ux-form-input-item ux-form-input-item-js" ' + (this.isDisabled() ? 'disabled' : '') + ' readonly tabindex="-1"></input>');
       this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input ux-form-input-js"></div>');
       this.$caret = $('<span class="ux-form-select-caret">&#9660;</span>');
@@ -53,14 +53,21 @@
 
       if (this.isSupported) {
         this.$hidden = $('<input class="ux-form-select-hidden"></input>');
-        this.$dropdown = $('<ul class="ux-form-select-dropdown"></ul>');
-        // this.$wrapper.append(this.$caret).append(this.$trigger).append(this.$dropdown).append(this.$field);
+        // Copy tabindex
+        if (this.$field.attr('tabindex')) {
+          this.$hidden.attr('tabindex', this.$field.attr('tabindex'));
+        }
+        this.$field.attr('tabindex', '-1');
+        this.$dropdown = $('<div class="ux-form-select-dropdown"></div>');
+        this.$dropdownScroll = $('<ul class="ux-form-select-scroll"></div>').appendTo(this.$dropdown);
         this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown).append(this.$field);
         this.$dropdown.addClass((this.multiple ? 'is-multiple' : 'is-single'));
       }
       else {
         this.$wrapper.append(this.$caret).append(this.$trigger).append(this.$field);
       }
+
+      Drupal.attachBehaviors(this.$element[0]);
     },
 
     /*
@@ -70,20 +77,12 @@
       var _this = this;
       _this.loadOptionsFromSelect();
       _this.updateTrigger();
-      Drupal.attachBehaviors(_this.$element[0]);
 
       if (_this.options.debug) {
         _this.$field.show();
         setTimeout(function () {
           _this.$trigger.trigger('tap');
         }, 500);
-      }
-
-      // Copy tabindex
-      if (this.isSupported) {
-        // if (_this.$field.attr('tabindex')) {
-        //   _this.$trigger.attr('tabindex', _this.$field.attr('tabindex'));
-        // }
       }
 
       setTimeout(function () {
@@ -146,7 +145,7 @@
         _this.$hidden.on('focus' + '.' + _this._name, function (e) {
           _this.$wrapper.addClass('focus');
           // Don't trigger dropdown when moving from the .search-input field.
-          if (e.relatedTarget && !$(e.relatedTarget).hasClass('search-input')) {
+          if (e.relatedTarget && !_this.$dropdown.find(e.relatedTarget).length) {
             _this.populateDropdown.call(_this);
             _this.showDropdown.call(_this);
           }
@@ -155,6 +154,11 @@
         }).on('keydown' + '.' + _this._name, function (e) {
           _this.onHiddenKeydown.call(_this, e);
         });
+
+        if (_this.$field.attr('autofocus')) {
+          _this.populateDropdown.call(_this);
+          _this.showDropdown.call(_this);
+        }
       }
       else {
         // On unsupported devies we rely on the device select widget and need
@@ -236,11 +240,17 @@
     Click event of inidividual dropdown item.
      */
     onSearchKeydown: function (e) {
-      var _this = this;
       var $item;
 
       // TAB - switch to another input.
       if (e.which === 9) {
+        // Focus on next visible field.
+        var $inputs = this.$element.closest('form').find(':input:visible').not('.ignore');
+        var $nextInput = $inputs.eq($inputs.index(e.target) + 1);
+        if ($nextInput.length) {
+          $nextInput.focus();
+          e.preventDefault();
+        }
         return this.closeDropdown();
       }
 
@@ -255,60 +265,90 @@
         if ($item.length) {
           $item.trigger('tap');
         }
+        e.preventDefault();
       }
 
       // ARROW DOWN or RIGHT - move to next not disabled option
       if (e.which === 40 || e.which === 39) {
-        _this.highlightOption(this.$dropdown.find('.selector.selected').nextAll('.selector').first());
+        this.highlightOption(this.$dropdown.find('.selector.selected').nextAll('.selector:visible').first());
+        e.preventDefault();
       }
 
       // ARROW UP or LEFT - move to next not disabled option
       if (e.which === 38 || e.which === 37) {
-        _this.highlightOption(this.$dropdown.find('.selector.selected').prevAll('.selector').first());
-      }
-
-      // When user types letters.
-      var letter = String.fromCharCode(e.which).toLowerCase();
-      var nonLetters = [9, 13, 27, 37, 38, 39, 40];
-      if (letter && (nonLetters.indexOf(e.which) === -1)) {
-        $item = $(e.currentTarget);
-        var search = $item.val().toLowerCase();
-        // Backspace
-        if (e.which === 8) {
-          search = search.substring(0, search.length - 1);
-        }
-        else {
-          // we may have issues with strange characters.
-          search += letter;
-        }
-        if (search) {
-          this.$dropdown.find('.selector').each(function () {
-            var text = $(this).data('option').text.toLowerCase();
-            if (text.indexOf(search) >= 0) {
-              $(this).show();
-            }
-            else {
-              $(this).hide();
-            }
-          });
-        }
-        else {
-          _this.$dropdown.find('.selector').show();
-        }
-        _this.highlightOption(this.$dropdown.find('.selector:visible').first());
-      }
-      else {
+        this.highlightOption(this.$dropdown.find('.selector.selected').prevAll('.selector:visible').first());
         e.preventDefault();
       }
     },
 
     /*
+    Click event of inidividual dropdown item.
+     */
+    onSearchKeyup: function (e) {
+      // When user types letters.
+      var nonLetters = [9, 13, 27, 37, 38, 39, 40];
+      if ((nonLetters.indexOf(e.which) === -1)) {
+        var $item = $(e.currentTarget);
+        var search = $item.val().toLowerCase();
+        if (search) {
+          var $items = this.$dropdown.find('.selector');
+          if (this.multiple) {
+            $items = $items.filter(':not(.active)');
+          }
+          $items.each(function () {
+            var text = $(this).data('option').text.toLowerCase();
+            if (text.indexOf(search) >= 0) {
+              $(this).removeClass('hide');
+            }
+            else {
+              $(this).addClass('hide');
+            }
+          });
+        }
+        else {
+          this.$dropdown.find('.selector').removeClass('hide');
+        }
+        this.highlightOption(this.$dropdown.find('.selector:visible').first());
+      }
+      e.preventDefault();
+    },
+
+    /*
     Highlight an option.
      */
-    highlightOption: function ($item) {
+    highlightOption: function ($item, scroll) {
+      if (scroll !== false) {
+        scroll = true;
+      }
+      $item = $item || this.$dropdownScroll.find('.selector.active:eq(0)');
       if ($item.length) {
         this.$dropdown.find('.selector.selected').removeClass('selected');
         $item.addClass('selected');
+        if (scroll) {
+          this.highlightScrollTo($item);
+        }
+      }
+    },
+
+    /*
+    Scroll to active.
+     */
+    highlightScrollTo: function ($item) {
+      $item = $item || this.$dropdown.find('.selector.selected');
+      if ($item.length) {
+        var scrollTop = this.$dropdownScroll.scrollTop();
+        var scrollHeight = this.$dropdownScroll.outerHeight();
+        var scrollOffset = this.$dropdownScroll.offset().top;
+        var itemOffset = $item.offset().top;
+        var itemHeight = $item.outerHeight();
+        var itemPosition = scrollTop + itemOffset - scrollOffset;
+
+        if (itemPosition + itemHeight > scrollHeight + scrollTop) {
+          this.$dropdownScroll.scrollTop(itemPosition + itemHeight - scrollHeight);
+        }
+        else if (itemPosition < scrollTop) {
+          this.$dropdownScroll.scrollTop(itemPosition);
+        }
       }
     },
 
@@ -317,14 +357,16 @@
      */
     populateDropdown: function () {
       var _this = this;
-      this.$dropdown.find('li').remove();
+      this.$dropdownScroll.find('li').remove();
 
-      if (this.$dropdown.children().length === 0) {
+      if (this.$dropdown.find('.search-input').length === 0) {
         this.$dropdown
-          .append('<li class="close">&times;</li>')
-          .append('<li class="search"><input type="text" class="ux-form-input-item simple search-input" tabindex="-1"></input></li>')
+          .prepend('<div class="close">&times;</div>')
+          .prepend('<div class="search"><input type="text" class="ux-form-input-item simple search-input"></input></div>')
           .find('.search-input').attr('placeholder', this.placeholder).on('keydown' + '.' + this._name, function (e) {
             _this.onSearchKeydown.call(_this, e);
+          }).on('keyup' + '.' + this._name, function (e) {
+            _this.onSearchKeyup.call(_this, e);
           });
       }
       if (this.$trigger.val()) {
@@ -345,7 +387,7 @@
         }
         else if (this.multiple) {
           li.addClass('selector ux-select-checkbox ready');
-          li.html('<span><input type="checkbox" class="form-checkbox"><label class="option">' + option.text + '</label></span>');
+          li.html('<span><input type="checkbox" class="form-checkbox ignore"><label class="option">' + option.text + '<div class="ux-ripple"></div></label></span>');
         }
         else {
           li.addClass('selector');
@@ -358,11 +400,19 @@
         }
 
         li.data('option', option);
-        this.$dropdown.append(li);
+        this.$dropdownScroll.append(li);
       }
 
-      this.$dropdown.find('.selector.active:eq(0)').addClass('selected');
-      Drupal.attachBehaviors(this.$dropdown[0]);
+      if (this.multiple) {
+        this.$dropdownScroll.find('.form-checkbox').on('change', function () {
+          _this.highlightOption($(this).closest('.selector'), false);
+          _this.$dropdown.find('.search-input').focus();
+        });
+      }
+
+      this.highlightOption();
+
+      Drupal.attachBehaviors(this.$dropdownScroll[0]);
     },
 
     /*
@@ -478,6 +528,8 @@
       this.open = true;
 
       this.$element.addClass('active');
+      this.highlightScrollTo();
+
       setTimeout(function () {
         _this.$element.addClass('animate');
         _this.$dropdown.find('.search-input').focus();
@@ -502,6 +554,7 @@
       var _this = this;
       this.open = false;
       this.$dropdown.find('.search-input').val('');
+      this.$dropdownScroll.find('.hide').removeClass('hide');
       this.$element.removeClass('animate');
       $(document).off('.' + _this.uniqueId);
       setTimeout(function () {
@@ -571,8 +624,7 @@
 
   Drupal.behaviors.uxFormSelect = {
     attach: function (context) {
-      var $context = $(context);
-      $context.find('.ux-form-select').once('ux-form-select').uxFormSelect();
+      $(context).find('.ux-form-select').once('ux-form-select').uxFormSelect();
     },
     detach: function (context, setting, trigger) {
       if (trigger === 'unload') {

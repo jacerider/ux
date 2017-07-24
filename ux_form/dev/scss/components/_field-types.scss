@@ -1,0 +1,53 @@
+
+.field--type-address,
+.field--type-address3 {
+
+  .country-code {
+    margin-bottom: $form-margin * 2;
+  }
+
+  .address-line1 {
+    margin-bottom: 0;
+  }
+
+  .address-line2 {
+    margin: 0;
+  }
+
+  .address-line3 {
+    margin: 0;
+  }
+
+  .postal-code {
+
+    &:after {
+      display: none;
+    }
+  }
+
+  .address-container-inline {
+    display: flex;
+    align-items: flex-end;
+
+    &.container-0 {
+      display: none;
+    }
+
+    .form-item {
+      margin-top: $form-margin / 2;
+    }
+
+    > div {
+      padding: $form-padding / 2 $form-padding / 2 0;
+
+      &:first-child {
+        padding-left: 0;
+        flex: auto;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}

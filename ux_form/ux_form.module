@@ -227,9 +227,9 @@ function ux_form_datetime_process(&$element, FormStateInterface $form_state, &$c
  */
 function ux_form_managed_file_process(&$element, FormStateInterface $form_state, &$complete_form) {
   if (ux_form_access()) {
-    $element['#theme_wrappers'][] = 'ux_form_element_container';
-    $element['#wrapper_attributes']['class'][] = 'ux-form-file';
-    $element['#attached']['library'][] = 'ux_form/ux_form.file';
+    // $element['#theme_wrappers'][] = 'ux_form_element_container';
+    // $element['#wrapper_attributes']['class'][] = 'ux-form-file';
+    // $element['#attached']['library'][] = 'ux_form/ux_form.file';
   }
   return $element;
 }
