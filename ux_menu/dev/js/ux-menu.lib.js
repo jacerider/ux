@@ -143,13 +143,17 @@
       if (_this.options.backNav) {
         $wrapper = _this.fetchSelector(_this.options.backSelector);
         if ($wrapper) {
-          $wrapper.empty();
+          $wrapper.find('.' + pluginName + '-back').remove();
           _this.$backNav = $('<a class="' + pluginName + '-back" aria-label="' + _this.options.backText + '" href="#"></a>').prependTo($wrapper);
           var html = _this.options.backText;
           if (_this.options.backIcon) {
             html = _this.options.backIcon + ' ' + html;
           }
           _this.$backNav.html(html);
+
+          if (_this.current_menu !== 0) {
+            _this.$backNav.addClass('animate-fadeIn');
+          }
         }
       }
 
@@ -157,7 +161,7 @@
       if (_this.options.breadcrumbNav) {
         $wrapper = _this.fetchSelector(_this.options.breadcrumbSelector);
         if ($wrapper) {
-          $wrapper.empty();
+          $wrapper.find('.' + pluginName + '-breadcrumbs').remove();
           _this.$breadcrumbNav = $('<nav class="' + pluginName + '-breadcrumbs" aria-label="You are here"></nav>').prependTo($wrapper);
           _this.addBreadcrumb(0);
 
@@ -215,6 +219,7 @@
       // back navigation
       if (this.options.backNav) {
         this.$backNav.on('click', function (e) {
+          e.preventDefault();
           _this.back();
         });
       }
@@ -229,11 +234,13 @@
       }
 
       var _this = this;
-      var title = idx ? this.menusArr[idx].name : this.options.breadcrumbText;
-      title = title.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, '');
+      var title = idx ? this.menusArr[idx].name.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, '') : this.options.breadcrumbText;
       var $bc = $('<span class="uxMenu-breadcrumb">');
-      if (idx && _this.options.breadcrumbIcon) {
-        $bc.html(_this.options.breadcrumbIcon);
+      if (!idx && _this.options.breadcrumbIcon) {
+        title = _this.options.breadcrumbIcon + title;
+      }
+      if (idx && _this.options.breadcrumbSeparatorIcon) {
+        $bc.html(_this.options.breadcrumbSeparatorIcon);
       }
       var $link = $('<a href="#"></a>').html(title).appendTo($bc);
 
@@ -487,8 +494,10 @@
     backSelector: '.' + pluginName + '-top',
     // initial breadcrumb text
     breadcrumbText: 'All',
-    // breadcrumb icon
+    // icon used in initial breadcrumb
     breadcrumbIcon: '',
+    // breadcrumb icon that separates each item
+    breadcrumbSeparatorIcon: '',
     // a selector that allows for placing the breadcrumb somehwere else in the dom
     breadcrumbSelector: '.' + pluginName + '-top',
     // icon used to signify menu items that will open a submenu

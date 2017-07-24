@@ -5,6 +5,7 @@ options:
   breadcrumbNav: true
   breadcrumbText: 'All'
   breadcrumbIcon: ''
+  breadcrumbSeparatorIcon: ''
   itemIcon: ''
   itemDelayInterval: 60
   direction: 'rtl'

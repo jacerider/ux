@@ -129,6 +129,7 @@
 .uxMenu-back.animate-fadeOut {
   pointer-events: none;
   animation: fadeOut 0.6s;
+  opacity: 0;
 }
 
 .uxMenu-back:hover, .uxMenu-back:focus {

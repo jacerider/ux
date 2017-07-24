@@ -127,10 +127,10 @@ class UxMenuAsideBlock extends UxMenuBlock {
     $message = $this->t('This field is disabled as it is needed for breadcrumbs and back buttons.');
     $form['aside']['content']['header']['subtitle']['#disabled'] = TRUE;
     $form['aside']['content']['header']['subtitle']['#description'] = $message;
-    $form['options']['backText']['#disabled'] = TRUE;
-    $form['options']['backText']['#description'] = $message;
-    $form['options']['backIcon']['#disabled'] = TRUE;
-    $form['options']['backIcon']['#description'] = $message;
+    $form['options']['back']['backText']['#disabled'] = TRUE;
+    $form['options']['back']['backText']['#description'] = $message;
+    $form['options']['back']['backIcon']['#disabled'] = TRUE;
+    $form['options']['back']['backIcon']['#description'] = $message;
 
     return $form;
   }

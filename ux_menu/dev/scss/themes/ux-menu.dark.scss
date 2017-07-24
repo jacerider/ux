@@ -12,9 +12,14 @@ $global-padding: 30px;
 
     a {
       color: $white;
+      transition: color 300ms;
+
+      &:hover {
+        color: rgba($white, 0.8);
+      }
     }
 
-    .micon {
+    > .micon {
       color: darken($white, 60%);
     }
   }

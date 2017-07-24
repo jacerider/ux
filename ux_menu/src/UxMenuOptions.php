@@ -3,6 +3,7 @@
 namespace Drupal\ux_menu;
 
 use Drupal\ux\UxOptionsBase;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Class UxMenuOptions.
@@ -30,7 +31,11 @@ class UxMenuOptions extends UxOptionsBase {
     }
     // Convert breadcrumb icon to micon.
     if (!empty($options['breadcrumbIcon']) && is_string($options['breadcrumbIcon']) && $has_icon_support) {
-      $options['breadcrumbIcon'] = micon()->setIcon($options['breadcrumbIcon'])->setIconOnly(TRUE)->render();
+      $options['breadcrumbIcon'] = micon()->setIcon($options['breadcrumbIcon'])->setIconOnly(empty($options['breadcrumbText']))->render();
+    }
+    // Convert breadcrumb icon to micon.
+    if (!empty($options['breadcrumbSeparatorIcon']) && is_string($options['breadcrumbSeparatorIcon']) && $has_icon_support) {
+      $options['breadcrumbSeparatorIcon'] = micon()->setIcon($options['breadcrumbSeparatorIcon'])->setIconOnly(TRUE)->render();
     }
     // Convert item icon to micon.
     if (!empty($options['itemIcon']) && is_string($options['itemIcon']) && $has_icon_support) {
@@ -52,7 +57,14 @@ class UxMenuOptions extends UxOptionsBase {
       '#open' => TRUE,
     ];
 
-    $form['backNav'] = [
+    // Back settings.
+    $form['back'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Back Nav'),
+      '#process' => [[get_class(), 'processParents']],
+    ];
+
+    $form['back']['backNav'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use back button'),
       '#description' => $this->t('The back button provides a way to navigate backwards one level.'),
@@ -63,11 +75,14 @@ class UxMenuOptions extends UxOptionsBase {
       '#return_value' => TRUE,
     ];
 
-    $form['backText'] = [
+    $form['back']['backText'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Back nav text'),
       '#description' => $this->t('The text shown that represents the home location.'),
       '#default_value' => $defaults['backText'],
+      '#attributes' => [
+        'class' => ['ux-menu-back-text'],
+      ],
       '#states' => [
         'visible' => [
           '.ux-menu-back-nav' => ['checked' => TRUE],
@@ -79,7 +94,8 @@ class UxMenuOptions extends UxOptionsBase {
     ];
 
     if ($has_icon_support) {
-      $form['backIcon'] = [
+      unset($form['back']['backText']['#states']['required']);
+      $form['back']['backIcon'] = [
         '#type' => 'micon',
         '#title' => $this->t('Back button icon'),
         '#default_value' => $defaults['backIcon'],
@@ -87,11 +103,21 @@ class UxMenuOptions extends UxOptionsBase {
           'visible' => [
             '.ux-menu-back-nav' => ['checked' => TRUE],
           ],
+          'required' => [
+            '.ux-menu-back-text' => ['value' => ''],
+          ],
         ],
       ];
     }
 
-    $form['breadcrumbNav'] = [
+    // Breadcrumb settings.
+    $form['breadcrumb'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Breadcrumb Nav'),
+      '#process' => [[get_class(), 'processParents']],
+    ];
+
+    $form['breadcrumb']['breadcrumbNav'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use breadcrumb'),
       '#description' => $this->t('The breadcrumb provides a navigation trail to return to previous levels.'),
@@ -102,11 +128,14 @@ class UxMenuOptions extends UxOptionsBase {
       '#return_value' => TRUE,
     ];
 
-    $form['breadcrumbText'] = [
+    $form['breadcrumb']['breadcrumbText'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Initial breadcrumb text'),
       '#description' => $this->t('The text shown that represents the home location.'),
       '#default_value' => $defaults['breadcrumbText'],
+      '#attributes' => [
+        'class' => ['ux-menu-breadcrumb-text'],
+      ],
       '#states' => [
         'visible' => [
           '.ux-menu-breadcrumb-nav' => ['checked' => TRUE],
@@ -118,11 +147,26 @@ class UxMenuOptions extends UxOptionsBase {
     ];
 
     if ($has_icon_support) {
-      $form['breadcrumbIcon'] = [
+      unset($form['breadcrumb']['breadcrumbText']['#states']['required']);
+      $form['breadcrumb']['breadcrumbIcon'] = [
+        '#type' => 'micon',
+        '#title' => $this->t('Breadcrumb icon'),
+        '#description' => $this->t('Icon used to represent the home location.'),
+        '#default_value' => $defaults['breadcrumbIcon'],
+        '#states' => [
+          'visible' => [
+            '.ux-menu-breadcrumb-nav' => ['checked' => TRUE],
+          ],
+          'required' => [
+            '.ux-menu-breadcrumb-text' => ['value' => ''],
+          ],
+        ],
+      ];
+      $form['breadcrumb']['breadcrumbSeparatorIcon'] = [
         '#type' => 'micon',
         '#title' => $this->t('Breadcrumb separator icon'),
         '#description' => $this->t('Icon used to separate breadcrumb items.'),
-        '#default_value' => $defaults['breadcrumbIcon'],
+        '#default_value' => $defaults['breadcrumbSeparatorIcon'],
         '#states' => [
           'visible' => [
             '.ux-menu-breadcrumb-nav' => ['checked' => TRUE],
@@ -152,6 +196,14 @@ class UxMenuOptions extends UxOptionsBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function processParents(&$element, FormStateInterface $form_state, &$complete_form) {
+    array_pop($element['#parents']);
+    return $element;
   }
 
 }

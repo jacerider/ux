@@ -71,6 +71,7 @@ gulp.task('css', function () {
     })
     .pipe(config.browserSync.enabled ? browserSync.reload({
       stream: true,
+      // once: true,
       match: '**/*.css'
     }) : gutil.noop());
 });
@@ -90,6 +91,7 @@ gulp.task('js', function () {
     .pipe(gulp.dest(config.js.dest))
     .pipe(config.browserSync.enabled ? browserSync.reload({
       stream: true,
+      // once: true,
       match: '**/*.js'
     }) : gutil.noop());
 });

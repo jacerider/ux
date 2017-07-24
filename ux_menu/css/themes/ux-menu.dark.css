@@ -9,9 +9,14 @@
 
 .uxMenu--theme-dark .uxMenu-top a {
   color: #fff;
+  transition: color 300ms;
 }
 
-.uxMenu--theme-dark .uxMenu-top .micon {
+.uxMenu--theme-dark .uxMenu-top a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.uxMenu--theme-dark .uxMenu-top > .micon {
   color: #666666;
 }
 
