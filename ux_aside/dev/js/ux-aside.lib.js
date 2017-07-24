@@ -288,9 +288,6 @@
       var that = this;
 
       function opened() {
-
-        // console.info('[ '+PLUGIN_NAME+' | '+that.id+' ] Opened.');
-
         that.state = STATES.OPENED;
         that.$element.trigger(STATES.OPENED);
 
