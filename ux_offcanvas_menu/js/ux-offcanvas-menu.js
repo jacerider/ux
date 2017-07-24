@@ -1,1 +1,0 @@
-!function(u,a,n){"use strict";a.behaviors.uxOffcanvasMenu={attach:function(a,n){if(n.ux&&n.ux.offcanvasMenu&&n.ux.offcanvasMenu.items)for(var f in n.ux.offcanvasMenu.items)if(n.ux.offcanvasMenu.items[f]){var e=u("#ux-aside-"+f);e.length&&e.ux_offcanvas_menu(n.ux.offcanvasMenu.items[f])}}}}(jQuery,Drupal,drupalSettings,document);

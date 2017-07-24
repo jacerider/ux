@@ -1,8 +1,0 @@
-services:
-  twig.ux_offcanvas:
-    class: 'Drupal\ux_offcanvas\TwigExtension\UxOffcanvas'
-    tags:
-      - { name: twig.extension }
-  ux_offcanvas.manager:
-    class: Drupal\ux_offcanvas\UxOffcanvasManager
-    arguments: []
