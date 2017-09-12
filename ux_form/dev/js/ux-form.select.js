@@ -154,6 +154,10 @@
         }).on('keydown' + '.' + _this._name, function (e) {
           _this.onHiddenKeydown.call(_this, e);
         });
+        _this.$field.on('change' + '.' + _this._name, function (e) {
+          _this.loadOptionsFromSelect();
+          _this.updateTrigger();
+        });
 
         if (_this.$field.attr('autofocus')) {
           _this.populateDropdown.call(_this);
@@ -163,7 +167,7 @@
       else {
         // On unsupported devies we rely on the device select widget and need
         // to update the trigger upon change.
-        this.$field.on('change' + '.' + _this._name, function (e) {
+        _this.$field.on('change' + '.' + _this._name, function (e) {
           _this.loadOptionsFromSelect();
           _this.updateTrigger();
         });
@@ -387,7 +391,7 @@
         }
         else if (this.multiple) {
           li.addClass('selector ux-select-checkbox ready');
-          li.html('<span><input type="checkbox" class="form-checkbox ignore"><label class="option">' + option.text + '<div class="ux-ripple"></div></label></span>');
+          li.html('<span><input type="checkbox" class="form-checkbox ignore" data-ux-auto-submit-exclude><label class="option">' + option.text + '<div class="ux-ripple"></div></label></span>');
         }
         else {
           li.addClass('selector');
@@ -625,17 +629,18 @@
   Drupal.behaviors.uxFormSelect = {
     attach: function (context) {
       $(context).find('.ux-form-select').once('ux-form-select').uxFormSelect();
-    },
-    detach: function (context, setting, trigger) {
-      if (trigger === 'unload') {
-        $(context).find('.ux-form-select').each(function () {
-          var plugin = $(this).data('uxFormSelect');
-          if (plugin) {
-            plugin.destroy();
-          }
-        });
-      }
     }
+    // @see https://www.drupal.org/node/2692453
+    // detach: function (context, setting, trigger) {
+    //   if (trigger === 'unload') {
+    //     $(context).find('.ux-form-select').each(function () {
+    //       var plugin = $(this).data('uxFormSelect');
+    //       if (plugin) {
+    //         plugin.destroy();
+    //       }
+    //     });
+    //   }
+    // }
   };
 
 })(jQuery, Drupal, window, document);

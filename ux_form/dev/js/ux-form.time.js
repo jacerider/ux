@@ -18,19 +18,20 @@
         $element.data('value', $element.val());
         $element.pickatime(timepickerSettings);
       });
-    },
-    detach: function (context, setting, trigger) {
-      if (trigger === 'unload') {
-        $(context).find('.ux-form-time input.form-time').each(function () {
-          var $element = $(this);
-          $element.off('.ux-form-time');
-          var plugin = $element.pickatime('picker');
-          if (typeof plugin === 'object') {
-            plugin.stop();
-          }
-        });
-      }
     }
+    // @see https://www.drupal.org/node/2692453
+    // detach: function (context, setting, trigger) {
+    //   if (trigger === 'unload') {
+    //     $(context).find('.ux-form-time input.form-time').each(function () {
+    //       var $element = $(this);
+    //       $element.off('.ux-form-time');
+    //       var plugin = $element.pickatime('picker');
+    //       if (typeof plugin === 'object') {
+    //         plugin.stop();
+    //       }
+    //     });
+    //   }
+    // }
   };
 
 })(jQuery, Drupal, window, document);

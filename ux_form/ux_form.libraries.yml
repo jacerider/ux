@@ -6,6 +6,12 @@ ux_form:
   dependencies:
     - core/drupal
     - core/jquery.once
+    - ux_form/ux_form.reset
+
+ux_form.reset:
+  version: VERSION
+  js:
+    js/ux-form.reset.js: { minified: true }
 
 ux_form.dropdown:
   version: VERSION
@@ -73,7 +79,7 @@ ux_form.date:
     lib/pickadate/compressed/picker.date.js: { minified: true }
     js/ux-form.date.js: { minified: true }
   dependencies:
-    - ux_form/ux_form
+    # - ux_form/ux_form
     - ux_form/ux_form.picker
 
 ux_form.time:
@@ -85,5 +91,5 @@ ux_form.time:
     lib/pickadate/compressed/picker.time.js: { minified: true }
     js/ux-form.time.js: { minified: true }
   dependencies:
-    - ux_form/ux_form
+    # - ux_form/ux_form
     - ux_form/ux_form.picker

@@ -206,17 +206,18 @@
     attach: function (context) {
       var $context = $(context);
       $context.find('.ux-form-input-js').once('ux-form-input').uxFormInput();
-    },
-    detach: function (context, setting, trigger) {
-      if (trigger === 'unload') {
-        $(context).find('.ux-form-input-js').each(function () {
-          var plugin = $(this).data('uxFormInput');
-          if (plugin) {
-            plugin.destroy();
-          }
-        });
-      }
     }
+    // @see https://www.drupal.org/node/2692453
+    // detach: function (context, setting, trigger) {
+    //   if (trigger === 'unload') {
+    //     $(context).find('.ux-form-input-js').each(function () {
+    //       var plugin = $(this).data('uxFormInput');
+    //       if (plugin) {
+    //         plugin.destroy();
+    //       }
+    //     });
+    //   }
+    // }
   };
 
 })(jQuery, Drupal, window, document);

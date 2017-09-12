@@ -123,8 +123,15 @@
      */
     onResizeSetDocumentSize: function (event) {
       var _this = this;
-      var height = _this.$body.height() - (_this.$uxWrapper.outerHeight() - _this.$uxWrapper.height());
-      _this.$uxContent.css('min-height', height);
+
+      _this.$body.waitForImages(function () {
+        var windowHeight = _this.$window.height();
+        var height = Math.max(_this.$body.height(), windowHeight);
+        height = height - (_this.$uxWrapper.outerHeight() - _this.$uxWrapper.height());
+        if (height < windowHeight) {
+          _this.$uxContent.css('min-height', height);
+        }
+      });
     },
 
     /**

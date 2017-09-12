@@ -1,0 +1,39 @@
+.ux-menu-tree-list {
+
+  li {
+    display: block;
+    list-style: none;
+    position: relative;
+  }
+
+  ol, ul {
+    display: none;
+  }
+
+  .ux-menu-tree-item {
+    cursor: pointer;
+
+    &:before {
+      content: '\25B6';
+      display: inline-block;
+      font-size: 0.8em;
+      padding-right: 5px;
+      width: 14px;
+    }
+
+    &.ux-menu-tree-expanded {
+
+      &:before {
+        content: '\25BC';
+      }
+
+      > {
+
+        ol, ul {
+          cursor: default;
+          display: block;
+        }
+      }
+    }
+  }
+}

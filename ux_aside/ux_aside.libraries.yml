@@ -30,3 +30,11 @@ ux_aside.theme.dark:
       css/themes/ux-aside.dark.css: {}
   dependencies:
     - ux_aside/ux_aside
+
+ux_aside.ajax:
+  version: VERSION
+  js:
+    js/ux-aside.ajax.js:  { minified: true }
+  dependencies:
+    - ux_aside/ux_aside
+    - core/drupal.ajax

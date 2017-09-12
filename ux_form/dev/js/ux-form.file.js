@@ -102,17 +102,18 @@
     attach: function (context) {
       var $context = $(context);
       $context.find('.ux-form-file').once('ux-form-file').uxFormFile();
-    },
-    detach: function (context, setting, trigger) {
-      if (trigger === 'unload') {
-        $(context).find('.ux-form-file').each(function () {
-          var plugin = $(this).data('uxFormFile');
-          if (plugin) {
-            plugin.destroy();
-          }
-        });
-      }
     }
+    // @see https://www.drupal.org/node/2692453
+    // detach: function (context, setting, trigger) {
+    //   if (trigger === 'unload') {
+    //     $(context).find('.ux-form-file').each(function () {
+    //       var plugin = $(this).data('uxFormFile');
+    //       if (plugin) {
+    //         plugin.destroy();
+    //       }
+    //     });
+    //   }
+    // }
   };
 
 })(jQuery, Drupal, window, document);

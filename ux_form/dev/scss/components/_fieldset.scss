@@ -4,7 +4,6 @@
   fieldset {
 
     &:not(.fieldgroup) {
-      display: block;
       position: relative;
       background-color: $fieldset-bg-color;
       padding: $form-padding * 2 0 0;
@@ -15,11 +14,23 @@
         left: $form-padding;
         font-weight: 700;
       }
+
+      > .description {
+        margin: 0 $form-padding;
+        font-size: $fieldset-description-size;
+      }
+
+      fieldset {
+
+        &:not(.fieldgroup) {
+          background: $fieldset-bg-inset-color;
+        }
+      }
     }
   }
 
   .fieldset-wrapper {
-    margin: $form-padding;
+    margin: 0 $form-padding $form-padding;
 
     > * {
 

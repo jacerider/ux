@@ -4,14 +4,25 @@ ux_menu:
     component:
       css/ux-menu.css: {}
   js:
-    js/ux-menu.js: { minified: true }
     js/ux-menu.lib.js: { minified: true }
+    js/ux-menu.js: { minified: true }
   dependencies:
-    # - ux/ux
     - core/jquery
     - core/jquery.once
     - core/drupal
     - core/drupalSettings
+
+ux_menu_tree:
+  version: VERSION
+  css:
+    component:
+      css/ux-menu-tree.css: {}
+  js:
+    js/ux-menu-tree.lib.js: { minified: true }
+    js/ux-menu-tree.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
 
 ux_menu.theme.light:
   version: VERSION

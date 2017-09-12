@@ -593,6 +593,11 @@
         if ($('.' + PLUGIN_NAME + ':visible').length === 0) {
           $('html').removeClass(PLUGIN_NAME + '-isAttached');
         }
+
+        if (that.options.removeOnClose === true) {
+          that.$element.remove();
+          that.destroy();
+        }
       }
 
       if (this.state == STATES.OPENED || this.state == STATES.OPENING) {
@@ -1419,7 +1424,8 @@
     navigateArrows: true, // Boolean, 'closeToModal', 'closeScreenEdge'
     history: false,
     restoreDefaultContent: false,
-    autoOpen: 0, // Boolean, Number
+    autoOpen: 0, // If true, the aside opens automatically with any user action. Or you can set a delay time (in milliseconds) to open.
+    removeOnClose: false, // If true, the aside will be removed from the DOM as soon as it is closed.
     bodyOverflow: false,
     fullscreen: false,
     openFullscreen: false,

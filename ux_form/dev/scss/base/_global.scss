@@ -54,9 +54,13 @@
     margin: $form-item-margin;
     padding: 0;
 
-    .form-item {
+    &.form-wrapper {
       margin: 0;
-      // margin-bottom: 0;
+    }
+
+    .form-item {
+      // Do not use margin 0 here as it has a negative impact on form fields.
+      // margin: 0;
     }
   }
 }
@@ -66,8 +70,15 @@
   flex-flow: row nowrap;
   width: 100%;
 
-  > div {
+  div {
     display: block;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  > div {
     flex: auto !important;
     width: 50%;
 

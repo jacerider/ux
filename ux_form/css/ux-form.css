@@ -47,7 +47,7 @@
   padding: 0;
 }
 
-.ux-form .field-wrapper .form-item {
+.ux-form .field-wrapper.form-wrapper {
   margin: 0;
 }
 
@@ -59,8 +59,15 @@
   width: 100%;
 }
 
-.ux-form-inline > div {
+.ux-form-inline div {
   display: block;
+}
+
+.ux-form-inline input {
+  width: 100%;
+}
+
+.ux-form-inline > div {
   -ms-flex: auto !important;
       flex: auto !important;
   width: 50%;
@@ -356,7 +363,6 @@
 }
 
 .ux-form fieldset:not(.fieldgroup) {
-  display: block;
   position: relative;
   background-color: #f7f7f7;
   padding: 3.75rem 0 0;
@@ -369,8 +375,17 @@
   font-weight: 700;
 }
 
+.ux-form fieldset:not(.fieldgroup) > .description {
+  margin: 0 1.875rem;
+  font-size: 1rem;
+}
+
+.ux-form fieldset:not(.fieldgroup) fieldset:not(.fieldgroup) {
+  background: #fff;
+}
+
 .ux-form .fieldset-wrapper {
-  margin: 1.875rem;
+  margin: 0 1.875rem 1.875rem;
 }
 
 .ux-form .fieldset-wrapper > *:last-child {
