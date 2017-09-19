@@ -66,6 +66,15 @@ class UxAsideOpenCommand implements CommandInterface, CommandWithAttachedAssetsI
    */
   public function __construct($content, array $options = [], $settings = NULL) {
     // $title = PlainTextOutput::renderFromHtml($title);
+    if (!is_array($content)) {
+      $content = [
+        'content' => ['#markup' => $content],
+      ];
+    }
+    $content['messages'] = [
+      '#type' => 'status_messages',
+      '#weight' => -1000,
+    ];
     $this->content = $content;
     $this->options = $options;
     $this->settings = $settings;
@@ -121,7 +130,6 @@ class UxAsideOpenCommand implements CommandInterface, CommandWithAttachedAssetsI
    * Implements \Drupal\Core\Ajax\CommandInterface:render().
    */
   public function render() {
-
     // Prepare aside.
     $uxAsideManager = \Drupal::service('ux_aside.manager');
     $aside = $uxAsideManager->create(time())->setOptions([

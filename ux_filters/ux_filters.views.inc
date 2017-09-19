@@ -11,9 +11,6 @@ use Drupal\field\FieldStorageConfigInterface;
 /**
  * Implements hook_field_views_data_alter().
  *
- * Views integration for entity reference fields which reference taxonomy terms.
- * Adds a term relationship to the default field data.
- *
  * @see views_field_default_views_data()
  */
 function ux_filters_field_views_data_alter(array &$data, FieldStorageConfigInterface $field_storage) {
