@@ -27,13 +27,13 @@ class UxFormExampleForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // $form['mix'] = ['#open' => TRUE] + $this->buildMix($form_state);
+    $form['mix'] = ['#open' => TRUE] + $this->buildMix($form_state);
+    $form['textfield'] = ['#open' => TRUE] + $this->buildTextfield($form_state);
     $form['date'] = ['#open' => TRUE] + $this->buildDate($form_state);
     $form['select'] = ['#open' => TRUE] + $this->buildSelect($form_state);
     $form['radio'] = ['#open' => TRUE] + $this->buildRadio($form_state);
     $form['checkbox'] = ['#open' => TRUE] + $this->buildCheckbox($form_state);
     // $form['other'] = ['#open' => TRUE] + $this->buildOther($form_state);
-    $form['textfield'] = ['#open' => TRUE] + $this->buildTextfield($form_state);
     $form['textarea'] = ['#open' => TRUE] + $this->buildTextarea($form_state);
 
     $form['actions']['#type'] = 'actions';

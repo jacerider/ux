@@ -48,7 +48,6 @@
       this.placeholder = this.$field.attr('placeholder') || (this.multiple ? 'Select Multiple' : 'Select One');
       this.$trigger.addClass('ux-form-select-trigger');
       this.$trigger.attr('placeholder', this.placeholder);
-      this.$wrapper.insertAfter(this.$field);
       this.isSupported = this.isSupported();
 
       if (this.isSupported) {
@@ -67,10 +66,14 @@
         this.$wrapper.append(this.$caret).append(this.$trigger);
       }
 
-      // Firing attachBehaviors will cause issues. So we remove $field from
-      // DOM and add it back in after attach has fired.
-      this.$field.remove();
-      Drupal.attachBehaviors(this.$element[0]);
+      // In order to avoid attachBehavior colisions we process the $wrapper
+      // content in its own wrapper. The states.js file was having issues
+      // because it processes data-drupal-states again when it shouldn't.
+      var $wrapped = $('<div></div>');
+      this.$wrapper.appendTo($wrapped);
+      Drupal.attachBehaviors($wrapped[0]);
+      this.$wrapper = $wrapped.contents();
+      this.$wrapper.insertAfter(this.$field);
       this.$wrapper.append(this.$field);
     },
 

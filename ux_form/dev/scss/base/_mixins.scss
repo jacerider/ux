@@ -34,7 +34,6 @@
 }
 
 @mixin placeholder() {
-  color: $input-placeholder-color;
   font-style: italic;
   font-weight: 500;
   opacity: 1 !important;
@@ -76,7 +75,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: $black;
     border-radius: 50%;
     transform: scale(1.5, 1.5);
     opacity: 0;
@@ -92,7 +90,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: $black;
     border-radius: 50%;
     transform: scale(0, 0);
     opacity: 0;

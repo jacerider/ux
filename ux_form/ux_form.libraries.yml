@@ -113,3 +113,9 @@ ux_form.theme.blue:
   css:
     component:
       css/themes/ux-form.blue.css: {}
+
+ux_form.theme.blue.dark:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-form.blue.dark.css: {}

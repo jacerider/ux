@@ -7,13 +7,9 @@
   margin: 0;
 }
 
-.ux-form .form-item input:focus {
-  border: 0;
-  outline: none;
-}
-
 .ux-form .ux-form-element {
-  margin: 1.875rem 0;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .ux-form .ux-form-element.ux-form-element-last {
@@ -36,6 +32,11 @@
   font-size: 0.875rem;
   margin: 0;
   padding: 0;
+}
+
+.ux-form .ux-form-element-float {
+  margin-top: 2.875rem;
+  margin-bottom: 1.25rem;
 }
 
 .ux-form .ux-form-element-inner {
@@ -61,7 +62,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #1a1a1a;
   border-radius: 50%;
   transform: scale(1.5, 1.5);
   opacity: 0;
@@ -77,12 +77,29 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #1a1a1a;
   border-radius: 50%;
   transform: scale(0, 0);
   opacity: 0;
   overflow: hidden;
   transition: transform 0.5s, opacity 1s;
+}
+
+.ux-form ::-webkit-input-placeholder {
+  font-style: italic;
+  font-weight: 500;
+  opacity: 1 !important;
+}
+
+.ux-form :-ms-input-placeholder {
+  font-style: italic;
+  font-weight: 500;
+  opacity: 1 !important;
+}
+
+.ux-form ::placeholder {
+  font-style: italic;
+  font-weight: 500;
+  opacity: 1 !important;
 }
 
 .ux-form-inline {
@@ -113,24 +130,6 @@
 
 .ux-form-checkbox {
   position: relative;
-  /**
-   * Message area.
-   */
-  /**
-   * When ready.
-   */
-  /**
-   * When focus.
-   */
-  /**
-   * When active.
-   */
-  /**
-   * When invalid.
-   */
-  /**
-   * When disabled.
-   */
 }
 
 .ux-form-checkbox .form-checkbox {
@@ -141,18 +140,18 @@
 
 .ux-form-checkbox .ux-ripple {
   position: absolute;
-  top: -0.4875rem;
-  left: -0.65rem;
-  width: 2.6rem;
-  height: 2.6rem;
+  top: -0.525rem;
+  left: -0.7rem;
+  width: 2.8rem;
+  height: 2.8rem;
 }
 
 .ux-form-checkbox label.option {
   display: inline-block;
   position: relative;
-  height: 1.625rem;
-  line-height: 1.625rem;
-  padding: 0 0 0 1.6125rem;
+  height: 1.75rem;
+  line-height: 1.75rem;
+  padding: 0 0 0 1.7125rem;
   margin: 0;
   cursor: pointer;
   font-size: 0.9rem;
@@ -167,11 +166,11 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 0.1625rem;
-  width: 1.3rem;
-  height: 1.3rem;
+  top: 0.175rem;
+  width: 1.4rem;
+  height: 1.4rem;
   z-index: 2;
-  border: 2px solid #999999;
+  border: 2px solid transparent;
   box-sizing: border-box;
 }
 
@@ -179,19 +178,15 @@
   border-radius: 2px;
 }
 
-.error .ux-form-checkbox label.option:before {
-  border-color: #e54040;
-}
-
 .ux-form-checkbox label.option:after {
-  top: 0.18571rem;
+  top: 0.2rem;
   left: 0;
-  width: 0.52rem;
-  height: 1.08333rem;
+  width: 0.56rem;
+  height: 1.16667rem;
   border-top: 2px solid transparent;
   border-left: 2px solid transparent;
-  border-right: 2px solid white;
-  border-bottom: 2px solid white;
+  border-right: 2px solid transparent;
+  border-bottom: 2px solid transparent;
   transform: rotate(40deg) scale(0);
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
@@ -210,11 +205,9 @@
   content: '';
   font-size: 0.75rem;
   line-height: 0.875rem;
-  background: #4d4d4d;
   text-transform: uppercase;
   white-space: nowrap;
   opacity: 0;
-  color: #fff;
   text-rendering: optimizeLegibility;
 }
 
@@ -232,11 +225,6 @@
   border-radius: 3px;
 }
 
-.ux-form-checkbox.active label.option:before {
-  border-color: #1a1a1a;
-  background: #1a1a1a;
-}
-
 .ux-form-checkbox.active label.option:after {
   opacity: 1;
   transform: rotate(40deg) scale(1);
@@ -244,18 +232,13 @@
 
 .ux-form-checkbox.invalid:after, .ux-form-checkbox.invalid.focus:after {
   content: attr(data-error);
-  background: #e54040;
   opacity: 1;
   padding: 0.125rem 0.625rem;
 }
 
-.ux-form-checkbox.form-disabled label.option {
-  color: #a6a6a6;
-  cursor: not-allowed;
-}
-
-.ux-form-checkbox.form-disabled label.option:before, .ux-form-checkbox.form-disabled label.option:after {
+.ux-form-checkbox.form-disabled label {
   opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .ux-form-checkbox.form-disabled .ux-ripple {
@@ -264,17 +247,11 @@
 
 .ux-form-checkboxes-inline .ux-form-checkbox {
   display: inline-block;
-  padding-right: 0.9375rem;
+  padding-right: 0.625rem;
 }
 
 .ux-form-container > .ux-form-element-inner {
-  background: #fafafa;
-  padding: 1.875rem;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
-
-.ux-form-container .ux-form-container > .ux-form-element-inner {
-  background: white;
+  padding: 1.25rem;
 }
 
 .ux-form-container .details-wrapper {
@@ -343,7 +320,36 @@
 .ux-form-datetime-inline .ux-form-date,
 .ux-form-datetime-inline .ux-form-time {
   display: inline-block;
-  padding-right: 0.9375rem;
+  padding-right: 0.625rem;
+}
+
+.ux-form-element .entity-meta {
+  border: 1px solid red;
+}
+
+.ux-form-element .entity-meta .ux-form-element {
+  margin: 0;
+}
+
+.ux-form-element .entity-meta details {
+  background: transparent;
+}
+
+.ux-form-element .entity-meta details summary {
+  padding: 0;
+  text-shadow: 0;
+}
+
+.ux-form-element .entity-meta details .details-wrapper {
+  padding: 1.25rem 0 0;
+}
+
+.ux-form-element .entity-meta details:first-child {
+  border: 0;
+}
+
+.ux-form-element .entity-meta details:open {
+  background-image: none !important;
 }
 
 .ux-form-input {
@@ -353,24 +359,6 @@
       flex-flow: row wrap;
   -ms-flex-align: end;
       align-items: flex-end;
-  /**
-   * Message area.
-   */
-  /**
-   * When ready.
-   */
-  /**
-   * When focus.
-   */
-  /**
-   * When valid.
-   */
-  /**
-   * When invalid.
-   */
-  /**
-   * When disabled.
-   */
 }
 
 .ux-form-input > label,
@@ -391,7 +379,6 @@
 .ux-form-input .ux-form-input-line {
   display: block;
   height: 2px;
-  background-image: linear-gradient(#1a1a1a, #1a1a1a), linear-gradient(#999999, #999999);
   background-size: 0 2px, 100% 1px;
   background-repeat: no-repeat;
   background-position: center bottom, center calc(100% - 1px);
@@ -401,7 +388,6 @@
 .ux-form-input .field-prefix,
 .ux-form-input .field-suffix {
   display: block;
-  background-color: inherit;
   box-shadow: none;
   outline: none;
   border: 0;
@@ -412,30 +398,35 @@
   padding: 0 0;
   box-sizing: border-box;
   overflow: hidden;
-  color: #1a1a1a;
 }
 
-.ux-form-input .ux-form-input-item:focus,
+.ux-form-input .ux-form-input-item:focus, .ux-form-input .ux-form-input-item.form-textarea:focus,
 .ux-form-input .field-prefix:focus,
-.ux-form-input .field-suffix:focus {
-  color: #1a1a1a;
-  background-color: inherit;
-  border: 0;
+.ux-form-input .field-prefix.form-textarea:focus,
+.ux-form-input .field-suffix:focus,
+.ux-form-input .field-suffix.form-textarea:focus {
   outline: 0;
   box-shadow: none;
 }
 
-.ux-form-input .field-prefix,
-.ux-form-input .field-suffix {
-  color: gray;
+.ux-form-input.has-prefix .ux-form-input-item {
+  border-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.ux-form-input.has-suffix .ux-form-input-item {
+  border-right: 0 !important;
+  padding-right: 0 !important;
 }
 
 .ux-form-input .field-prefix {
-  padding-right: 0.3125rem;
+  padding-right: 0.3125rem !important;
+  border-right: 0 !important;
 }
 
 .ux-form-input .field-suffix {
-  padding-left: 0.3125rem;
+  padding-left: 0.3125rem !important;
+  border-left: 0 !important;
 }
 
 .ux-form-input textarea.ux-form-input-item {
@@ -456,10 +447,8 @@
   opacity: 0;
   font-size: 0.75rem;
   line-height: 0.875rem;
-  background: #4d4d4d;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #fff;
   text-rendering: optimizeLegibility;
 }
 
@@ -470,53 +459,19 @@
   transition: all 350ms ease-out;
 }
 
-.ux-form-input.focus > label {
-  color: #1a1a1a;
-}
-
 .ux-form-input.focus .ux-form-input-line {
-  background-image: linear-gradient(#1a1a1a, #1a1a1a), linear-gradient(#999999, #999999);
   background-size: 100% 2px, 100% 1px;
-}
-
-.ux-form-input.valid .ux-form-input-line, .ux-form-input.valid.focus .ux-form-input-line {
-  background-image: linear-gradient(#1a1a1a, #1a1a1a), linear-gradient(#86c13d, #86c13d);
-}
-
-.ux-form-input.invalid > label, .ux-form-input.invalid.focus > label {
-  color: #e54040;
-}
-
-.ux-form-input.invalid .ux-form-input-line, .ux-form-input.invalid.focus .ux-form-input-line {
-  background-image: linear-gradient(#e54040, #e54040), linear-gradient(#e54040, #e54040);
 }
 
 .ux-form-input.invalid:after, .ux-form-input.invalid.focus:after {
   content: attr(data-error);
-  background-color: #e54040;
   opacity: 1;
   padding: 0.125rem 0.625rem;
 }
 
-.ux-form-input.form-disabled > label {
-  color: #a6a6a6;
-}
-
-.ux-form-input.form-disabled .ux-form-input-item {
-  color: #a6a6a6;
-}
-
-/**
- * Input labels can be floated above their input fields.
- */
-.ux-form-element-float {
-  margin: 3.5rem 0 1.875rem;
-}
-
-.ux-form-element-float .ux-form-input {
-  /**
-     * Message area.
-     */
+.ux-form-input.form-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .ux-form-element-float .ux-form-input > label {
@@ -540,11 +495,6 @@
   transform: translateY(0);
 }
 
-.ux-form-element-float .ux-form-input > .field-prefix,
-.ux-form-element-float .ux-form-input > .field-suffix {
-  color: transparent;
-}
-
 .ux-form-element-float .ux-form-input:after {
   top: 2.5625rem;
 }
@@ -564,56 +514,8 @@
   transform: translateY(-1.625rem);
 }
 
-.ux-form-element-float .ux-form-input.active > .field-prefix,
-.ux-form-element-float .ux-form-input.active > .field-suffix, .ux-form-element-float .ux-form-input.force-active > .field-prefix,
-.ux-form-element-float .ux-form-input.force-active > .field-suffix {
-  color: gray;
-}
-
-/**
- * Placeholders.
- */
-.ux-form ::-webkit-input-placeholder {
-  color: #666666;
-  font-style: italic;
-  font-weight: 500;
-  opacity: 1 !important;
-}
-
-.ux-form :-ms-input-placeholder {
-  color: #666666;
-  font-style: italic;
-  font-weight: 500;
-  opacity: 1 !important;
-}
-
-.ux-form ::placeholder {
-  color: #666666;
-  font-style: italic;
-  font-weight: 500;
-  opacity: 1 !important;
-}
-
 .ux-form-radio {
   position: relative;
-  /**
-   * Message area.
-   */
-  /**
-   * When ready.
-   */
-  /**
-   * When focus.
-   */
-  /**
-   * When active.
-   */
-  /**
-   * When invalid.
-   */
-  /**
-   * When disabled.
-   */
 }
 
 .ux-form-radio .form-radio {
@@ -624,7 +526,7 @@
 
 .ux-form-radio .ux-ripple {
   position: absolute;
-  top: -0.625rem;
+  top: -0.5625rem;
   left: -0.71875rem;
   width: 2.875rem;
   height: 2.875rem;
@@ -633,8 +535,8 @@
 .ux-form-radio label.option {
   display: inline-block;
   position: relative;
-  height: 1.625rem;
-  line-height: 1.625rem;
+  height: 1.75rem;
+  line-height: 1.75rem;
   padding: 0 0 0 1.75rem;
   margin: 0;
   cursor: pointer;
@@ -650,24 +552,19 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 0.09375rem;
+  top: 0.15625rem;
   width: 1.4375rem;
   height: 1.4375rem;
   z-index: 2;
   border-radius: 50%;
-  border: 2px solid #bfbfbf;
+  border: 2px solid transparent;
   box-sizing: border-box;
   background-color: transparent;
 }
 
-.error .ux-form-radio label.option:before {
-  border-color: #e54040;
-}
-
 .ux-form-radio label.option:after {
-  border: #bfbfbf;
-  background-color: #1a1a1a;
   transform: scale(0);
+  border: 0;
 }
 
 .ux-form-radio label:active .ux-ripple:before {
@@ -681,11 +578,9 @@
   content: '';
   font-size: 0.75rem;
   line-height: 0.875rem;
-  background: #4d4d4d;
   text-transform: uppercase;
   white-space: nowrap;
   opacity: 0;
-  color: #fff;
   text-rendering: optimizeLegibility;
 }
 
@@ -699,28 +594,19 @@
   transition: 0s;
 }
 
-.ux-form-radio.active label.option:before {
-  border-color: #1a1a1a;
-}
-
 .ux-form-radio.active label.option:after {
   transform: scale(0.55);
 }
 
 .ux-form-radio.invalid:after, .ux-form-radio.invalid.focus:after {
   content: attr(data-error);
-  background: #e54040;
   opacity: 1;
   padding: 0.125rem 0.625rem;
 }
 
-.ux-form-radio.form-disabled label.option {
-  color: #a6a6a6;
-  cursor: not-allowed;
-}
-
-.ux-form-radio.form-disabled label.option:before, .ux-form-radio.form-disabled label.option:after {
+.ux-form-radio.form-disabled label {
   opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .ux-form-radio.form-disabled .ux-ripple {
@@ -729,27 +615,19 @@
 
 .ux-form-radios-inline .ux-form-radio {
   display: inline-block;
-  padding-right: 0.9375rem;
+  padding-right: 0.625rem;
 }
 
 .ux-form-select {
   position: relative;
-  /**
-   * When disabled.
-   */
 }
 
 .ux-form-select select {
   display: none;
-  background-color: transparent;
   width: 100%;
   box-sizing: border-box;
   border: 0;
-  border-bottom: 1px solid #999999;
-}
-
-.ux-form-select select:focus {
-  border-bottom-color: #1a1a1a;
+  border-bottom: 1px solid transparent;
 }
 
 .ux-form-select select.browser-default {
@@ -769,7 +647,6 @@
   top: 0;
   right: 0;
   font-size: 12px;
-  background: #fff;
   padding: 0 10px 0 20px;
   border-radius: 3px;
   height: 2.5rem;
@@ -797,7 +674,6 @@
   margin: auto 0;
   font-size: 10px;
   line-height: 10px;
-  color: #b3b3b3;
   pointer-events: none;
   opacity: 0.7;
   transition: opacity 300ms;
@@ -831,7 +707,7 @@
 
 .ux-form-select .ux-form-select-scroll li > span {
   display: block;
-  padding: 0 0.9375rem;
+  padding: 0 0.625rem;
 }
 
 .ux-form-select .ux-form-select-scroll li > span > label {
@@ -844,13 +720,11 @@
   top: 0;
   right: 0;
   width: 100%;
-  background-color: #f7f7f7;
   display: none;
   opacity: 0;
   z-index: 999;
   margin: 0;
   padding: 0;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 }
 
 .ux-form-select .ux-form-select-dropdown .close {
@@ -863,26 +737,21 @@
   line-height: 2.125rem;
   vertical-align: middle;
   text-align: center;
-  color: #b3b3b3;
   cursor: pointer;
-  background-color: #f7f7f7;
-}
-
-.ux-form-select .ux-form-select-dropdown .close:hover {
-  color: #1a1a1a;
 }
 
 .ux-form-select .ux-form-select-dropdown .search input {
   cursor: text;
-  padding-left: 0.9375rem;
-  padding-right: 0.9375rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  width: 100%;
+  border: 0;
 }
 
 .ux-form-select .ux-form-select-dropdown .optgroup {
   font-size: 0.75rem;
   text-transform: uppercase;
   border-top: 1px solid #e6e6e6;
-  color: #b3b3b3;
 }
 
 .ux-form-select .ux-form-select-dropdown .optgroup > span {
@@ -891,12 +760,7 @@
   min-height: 2.5rem;
 }
 
-.ux-form-select .ux-form-select-dropdown .selector {
-  color: #1a1a1a;
-}
-
 .ux-form-select .ux-form-select-dropdown .selector.selected {
-  background: rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
@@ -906,26 +770,20 @@
   min-height: 2.5rem;
 }
 
-.ux-form-select .ux-form-select-dropdown .selector > span > label {
-  color: #1a1a1a;
-}
-
-.ux-form-select .ux-form-select-dropdown .selector:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
 .ux-form-select .ux-form-select-dropdown .selector.hide {
   max-height: 0;
   transition-duration: 0;
 }
 
-.ux-form-select .ux-form-select-dropdown.is-single .selected {
-  color: #fff;
-  background: #1a1a1a;
-}
-
-.ux-form-select .ux-form-select-dropdown.is-single .selected:hover {
-  background: #0d0d0d;
+.ux-form-select:after {
+  display: block;
+  content: '';
+  font-size: 0.75rem;
+  line-height: 0.875rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  text-rendering: optimizeLegibility;
 }
 
 .ux-form-select.active .ux-form-select-dropdown {
@@ -938,10 +796,6 @@
 .ux-form-select.animate .ux-form-select-dropdown {
   opacity: 1;
   transform: translate(0, 0);
-}
-
-.ux-form-select.form-disabled > label {
-  color: #a6a6a6;
 }
 
 .ux-form-select.form-disabled .ux-form-select-wrapper {

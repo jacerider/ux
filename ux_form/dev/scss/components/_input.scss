@@ -23,7 +23,6 @@
   .ux-form-input-line {
     display: block;
     height: 2px;
-    background-image: linear-gradient($input-border-focus-color, $input-border-focus-color), linear-gradient($input-border-color, $input-border-color);
     background-size: 0 2px, 100% 1px;
     background-repeat: no-repeat;
     background-position: center bottom, center calc(100% - 1px);
@@ -33,7 +32,6 @@
   .field-prefix,
   .field-suffix {
     display: block;
-    background-color: $input-bg-color;
     box-shadow: none;
     outline: none;
     border: 0;
@@ -44,28 +42,38 @@
     padding: $input-padding;
     box-sizing: border-box;
     overflow: hidden;
-    color: $input-color;
 
-    &:focus {
-      color: $input-color;
-      background-color: $input-bg-color;
-      border: 0;
+    &:focus,
+    &.form-textarea:focus {
       outline: 0;
       box-shadow: none;
     }
   }
 
-  .field-prefix,
-  .field-suffix {
-    color: $input-prefix-suffix-color;
+  &.has-prefix {
+
+    .ux-form-input-item {
+      border-left: 0 !important;
+      padding-left: 0 !important;
+    }
+  }
+
+  &.has-suffix {
+
+    .ux-form-input-item {
+      border-right: 0 !important;
+      padding-right: 0 !important;
+    }
   }
 
   .field-prefix {
-    padding-right: rem-calc(5);
+    padding-right: rem-calc(5) !important;
+    border-right: 0 !important;
   }
 
   .field-suffix {
-    padding-left: rem-calc(5);
+    padding-left: rem-calc(5) !important;
+    border-left: 0 !important;
   }
 
   textarea {
@@ -80,9 +88,7 @@
     width: 100%;
   }
 
-  /**
-   * Message area.
-   */
+  // Message area.
   &:after {
     display: block;
     content: '';
@@ -92,17 +98,13 @@
     opacity: 0;
     font-size: $message-font-size;
     line-height: $label-font-size;
-    background: $message-bg-color;
     text-transform: uppercase;
     // transform: $label-transform;
     white-space: nowrap;
-    color: $white;
     text-rendering: optimizeLegibility;
   }
 
-  /**
-   * When ready.
-   */
+  // When ready.
   &.ready {
 
     > label,
@@ -114,74 +116,34 @@
     }
   }
 
-  /**
-   * When focus.
-   */
+  // When focused.
   &.focus {
 
-    > label {
-      color: $label-focus-color;
-    }
-
     .ux-form-input-line {
-      background-image: linear-gradient($input-border-focus-color, $input-border-focus-color), linear-gradient($input-border-color, $input-border-color);
       background-size: 100% 2px, 100% 1px;
     }
   }
 
-  /**
-   * When valid.
-   */
-  &.valid,
-  &.valid.focus {
-
-    .ux-form-input-line {
-      background-image: linear-gradient($input-border-focus-color, $input-border-focus-color), linear-gradient($input-border-success-color, $input-border-success-color);
-    }
-  }
-
-  /**
-   * When invalid.
-   */
+  // When invalid.
   &.invalid,
   &.invalid.focus {
 
-    > label {
-      color: $error-color;
-    }
-
-    .ux-form-input-line {
-      background-image: linear-gradient($input-border-error-color, $input-border-error-color), linear-gradient($input-border-error-color, $input-border-error-color);
-    }
-
     &:after {
       content: attr(data-error);
-      background-color: $error-color;
       opacity: 1;
       padding: rem-calc(2 10);
     }
   }
 
-  /**
-   * When disabled.
-   */
+  // When disabled.
   &.form-disabled {
-
-    > label {
-      color: $disabled-color;
-    }
-
-    .ux-form-input-item {
-      color: $disabled-color;
-    }
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
-/**
- * Input labels can be floated above their input fields.
- */
+// Input labels can be floated above their input fields.
 .ux-form-element-float {
-  margin: $global-margin + $label-height 0 $global-margin;
 
   .ux-form-input {
 
@@ -189,14 +151,7 @@
       @include label-overlay;
     }
 
-    > .field-prefix,
-    > .field-suffix {
-      color: transparent;
-    }
-
-    /**
-     * Message area.
-     */
+    // Message area.
     &:after {
       top: $input-height + rem-calc(1);
     }
@@ -207,37 +162,6 @@
       > label {
         @include label-float;
       }
-
-      > .field-prefix,
-      > .field-suffix {
-        color: $input-prefix-suffix-color;
-      }
     }
-  }
-}
-
-/**
- * Placeholders.
- */
-.ux-form {
-
-  ::-webkit-input-placeholder {
-    @include placeholder;
-  }
-
-  :-moz-placeholder {
-    @include placeholder;
-  }
-
-  ::-moz-placeholder {
-    @include placeholder;
-  }
-
-  :-ms-input-placeholder {
-    @include placeholder;
-  }
-
-  ::placeholder {
-    @include placeholder;
   }
 }

@@ -1,45 +1,50 @@
-@import '../base/unit';
-
-@function gray($num) {
-  @return lighten(#000, percentage((100 - $num) / 100));
-}
-
-@function shadow($num) {
-  @return rgba(0, 0, 0, $num / 100);
-}
+@import '../util/util';
 
 $white: #fff !default;
 $black: gray(90) !default;
+$primary-color: gray(0) !default;
 $disabled-color: gray(70) !default;
 $success-color: #86c13d !default;
 $error-color: #e54040 !default;
-
-$global-margin: rem-calc(30) !default;
-$global-padding: rem-calc(30) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Container
 ////////////////////////////////////////////////////////////////////////////////
 $container-bg-color: gray(90) !default;
 $container-bg-2-color: gray(86) !default;
+$container-box-shadow: 0 1px 5px shadow(10) !default;
 $container-title-color: gray(10) !default;
 $container-description-color: gray(10) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Label
+/// Label & Description & Other
 ////////////////////////////////////////////////////////////////////////////////
 $label-color: gray(10) !default;
-$label-focus-color: gray(0) !default;
+$label-focus-color: $primary-color !default;
+$description-color: gray(20) !default;
+$ux-ripple-active-bg-color: gray(0) !default;
+$ux-ripple-focus-bg-color: $primary-color !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Message
+////////////////////////////////////////////////////////////////////////////////
+$message-bg-color: gray(70) !default;
+$message-color: gray(0) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Input
 ////////////////////////////////////////////////////////////////////////////////
-$input-padding: 0 $global-padding / 2 !default;
+$input-padding: 0 !default;
+$input-border: 0 !default;
+$input-border-top: $input-border !default;
+$input-border-right: $input-border !default;
+$input-border-bottom: $input-border !default;
+$input-border-left: $input-border !default;
 $input-color: gray(0) !default;
 $input-prefix-suffix-color: gray(50) !default;
-$input-bg-color: gray(85) !default;
+$input-bg-color: inherit !default;
 $input-border-color: gray(80) !default;
-$input-border-focus-color: gray(20) !default;
+$input-border-focus-color: $primary-color !default;
 $input-border-success-color: $success-color !default;
 $input-border-error-color: $error-color !default;
 $input-placeholder-color: gray(30) !default;
@@ -48,14 +53,14 @@ $input-placeholder-color: gray(30) !default;
 /// Checkbox
 ////////////////////////////////////////////////////////////////////////////////
 $checkbox-border-color: gray(20) !default;
-$checkbox-active-color: gray(40) !default;
+$checkbox-active-color: $primary-color !default;
 $checkbox-check-color: gray(0) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Radio
 ////////////////////////////////////////////////////////////////////////////////
 $radio-border-color: gray(20) !default;
-$radio-active-color: gray(40) !default;
+$radio-active-color: $primary-color !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Select
@@ -63,12 +68,13 @@ $radio-active-color: gray(40) !default;
 $select-bg-color: gray(80) !default;
 $select-item-color: gray(10) !default;
 $select-optgroup-color: gray(70) !default;
-$select-selected-bg: gray(10) !default;
+$select-selected-bg-color: $primary-color !default;
 $select-selected-color: gray(100) !default;
-$select-hover-color: shadow(10) !default;
+$select-hover-bg-color: shadow(10) !default;
 $select-close-color: gray(70) !default;
 $select-close-hover-color: gray(10) !default;
 $select-caret-color: gray(70) !default;
 $select-box-shadow: 0 1px 5px shadow(70) !default;
+$select-ajax-progress-bg-color: gray(90) !default;
 
 @import 'base';

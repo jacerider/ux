@@ -73,7 +73,7 @@ class UxFormSettingsForm extends ConfigFormBase {
     return [
       'status' => FALSE,
       'float' => FALSE,
-      'theme' => '',
+      'theme' => 'blue',
     ];
   }
 
@@ -139,6 +139,7 @@ class UxFormSettingsForm extends ConfigFormBase {
           'light' => $this->t('Light'),
           'dark' => $this->t('Dark'),
           'blue' => $this->t('Blue'),
+          'blue.dark' => $this->t('Blue Dark'),
         ],
         '#default_value' => $this->getSetting($theme_id, 'theme'),
         '#states' => $states,

@@ -1,22 +1,39 @@
-.ux-form .ux-form-element label,
-.ux-form .ux-form-element .fieldgroup .fieldset-legend {
+html {
+  font-size: 92%;
+}
+
+.ux-form label,
+.ux-form .fieldgroup .fieldset-legend {
   color: #1a1a1a;
 }
 
+.ux-form .description {
+  color: gray;
+}
+
+.ux-form .ux-ripple:before {
+  background: black;
+}
+
+.ux-form .ux-ripple:after {
+  background: #1c98c1;
+}
+
 .ux-form ::-webkit-input-placeholder {
-  color: #4d4d4d;
+  color: #666666;
 }
 
 .ux-form :-ms-input-placeholder {
-  color: #4d4d4d;
+  color: #666666;
 }
 
 .ux-form ::placeholder {
-  color: #4d4d4d;
+  color: #666666;
 }
 
 .ux-form-container > .ux-form-element-inner {
-  background: #fafafa;
+  background: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 }
 
 .ux-form-container .ux-form-container > .ux-form-element-inner {
@@ -32,33 +49,24 @@
   color: #1a1a1a;
 }
 
-.ux-form-input {
-  /**
-   * When focus.
-   */
-  /**
-   * When valid.
-   */
-  /**
-   * When invalid.
-   */
-  /**
-   * When disabled.
-   */
-}
-
 .ux-form-input .ux-form-input-line {
-  background-image: linear-gradient(#333333, #333333), linear-gradient(#cccccc, #cccccc);
+  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#cccccc, #cccccc);
 }
 
-.ux-form-input .ux-form-input-item, .ux-form-input .ux-form-input-item:focus,
+.ux-form-input .ux-form-input-item, .ux-form-input .ux-form-input-item:focus, .ux-form-input .ux-form-input-item.picker__input,
 .ux-form-input .field-prefix,
 .ux-form-input .field-prefix:focus,
+.ux-form-input .field-prefix.picker__input,
 .ux-form-input .field-suffix,
-.ux-form-input .field-suffix:focus {
+.ux-form-input .field-suffix:focus,
+.ux-form-input .field-suffix.picker__input {
   color: #1a1a1a;
-  background-color: inherit;
-  padding: 0;
+  background-color: #f2f2f2;
+  padding: 0 0.9375rem;
+  border-top: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: none;
+  border-left: 1px solid #e0e0e0;
 }
 
 .ux-form-input .field-prefix,
@@ -66,17 +74,22 @@
   color: gray;
 }
 
+.ux-form-input:after {
+  background: #4d4d4d;
+  color: white;
+}
+
 .ux-form-input.focus > label {
-  color: #1a1a1a;
+  color: #1c98c1;
 }
 
 .ux-form-input.focus .ux-form-input-line {
-  background-image: linear-gradient(#333333, #333333), linear-gradient(#cccccc, #cccccc);
+  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#cccccc, #cccccc);
   background-size: 100% 2px, 100% 1px;
 }
 
 .ux-form-input.valid .ux-form-input-line, .ux-form-input.valid.focus .ux-form-input-line {
-  background-image: linear-gradient(#333333, #333333), linear-gradient(#86c13d, #86c13d);
+  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#86c13d, #86c13d);
 }
 
 .ux-form-input.invalid > label, .ux-form-input.invalid.focus > label {
@@ -91,16 +104,13 @@
   background-color: #e54040;
 }
 
-.ux-form-input.form-disabled > label {
-  color: #a6a6a6;
-}
-
-.ux-form-input.form-disabled .ux-form-input-item {
-  color: #a6a6a6;
-}
-
 .ux-form-element-float .ux-form-input > label {
-  padding: 0;
+  padding: 0 0.9375rem;
+}
+
+.ux-form-element-float .ux-form-input > .field-prefix,
+.ux-form-element-float .ux-form-input > .field-suffix {
+  color: transparent;
 }
 
 .ux-form-element-float .ux-form-input.active > label, .ux-form-element-float .ux-form-input.force-active > label {
@@ -113,17 +123,8 @@
   color: gray;
 }
 
-.ux-form-checkbox {
-  /**
-   * When active.
-   */
-  /**
-   * When invalid.
-   */
-}
-
 .ux-form-checkbox label.option:before {
-  border-color: #333333;
+  border-color: #b3b3b3;
 }
 
 .error .ux-form-checkbox label.option:before {
@@ -135,63 +136,66 @@
   border-bottom-color: white;
 }
 
+.ux-form-checkbox:after {
+  background: #4d4d4d;
+  color: white;
+}
+
 .ux-form-checkbox.active label.option:before {
-  border-color: #666666;
-  background: #666666;
+  border-color: #1c98c1;
+  background: #1c98c1;
 }
 
 .ux-form-checkbox.invalid:after, .ux-form-checkbox.invalid.focus:after {
   background: #e54040;
 }
 
-.ux-form-radio {
-  /**
-   * When active.
-   */
-  /**
-   * When disabled.
-   */
-}
-
 .ux-form-radio label.option:before, .ux-form-radio label.option:after {
-  border-color: #333333;
+  border-color: #b3b3b3;
 }
 
 .ux-form-radio label.option:after {
-  background-color: #666666;
+  background-color: #1c98c1;
 }
 
 .error .ux-form-radio label.option:before {
   border-color: #e54040;
 }
 
-.ux-form-radio.active label.option:before {
-  border-color: #666666;
+.ux-form-radio:after {
+  background: #4d4d4d;
+  color: white;
 }
 
-.ux-form-radio.form-disabled label.option {
-  color: #a6a6a6;
+.ux-form-radio.active label.option:before {
+  border-color: #1c98c1;
 }
 
 .ux-form-select select {
+  background-color: transparent;
   border-bottom: 1px solid #cccccc;
 }
 
 .ux-form-select select:focus {
-  border-bottom-color: #333333;
+  border-bottom-color: #1c98c1;
 }
 
 .ux-form-select .ux-form-select-caret {
   color: #b3b3b3;
 }
 
+.ux-form-select .ajax-progress {
+  background: white;
+}
+
 .ux-form-select .ux-form-select-dropdown {
-  background-color: #cccccc;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 }
 
 .ux-form-select .ux-form-select-dropdown .close {
   color: #b3b3b3;
-  background-color: #cccccc;
+  background-color: white;
 }
 
 .ux-form-select .ux-form-select-dropdown .close:hover {
@@ -207,7 +211,7 @@
 }
 
 .ux-form-select .ux-form-select-dropdown .selector.selected {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .ux-form-select .ux-form-select-dropdown .selector > span > label {
@@ -215,16 +219,16 @@
 }
 
 .ux-form-select .ux-form-select-dropdown .selector:hover {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .ux-form-select .ux-form-select-dropdown.is-single .selected {
   color: white;
-  background: #1a1a1a;
+  background: #1c98c1;
 }
 
 .ux-form-select .ux-form-select-dropdown.is-single .selected:hover {
-  background: #0d0d0d;
+  background: #1986ab;
 }
 
 /*# sourceMappingURL=ux-form.blue.css.map */

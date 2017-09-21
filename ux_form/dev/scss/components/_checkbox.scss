@@ -40,16 +40,12 @@
         width: $checkbox-element-size;
         height: $checkbox-element-size;
         z-index: 2;
-        border: 2px solid $checkbox-border-color;
+        border: 2px solid transparent;
         box-sizing: border-box;
       }
 
       &:before {
         border-radius: 2px;
-
-        .error & {
-          border-color: $error-color;
-        }
       }
 
       &:after {
@@ -59,8 +55,8 @@
         height: $checkbox-element-size / 1.2;
         border-top: 2px solid transparent;
         border-left: 2px solid transparent;
-        border-right: 2px solid $checkbox-check-color;
-        border-bottom: 2px solid $checkbox-check-color;
+        border-right: 2px solid transparent;
+        border-bottom: 2px solid transparent;
         transform: rotate(40deg) scale(0);
         backface-visibility: hidden;
         transform-origin: 100% 100%;
@@ -76,25 +72,19 @@
     }
   }
 
-  /**
-   * Message area.
-   */
+  // Message area.
   &:after {
     display: block;
     content: '';
     font-size: $message-font-size;
     line-height: $label-font-size;
-    background: $message-bg-color;
     text-transform: uppercase;
     white-space: nowrap;
     opacity: 0;
-    color: $white;
     text-rendering: optimizeLegibility;
   }
 
-  /**
-   * When ready.
-   */
+  // When ready.
   &.ready {
 
     label {
@@ -109,9 +99,7 @@
     }
   }
 
-  /**
-   * When focus.
-   */
+  // When focused.
   &.focused {
 
     label {
@@ -126,19 +114,12 @@
     }
   }
 
-  /**
-   * When active.
-   */
+  // When active.
   &.active {
 
     label {
 
       &.option {
-
-        &:before {
-          border-color: $checkbox-active-color;
-          background: $checkbox-active-color;
-        }
 
         &:after {
           opacity: 1;
@@ -148,36 +129,23 @@
     }
   }
 
-  /**
-   * When invalid.
-   */
+  // When invalid.
   &.invalid,
   &.invalid.focus {
 
     &:after {
       content: attr(data-error);
-      background: $error-color;
       opacity: 1;
       padding: rem-calc(2 10);
     }
   }
 
-  /**
-   * When disabled.
-   */
+  // When disabled.
   &.form-disabled {
 
     label {
-
-      &.option {
-        color: $disabled-color;
-        cursor: not-allowed;
-
-        &:before,
-        &:after {
-          opacity: 0.5;
-        }
-      }
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .ux-ripple {

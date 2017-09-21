@@ -7,17 +7,17 @@
     padding: 0;
     margin: 0;
 
-    input {
+    // input {
 
-      &:focus {
-        border: 0;
-        outline: none;
-      }
-    }
+    //   &:focus {
+    //     border: 0 !important;
+    //   }
+    // }
   }
 
   .ux-form-element {
-    margin: $global-margin 0;
+    margin-top: $global-margin;
+    margin-bottom: $global-margin;
 
     &.ux-form-element-last {
       margin-bottom: 0;
@@ -33,12 +33,37 @@
     }
   }
 
+  .ux-form-element-float {
+    margin-top: $global-margin + $label-height;
+    margin-bottom: $global-margin;
+  }
+
   .ux-form-element-inner {
     position: relative;
   }
 
   .ux-ripple {
     @include ux-ripple;
+  }
+
+  ::-webkit-input-placeholder {
+    @include placeholder;
+  }
+
+  :-moz-placeholder {
+    @include placeholder;
+  }
+
+  ::-moz-placeholder {
+    @include placeholder;
+  }
+
+  :-ms-input-placeholder {
+    @include placeholder;
+  }
+
+  ::placeholder {
+    @include placeholder;
   }
 }
 

@@ -16,7 +16,6 @@
   };
 
   var $document = $(document);
-
   $document.on('state:visible', function (e) {
     if (e.trigger) {
       $(e.target).closest('.ux-form-element-js').toggle(e.value);

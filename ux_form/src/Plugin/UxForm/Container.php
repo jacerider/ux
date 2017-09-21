@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   element_types = {
  *     "fieldset",
  *     "details",
+ *     "container",
  *   }
  * )
  */
@@ -23,7 +24,9 @@ class Container extends UxFormBase {
    */
   public function process(&$element, FormStateInterface $form_state, &$complete_form) {
     parent::process($element, $form_state, $complete_form);
-    $element['#ux_form_attributes']['class'][] = 'ux-form-container';
+    if ($element['#type'] !== 'container') {
+      $element['#ux_form_attributes']['class'][] = 'ux-form-container';
+    }
     $element['#ux_form_attributes']['class'][] = 'ux-form-container-js';
     if (!empty($element['#description'])) {
       $element['#description'] = '<div class="ux-form-element-container-description">' . $element['#description'] . '</div>';

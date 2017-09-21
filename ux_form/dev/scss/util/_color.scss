@@ -1,0 +1,7 @@
+@function gray($num) {
+  @return lighten(#000, percentage((100 - $num) / 100));
+}
+
+@function shadow($num) {
+  @return rgba(0, 0, 0, $num / 100);
+}

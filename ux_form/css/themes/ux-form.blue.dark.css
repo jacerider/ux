@@ -1,0 +1,234 @@
+html {
+  font-size: 92%;
+}
+
+.ux-form label,
+.ux-form .fieldgroup .fieldset-legend {
+  color: #e6e6e6;
+}
+
+.ux-form .description {
+  color: #cccccc;
+}
+
+.ux-form .ux-ripple:before {
+  background: white;
+}
+
+.ux-form .ux-ripple:after {
+  background: #1c98c1;
+}
+
+.ux-form ::-webkit-input-placeholder {
+  color: #b3b3b3;
+}
+
+.ux-form :-ms-input-placeholder {
+  color: #b3b3b3;
+}
+
+.ux-form ::placeholder {
+  color: #b3b3b3;
+}
+
+.ux-form-container > .ux-form-element-inner {
+  background: #1a1a1a;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.ux-form-container .ux-form-container > .ux-form-element-inner {
+  background: #242424;
+}
+
+.ux-form-container summary,
+.ux-form-container fieldset:not(.fieldgroup) .fieldset-legend {
+  color: #e6e6e6;
+}
+
+.ux-form-container .ux-form-element-container-description {
+  color: #e6e6e6;
+}
+
+.ux-form-input .ux-form-input-line {
+  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#333333, #333333);
+}
+
+.ux-form-input .ux-form-input-item, .ux-form-input .ux-form-input-item:focus, .ux-form-input .ux-form-input-item.picker__input,
+.ux-form-input .field-prefix,
+.ux-form-input .field-prefix:focus,
+.ux-form-input .field-prefix.picker__input,
+.ux-form-input .field-suffix,
+.ux-form-input .field-suffix:focus,
+.ux-form-input .field-suffix.picker__input {
+  color: white;
+  background-color: #0d0d0d;
+  padding: 0 0.9375rem;
+  border-top: 1px solid #1f1f1f;
+  border-right: 1px solid #1f1f1f;
+  border-bottom: none;
+  border-left: 1px solid #1f1f1f;
+}
+
+.ux-form-input .field-prefix,
+.ux-form-input .field-suffix {
+  color: gray;
+}
+
+.ux-form-input:after {
+  background: #4d4d4d;
+  color: white;
+}
+
+.ux-form-input.focus > label {
+  color: #1c98c1;
+}
+
+.ux-form-input.focus .ux-form-input-line {
+  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#333333, #333333);
+  background-size: 100% 2px, 100% 1px;
+}
+
+.ux-form-input.valid .ux-form-input-line, .ux-form-input.valid.focus .ux-form-input-line {
+  background-image: linear-gradient(#1c98c1, #1c98c1), linear-gradient(#86c13d, #86c13d);
+}
+
+.ux-form-input.invalid > label, .ux-form-input.invalid.focus > label {
+  color: #e54040;
+}
+
+.ux-form-input.invalid .ux-form-input-line, .ux-form-input.invalid.focus .ux-form-input-line {
+  background-image: linear-gradient(#e54040, #e54040), linear-gradient(#e54040, #e54040);
+}
+
+.ux-form-input.invalid:after, .ux-form-input.invalid.focus:after {
+  background-color: #e54040;
+}
+
+.ux-form-element-float .ux-form-input > label {
+  padding: 0 0.9375rem;
+}
+
+.ux-form-element-float .ux-form-input > .field-prefix,
+.ux-form-element-float .ux-form-input > .field-suffix {
+  color: transparent;
+}
+
+.ux-form-element-float .ux-form-input.active > label, .ux-form-element-float .ux-form-input.force-active > label {
+  padding: 0;
+}
+
+.ux-form-element-float .ux-form-input.active > .field-prefix,
+.ux-form-element-float .ux-form-input.active > .field-suffix, .ux-form-element-float .ux-form-input.force-active > .field-prefix,
+.ux-form-element-float .ux-form-input.force-active > .field-suffix {
+  color: gray;
+}
+
+.ux-form-checkbox label.option:before {
+  border-color: #cccccc;
+}
+
+.error .ux-form-checkbox label.option:before {
+  border-color: #e54040;
+}
+
+.ux-form-checkbox label.option:after {
+  border-right-color: white;
+  border-bottom-color: white;
+}
+
+.ux-form-checkbox:after {
+  background: #4d4d4d;
+  color: white;
+}
+
+.ux-form-checkbox.active label.option:before {
+  border-color: #1c98c1;
+  background: #1c98c1;
+}
+
+.ux-form-checkbox.invalid:after, .ux-form-checkbox.invalid.focus:after {
+  background: #e54040;
+}
+
+.ux-form-radio label.option:before, .ux-form-radio label.option:after {
+  border-color: #cccccc;
+}
+
+.ux-form-radio label.option:after {
+  background-color: #1c98c1;
+}
+
+.error .ux-form-radio label.option:before {
+  border-color: #e54040;
+}
+
+.ux-form-radio:after {
+  background: #4d4d4d;
+  color: white;
+}
+
+.ux-form-radio.active label.option:before {
+  border-color: #1c98c1;
+}
+
+.ux-form-select select {
+  background-color: transparent;
+  border-bottom: 1px solid #333333;
+}
+
+.ux-form-select select:focus {
+  border-bottom-color: #1c98c1;
+}
+
+.ux-form-select .ux-form-select-caret {
+  color: #4d4d4d;
+}
+
+.ux-form-select .ajax-progress {
+  background: #1a1a1a;
+}
+
+.ux-form-select .ux-form-select-dropdown {
+  background-color: #333333;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+.ux-form-select .ux-form-select-dropdown .close {
+  color: #4d4d4d;
+  background-color: #333333;
+}
+
+.ux-form-select .ux-form-select-dropdown .close:hover {
+  color: #e6e6e6;
+}
+
+.ux-form-select .ux-form-select-dropdown .optgroup {
+  color: #4d4d4d;
+}
+
+.ux-form-select .ux-form-select-dropdown .selector {
+  color: #e6e6e6;
+}
+
+.ux-form-select .ux-form-select-dropdown .selector.selected {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.ux-form-select .ux-form-select-dropdown .selector > span > label {
+  color: #e6e6e6;
+}
+
+.ux-form-select .ux-form-select-dropdown .selector:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.ux-form-select .ux-form-select-dropdown.is-single .selected {
+  color: black;
+  background: #1c98c1;
+}
+
+.ux-form-select .ux-form-select-dropdown.is-single .selected:hover {
+  background: #1986ab;
+}
+
+/*# sourceMappingURL=ux-form.blue.dark.css.map */

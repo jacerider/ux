@@ -48,6 +48,13 @@ function ux_form_element_info_alter(&$types) {
 }
 
 /**
+ * Implements hook_field_group_build_pre_render_alter().
+ */
+function ux_form_field_group_build_pre_render_alter(&$element) {
+  ux_form_element_process($element);
+}
+
+/**
  * Process ux form elements.
  */
 function ux_form_element_process(&$element, FormStateInterface $form_state, &$complete_form) {

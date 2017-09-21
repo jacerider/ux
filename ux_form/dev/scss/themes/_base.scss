@@ -1,10 +1,29 @@
+html {
+  font-size: 92%;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Form
+////////////////////////////////////////////////////////////////////////////////
 .ux-form {
 
-  .ux-form-element {
+  label,
+  .fieldgroup .fieldset-legend {
+    color: $label-color;
+  }
 
-    label,
-    .fieldgroup .fieldset-legend {
-      color: $label-color;
+  .description {
+    color: $description-color;
+  }
+
+  .ux-ripple {
+
+    &:before {
+      background: $ux-ripple-active-bg-color;
+    }
+
+    &:after {
+      background: $ux-ripple-focus-bg-color;
     }
   }
 
@@ -36,6 +55,7 @@
 
   > .ux-form-element-inner {
     background: $container-bg-color;
+    box-shadow: $container-box-shadow;
   }
 
   // Nested 2 deep.
@@ -70,10 +90,15 @@
   .field-suffix {
 
     &,
-    &:focus {
+    &:focus,
+    &.picker__input {
       color: $input-color;
       background-color: $input-bg-color;
       padding: $input-padding;
+      border-top: $input-border-top;
+      border-right: $input-border-right;
+      border-bottom: $input-border-bottom;
+      border-left: $input-border-left;
     }
   }
 
@@ -82,9 +107,13 @@
     color: $input-prefix-suffix-color;
   }
 
-  /**
-   * When focus.
-   */
+  // Message area.
+  &:after {
+    background: $message-bg-color;
+    color: $message-color;
+  }
+
+  // When focused.
   &.focus {
 
     > label {
@@ -97,9 +126,7 @@
     }
   }
 
-  /**
-   * When valid.
-   */
+  // When valid.
   &.valid,
   &.valid.focus {
 
@@ -108,9 +135,7 @@
     }
   }
 
-  /**
-   * When invalid.
-   */
+  // When invalid.
   &.invalid,
   &.invalid.focus {
 
@@ -126,20 +151,6 @@
       background-color: $error-color;
     }
   }
-
-  /**
-   * When disabled.
-   */
-  &.form-disabled {
-
-    > label {
-      color: $disabled-color;
-    }
-
-    .ux-form-input-item {
-      color: $disabled-color;
-    }
-  }
 }
 
 .ux-form-element-float {
@@ -148,6 +159,11 @@
 
     > label {
       padding: $input-padding;
+    }
+
+    > .field-prefix,
+    > .field-suffix {
+      color: transparent;
     }
 
     &.active,
@@ -192,9 +208,13 @@
     }
   }
 
-  /**
-   * When active.
-   */
+  // Message area.
+  &:after {
+    background: $message-bg-color;
+    color: $message-color;
+  }
+
+  // When active.
   &.active {
 
     label {
@@ -209,9 +229,7 @@
     }
   }
 
-  /**
-   * When invalid.
-   */
+  // When invalid.
   &.invalid,
   &.invalid.focus {
 
@@ -248,9 +266,13 @@
     }
   }
 
-  /**
-   * When active.
-   */
+  // Message area.
+  &:after {
+    background: $message-bg-color;
+    color: $message-color;
+  }
+
+  // When active.
   &.active {
 
     label {
@@ -263,19 +285,6 @@
       }
     }
   }
-
-  /**
-   * When disabled.
-   */
-  &.form-disabled {
-
-    label {
-
-      &.option {
-        color: $disabled-color;
-      }
-    }
-  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +293,7 @@
 .ux-form-select {
 
   select {
+    background-color: transparent;
     border-bottom: 1px solid $input-border-color;
 
     &:focus {
@@ -295,8 +305,13 @@
     color: $select-caret-color;
   }
 
+  .ajax-progress {
+    background: $select-ajax-progress-bg-color;
+  }
+
   .ux-form-select-dropdown {
     background-color: $select-bg-color;
+    box-shadow: $select-box-shadow;
 
     .close {
       color: $select-close-color;
@@ -315,7 +330,7 @@
       color: $select-item-color;
 
       &.selected {
-        background: $select-hover-color;
+        background: $select-hover-bg-color;
       }
 
       > span {
@@ -326,7 +341,7 @@
       }
 
       &:hover {
-        background: $select-hover-color;
+        background: $select-hover-bg-color;
       }
     }
 
@@ -334,10 +349,10 @@
 
       .selected {
         color: $select-selected-color;
-        background: $select-selected-bg;
+        background: $select-selected-bg-color;
 
         &:hover {
-          background: darken($select-selected-bg, 5%);
+          background: darken($select-selected-bg-color, 5%);
         }
       }
     }

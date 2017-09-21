@@ -1,0 +1,33 @@
+
+.ux-form-element {
+
+  .entity-meta {
+    border: 1px solid red;
+
+    .ux-form-element {
+      margin: 0;
+    }
+
+    details {
+      // border: 0;
+      background: transparent;
+
+      summary {
+        padding: 0;
+        text-shadow: 0;
+      }
+
+      .details-wrapper {
+        padding: $global-padding 0 0;
+      }
+
+      &:first-child {
+        border: 0;
+      }
+
+      &:open {
+        background-image: none !important;
+      }
+    }
+  }
+}

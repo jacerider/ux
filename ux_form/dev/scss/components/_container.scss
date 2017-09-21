@@ -2,17 +2,7 @@
 .ux-form-container {
 
   > .ux-form-element-inner {
-    background: $container-bg-color;
     padding: $global-padding;
-    box-shadow: $container-box-shadow;
-  }
-
-  // Nested 2 deep.
-  .ux-form-container {
-
-    > .ux-form-element-inner {
-      background: $container-bg-level-2-color;
-    }
   }
 
   .details-wrapper {

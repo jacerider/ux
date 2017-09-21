@@ -1,74 +1,80 @@
-@import '../base/unit';
-
-@function gray($num) {
-  @return lighten(#000, percentage((100 - $num) / 100));
-}
-
-@function shadow($num) {
-  @return rgba(0, 0, 0, $num / 100);
-}
+@import '../util/util';
 
 $white: #fff !default;
 $black: gray(90) !default;
+$primary-color: gray(90) !default;
 $disabled-color: gray(35) !default;
 $success-color: #86c13d !default;
 $error-color: #e54040 !default;
 
-$global-margin: rem-calc(30) !default;
-$global-padding: rem-calc(30) !default;
-
 ////////////////////////////////////////////////////////////////////////////////
 /// Container
 ////////////////////////////////////////////////////////////////////////////////
-$container-bg-color: gray(2) !default;
+$container-bg-color: gray(0) !default;
 $container-bg-2-color: gray(0) !default;
+$container-box-shadow: 0 1px 5px shadow(15) !default;
 $container-title-color: gray(90) !default;
 $container-description-color: gray(90) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Label
+/// Label & Description & Other
 ////////////////////////////////////////////////////////////////////////////////
 $label-color: gray(90) !default;
-$label-focus-color: gray(90) !default;
+$label-focus-color: $primary-color !default;
+$description-color: gray(50) !default;
+$ux-ripple-active-bg-color: gray(100) !default;
+$ux-ripple-focus-bg-color: $primary-color !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Message
+////////////////////////////////////////////////////////////////////////////////
+$message-bg-color: gray(70) !default;
+$message-color: gray(0) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Input
 ////////////////////////////////////////////////////////////////////////////////
 $input-padding: 0 !default;
+$input-border: 0 !default;
+$input-border-top: $input-border !default;
+$input-border-right: $input-border !default;
+$input-border-bottom: $input-border !default;
+$input-border-left: $input-border !default;
 $input-color: gray(90) !default;
 $input-prefix-suffix-color: gray(50) !default;
 $input-bg-color: inherit !default;
 $input-border-color: gray(20) !default;
-$input-border-focus-color: gray(80) !default;
+$input-border-focus-color: $primary-color !default;
 $input-border-success-color: $success-color !default;
 $input-border-error-color: $error-color !default;
-$input-placeholder-color: gray(70) !default;
+$input-placeholder-color: gray(60) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Checkbox
 ////////////////////////////////////////////////////////////////////////////////
-$checkbox-border-color: gray(80) !default;
-$checkbox-active-color: gray(60) !default;
+$checkbox-border-color: gray(30) !default;
+$checkbox-active-color: $primary-color !default;
 $checkbox-check-color: gray(0) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Radio
 ////////////////////////////////////////////////////////////////////////////////
-$radio-border-color: gray(80) !default;
-$radio-active-color: gray(60) !default;
+$radio-border-color: gray(30) !default;
+$radio-active-color: $primary-color !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Select
 ////////////////////////////////////////////////////////////////////////////////
-$select-bg-color: gray(20) !default;
+$select-bg-color: gray(0) !default;
 $select-item-color: gray(90) !default;
 $select-optgroup-color: gray(30) !default;
-$select-selected-bg: gray(90) !default;
+$select-selected-bg-color: $primary-color !default;
 $select-selected-color: gray(0) !default;
-$select-hover-color: shadow(90) !default;
+$select-hover-bg-color: shadow(5) !default;
 $select-close-color: gray(30) !default;
 $select-close-hover-color: gray(90) !default;
 $select-caret-color: gray(30) !default;
 $select-box-shadow: 0 1px 5px shadow(30) !default;
+$select-ajax-progress-bg-color: gray(0) !default;
 
 @import 'base';
