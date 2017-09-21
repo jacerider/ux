@@ -8,9 +8,8 @@
  * @ingroup themeable
  */
 #}
-{%
-  set classes = [
-    'ux-form-element',
-  ]
-%}
-<div{{ attributes.addClass(classes) }}>{{ children }}</div>
+<div{{ attributes }}>
+  <div class="ux-form-element-inner">
+    {{ children }}
+  </div>
+</div>

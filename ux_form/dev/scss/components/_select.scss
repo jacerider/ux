@@ -1,10 +1,5 @@
-
 .ux-form-select {
   position: relative;
-
-  > label {
-    @include label-active;
-  }
 
   select {
     display: none;
@@ -15,7 +10,7 @@
     border-bottom: 1px solid $input-border-color;
 
     &:focus {
-      border-bottom-color: $input-focus-color;
+      border-bottom-color: $input-border-focus-color;
     }
 
     &.browser-default{
@@ -50,19 +45,6 @@
     }
   }
 
-  ////// DISABLED
-  &.form-disabled {
-
-    > label {
-      color: $input-disabled-color;
-    }
-
-    .ux-form-input-item {
-      background-color: transparent;
-      color: $input-disabled-color;
-    }
-  }
-
   .ux-form-select-wrapper {
     position: relative;
 
@@ -76,7 +58,7 @@
 
   .ux-form-select-caret {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 0;
     bottom: 0;
     height: 10px;
@@ -87,10 +69,6 @@
     pointer-events: none;
     opacity: 0.7;
     transition: opacity 300ms;
-
-    &.disabled {
-      color: $input-disabled-color;
-    }
   }
 
   .ux-form-select-hidden {
@@ -116,12 +94,11 @@
       text-align: left;
       font-size: $select-font-size;
       text-transform: none;
-      color: $select-option-color;
       // transition: all $form-item-speed;
 
       > span {
         display: block;
-        padding: 0 $form-padding / 2;
+        padding: 0 $global-padding / 2;
 
         > label {
           font-size: $select-font-size;
@@ -142,7 +119,7 @@
     z-index: 999;
     margin: 0;
     padding: 0;
-    box-shadow: 0 1px 2px shade(30);
+    box-shadow: $select-box-shadow;
 
     .close {
       position: absolute;
@@ -167,20 +144,21 @@
 
       input {
         cursor: text;
-        padding-left: $form-padding / 2;
-        padding-right: $form-padding / 2;
+        padding-left: $global-padding / 2;
+        padding-right: $global-padding / 2;
       }
     }
 
     .optgroup {
-      font-size: $select-option-font-size;
+      font-size: $select-optgroup-font-size;
       text-transform: uppercase;
       border-top: 1px solid gray(10);
+      color: $select-optgroup-color;
 
       > span {
         cursor: default;
-        line-height: $select-option-height;
-        min-height: $select-option-height;
+        line-height: $select-optgroup-height;
+        min-height: $select-optgroup-height;
       }
     }
 
@@ -190,19 +168,6 @@
       &.selected {
         background: $select-hover-color;
         overflow: hidden;
-
-        label {
-          // color: $select-selected-color;
-
-          // &:before {
-          //   border-color: darken($select-selected-bg, 10%);
-          //   background: darken($select-selected-bg, 10%);
-          // }
-        }
-
-        // &:hover {
-        //   background: darken($select-selected-bg, 5%);
-        // }
       }
 
       > span {
@@ -253,6 +218,25 @@
     .ux-form-select-dropdown {
       opacity: 1;
       transform: translate(0, 0);
+    }
+  }
+
+  /**
+   * When disabled.
+   */
+  &.form-disabled {
+
+    > label {
+      color: $disabled-color;
+    }
+
+    .ux-form-select-wrapper {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      * {
+        pointer-events: none;
+      }
     }
   }
 }

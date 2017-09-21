@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Html;
 
 /**
@@ -24,9 +25,54 @@ function ux_form_theme() {
  */
 function ux_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (ux_form_access()) {
-    $form['#attached']['library'][] = 'ux_form/ux_form';
+    $config = ux_form_get_config();
     $form['#attributes']['class'][] = 'ux-form';
+    $form['#attributes']['class'][] = 'ux-form-container-js';
+    $form['#attached']['library'][] = 'ux_form/ux_form';
+    if (!empty($config['theme'])) {
+      $form['#attached']['library'][] = 'ux_form/ux_form.theme.' . $config['theme'];
+    }
   }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function ux_form_element_info_alter(&$types) {
+  $ux_form_plugin_manager = \Drupal::service('plugin.manager.ux_form');
+  foreach ($types as $type => $data) {
+    if ($plugins = $ux_form_plugin_manager->getPluginsByType($type)) {
+      $types[$type]['#process'][] = 'ux_form_element_process';
+    }
+  }
+}
+
+/**
+ * Process ux form elements.
+ */
+function ux_form_element_process(&$element, FormStateInterface $form_state, &$complete_form) {
+  if (!ux_form_access()) {
+    return $element;
+  }
+  $ux_form_plugin_manager = &drupal_static(__FUNCTION__);
+  if (!isset($ux_form_plugin_manager)) {
+    $ux_form_plugin_manager = \Drupal::service('plugin.manager.ux_form');
+  }
+  $type = $element['#type'];
+  foreach ($plugins = $ux_form_plugin_manager->getPluginsByType($type) as $id => $name) {
+    $instance = $ux_form_plugin_manager->createInstance($id, ux_form_get_config());
+    if ($instance->applies($element)) {
+      $instance->process($element, $form_state, $complete_form);
+    }
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function ux_form_theme_registry_alter(&$theme_registry) {
+  $theme_registry['fieldset']['path'] = drupal_get_path('module', 'ux_form') . '/templates';
 }
 
 /**
@@ -48,10 +94,7 @@ function ux_form_library_info_alter(&$libraries, $extension) {
 function ux_form_access() {
   $status = &drupal_static(__FUNCTION__);
   if (!isset($status)) {
-    $status = FALSE;
-    $active_theme = \Drupal::theme()->getActiveTheme()->getName();
-    $themes = \Drupal::config('ux_form.settings')->get('themes');
-    if (isset($themes[$active_theme])) {
+    if (ux_form_get_config()) {
       $status = TRUE;
     }
   }
@@ -59,195 +102,19 @@ function ux_form_access() {
 }
 
 /**
- * Implements hook_element_info_alter().
+ * Get theme config.
+ *
+ * @return array
+ *   An array of config options.
  */
-function ux_form_element_info_alter(&$type) {
-  $input_elements = ['textfield', 'textarea', 'number', 'tel', 'url', 'email', 'password', 'date', 'search', 'commerce_number'];
-  foreach ($input_elements as $input_element) {
-    if (isset($type[$input_element])) {
-      $type[$input_element]['#process'][] = 'ux_form_input_process';
-    }
+function ux_form_get_config() {
+  $theme_config = &drupal_static(__FUNCTION__);
+  if (!isset($theme_config)) {
+    $active_theme = \Drupal::theme()->getActiveTheme()->getName();
+    $config = \Drupal::config('ux_form.settings')->get('themes');
+    $theme_config = isset($config[$active_theme]) ? $config[$active_theme] : NULL;
   }
-
-  $input_elements = ['radio', 'radios', 'webform_entity_radios'];
-  foreach ($input_elements as $input_element) {
-    if (isset($type[$input_element])) {
-      $type[$input_element]['#process'][] = 'ux_form_radio_process';
-    }
-  }
-
-  $input_elements = ['checkbox', 'checkboxes', 'webform_entity_checkboxes'];
-  foreach ($input_elements as $input_element) {
-    if (isset($type[$input_element])) {
-      $type[$input_element]['#process'][] = 'ux_form_checkbox_process';
-    }
-  }
-
-  $input_elements = ['select', 'webform_entity_select'];
-  foreach ($input_elements as $input_element) {
-    if (isset($type[$input_element])) {
-      $type[$input_element]['#process'][] = 'ux_form_select_process';
-    }
-  }
-
-  if (isset($type['text_format'])) {
-    $type['text_format']['#process'][] = 'ux_form_text_format_process';
-  }
-
-  if (isset($type['date'])) {
-    $type['date']['#process'][] = 'ux_form_date_process';
-  }
-
-  if (isset($type['datetime'])) {
-    $type['datetime']['#process'][] = 'ux_form_datetime_process';
-  }
-
-  if (isset($type['managed_file'])) {
-    $type['managed_file']['#process'][] = 'ux_form_managed_file_process';
-  }
-}
-
-/**
- * Process input elements.
- */
-function ux_form_input_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  if (ux_form_access()) {
-    $type = $element['#type'];
-    $element['#theme_wrappers'][] = 'ux_form_element_container';
-    $element['#wrapper_attributes']['class'][] = 'ux-form-input';
-    $element['#wrapper_attributes']['class'][] = 'ux-form-input-js';
-    $element['#attributes']['class'][] = 'ux-form-input-item';
-    $element['#attributes']['class'][] = 'ux-form-input-item-js';
-    $element['#attached']['library'][] = 'ux_form/ux_form.input';
-    if ($type == 'textarea' && (!empty($element['#allowed_formats']) || !empty($element['#format']))) {
-      $element['#wrapper_attributes']['class'][] = 'ux-form-format';
-      $element['#wrapper_attributes']['class'][] = 'force-active';
-    }
-  }
-  return $element;
-}
-
-/**
- * Process radio elements.
- */
-function ux_form_radio_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  if (ux_form_access()) {
-    $type = $element['#type'];
-    $element['#wrapper_attributes']['class'][] = 'ux-form-radio';
-    $element['#attached']['library'][] = 'ux_form/ux_form.radio';
-    if ($type == 'radio') {
-      if (!empty($element['#title'])) {
-        $element['#title'] = '<div class="ux-ripple"></div>' . $element['#title'];
-      }
-    }
-    else {
-      // $element['#theme_wrappers'][] = 'ux_form_element_container';
-      $element['#attributes']['class'][] = 'ux-form-element';
-      $element['#attributes']['class'][] = 'ux-form-radios';
-    }
-  }
-  return $element;
-}
-
-/**
- * Process checkbox elements.
- */
-function ux_form_checkbox_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  if (ux_form_access()) {
-    $type = $element['#type'];
-    if ($type == 'checkbox') {
-      $element['#wrapper_attributes']['class'][] = 'ux-form-checkbox';
-      $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
-      if (!empty($element['#title'])) {
-        $element['#title'] = '<div class="ux-ripple"></div>' . $element['#title'];
-      }
-    }
-    else {
-      // $element['#theme_wrappers'][] = 'ux_form_element_container';
-      $element['#attributes']['class'][] = 'ux-form-element';
-      $element['#attributes']['class'][] = 'ux-form-checkboxes';
-    }
-  }
-  return $element;
-}
-
-/**
- * Process select elements.
- */
-function ux_form_select_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  if (ux_form_access()) {
-    // Make sure this is not a UX | Select as links.
-    if (!isset($element['#theme']) || $element['#theme'] != 'ux_select_as_links') {
-      $element['#theme_wrappers'][] = 'ux_form_element_container';
-      $element['#wrapper_attributes']['class'][] = 'ux-form-select';
-      $element['#attached']['library'][] = 'ux_form/ux_form.select';
-      if (isset($element['#multiple']) && $element['#multiple']) {
-        $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
-      }
-    }
-  }
-  return $element;
-}
-
-/**
- * Process date elements.
- */
-function ux_form_date_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  $element['#theme_wrappers'][] = 'ux_form_element_container';
-  $element['#wrapper_attributes']['class'][] = 'ux-form-date';
-  if (!empty($element['#attached']['library'])) {
-    $element['#attached']['library'] = array_filter($element['#attached']['library'], function ($library) {
-      return $library !== 'core/drupal.date';
-    });
-    $element['#attached']['library'][] = 'ux_form/ux_form.date';
-  }
-  if (ux_form_access()) {
-    // We want to use ux date sitewide. But we only want the UX form library
-    // loaded when access is true.
-    $element['#attached']['library'][] = 'ux_form/ux_form';
-  }
-  return $element;
-}
-
-/**
- * Process datetime elements.
- */
-function ux_form_datetime_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  $element['#wrapper_attributes']['class'][] = 'ux-form-time';
-  $element['#theme_wrappers'] = ['form_element'];
-  $element['#theme_wrappers'][] = 'ux_form_element_container';
-  $element['#attributes']['class'][] = 'ux-form-inline';
-  $element['#attached']['library'][] = 'ux_form/ux_form.time';
-  $element['date']['#attributes']['placeholder'] = t('Date');
-  $element['time']['#attributes']['placeholder'] = t('Time');
-  if (ux_form_access()) {
-    // We want to use ux date sitewide. But we only want the UX form library
-    // loaded when access is true.
-    $element['#attached']['library'][] = 'ux_form/ux_form';
-  }
-  return $element;
-}
-
-/**
- * Process file elements.
- */
-function ux_form_managed_file_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  if (ux_form_access()) {
-    // $element['#theme_wrappers'][] = 'ux_form_element_container';
-    // $element['#wrapper_attributes']['class'][] = 'ux-form-file';
-    // $element['#attached']['library'][] = 'ux_form/ux_form.file';
-  }
-  return $element;
-}
-
-/**
- * Process text format elements.
- */
-function ux_form_text_format_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  if (ux_form_access()) {
-    $element['format']['#attributes']['class'][] = 'ux-form-text-format';
-  }
-  return $element;
+  return $theme_config;
 }
 
 /**
@@ -260,12 +127,12 @@ function ux_form_text_format_process(&$element, FormStateInterface $form_state, 
  *   - element: An associative array containing the properties of the element.
  *     Properties used: #id, #attributes, #children.
  */
-function ux_form_preprocess_container(array &$variables) {
-  $element = $variables['element'];
-  if (isset($element['widget']['#field_name'])) {
-    $variables['attributes']['class'][] = 'field-wrapper';
-  }
-}
+// function ux_form_preprocess_container(array &$variables) {
+//   $element = $variables['element'];
+//   if (isset($element['widget']['#field_name'])) {
+//     $variables['attributes']['class'][] = 'field-wrapper';
+//   }
+// }
 
 /**
  * Prepares variables for container templates.
@@ -279,9 +146,31 @@ function ux_form_preprocess_container(array &$variables) {
  */
 function template_preprocess_ux_form_element_container(array &$variables) {
   $element = $variables['element'];
-  $variables['attributes'] = [];
-  $variables['children'] = $element['#children'];
-  if (isset($element['#name'])) {
-    $variables['attributes']['class'][] = 'ux-element-' . Html::getClass($element['#name']);
+  $variables['attributes'] = [
+    'class' => ['ux-form-element', 'ux-form-element-js'],
+  ];
+  if (isset($element['#type'])) {
+    $variables['attributes']['class'][] = 'ux-form-element-type-' . Html::getClass($element['#type']);
   }
+  if (isset($element['#name'])) {
+    $variables['attributes']['class'][] = 'ux-form-element-name-' . Html::getClass($element['#name']);
+  }
+  if (isset($element['#ux_form_attributes']) && is_array($element['#ux_form_attributes'])) {
+    $variables['attributes'] = NestedArray::mergeDeep($variables['attributes'], $element['#ux_form_attributes']);
+  }
+  $variables['children'] = $element['#children'];
+}
+
+/**
+ * Implements template_preprocess_fieldset().
+ */
+function ux_form_preprocess_fieldset(&$variables) {
+  if (!isset($variables['legend']['title'])) {
+    // Add a .no-legend class if no title is provided.
+    $variables['attributes']['class'][] = 'no-legend';
+  }
+  else {
+    $variables['attributes']['class'][] = 'has-legend';
+  }
+
 }

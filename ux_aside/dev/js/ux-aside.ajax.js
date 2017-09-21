@@ -16,9 +16,6 @@
    *   Object holding the server response.
    * @param {number} [status]
    *   The HTTP status code.
-   *
-   * @return {bool|undefined}
-   *   Returns false if there was no selector property in the response object.
    */
   Drupal.AjaxCommands.prototype.uxAsideOpen = function (ajax, response, status) {
     // Because ajax.js expects only 1 root element, when twig hints are nurned

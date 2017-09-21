@@ -1,0 +1,67 @@
+
+.ux-form-container {
+
+  > .ux-form-element-inner {
+    background: $container-bg-color;
+    padding: $global-padding;
+    box-shadow: $container-box-shadow;
+  }
+
+  // Nested 2 deep.
+  .ux-form-container {
+
+    > .ux-form-element-inner {
+      background: $container-bg-level-2-color;
+    }
+  }
+
+  .details-wrapper {
+    padding: 0;
+  }
+
+  summary,
+  fieldset:not(.fieldgroup) .fieldset-legend {
+    @include container-label;
+  }
+
+  .ux-form-element-container-description {
+    @include container-description;
+  }
+}
+
+.ux-form-element-type-details {
+
+  details {
+    display: block;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.ux-form-element-type-fieldset {
+
+  fieldset:not(.fieldgroup) {
+    display: block;
+    border: 0;
+    margin: 0;
+    padding: 0;
+
+    > legend {
+      position: relative;
+      top: 0;
+    }
+  }
+
+  legend {
+    margin: 0;
+  }
+
+  .fieldset-wrapper {
+
+    > .description {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

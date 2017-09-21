@@ -1,7 +1,14 @@
-.ux-form-text-format.filter-wrapper {
-  margin-top: -$form-item-margin-size / 1.5;
-  margin-bottom: $form-item-margin-size;
-  padding: 0;
-  border: 0;
-  overflow: visible;
+
+.ux-form-element-type-text-format {
+
+  .ux-form-element {
+    margin: 0;
+  }
+
+  .ux-filter-wrapper {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
 }

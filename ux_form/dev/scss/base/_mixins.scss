@@ -1,26 +1,61 @@
-
 @mixin label() {
   display: block;
-  // position: absolute;
-  // top: 0;
-  // left: 0;
   font-size: $label-font-size;
-  line-height: $label-font-size;
-  // line-height: $input-height;
+  line-height: $label-height;
+  height: $label-height;
+  font-weight: normal;
   text-transform: none;
-  padding-bottom: 6px;
+  padding: 0;
+  margin: 0;
 }
 
-@mixin label-active() {
-  display: block;
+@mixin label-float() {
+  @include label;
   position: absolute;
   top: 0;
   left: 0;
-  font-size: $label-font-size;
-  line-height: $label-font-size;
-  transform: $label-transform;
+  transform: translateY($label-height * -1);
+}
+
+@mixin label-overlay() {
+  @include label-float;
+  line-height: $input-height;
+  font-size: $input-font-size;
+  height: $input-height;
+  padding: $input-padding;
+  pointer-events: none;
+  transform: translateY(0);
+}
+
+@mixin description() {
+  font-size: $description-font-size;
+  margin: 0;
   padding: 0;
-  // line-height: $input-font-size;
+}
+
+@mixin placeholder() {
+  color: $input-placeholder-color;
+  font-style: italic;
+  font-weight: 500;
+  opacity: 1 !important;
+}
+
+@mixin container-label() {
+  display: block;
+  font-size: $container-font-size;
+  line-height: $container-height;
+  height: $container-height;
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@mixin container-description() {
+  font-size: $container-description-font-size;
+  font-weight: 300;
+  margin: 0;
+  padding: rem-calc(5 0 0);
 }
 
 @mixin ux-ripple() {
@@ -43,9 +78,6 @@
     height: 100%;
     background: $black;
     border-radius: 50%;
-    // background-image: radial-gradient(circle, $black 10%, transparent 10.01%);
-    // background-repeat: no-repeat;
-    // background-position: 50%;
     transform: scale(1.5, 1.5);
     opacity: 0;
     overflow: hidden;
@@ -66,7 +98,6 @@
     opacity: 0;
     overflow: hidden;
     transition: transform 0.5s, opacity 1s;
-    // transition: opacity 1s;
   }
 }
 
@@ -82,8 +113,8 @@
 @mixin ux-ripple-focus() {
 
   &:after {
-    opacity: 0.1;
-    // transition: 0s;
-    transform: scale(1, 1);
+    opacity: 0.15;
+    transform: scale(0.75, 0.75);
+    transition: 0s;
   }
 }

@@ -1,5 +1,7 @@
 ux_form:
   version: VERSION
+  js:
+    js/ux-form.js: { minified: true }
   css:
     component:
       css/ux-form.css: {}
@@ -93,3 +95,21 @@ ux_form.time:
   dependencies:
     # - ux_form/ux_form
     - ux_form/ux_form.picker
+
+ux_form.theme.light:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-form.light.css: {}
+
+ux_form.theme.dark:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-form.dark.css: {}
+
+ux_form.theme.blue:
+  version: VERSION
+  css:
+    component:
+      css/themes/ux-form.blue.css: {}

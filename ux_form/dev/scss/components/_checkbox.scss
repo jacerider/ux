@@ -1,29 +1,5 @@
 
-.ux-form-checkboxes {
-
-  &.fieldgroup {
-    display: block;
-
-    > legend {
-
-      > .fieldset-legend {
-        @include label;
-        // @include label-active;
-      }
-    }
-
-    > .fieldset-wrapper {
-      margin: 0;
-    }
-  }
-
-  .ux-form-checkbox {
-    margin: 0;
-  }
-}
-
-.ux-form-checkbox,
-.ux-select-checkbox {
+.ux-form-checkbox {
   position: relative;
 
   // Hide input.
@@ -48,12 +24,12 @@
       position: relative;
       height: $checkbox-size;
       line-height: $checkbox-size;
-      padding: 0 0 0 $checkbox-size;
+      padding: 0 0 0 $checkbox-element-size + rem-calc(5);
       margin: 0;
       cursor: pointer;
       font-size: $checkbox-font-size;
       user-select: none;
-      color: $checkbox-color;
+      font-weight: normal;
 
       &:before,
       &:after {
@@ -83,8 +59,8 @@
         height: $checkbox-element-size / 1.2;
         border-top: 2px solid transparent;
         border-left: 2px solid transparent;
-        border-right: 2px solid $white;
-        border-bottom: 2px solid $white;
+        border-right: 2px solid $checkbox-check-color;
+        border-bottom: 2px solid $checkbox-check-color;
         transform: rotate(40deg) scale(0);
         backface-visibility: hidden;
         transform-origin: 100% 100%;
@@ -100,6 +76,59 @@
     }
   }
 
+  /**
+   * Message area.
+   */
+  &:after {
+    display: block;
+    content: '';
+    font-size: $message-font-size;
+    line-height: $label-font-size;
+    background: $message-bg-color;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    color: $white;
+    text-rendering: optimizeLegibility;
+  }
+
+  /**
+   * When ready.
+   */
+  &.ready {
+
+    label {
+
+      &.option {
+
+        &:before,
+        &:after {
+          transition: all $global-speed ease;
+        }
+      }
+    }
+  }
+
+  /**
+   * When focus.
+   */
+  &.focused {
+
+    label {
+
+      .ux-ripple {
+        @include ux-ripple-focus();
+
+        &:after {
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+
+  /**
+   * When active.
+   */
   &.active {
 
     label {
@@ -119,22 +148,35 @@
     }
   }
 
-  &.focused {
+  /**
+   * When invalid.
+   */
+  &.invalid,
+  &.invalid.focus {
 
-    label {
-
-      .ux-ripple {
-        @include ux-ripple-focus();
-      }
+    &:after {
+      content: attr(data-error);
+      background: $error-color;
+      opacity: 1;
+      padding: rem-calc(2 10);
     }
   }
 
+  /**
+   * When disabled.
+   */
   &.form-disabled {
 
     label {
 
       &.option {
-        color: $checkbox-disabled-color;
+        color: $disabled-color;
+        cursor: not-allowed;
+
+        &:before,
+        &:after {
+          opacity: 0.5;
+        }
       }
     }
 
@@ -142,50 +184,12 @@
       display: none;
     }
   }
-
-  &.ready {
-
-    label {
-
-      &.option {
-
-        &:before,
-        &:after {
-          transition: all $form-item-speed ease;
-        }
-      }
-    }
-  }
-
-  ////// MESSAGE AREA
-  &:after {
-    display: block;
-    content: '';
-    opacity: 0;
-    font-size: $form-item-description-size;
-    line-height: $label-font-size;
-    color: $form-item-description-color;
-    text-transform: uppercase;
-    transition: opacity $form-item-speed ease-out;
-    white-space: nowrap;
-  }
-
-  ////// INVALID
-  &.invalid,
-  &.invalid.focus {
-
-    &:after {
-      content: attr(data-error);
-      color: $input-error-color;
-      opacity: 1;
-    }
-  }
 }
 
-.inline {
+.ux-form-checkboxes-inline {
 
   .ux-form-checkbox {
     display: inline-block;
-    padding-right: $form-padding / 2;
+    padding-right: $global-padding / 2;
   }
 }

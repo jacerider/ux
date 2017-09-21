@@ -60,14 +60,18 @@
         this.$field.attr('tabindex', '-1');
         this.$dropdown = $('<div class="ux-form-select-dropdown"></div>');
         this.$dropdownScroll = $('<ul class="ux-form-select-scroll"></div>').appendTo(this.$dropdown);
-        this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown).append(this.$field);
+        this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown);
         this.$dropdown.addClass((this.multiple ? 'is-multiple' : 'is-single'));
       }
       else {
-        this.$wrapper.append(this.$caret).append(this.$trigger).append(this.$field);
+        this.$wrapper.append(this.$caret).append(this.$trigger);
       }
 
+      // Firing attachBehaviors will cause issues. So we remove $field from
+      // DOM and add it back in after attach has fired.
+      this.$field.remove();
       Drupal.attachBehaviors(this.$element[0]);
+      this.$wrapper.append(this.$field);
     },
 
     /*
@@ -390,7 +394,7 @@
           li.html('<span>' + option.text + '</span>');
         }
         else if (this.multiple) {
-          li.addClass('selector ux-select-checkbox ready');
+          li.addClass('selector ux-form-checkbox ready');
           li.html('<span><input type="checkbox" class="form-checkbox ignore" data-ux-auto-submit-exclude><label class="option">' + option.text + '<div class="ux-ripple"></div></label></span>');
         }
         else {

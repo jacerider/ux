@@ -1,67 +1,44 @@
 
 .ux-form {
+  font-size: $global-font-size;
 
-  label,
-  .fieldgroup > legend .fieldset-legend {
-    font-size: $label-font-size;
-    color: $label-color;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
-  }
+  // Many themes put margin and padding here. We don't want that.
+  .form-item {
+    padding: 0;
+    margin: 0;
 
-  label {
-    @include label;
-  }
+    input {
 
-  // .ux-form-element {
-  //   position: relative;
-  // }
-
-  .required label,
-  label.form-required, // sass-lint:disable-line no-qualifying-elements
-  .required .fieldset-legend,
-  [required] .fieldset-legend {
-
-    &:after {
-      content: '*';
-      color: $error-color;
-      display: inline-block;
-      padding-left: rem-calc(3);
-      font-size: 13px;
+      &:focus {
+        border: 0;
+        outline: none;
+      }
     }
   }
 
-  .field-error {
-    color: $error-color;
-    padding: 0 0 10px;
-    font-weight: bold;
-    font-size: $label-font-size;
-  }
+  .ux-form-element {
+    margin: $global-margin 0;
 
-  .form-item {
-    margin: $form-item-margin;
-    padding: 0;
+    &.ux-form-element-last {
+      margin-bottom: 0;
+    }
+
+    label,
+    .fieldgroup .fieldset-legend {
+      @include label;
+    }
 
     .description {
-      font-size: $form-item-description-size;
-      color: $form-item-description-color;
+      @include description;
     }
   }
 
-  // Will affect field API fields.
-  .field-wrapper {
-    // margin: 0;
-    margin: $form-item-margin;
-    padding: 0;
+  .ux-form-element-inner {
+    position: relative;
+  }
 
-    &.form-wrapper {
-      margin: 0;
-    }
-
-    .form-item {
-      // Do not use margin 0 here as it has a negative impact on form fields.
-      // margin: 0;
-    }
+  .ux-ripple {
+    @include ux-ripple;
   }
 }
 
@@ -86,8 +63,4 @@
       width: 100%;
     }
   }
-}
-
-.ux-ripple {
-  @include ux-ripple;
 }

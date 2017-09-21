@@ -24,6 +24,7 @@ class SelectLink extends UxFilterBase {
    */
   public function exposedElementAlter(&$element, FormStateInterface $form_state, $context) {
     $element['#theme'] = 'ux_select_as_links';
+    $element['#ux_form_default'] = TRUE;
     if (isset($element['#options']['All'])) {
       $element['#options']['All'] = t('All');
     }

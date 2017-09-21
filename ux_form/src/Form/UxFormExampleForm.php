@@ -27,14 +27,14 @@ class UxFormExampleForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['mix'] = ['#open' => TRUE] + $this->buildMix($form_state);
-    // $form['select'] = ['#open' => TRUE] + $this->buildSelect($form_state);
-    // $form['textarea'] = ['#open' => TRUE] + $this->buildTextarea($form_state);
-    // $form['checkbox'] = ['#open' => TRUE] + $this->buildCheckbox($form_state);
-    // $form['radio'] = ['#open' => TRUE] + $this->buildRadio($form_state);
-    // $form['textfield'] = ['#open' => TRUE] + $this->buildTextfield($form_state);
+    // $form['mix'] = ['#open' => TRUE] + $this->buildMix($form_state);
     $form['date'] = ['#open' => TRUE] + $this->buildDate($form_state);
+    $form['select'] = ['#open' => TRUE] + $this->buildSelect($form_state);
+    $form['radio'] = ['#open' => TRUE] + $this->buildRadio($form_state);
+    $form['checkbox'] = ['#open' => TRUE] + $this->buildCheckbox($form_state);
     // $form['other'] = ['#open' => TRUE] + $this->buildOther($form_state);
+    $form['textfield'] = ['#open' => TRUE] + $this->buildTextfield($form_state);
+    $form['textarea'] = ['#open' => TRUE] + $this->buildTextarea($form_state);
 
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = [
@@ -111,6 +111,7 @@ class UxFormExampleForm extends FormBase {
     $element = [
       '#type' => 'details',
       '#title' => $this->t('Textfield'),
+      '#description' => $this->t('Textfield examples showing all input types.'),
     ];
 
     $element['textfield'] = [
@@ -160,27 +161,27 @@ class UxFormExampleForm extends FormBase {
       ],
     ];
 
-    $form['email'] = [
+    $element['email'] = [
       '#type' => 'email',
       '#title' => $this->t('Email'),
     ];
 
-    $form['number'] = [
+    $element['number'] = [
       '#type' => 'number',
       '#title' => $this->t('Number'),
     ];
 
-    $form['tel'] = [
+    $element['tel'] = [
       '#type' => 'tel',
       '#title' => $this->t('Telephone'),
     ];
 
-    $form['url'] = [
+    $element['url'] = [
       '#type' => 'url',
       '#title' => $this->t('URL'),
     ];
 
-    $form['password'] = [
+    $element['password'] = [
       '#type' => 'password',
       '#title' => $this->t('Password'),
     ];
@@ -188,6 +189,7 @@ class UxFormExampleForm extends FormBase {
     $element['fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Fieldset'),
+      '#description' => $this->t('This is an example fieldset description.'),
     ];
 
     $element['fieldset']['textfield'] = [
@@ -225,7 +227,7 @@ class UxFormExampleForm extends FormBase {
 
     $element['addmore_add'] = [
       '#type' => 'submit',
-      '#value' => t('Add Image Style'),
+      '#value' => t('Add Another'),
       '#submit' => [[get_class($this), 'addOneSubmit']],
       '#limit_validation_errors' => array(),
       '#ajax' => [
@@ -273,7 +275,7 @@ class UxFormExampleForm extends FormBase {
     $element['select4'] = [
       '#type' => 'select',
       '#title' => $this->t('Select Group'),
-       '#multiple' => TRUE,
+      '#multiple' => TRUE,
       '#options' => [
         'One Label' => [11 => 'One 1', 21 => 'Two 1', 31 => 'Three 1'],
         'Two Label' => [12 => 'One 2', 22 => 'Two 2', 32 => 'Three 2'],
@@ -283,7 +285,7 @@ class UxFormExampleForm extends FormBase {
 
     $element['select5'] = [
       '#type' => 'select',
-      '#title' => $this->t('Select'),
+      '#title' => $this->t('Select Disabled'),
       '#options' => ['One', 'Two', 'Three'],
       '#disabled' => TRUE,
     ];
@@ -311,15 +313,15 @@ class UxFormExampleForm extends FormBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Checkboxes Inline'),
       '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
+      '#inline' => TRUE,
     ];
 
     $element['checkboxes3'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Checkboxes Disabled'),
       '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
       '#disabled' => TRUE,
+      '#inline' => TRUE,
     ];
 
     $element['checkbox'] = [
@@ -356,16 +358,16 @@ class UxFormExampleForm extends FormBase {
       '#type' => 'radios',
       '#title' => $this->t('Radios Inline'),
       '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
       '#default_value' => 1,
+      '#inline' => TRUE,
     ];
 
     $element['radios3'] = [
       '#type' => 'radios',
       '#title' => $this->t('Radios Disabled'),
       '#options' => ['One', 'Two', 'Three'],
-      '#attributes' => ['class' => ['inline']],
       '#disabled' => TRUE,
+      '#inline' => TRUE,
     ];
 
     $element['radios4'] = [
@@ -425,13 +427,13 @@ class UxFormExampleForm extends FormBase {
       '#date_timezone' => drupal_get_user_timezone(),
     ];
 
-    $element['datetime2'] = [
-      '#type' => 'datetime',
-      '#title' => $this->t('Date & Time with Default'),
-      '#default_value' => DrupalDateTime::createFromTimestamp(time()),
-      '#date_increment' => 1,
-      '#date_timezone' => drupal_get_user_timezone(),
-    ];
+    // $element['datetime2'] = [
+    //   '#type' => 'datetime',
+    //   '#title' => $this->t('Date & Time with Default'),
+    //   '#default_value' => DrupalDateTime::createFromTimestamp(time()),
+    //   '#date_increment' => 1,
+    //   '#date_timezone' => drupal_get_user_timezone(),
+    // ];
 
     return $element;
   }
@@ -482,8 +484,6 @@ class UxFormExampleForm extends FormBase {
     */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
-
-    $form_state->setError($form['select'], $this->t('Select error'));
   }
 
   /**

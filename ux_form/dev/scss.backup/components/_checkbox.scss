@@ -1,91 +1,198 @@
 
-.ux-form {
+.ux-form-checkboxes {
 
-  .form-checkboxes {
+  &.fieldgroup {
+    display: block;
 
-    .ux-form-checkbox {
+    > legend {
+
+      > .fieldset-legend {
+        @include label;
+        // @include label-active;
+      }
+    }
+
+    > .fieldset-wrapper {
       margin: 0;
     }
   }
 
-  .ux-form-checkbox {
-
-    // Hide input.
-    [type='checkbox'] {
-      position: absolute;
-      left: -9999px;
-      opacity: 0;
-      height: 1px;
-    }
-
+  .ux-form-checkbox,
+  .ux-select-checkbox {
     label {
-      position: relative;
-      padding-left: 24px;
-      cursor: pointer;
+
+      &.option {
+        color: $checkbox-color;
+      }
+    }
+  }
+}
+
+.ux-form-checkbox,
+.ux-select-checkbox {
+  position: relative;
+
+  // Hide input.
+  .form-checkbox {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .ux-ripple {
+    position: absolute;
+    top: (($checkbox-element-size / 2) * -1) + ($checkbox-size - $checkbox-element-size) / 2;
+    left: ($checkbox-element-size / 2) * -1;
+    width: $checkbox-element-size * 2;
+    height: $checkbox-element-size * 2;
+  }
+
+  label {
+
+    &.option {
+      @include label;
       display: inline-block;
-      height: 25px;
-      line-height: 25px;
-      font-size: $label-font-size - 0.2rem;
+      position: relative;
+      height: $checkbox-size;
+      line-height: $checkbox-size;
+      padding: 0 0 0 $checkbox-size;
+      margin: 0;
+      cursor: pointer;
+      font-size: $checkbox-font-size;
       user-select: none;
+      font-weight: normal;
 
       &:before,
       &:after {
         content: '';
         position: absolute;
-        top: 2px;
         left: 0;
-        width: 18px;
-        height: 18px;
-        z-index: 0;
-        border: 2px solid $radio-empty-color;
-        border-radius: 1px;
-        margin-top: 2px;
+        top: ($checkbox-size - $checkbox-element-size) / 2;
+        width: $checkbox-element-size;
+        height: $checkbox-element-size;
+        z-index: 2;
+        border: 2px solid $checkbox-border-color;
         box-sizing: border-box;
       }
 
-      &:after {
-        border: 0;
-        transform: scale(0);
-      }
-    }
+      &:before {
+        border-radius: 2px;
 
-    &.active {
-
-      label {
-
-        &:before {
-          top: -4px;
-          left: -5px;
-          width: 12px;
-          height: 22px;
-          border-top: 2px solid transparent;
-          border-left: 2px solid transparent;
-          border-right: $radio-border;
-          border-bottom: $radio-border;
-          transform: rotate(40deg);
-          backface-visibility: hidden;
-          transform-origin: 100% 100%;
+        .error & {
+          border-color: $error-color;
         }
       }
+
+      &:after {
+        top: $checkbox-element-size / 7;
+        left: 0;
+        width: $checkbox-element-size / 2.5;
+        height: $checkbox-element-size / 1.2;
+        border-top: 2px solid transparent;
+        border-left: 2px solid transparent;
+        border-right: 2px solid $white;
+        border-bottom: 2px solid $white;
+        transform: rotate(40deg) scale(0);
+        backface-visibility: hidden;
+        transform-origin: 100% 100%;
+        opacity: 0;
+      }
     }
 
-    &.ready {
+    &:active {
 
-      label {
+      .ux-ripple {
+        @include ux-ripple-active();
+      }
+    }
+  }
 
-        &:before,
+  &.active {
+
+    label {
+
+      &.option {
+
+        &:before {
+          border-color: $checkbox-active-color;
+          background: $checkbox-active-color;
+        }
+
         &:after {
-          transition: all 200ms;
+          opacity: 1;
+          transform: rotate(40deg) scale(1);
         }
       }
     }
   }
 
-  .inline {
+  &.focused {
 
-    .js-form-type-checkbox {
-      display: inline-block;
-      padding-right: 15px;
+    label {
+
+      .ux-ripple {
+        @include ux-ripple-focus();
+      }
     }
+  }
+
+  &.form-disabled {
+
+    label {
+
+      &.option {
+        color: $checkbox-disabled-color;
+      }
+    }
+
+    .ux-ripple {
+      display: none;
+    }
+  }
+
+  &.ready {
+
+    label {
+
+      &.option {
+
+        &:before,
+        &:after {
+          transition: all $form-item-speed ease;
+        }
+      }
+    }
+  }
+
+  ////// MESSAGE AREA
+  &:after {
+    display: block;
+    content: '';
+    opacity: 0;
+    font-size: $form-item-description-size;
+    line-height: $label-font-size;
+    color: $form-item-description-color;
+    text-transform: uppercase;
+    transition: opacity $form-item-speed ease-out;
+    white-space: nowrap;
+  }
+
+  ////// INVALID
+  &.invalid,
+  &.invalid.focus {
+
+    &:after {
+      content: attr(data-error);
+      color: $input-error-color;
+      opacity: 1;
+    }
+  }
+}
+
+.inline {
+
+  .ux-form-checkbox {
+    display: inline-block;
+    padding-right: $form-padding / 2;
   }
 }

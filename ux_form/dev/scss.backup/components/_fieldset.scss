@@ -1,0 +1,92 @@
+
+.ux-form {
+
+  /**
+   * Applies to both.
+   */
+  fieldset:not(.fieldgroup),
+  details {
+    background-color: $fieldset-bg-color;
+    padding: $form-padding;
+    margin: $form-item-margin;
+
+    fieldset:not(.fieldgroup),
+    details {
+      background-color: $fieldset-bg-inset-color;
+    }
+  }
+
+  /**
+   * Applies to fieldsets.
+   */
+  fieldset {
+
+    &.fieldgroup {
+
+      > legend {
+        margin: 0;
+      }
+    }
+
+    &:not(.fieldgroup) {
+      position: relative;
+      // padding: $form-padding * 2 0;
+
+      &.no-legend {
+        padding-top: 0;
+      }
+
+      > legend {
+        position: absolute;
+        top: $form-padding;
+        left: $form-padding;
+        font-weight: 700;
+      }
+
+      > .description {
+        @include description;
+        margin: 0 $form-padding;
+      }
+    }
+  }
+
+  /**
+   * Applies to details.
+   */
+  details {
+
+    > summary {
+      padding: 0;
+      font-weight: 700;
+    }
+
+    > .details-wrapper {
+      padding: 0;
+    }
+
+    > * {
+
+      &:last-child {
+        margin-bottom: 0;
+
+        > * {
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .fieldset-wrapper {
+    margin: 0 $form-padding;
+
+    > * {
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

@@ -8,11 +8,20 @@
 
 .ux-form-time {
 
-  .ux-form-input {
+  .ux-form-element {
     margin: 0;
   }
 
   .ux-form-input-item {
     cursor: text;
+  }
+}
+
+.ux-form-datetime-inline {
+
+  .ux-form-date,
+  .ux-form-time {
+    display: inline-block;
+    padding-right: $global-padding / 2;
   }
 }

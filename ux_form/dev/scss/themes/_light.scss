@@ -1,0 +1,74 @@
+@import '../base/unit';
+
+@function gray($num) {
+  @return lighten(#000, percentage((100 - $num) / 100));
+}
+
+@function shadow($num) {
+  @return rgba(0, 0, 0, $num / 100);
+}
+
+$white: #fff !default;
+$black: gray(90) !default;
+$disabled-color: gray(35) !default;
+$success-color: #86c13d !default;
+$error-color: #e54040 !default;
+
+$global-margin: rem-calc(30) !default;
+$global-padding: rem-calc(30) !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Container
+////////////////////////////////////////////////////////////////////////////////
+$container-bg-color: gray(2) !default;
+$container-bg-2-color: gray(0) !default;
+$container-title-color: gray(90) !default;
+$container-description-color: gray(90) !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Label
+////////////////////////////////////////////////////////////////////////////////
+$label-color: gray(90) !default;
+$label-focus-color: gray(90) !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Input
+////////////////////////////////////////////////////////////////////////////////
+$input-padding: 0 !default;
+$input-color: gray(90) !default;
+$input-prefix-suffix-color: gray(50) !default;
+$input-bg-color: inherit !default;
+$input-border-color: gray(20) !default;
+$input-border-focus-color: gray(80) !default;
+$input-border-success-color: $success-color !default;
+$input-border-error-color: $error-color !default;
+$input-placeholder-color: gray(70) !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Checkbox
+////////////////////////////////////////////////////////////////////////////////
+$checkbox-border-color: gray(80) !default;
+$checkbox-active-color: gray(60) !default;
+$checkbox-check-color: gray(0) !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Radio
+////////////////////////////////////////////////////////////////////////////////
+$radio-border-color: gray(80) !default;
+$radio-active-color: gray(60) !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Select
+////////////////////////////////////////////////////////////////////////////////
+$select-bg-color: gray(20) !default;
+$select-item-color: gray(90) !default;
+$select-optgroup-color: gray(30) !default;
+$select-selected-bg: gray(90) !default;
+$select-selected-color: gray(0) !default;
+$select-hover-color: shadow(90) !default;
+$select-close-color: gray(30) !default;
+$select-close-hover-color: gray(90) !default;
+$select-caret-color: gray(30) !default;
+$select-box-shadow: 0 1px 5px shadow(30) !default;
+
+@import 'base';

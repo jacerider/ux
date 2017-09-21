@@ -1,0 +1,345 @@
+.ux-form {
+
+  .ux-form-element {
+
+    label,
+    .fieldgroup .fieldset-legend {
+      color: $label-color;
+    }
+  }
+
+  ::-webkit-input-placeholder {
+    color: $input-placeholder-color;
+  }
+
+  :-moz-placeholder {
+    color: $input-placeholder-color;
+  }
+
+  ::-moz-placeholder {
+    color: $input-placeholder-color;
+  }
+
+  :-ms-input-placeholder {
+    color: $input-placeholder-color;
+  }
+
+  ::placeholder {
+    color: $input-placeholder-color;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Container
+////////////////////////////////////////////////////////////////////////////////
+.ux-form-container {
+
+  > .ux-form-element-inner {
+    background: $container-bg-color;
+  }
+
+  // Nested 2 deep.
+  .ux-form-container {
+
+    > .ux-form-element-inner {
+      background: $container-bg-2-color;
+    }
+  }
+
+  summary,
+  fieldset:not(.fieldgroup) .fieldset-legend {
+    color: $container-title-color;
+  }
+
+  .ux-form-element-container-description {
+    color: $container-description-color;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Input
+////////////////////////////////////////////////////////////////////////////////
+.ux-form-input {
+
+  .ux-form-input-line {
+    background-image: linear-gradient($input-border-focus-color, $input-border-focus-color), linear-gradient($input-border-color, $input-border-color);
+  }
+
+  .ux-form-input-item,
+  .field-prefix,
+  .field-suffix {
+
+    &,
+    &:focus {
+      color: $input-color;
+      background-color: $input-bg-color;
+      padding: $input-padding;
+    }
+  }
+
+  .field-prefix,
+  .field-suffix {
+    color: $input-prefix-suffix-color;
+  }
+
+  /**
+   * When focus.
+   */
+  &.focus {
+
+    > label {
+      color: $label-focus-color;
+    }
+
+    .ux-form-input-line {
+      background-image: linear-gradient($input-border-focus-color, $input-border-focus-color), linear-gradient($input-border-color, $input-border-color);
+      background-size: 100% 2px, 100% 1px;
+    }
+  }
+
+  /**
+   * When valid.
+   */
+  &.valid,
+  &.valid.focus {
+
+    .ux-form-input-line {
+      background-image: linear-gradient($input-border-focus-color, $input-border-focus-color), linear-gradient($input-border-success-color, $input-border-success-color);
+    }
+  }
+
+  /**
+   * When invalid.
+   */
+  &.invalid,
+  &.invalid.focus {
+
+    > label {
+      color: $error-color;
+    }
+
+    .ux-form-input-line {
+      background-image: linear-gradient($input-border-error-color, $input-border-error-color), linear-gradient($input-border-error-color, $input-border-error-color);
+    }
+
+    &:after {
+      background-color: $error-color;
+    }
+  }
+
+  /**
+   * When disabled.
+   */
+  &.form-disabled {
+
+    > label {
+      color: $disabled-color;
+    }
+
+    .ux-form-input-item {
+      color: $disabled-color;
+    }
+  }
+}
+
+.ux-form-element-float {
+
+  .ux-form-input {
+
+    > label {
+      padding: $input-padding;
+    }
+
+    &.active,
+    &.force-active {
+
+      > label {
+        padding: 0;
+      }
+
+      > .field-prefix,
+      > .field-suffix {
+        color: $input-prefix-suffix-color;
+      }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Checkbox
+////////////////////////////////////////////////////////////////////////////////
+.ux-form-checkbox {
+
+  label {
+
+    &.option {
+
+      &:before {
+        border-color: $checkbox-border-color;
+      }
+
+      &:before {
+
+        .error & {
+          border-color: $error-color;
+        }
+      }
+
+      &:after {
+        border-right-color: $checkbox-check-color;
+        border-bottom-color: $checkbox-check-color;
+      }
+    }
+  }
+
+  /**
+   * When active.
+   */
+  &.active {
+
+    label {
+
+      &.option {
+
+        &:before {
+          border-color: $checkbox-active-color;
+          background: $checkbox-active-color;
+        }
+      }
+    }
+  }
+
+  /**
+   * When invalid.
+   */
+  &.invalid,
+  &.invalid.focus {
+
+    &:after {
+      background: $error-color;
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Radio
+////////////////////////////////////////////////////////////////////////////////
+.ux-form-radio {
+
+  label {
+
+    &.option {
+
+      &:before,
+      &:after {
+        border-color: $radio-border-color;
+      }
+
+      &:after {
+        background-color: $radio-active-color;
+      }
+
+      &:before {
+
+        .error & {
+          border-color: $error-color;
+        }
+      }
+    }
+  }
+
+  /**
+   * When active.
+   */
+  &.active {
+
+    label {
+
+      &.option {
+
+        &:before {
+          border-color: $radio-active-color;
+        }
+      }
+    }
+  }
+
+  /**
+   * When disabled.
+   */
+  &.form-disabled {
+
+    label {
+
+      &.option {
+        color: $disabled-color;
+      }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Select
+////////////////////////////////////////////////////////////////////////////////
+.ux-form-select {
+
+  select {
+    border-bottom: 1px solid $input-border-color;
+
+    &:focus {
+      border-bottom-color: $input-border-focus-color;
+    }
+  }
+
+  .ux-form-select-caret {
+    color: $select-caret-color;
+  }
+
+  .ux-form-select-dropdown {
+    background-color: $select-bg-color;
+
+    .close {
+      color: $select-close-color;
+      background-color: $select-bg-color;
+
+      &:hover {
+        color: $select-close-hover-color;
+      }
+    }
+
+    .optgroup {
+      color: $select-optgroup-color;
+    }
+
+    .selector {
+      color: $select-item-color;
+
+      &.selected {
+        background: $select-hover-color;
+      }
+
+      > span {
+
+        > label {
+          color: $select-item-color;
+        }
+      }
+
+      &:hover {
+        background: $select-hover-color;
+      }
+    }
+
+    &.is-single {
+
+      .selected {
+        color: $select-selected-color;
+        background: $select-selected-bg;
+
+        &:hover {
+          background: darken($select-selected-bg, 5%);
+        }
+      }
+    }
+  }
+}
