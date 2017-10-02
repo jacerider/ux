@@ -8,13 +8,13 @@ $success-color: #86c13d !default;
 $error-color: #e54040 !default;
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Container
+/// Wrapper
 ////////////////////////////////////////////////////////////////////////////////
-$container-bg-color: gray(0) !default;
-$container-bg-2-color: gray(0) !default;
-$container-box-shadow: 0 1px 5px shadow(15) !default;
-$container-title-color: gray(90) !default;
-$container-description-color: gray(90) !default;
+$wrapper-bg-color: gray(0) !default;
+$wrapper-bg-2-color: gray(0) !default;
+$wrapper-box-shadow: 0 1px 5px shadow(15) !default;
+$wrapper-title-color: gray(90) !default;
+$wrapper-description-color: gray(90) !default;
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Label & Description & Other
@@ -52,6 +52,7 @@ $input-placeholder-color: gray(60) !default;
 ////////////////////////////////////////////////////////////////////////////////
 /// Checkbox
 ////////////////////////////////////////////////////////////////////////////////
+$checkbox-bg-color: $input-bg-color !default;
 $checkbox-border-color: gray(30) !default;
 $checkbox-active-color: $primary-color !default;
 $checkbox-check-color: gray(0) !default;
@@ -59,6 +60,7 @@ $checkbox-check-color: gray(0) !default;
 ////////////////////////////////////////////////////////////////////////////////
 /// Radio
 ////////////////////////////////////////////////////////////////////////////////
+$radio-bg-color: $input-bg-color !default;
 $radio-border-color: gray(30) !default;
 $radio-active-color: $primary-color !default;
 

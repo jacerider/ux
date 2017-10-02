@@ -2,8 +2,6 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Provides a plugin for element type(s).
  *
@@ -20,7 +18,7 @@ class Date extends Input {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
+  public function process(&$element) {
     // The property #checkboxes_child will be true if this date is part
     // of a datetime element.
     // @see Drupal\ux_form\Plugin\UxForm\DateTime
@@ -30,7 +28,7 @@ class Date extends Input {
       $this->disableWrapper();
     }
 
-    parent::process($element, $form_state, $complete_form);
+    parent::process($element);
 
     // The last key of parents contains the type... either date or time.
     $type = array_values(array_slice($element['#parents'], -1))[0];

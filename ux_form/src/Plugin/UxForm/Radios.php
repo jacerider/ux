@@ -2,8 +2,6 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Provides a plugin for element type(s).
  *
@@ -21,8 +19,8 @@ class Radios extends UxFormBase {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
-    parent::process($element, $form_state, $complete_form);
+  public function process(&$element) {
+    parent::process($element);
     $element['#attributes']['class'][] = 'ux-form-radios';
     if (!empty($element['#inline'])) {
       $element['#attributes']['class'][] = 'ux-form-radios-inline';

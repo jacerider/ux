@@ -1,0 +1,47 @@
+// .ux-form-table {
+
+//   thead {
+
+//     .field-label h4 {
+//       @include wrapper-label;
+//     }
+//   }
+
+//   .field-add-more-submit {
+//     margin-top: $global-margin;
+//   }
+// }
+
+////////////////////////////////////////////////////////////////////////////////
+/// Specific table elements
+////////////////////////////////////////////////////////////////////////////////
+.ux-form {
+
+  .field-multiple-table {
+    margin-bottom: $global-margin;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Generic table elements
+////////////////////////////////////////////////////////////////////////////////
+.ux-form {
+
+  .draggable {
+
+    .tabledrag-handle {
+      height: rem-calc(30);
+      float: none;
+      margin: 0;
+      display: block;
+
+      .handle {
+        margin: 0;
+        padding: 0;
+        width: rem-calc(30);
+        height: rem-calc(30);
+        background-position: center center;
+      }
+    }
+  }
+}

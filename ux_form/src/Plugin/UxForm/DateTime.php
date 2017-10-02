@@ -2,7 +2,6 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
 /**
@@ -21,8 +20,8 @@ class DateTime extends UxFormBase {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
-    parent::process($element, $form_state, $complete_form);
+  public function process(&$element) {
+    parent::process($element);
     $element['#wrapper_attributes']['class'][] = 'ux-form-datetime';
     $element['#attributes']['class'][] = 'ux-form-inline';
     $element['#theme_wrappers'] = ['form_element'];

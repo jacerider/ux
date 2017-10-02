@@ -49,30 +49,30 @@ html {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Container
+/// Wrapper
 ////////////////////////////////////////////////////////////////////////////////
-.ux-form-container {
+.ux-form-wrapper {
 
   > .ux-form-element-inner {
-    background: $container-bg-color;
-    box-shadow: $container-box-shadow;
+    background: $wrapper-bg-color;
+    box-shadow: $wrapper-box-shadow;
   }
 
   // Nested 2 deep.
-  .ux-form-container {
+  .ux-form-wrapper {
 
     > .ux-form-element-inner {
-      background: $container-bg-2-color;
+      background: $wrapper-bg-2-color;
     }
   }
 
   summary,
   fieldset:not(.fieldgroup) .fieldset-legend {
-    color: $container-title-color;
+    color: $wrapper-title-color;
   }
 
-  .ux-form-element-container-description {
-    color: $container-description-color;
+  .ux-form-element-wrapper-description {
+    color: $wrapper-description-color;
   }
 }
 
@@ -191,10 +191,8 @@ html {
     &.option {
 
       &:before {
+        background: $checkbox-bg-color;
         border-color: $checkbox-border-color;
-      }
-
-      &:before {
 
         .error & {
           border-color: $error-color;
@@ -258,6 +256,7 @@ html {
       }
 
       &:before {
+        background: $radio-bg-color;
 
         .error & {
           border-color: $error-color;
@@ -356,5 +355,27 @@ html {
         }
       }
     }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Password
+////////////////////////////////////////////////////////////////////////////////
+.password-strength {
+
+  .is-weak {
+    background-color: adjust-hue($success-color, -30%);
+  }
+
+  .is-fair {
+    background-color: adjust-hue($success-color, -20%);
+  }
+
+  .is-good {
+    background-color: adjust-hue($success-color, -10%);
+  }
+
+  .is-strong {
+    background-color: $success-color;
   }
 }

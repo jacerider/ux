@@ -2,7 +2,7 @@
   display: block;
   font-size: $label-font-size;
   line-height: $label-height;
-  height: $label-height;
+  // height: $label-height;
   font-weight: normal;
   text-transform: none;
   padding: 0;
@@ -39,19 +39,20 @@
   opacity: 1 !important;
 }
 
-@mixin container-label() {
+@mixin wrapper-label() {
   display: block;
-  font-size: $container-font-size;
-  line-height: $container-height;
-  height: $container-height;
+  font-size: $wrapper-font-size;
+  line-height: $wrapper-height;
+  // height: $wrapper-height;
   margin: 0;
   padding: 0;
   font-weight: 700;
   text-transform: uppercase;
+  text-align: left;
 }
 
-@mixin container-description() {
-  font-size: $container-description-font-size;
+@mixin wrapper-description() {
+  font-size: $wrapper-description-font-size;
   font-weight: 300;
   margin: 0;
   padding: rem-calc(5 0 0);

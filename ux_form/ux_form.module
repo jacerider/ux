@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Render\Element;
 
 /**
  * Provides theme registration for themes across .inc files.
@@ -42,7 +43,7 @@ function ux_form_element_info_alter(&$types) {
   $ux_form_plugin_manager = \Drupal::service('plugin.manager.ux_form');
   foreach ($types as $type => $data) {
     if ($plugins = $ux_form_plugin_manager->getPluginsByType($type)) {
-      $types[$type]['#process'][] = 'ux_form_element_process';
+      $types[$type]['#process'][] = 'ux_form_process';
     }
   }
 }
@@ -50,14 +51,35 @@ function ux_form_element_info_alter(&$types) {
 /**
  * Implements hook_field_group_build_pre_render_alter().
  */
-function ux_form_field_group_build_pre_render_alter(&$element) {
-  ux_form_element_process($element);
+function ux_form_field_group_build_pre_render_alter(&$element, $fieldgroups = NULL) {
+  $ux_form_plugin_manager = \Drupal::service('plugin.manager.ux_form');
+  $fieldgroups = $fieldgroups ? $fieldgroups : $element['#fieldgroups'];
+  foreach (Element::children($element) as $id) {
+    if (!isset($fieldgroups[$id])) {
+      continue;
+    }
+    $child_element = &$element[$id];
+    if (isset($child_element['#type'])) {
+      $type = $child_element['#type'];
+      if ($plugins = $ux_form_plugin_manager->getPluginsByType($type)) {
+        ux_form_element_process($child_element);
+      }
+    }
+    ux_form_field_group_build_pre_render_alter($child_element, $fieldgroups);
+  }
 }
 
 /**
  * Process ux form elements.
  */
-function ux_form_element_process(&$element, FormStateInterface $form_state, &$complete_form) {
+function ux_form_process(&$element) {
+  return ux_form_element_process($element);
+}
+
+/**
+ * Run an element through ux form processing.
+ */
+function ux_form_element_process(&$element) {
   if (!ux_form_access()) {
     return $element;
   }
@@ -69,7 +91,7 @@ function ux_form_element_process(&$element, FormStateInterface $form_state, &$co
   foreach ($plugins = $ux_form_plugin_manager->getPluginsByType($type) as $id => $name) {
     $instance = $ux_form_plugin_manager->createInstance($id, ux_form_get_config());
     if ($instance->applies($element)) {
-      $instance->process($element, $form_state, $complete_form);
+      $instance->process($element);
     }
   }
   return $element;
@@ -156,11 +178,19 @@ function template_preprocess_ux_form_element_container(array &$variables) {
   $variables['attributes'] = [
     'class' => ['ux-form-element', 'ux-form-element-js'],
   ];
+
+  $is_widget = isset($element['widget']['#field_name']);
+  if ($is_widget) {
+    $variables['attributes']['class'][] = 'ux-form-widget';
+  }
   if (isset($element['#type'])) {
     $variables['attributes']['class'][] = 'ux-form-element-type-' . Html::getClass($element['#type']);
   }
   if (isset($element['#name'])) {
     $variables['attributes']['class'][] = 'ux-form-element-name-' . Html::getClass($element['#name']);
+  }
+  elseif (isset($element['widget']['#field_name'])) {
+    $variables['attributes']['class'][] = 'ux-form-element-name-' . Html::getClass($element['widget']['#field_name']);
   }
   if (isset($element['#ux_form_attributes']) && is_array($element['#ux_form_attributes'])) {
     $variables['attributes'] = NestedArray::mergeDeep($variables['attributes'], $element['#ux_form_attributes']);
@@ -179,5 +209,36 @@ function ux_form_preprocess_fieldset(&$variables) {
   else {
     $variables['attributes']['class'][] = 'has-legend';
   }
+}
 
+/**
+ * Implements template_preprocess_field_multiple_value_form().
+ */
+function ux_form_preprocess_field_multiple_value_form(&$variables) {
+  if ($variables['multiple']) {
+    $table = $variables['table'];
+    $button = $variables['button'];
+    $fieldset = [
+      '#type' => 'fieldset',
+      '#ux_wrapper_supported' => TRUE,
+    ];
+    ux_form_element_process($fieldset);
+    if (isset($variables['table'])) {
+      if (!empty($variables['table']['#header'][0]['data']['#markup'])) {
+        $fieldset['#title'] = $variables['table']['#header'][0]['data']['#markup'];
+        unset($variables['table']['#header'][0]['data']);
+      }
+      $fieldset['table'] = $variables['table'];
+      unset($variables['table']);
+    }
+    if (isset($variables['button'])) {
+      $fieldset['button'] = $variables['button'];
+      unset($variables['button']);
+    }
+    if (isset($variables['description']['content'])) {
+      $fieldset['#description'] = $variables['description']['content'];
+      unset($variables['description']['content']);
+    }
+    $variables['table'] = $fieldset;
+  }
 }

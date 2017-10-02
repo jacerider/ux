@@ -19,8 +19,14 @@
     margin-top: $global-margin;
     margin-bottom: $global-margin;
 
-    &.ux-form-element-last {
-      margin-bottom: 0;
+    &.ux-form-element-first,
+    &:first-child {
+      // margin-top: 0;
+    }
+
+    &.ux-form-element-last,
+    &:last-child {
+      // margin-bottom: 0;
     }
 
     label,
@@ -30,6 +36,15 @@
 
     .description {
       @include description;
+    }
+  }
+
+  // Widgets are ux-form-elements that wrap a FAPI field.
+  .ux-form-widget {
+
+    .ux-form-element {
+      margin-top: 0;
+      margin-bottom: 0;
     }
   }
 
@@ -72,9 +87,9 @@
   flex-flow: row nowrap;
   width: 100%;
 
-  div {
-    display: block;
-  }
+  // div {
+  //   display: block;
+  // }
 
   input {
     width: 100%;
@@ -82,10 +97,35 @@
 
   > div {
     flex: auto !important;
-    width: 50%;
+    width: 100%;
 
     .ux-form-input-item {
       width: 100%;
     }
   }
 }
+
+// .ux-form-element-inner {
+//   background: transparent !important;
+// }
+
+// .ux-form-widget {
+//   background: pink !important;
+// }
+
+// .ux-form-element {
+//   background: pink !important;
+//   padding: 20px !important;
+
+//   .ux-form-element {
+//     background: red !important;
+
+//     .ux-form-element {
+//       background: blue !important;
+
+//       .ux-form-element {
+//         background: green !important;
+//       }
+//     }
+//   }
+// }

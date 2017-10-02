@@ -1,5 +1,5 @@
 
-.ux-form-container {
+.ux-form-wrapper {
 
   > .ux-form-element-inner {
     padding: $global-padding;
@@ -11,11 +11,11 @@
 
   summary,
   fieldset:not(.fieldgroup) .fieldset-legend {
-    @include container-label;
+    @include wrapper-label;
   }
 
-  .ux-form-element-container-description {
-    @include container-description;
+  .ux-form-element-wrapper-description {
+    @include wrapper-description;
   }
 }
 
@@ -47,11 +47,27 @@
     margin: 0;
   }
 
+  .no-legend {
+
+    > legend {
+      display: none;
+    }
+  }
+
   .fieldset-wrapper {
 
     > .description {
       margin: 0;
       padding: 0;
+    }
+  }
+
+  .field-group-fieldset:not(.fieldgroup) {
+    // margin-bottom: $global-margin * -1;
+    // background: red;
+
+    &.no-legend {
+      margin-top: $global-margin * -1;
     }
   }
 }

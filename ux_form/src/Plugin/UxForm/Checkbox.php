@@ -2,8 +2,6 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Provides a plugin for element type(s).
  *
@@ -20,7 +18,7 @@ class Checkbox extends UxFormBase {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
+  public function process(&$element) {
     // The property #checkboxes_child will be true if this checkbox is part
     // of a checkboxes element.
     // @see Drupal\ux_form\Plugin\UxForm\Checkboxes
@@ -30,7 +28,7 @@ class Checkbox extends UxFormBase {
       $this->disableWrapper();
     }
 
-    parent::process($element, $form_state, $complete_form);
+    parent::process($element);
 
     $element['#wrapper_attributes']['class'][] = 'ux-form-checkbox';
     $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';

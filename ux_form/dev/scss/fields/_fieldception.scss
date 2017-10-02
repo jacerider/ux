@@ -1,0 +1,41 @@
+
+.ux-form-element .field--type-fieldception {
+
+  .field-multiple-table {
+
+    tbody {
+
+      tr {
+
+        td {
+          padding-top: $global-padding / 2;
+        }
+
+        .ux-form-inline {
+
+          label {
+            display: none;
+          }
+
+          .description {
+            display: none;
+          }
+        }
+
+        &:first-child {
+
+          td {
+            padding-top: 0;
+          }
+
+          .ux-form-inline {
+
+            label {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+}

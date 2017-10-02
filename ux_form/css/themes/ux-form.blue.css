@@ -31,21 +31,21 @@ html {
   color: #666666;
 }
 
-.ux-form-container > .ux-form-element-inner {
+.ux-form-wrapper > .ux-form-element-inner {
   background: white;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 }
 
-.ux-form-container .ux-form-container > .ux-form-element-inner {
+.ux-form-wrapper .ux-form-wrapper > .ux-form-element-inner {
   background: white;
 }
 
-.ux-form-container summary,
-.ux-form-container fieldset:not(.fieldgroup) .fieldset-legend {
+.ux-form-wrapper summary,
+.ux-form-wrapper fieldset:not(.fieldgroup) .fieldset-legend {
   color: #1a1a1a;
 }
 
-.ux-form-container .ux-form-element-container-description {
+.ux-form-wrapper .ux-form-element-wrapper-description {
   color: #1a1a1a;
 }
 
@@ -124,6 +124,7 @@ html {
 }
 
 .ux-form-checkbox label.option:before {
+  background: #f2f2f2;
   border-color: #b3b3b3;
 }
 
@@ -156,6 +157,10 @@ html {
 
 .ux-form-radio label.option:after {
   background-color: #1c98c1;
+}
+
+.ux-form-radio label.option:before {
+  background: #f2f2f2;
 }
 
 .error .ux-form-radio label.option:before {
@@ -229,6 +234,22 @@ html {
 
 .ux-form-select .ux-form-select-dropdown.is-single .selected:hover {
   background: #1986ab;
+}
+
+.password-strength .is-weak {
+  background-color: #c1ba3d;
+}
+
+.password-strength .is-fair {
+  background-color: #b2c13d;
+}
+
+.password-strength .is-good {
+  background-color: #9cc13d;
+}
+
+.password-strength .is-strong {
+  background-color: #86c13d;
 }
 
 /*# sourceMappingURL=ux-form.blue.css.map */

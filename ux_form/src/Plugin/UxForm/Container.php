@@ -2,7 +2,7 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Provides a plugin for element type(s).
@@ -11,8 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
  *   id = "container",
  *   label = @Translation("Container"),
  *   element_types = {
- *     "fieldset",
- *     "details",
  *     "container",
  *   }
  * )
@@ -22,14 +20,12 @@ class Container extends UxFormBase {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
-    parent::process($element, $form_state, $complete_form);
-    if ($element['#type'] !== 'container') {
-      $element['#ux_form_attributes']['class'][] = 'ux-form-container';
-    }
+  public function process(&$element) {
+    $children = Element::children($element);
+    $element['#ux_form_attributes']['class'][] = 'ux-form-container';
     $element['#ux_form_attributes']['class'][] = 'ux-form-container-js';
-    if (!empty($element['#description'])) {
-      $element['#description'] = '<div class="ux-form-element-container-description">' . $element['#description'] . '</div>';
+    if (count($children) || !empty($element['#ux_wrapper_supported'])) {
+      parent::process($element);
     }
   }
 

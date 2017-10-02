@@ -2,8 +2,6 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Provides a plugin for element type(s).
  *
@@ -18,6 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  *     "email",
  *     "password",
  *     "search",
+ *     "entity_autocomplete",
  *     "commerce_number",
  *   }
  * )
@@ -35,8 +34,8 @@ class Input extends UxFormBase {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
-    parent::process($element, $form_state, $complete_form);
+  public function process(&$element) {
+    parent::process($element);
     $element['#wrapper_attributes']['class'][] = 'ux-form-input';
     $element['#wrapper_attributes']['class'][] = 'ux-form-input-js';
     $element['#attributes']['class'][] = 'ux-form-input-item';

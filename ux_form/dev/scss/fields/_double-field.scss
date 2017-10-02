@@ -1,0 +1,12 @@
+
+.ux-form-element .field--type-double-field {
+
+  .double-field-elements {
+    display: flex;
+
+    > div {
+      width: 50%;
+      padding-top: $global-padding / 2;
+    }
+  }
+}

@@ -2,7 +2,6 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
 /**
@@ -22,8 +21,8 @@ class Checkboxes extends UxFormBase {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
-    parent::process($element, $form_state, $complete_form);
+  public function process(&$element) {
+    parent::process($element);
     $element['#attributes']['class'][] = 'ux-form-checkboxes';
     foreach (Element::children($element) as $key) {
       $child_element = &$element[$key];

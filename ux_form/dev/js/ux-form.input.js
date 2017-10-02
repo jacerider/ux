@@ -55,9 +55,14 @@
       _this.input_selector = '.ux-form-input-item-js';
       _this.$field = _this.$element.find(_this.input_selector);
       _this.$field.each(function (e) {
+        var $prefix = _this.$element.find('.field-prefix');
         var $suffix = _this.$element.find('.field-suffix');
+        var $input = _this.$element.find('.field-input');
         if ($suffix.length) {
           $suffix.after('<div class="ux-form-input-line" />');
+        }
+        else if ($prefix.length) {
+          $input.after('<div class="ux-form-input-line" />');
         }
         else {
           $(this).after('<div class="ux-form-input-line" />');

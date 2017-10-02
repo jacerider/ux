@@ -2,8 +2,6 @@
 
 namespace Drupal\ux_form\Plugin\UxForm;
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Provides a plugin for element type(s).
  *
@@ -20,9 +18,9 @@ class TextFormat extends UxFormBase {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
-    parent::process($element, $form_state, $complete_form);
-    parent::process($element['format'], $form_state, $complete_form);
+  public function process(&$element) {
+    parent::process($element);
+    parent::process($element['format']);
     $element['format']['#attributes']['class'][] = 'ux-filter-wrapper';
   }
 

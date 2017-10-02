@@ -127,9 +127,9 @@ abstract class UxFormBase extends PluginBase implements UxFormPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function process(&$element, FormStateInterface $form_state, &$complete_form) {
+  public function process(&$element) {
     $element['#pre_render'][] = [get_class($this), 'preRender'];
-    $element['#ux_wrapper_supported'] = $this->wrapperSupported;
+    $element['#ux_wrapper_supported'] = isset($element['#ux_wrapper_supported']) ? $element['#ux_wrapper_supported'] : $this->wrapperSupported;
   }
 
   /**
@@ -138,6 +138,13 @@ abstract class UxFormBase extends PluginBase implements UxFormPluginInterface {
   public static function preRender($element) {
     if ($element['#ux_wrapper_supported']) {
       $element['#theme_wrappers'][] = 'ux_form_element_container';
+    }
+    if (isset($element['#attributes']['class']) && is_array($element['#attributes']['class'])) {
+      foreach ($element['#attributes']['class'] as $key => &$class) {
+        if ($class == 'container-inline') {
+          $class = 'ux-form-inline';
+        }
+      }
     }
     return $element;
   }

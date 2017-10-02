@@ -54,12 +54,20 @@ class UxFormExampleForm extends FormBase {
       '#title' => $this->t('Mix'),
     ];
 
-    $element['textfield'] = [
+    $element['container'] = [
+      '#type' => 'container',
+    ];
+
+    $element['container']['container'] = [
+      '#type' => 'container',
+    ];
+
+    $element['container']['container']['textfield'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield'),
     ];
 
-    $element['select'] = [
+    $element['container']['select'] = [
       '#type' => 'select',
       '#title' => $this->t('Select'),
       '#options' => ['One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three','One', 'Two', 'Three', 'One', 'Two', 'Four', 'One', 'Two', 'Three'],
@@ -125,11 +133,25 @@ class UxFormExampleForm extends FormBase {
       '#description' => $this->t('Here is the description'),
     ];
 
-    $element['textfield3'] = [
+    $element['textfield3a'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Textfield with Prefix & Suffix'),
       '#description' => $this->t('Here is the description'),
       '#field_prefix' => '$',
+      '#field_suffix' => '.00',
+    ];
+
+    $element['textfield3b'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield with Prefix'),
+      '#description' => $this->t('Here is the description'),
+      '#field_prefix' => '$',
+    ];
+
+    $element['textfield3c'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Textfield with Suffix'),
+      '#description' => $this->t('Here is the description'),
       '#field_suffix' => '.00',
     ];
 
