@@ -11,16 +11,17 @@ html {
   color: #cccccc;
 }
 
+.ux-form .field-error {
+  background: #e54040;
+  color: white;
+}
+
 .ux-form .ux-ripple:before {
   background: white;
 }
 
 .ux-form .ux-ripple:after {
   background: white;
-}
-
-.ux-form ::-webkit-input-placeholder {
-  color: #b3b3b3;
 }
 
 .ux-form :-ms-input-placeholder {

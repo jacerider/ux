@@ -52,6 +52,7 @@
     buildCache: function () {
       var _this = this;
       _this.$element = $(this.element);
+      _this.$error = _this.$element.find('.field-error');
       _this.input_selector = '.ux-form-input-item-js';
       _this.$field = _this.$element.find(_this.input_selector);
       _this.$field.each(function (e) {
@@ -70,6 +71,10 @@
       });
       if (_this.hasError()) {
         _this.$element.addClass('invalid');
+      }
+      if (_this.$error.length) {
+        _this.$element.addClass('invalid').attr('data-error', _this.$error.text());
+        _this.$error.remove();
       }
     },
 

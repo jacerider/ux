@@ -41,6 +41,7 @@
      */
     buildCache: function () {
       this.$field = this.$element.find('select');
+      this.$error = this.$element.find('.field-error');
       this.$trigger = $('<input class="ux-form-input-item ux-form-input-item-js" ' + (this.isDisabled() ? 'disabled' : '') + ' readonly tabindex="-1"></input>');
       this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input ux-form-input-js"></div>');
       this.$caret = $('<span class="ux-form-select-caret">&#9660;</span>');
@@ -49,6 +50,11 @@
       this.$trigger.addClass('ux-form-select-trigger');
       this.$trigger.attr('placeholder', this.placeholder);
       this.isSupported = this.isSupported();
+
+      if (this.$error.length) {
+        this.$wrapper.addClass('invalid').attr('data-error', this.$error.text());
+        this.$error.remove();
+      }
 
       if (this.isSupported) {
         this.$hidden = $('<input class="ux-form-select-hidden"></input>');

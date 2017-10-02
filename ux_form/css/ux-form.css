@@ -43,6 +43,20 @@
   position: relative;
 }
 
+.ux-form .field-error {
+  display: block;
+  position: absolute;
+  top: 4.1875rem;
+  left: 0;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-rendering: optimizeLegibility;
+  z-index: 10;
+}
+
 .ux-form .ux-ripple {
   display: block;
   position: absolute;
@@ -82,12 +96,6 @@
   opacity: 0;
   overflow: hidden;
   transition: transform 0.5s, opacity 1s;
-}
-
-.ux-form ::-webkit-input-placeholder {
-  font-style: italic;
-  font-weight: 500;
-  opacity: 1 !important;
 }
 
 .ux-form :-ms-input-placeholder {
@@ -358,7 +366,7 @@
 .ux-form-input > label,
 .ux-form-input > .description,
 .ux-form-input > .field-error,
-.ux-form-input .ux-form-input-line {
+.ux-form-input .ux-form-input-line, .ux-form-input:after {
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
 }
@@ -436,14 +444,11 @@
 .ux-form-input:after {
   display: block;
   content: '';
-  position: absolute;
-  top: 4.1875rem;
-  left: 0;
   opacity: 0;
   font-size: 0.75rem;
   line-height: 0.875rem;
   text-transform: uppercase;
-  white-space: nowrap;
+  z-index: 10;
   text-rendering: optimizeLegibility;
 }
 

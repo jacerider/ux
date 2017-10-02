@@ -16,6 +16,11 @@ html {
     color: $description-color;
   }
 
+  .field-error {
+    background: $error-color;
+    color: gray(0);
+  }
+
   .ux-ripple {
 
     &:before {

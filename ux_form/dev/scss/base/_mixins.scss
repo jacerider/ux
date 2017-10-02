@@ -27,6 +27,20 @@
   transform: translateY(0);
 }
 
+@mixin error() {
+  display: block;
+  position: absolute;
+  top: $label-height + $input-height + rem-calc(1);
+  left: 0;
+  padding: rem-calc(2 10);
+  font-size: $message-font-size;
+  line-height: $label-font-size;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-rendering: optimizeLegibility;
+  z-index: 10;
+}
+
 @mixin description() {
   font-size: $description-font-size;
   margin: 0;
