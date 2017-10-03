@@ -817,8 +817,19 @@
   pointer-events: none;
 }
 
-.ux-form .field-multiple-table {
-  margin-bottom: 1.25rem;
+.ux-form .field-add-more-submit {
+  margin-top: 1.25rem;
+}
+
+.ux-form .tabledrag-toggle-weight-wrapper {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-size: 0.625rem;
+}
+
+.ux-form .tabledrag-toggle-weight-wrapper button {
+  text-transform: uppercase;
 }
 
 .ux-form .draggable .tabledrag-handle {
@@ -918,6 +929,10 @@
 .ux-form-element .field--type-double-field .double-field-elements > div {
   width: 50%;
   padding-top: 0.625rem;
+}
+
+.ux-form-element .field--type-fieldception .field-multiple-table {
+  margin-top: 1.25rem;
 }
 
 .ux-form-element .field--type-fieldception .field-multiple-table tbody tr td {

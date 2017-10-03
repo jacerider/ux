@@ -17,8 +17,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 .ux-form {
 
-  .field-multiple-table {
-    margin-bottom: $global-margin;
+  .field-add-more-submit {
+    margin-top: $global-margin;
   }
 }
 
@@ -26,6 +26,17 @@
 /// Generic table elements
 ////////////////////////////////////////////////////////////////////////////////
 .ux-form {
+
+  .tabledrag-toggle-weight-wrapper {
+    position: absolute;
+    top: $global-padding;
+    right: $global-padding;
+    font-size: rem-calc(10);
+
+    button {
+      text-transform: uppercase;
+    }
+  }
 
   .draggable {
 
