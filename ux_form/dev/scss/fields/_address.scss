@@ -1,6 +1,6 @@
 
-.field--type-address,
-.field--type-address3 {
+.ux-form-element .field--type-address,
+.ux-form-element .field--type-address3 {
 
   .country-code {
     margin-bottom: $global-margin * 2;
@@ -27,13 +27,13 @@
 
   .address-container-inline {
     display: flex;
-    // align-items: flex-end;
 
     > .ux-form-element {
       margin: 0;
       padding: 0 $global-padding / 2;
 
       &:first-child {
+        width: 100%;
         padding-left: 0;
       }
 
@@ -45,26 +45,5 @@
     .ux-form-element-name-locality {
       flex: auto;
     }
-
-    // &.container-0 {
-    //   display: none;
-    // }
-
-    // .form-item {
-    //   margin-top: $global-margin / 2;
-    // }
-
-    // > div {
-    //   padding: $global-padding / 2 $global-padding / 2 0;
-
-    //   &:first-child {
-    //     padding-left: 0;
-    //     flex: auto;
-    //   }
-
-    //   &:last-child {
-    //     padding-right: 0;
-    //   }
-    // }
   }
 }

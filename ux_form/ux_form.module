@@ -220,6 +220,8 @@ function ux_form_preprocess_field_multiple_value_form(&$variables) {
     $button = $variables['button'];
     $fieldset = [
       '#type' => 'fieldset',
+      '#id' => '',
+      '#attributes' => [],
       '#ux_wrapper_supported' => TRUE,
     ];
     ux_form_element_process($fieldset);

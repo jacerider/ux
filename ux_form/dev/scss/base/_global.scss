@@ -19,16 +19,6 @@
     margin-top: $global-margin;
     margin-bottom: $global-margin;
 
-    &.ux-form-element-first,
-    &:first-child {
-      // margin-top: 0;
-    }
-
-    &.ux-form-element-last,
-    &:last-child {
-      // margin-bottom: 0;
-    }
-
     label,
     .fieldgroup .fieldset-legend {
       @include label;
@@ -91,22 +81,37 @@
   flex-flow: row nowrap;
   width: 100%;
 
+  > .ux-form-element {
+    flex: auto;
+    width: 100%;
+  }
+
+  .fieldset-wrapper {
+    display: flex !important;
+    flex-flow: row nowrap;
+
+    .ux-form-container {
+      flex: auto !important;
+      width: 100%;
+    }
+  }
+
   // div {
   //   display: block;
   // }
 
-  input {
-    width: 100%;
-  }
+  // input {
+  //   width: 100%;
+  // }
 
-  > div {
-    flex: auto !important;
-    width: 100%;
+  // > div {
+  //   flex: auto !important;
+  //   width: 100%;
 
-    .ux-form-input-item {
-      width: 100%;
-    }
-  }
+  //   .ux-form-input-item {
+  //     width: 100%;
+  //   }
+  // }
 }
 
 // .ux-form-element-inner {

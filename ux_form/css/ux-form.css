@@ -118,17 +118,22 @@
   width: 100%;
 }
 
-.ux-form-inline input {
+.ux-form-inline > .ux-form-element {
+  -ms-flex: auto;
+      flex: auto;
   width: 100%;
 }
 
-.ux-form-inline > div {
+.ux-form-inline .fieldset-wrapper {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex-flow: row nowrap;
+      flex-flow: row nowrap;
+}
+
+.ux-form-inline .fieldset-wrapper .ux-form-container {
   -ms-flex: auto !important;
       flex: auto !important;
-  width: 100%;
-}
-
-.ux-form-inline > div .ux-form-input-item {
   width: 100%;
 }
 
@@ -301,59 +306,6 @@
   background-image: none !important;
 }
 
-.field--type-address .country-code,
-.field--type-address3 .country-code {
-  margin-bottom: 2.5rem;
-}
-
-.field--type-address .ux-form-element-name-address-line1,
-.field--type-address3 .ux-form-element-name-address-line1 {
-  margin-bottom: 0;
-}
-
-.field--type-address .ux-form-element-name-address-line2,
-.field--type-address3 .ux-form-element-name-address-line2 {
-  margin: 0;
-}
-
-.field--type-address .ux-form-element-name-address-line3,
-.field--type-address3 .ux-form-element-name-address-line3 {
-  margin: 0;
-}
-
-.field--type-address .postal-code:after,
-.field--type-address3 .postal-code:after {
-  display: none;
-}
-
-.field--type-address .address-container-inline,
-.field--type-address3 .address-container-inline {
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.field--type-address .address-container-inline > .ux-form-element,
-.field--type-address3 .address-container-inline > .ux-form-element {
-  margin: 0;
-  padding: 0 0.625rem;
-}
-
-.field--type-address .address-container-inline > .ux-form-element:first-child,
-.field--type-address3 .address-container-inline > .ux-form-element:first-child {
-  padding-left: 0;
-}
-
-.field--type-address .address-container-inline > .ux-form-element:last-child,
-.field--type-address3 .address-container-inline > .ux-form-element:last-child {
-  padding-right: 0;
-}
-
-.field--type-address .address-container-inline .ux-form-element-name-locality,
-.field--type-address3 .address-container-inline .ux-form-element-name-locality {
-  -ms-flex: auto;
-      flex: auto;
-}
-
 .ux-form-input {
   display: -ms-flexbox;
   display: flex;
@@ -361,6 +313,7 @@
       flex-flow: row wrap;
   -ms-flex-align: end;
       align-items: flex-end;
+  width: 100%;
 }
 
 .ux-form-input > label,
@@ -919,6 +872,60 @@
 
 .ux-form-element-type-fieldset .field-group-fieldset:not(.fieldgroup).no-legend {
   margin-top: -1.25rem;
+}
+
+.ux-form-element .field--type-address .country-code,
+.ux-form-element .field--type-address3 .country-code {
+  margin-bottom: 2.5rem;
+}
+
+.ux-form-element .field--type-address .ux-form-element-name-address-line1,
+.ux-form-element .field--type-address3 .ux-form-element-name-address-line1 {
+  margin-bottom: 0;
+}
+
+.ux-form-element .field--type-address .ux-form-element-name-address-line2,
+.ux-form-element .field--type-address3 .ux-form-element-name-address-line2 {
+  margin: 0;
+}
+
+.ux-form-element .field--type-address .ux-form-element-name-address-line3,
+.ux-form-element .field--type-address3 .ux-form-element-name-address-line3 {
+  margin: 0;
+}
+
+.ux-form-element .field--type-address .postal-code:after,
+.ux-form-element .field--type-address3 .postal-code:after {
+  display: none;
+}
+
+.ux-form-element .field--type-address .address-container-inline,
+.ux-form-element .field--type-address3 .address-container-inline {
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.ux-form-element .field--type-address .address-container-inline > .ux-form-element,
+.ux-form-element .field--type-address3 .address-container-inline > .ux-form-element {
+  margin: 0;
+  padding: 0 0.625rem;
+}
+
+.ux-form-element .field--type-address .address-container-inline > .ux-form-element:first-child,
+.ux-form-element .field--type-address3 .address-container-inline > .ux-form-element:first-child {
+  width: 100%;
+  padding-left: 0;
+}
+
+.ux-form-element .field--type-address .address-container-inline > .ux-form-element:last-child,
+.ux-form-element .field--type-address3 .address-container-inline > .ux-form-element:last-child {
+  padding-right: 0;
+}
+
+.ux-form-element .field--type-address .address-container-inline .ux-form-element-name-locality,
+.ux-form-element .field--type-address3 .address-container-inline .ux-form-element-name-locality {
+  -ms-flex: auto;
+      flex: auto;
 }
 
 .ux-form-element .field--type-double-field .double-field-elements {
