@@ -951,6 +951,20 @@
   padding-top: 0.625rem;
 }
 
+#escort .escort-region-after .views-exposed-form .ux-form-element {
+  margin-top: 0;
+}
+
+#escort .escort-region-after .views-exposed-form .ux-form-input-line {
+  display: none;
+}
+
+#escort .escort-region-after .views-exposed-form .form-item {
+  display: block;
+  max-width: 100%;
+  margin: 0;
+}
+
 .ux-form-element .field--type-fieldception .fieldception-single .fieldception-group:first-child {
   margin-top: 1.25rem;
 }

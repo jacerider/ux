@@ -1,0 +1,19 @@
+#escort {
+
+  .escort-region-after .views-exposed-form {
+
+    .ux-form-element {
+      margin-top: 0;
+    }
+
+    .ux-form-input-line {
+      display: none;
+    }
+
+    .form-item {
+      display: block;
+      max-width: 100%;
+      margin: 0;
+    }
+  }
+}
