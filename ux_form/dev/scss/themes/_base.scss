@@ -21,6 +21,14 @@ html {
     color: gray(0);
   }
 
+  .required label,
+  .required .fieldset-legend {
+
+    &:after {
+      color: $error-color;
+    }
+  }
+
   .ux-ripple {
 
     &:before {
@@ -382,5 +390,22 @@ html {
 
   .is-strong {
     background-color: $success-color;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Fieldception
+////////////////////////////////////////////////////////////////////////////////
+.ux-form-element .field--type-fieldception {
+
+  .fieldception-multiple {
+
+    .fieldception-group {
+
+      // Field with multiple groups should have more spacing between.
+      &:first-child {
+        border-top: $divider-style;
+      }
+    }
   }
 }

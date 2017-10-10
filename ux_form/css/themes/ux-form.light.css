@@ -16,6 +16,11 @@ html {
   color: white;
 }
 
+.ux-form .required label:after,
+.ux-form .required .fieldset-legend:after {
+  color: #e54040;
+}
+
 .ux-form .ux-ripple:before {
   background: black;
 }
@@ -251,6 +256,10 @@ html {
 
 .password-strength .is-strong {
   background-color: #86c13d;
+}
+
+.ux-form-element .field--type-fieldception .fieldception-multiple .fieldception-group:first-child {
+  border-top: 1px dotted #cccccc;
 }
 
 /*# sourceMappingURL=ux-form.light.css.map */

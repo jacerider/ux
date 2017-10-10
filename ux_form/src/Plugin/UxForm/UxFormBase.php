@@ -139,12 +139,8 @@ abstract class UxFormBase extends PluginBase implements UxFormPluginInterface {
     if ($element['#ux_wrapper_supported']) {
       $element['#theme_wrappers'][] = 'ux_form_element_container';
     }
-    if (isset($element['#attributes']['class']) && is_array($element['#attributes']['class'])) {
-      foreach ($element['#attributes']['class'] as $key => &$class) {
-        if ($class == 'container-inline') {
-          $class = 'ux-form-inline';
-        }
-      }
+    if (isset($element['#attributes'])) {
+      ux_form_inline_convert($element['#attributes']);
     }
     return $element;
   }

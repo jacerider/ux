@@ -43,18 +43,23 @@
   position: relative;
 }
 
+.ux-form .required label:after,
+.ux-form .required .fieldset-legend:after {
+  content: '*';
+  display: inline-block;
+  padding-left: 0.1875rem;
+  font-size: 13px;
+}
+
 .ux-form .field-error {
   display: block;
-  position: absolute;
-  top: 4.1875rem;
-  left: 0;
-  padding: 0.125rem 0.625rem;
+  padding: 0.3125rem 0.625rem;
   font-size: 0.75rem;
   line-height: 0.875rem;
   text-transform: uppercase;
-  white-space: nowrap;
   text-rendering: optimizeLegibility;
   z-index: 10;
+  margin: 0.625rem 0;
 }
 
 .ux-form .ux-ripple {
@@ -385,7 +390,10 @@
   border-left: 0 !important;
 }
 
-.ux-form-input textarea.ux-form-input-item {
+.ux-form-input textarea.ux-form-input-item, .ux-form-input textarea.ux-form-input-item:focus {
+  padding-top: 0.8125rem;
+  padding-bottom: 0.8125rem;
+  line-height: 1.625rem;
   height: auto;
   min-height: 2.5rem;
 }
@@ -874,6 +882,11 @@
   margin-top: -1.25rem;
 }
 
+.ux-form-element .field--type-address details > div:last-child,
+.ux-form-element .field--type-address3 details > div:last-child {
+  margin-top: 1.25rem;
+}
+
 .ux-form-element .field--type-address .country-code,
 .ux-form-element .field--type-address3 .country-code {
   margin-bottom: 2.5rem;
@@ -938,19 +951,31 @@
   padding-top: 0.625rem;
 }
 
-.ux-form-element .field--type-fieldception .field-multiple-table {
+.ux-form-element .field--type-fieldception .fieldception-single .fieldception-group:first-child {
   margin-top: 1.25rem;
 }
 
-.ux-form-element .field--type-fieldception .field-multiple-table tbody tr td {
-  padding-top: 0.625rem;
+.ux-form-element .field--type-fieldception .fieldception-multiple .field-multiple-table {
+  margin-top: 1.25rem;
 }
 
-.ux-form-element .field--type-fieldception .field-multiple-table tbody tr .ux-form-inline label {
+.ux-form-element .field--type-fieldception .fieldception-multiple .fieldception-group:first-child {
+  border-top: 1px solid transparent;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+.ux-form-element .field--type-fieldception .fieldception-multiple.fieldception-groups-0 .fieldception-group:first-child {
+  border-top: 0;
+  margin-top: 0.625rem;
+  padding-top: 0;
+}
+
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr .fieldception-groups-0 .ux-form-inline label {
   display: none;
 }
 
-.ux-form-element .field--type-fieldception .field-multiple-table tbody tr .ux-form-inline .description {
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr .fieldception-groups-0 .ux-form-inline .description {
   display: none;
 }
 
@@ -958,7 +983,13 @@
   padding-top: 0;
 }
 
-.ux-form-element .field--type-fieldception .field-multiple-table tbody tr:first-child .ux-form-inline label {
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr:first-child .fieldception-group:first-child {
+  border-top: 0;
+  margin-top: 0.625rem;
+  padding-top: 0;
+}
+
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr:first-child .fieldception-groups-0 .ux-form-inline label {
   display: block;
 }
 

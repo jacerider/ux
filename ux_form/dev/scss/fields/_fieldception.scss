@@ -1,25 +1,63 @@
 
 .ux-form-element .field--type-fieldception {
 
+  .fieldception-single {
+
+    .fieldception-group {
+
+      &:first-child {
+        margin-top: $global-margin;
+      }
+    }
+  }
+
+  .fieldception-multiple {
+
+    .field-multiple-table {
+      margin-top: $global-margin;
+    }
+
+    .fieldception-group {
+
+      // Field with multiple groups should have more spacing between.
+      &:first-child {
+        border-top: 1px solid transparent;
+        margin-top: $global-margin;
+        padding-top: $global-margin;
+      }
+    }
+
+    &.fieldception-groups-0 {
+
+      .fieldception-group {
+
+        &:first-child {
+          border-top: 0;
+          margin-top: $global-margin / 2;
+          padding-top: 0;
+        }
+      }
+    }
+  }
+
   .field-multiple-table {
-    margin-top: $global-margin;
 
     tbody {
 
       tr {
 
-        td {
-          padding-top: $global-padding / 2;
-        }
+        // Only hide labels for fields without grouping.
+        .fieldception-groups-0 {
 
-        .ux-form-inline {
+          .ux-form-inline {
 
-          label {
-            display: none;
-          }
+            label {
+              display: none;
+            }
 
-          .description {
-            display: none;
+            .description {
+              display: none;
+            }
           }
         }
 
@@ -29,10 +67,23 @@
             padding-top: 0;
           }
 
-          .ux-form-inline {
+          .fieldception-group {
 
-            label {
-              display: block;
+            // The first row and the first group in that row.
+            &:first-child {
+              border-top: 0;
+              margin-top: $global-margin / 2;
+              padding-top: 0;
+            }
+          }
+
+          .fieldception-groups-0 {
+
+            .ux-form-inline {
+
+              label {
+                display: block;
+              }
             }
           }
         }

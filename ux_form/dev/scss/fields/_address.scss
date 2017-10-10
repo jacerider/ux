@@ -2,6 +2,13 @@
 .ux-form-element .field--type-address,
 .ux-form-element .field--type-address3 {
 
+  details > div {
+
+    &:last-child {
+      margin-top: $global-margin;
+    }
+  }
+
   .country-code {
     margin-bottom: $global-margin * 2;
   }

@@ -156,12 +156,12 @@ function ux_form_get_config() {
  *   - element: An associative array containing the properties of the element.
  *     Properties used: #id, #attributes, #children.
  */
-// function ux_form_preprocess_container(array &$variables) {
-//   $element = $variables['element'];
-//   if (isset($element['widget']['#field_name'])) {
-//     $variables['attributes']['class'][] = 'field-wrapper';
-//   }
-// }
+function ux_form_preprocess_container(array &$variables) {
+
+  if (isset($variables['attributes'])) {
+    ux_form_inline_convert($variables['attributes']);
+  }
+}
 
 /**
  * Prepares variables for container templates.
@@ -242,5 +242,21 @@ function ux_form_preprocess_field_multiple_value_form(&$variables) {
       unset($variables['description']['content']);
     }
     $variables['table'] = $fieldset;
+  }
+}
+
+/**
+ * Convert container-inline to ux-form-inline class.
+ *
+ * @param array $attributes
+ *   An attributes array.
+ */
+function ux_form_inline_convert(array &$attributes) {
+  if (isset($attributes['class']) && is_array($attributes['class'])) {
+    foreach ($attributes['class'] as $key => &$class) {
+      if ($class == 'container-inline') {
+        $class = 'ux-form-inline';
+      }
+    }
   }
 }

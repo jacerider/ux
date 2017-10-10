@@ -73,8 +73,8 @@
         _this.$element.addClass('invalid');
       }
       if (_this.$error.length) {
-        _this.$element.addClass('invalid').attr('data-error', _this.$error.text());
-        _this.$error.remove();
+        // _this.$element.addClass('invalid').attr('data-error', _this.$error.text());
+        // _this.$error.remove();
       }
     },
 

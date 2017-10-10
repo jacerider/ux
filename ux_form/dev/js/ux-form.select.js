@@ -52,8 +52,9 @@
       this.isSupported = this.isSupported();
 
       if (this.$error.length) {
-        this.$wrapper.addClass('invalid').attr('data-error', this.$error.text());
-        this.$error.remove();
+        // this.$error.appendTo(this.$wrapper);
+        // this.$wrapper.addClass('invalid').attr('data-error', this.$error.text());
+        // this.$error.remove();
       }
 
       if (this.isSupported) {
