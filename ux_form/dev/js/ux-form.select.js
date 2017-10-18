@@ -262,6 +262,13 @@
 
       // TAB - switch to another input.
       if (e.which === 9) {
+        // Select current item.
+        $item = this.$dropdown.find('.selector.selected');
+        if ($item.length) {
+          var option = $item.data('option');
+          this.changeSelected(option, 'add');
+        }
+
         // Focus on next visible field.
         var $inputs = this.$element.closest('form').find(':input:visible').not('.ignore');
         var $nextInput = $inputs.eq($inputs.index(e.target) + 1);
