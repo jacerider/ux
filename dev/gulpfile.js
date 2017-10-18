@@ -81,7 +81,8 @@ gulp.task('js', function () {
   return gulp.src(config.js.src)
     .pipe(plumber())
     .pipe(eslint({
-      configFile: 'config/.eslintrc'
+      configFile: 'config/.eslintrc',
+      useEslintrc: false
     }))
     .pipe(eslint.format())
     .pipe(uglify())
@@ -110,6 +111,7 @@ gulp.task('serve', ['css', 'js', 'watch'], function () {
       port: config.browserSync.port,
       open: config.browserSync.openAutomatically,
       notify: config.browserSync.notify,
+      reloadDebounce: 1000
     });
   }
 });
