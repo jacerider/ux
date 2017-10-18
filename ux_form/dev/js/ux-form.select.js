@@ -196,7 +196,7 @@
       this.$dropdown.off('.' + this._name);
       this.$dropdown.find('.search-input').off('.' + this._name);
       this.$field.off('.' + this._name);
-      $(document).off('.' + this._name);
+      $('body').off('.' + this._name);
     },
 
     /*
@@ -539,7 +539,7 @@
 
     showDropdown: function () {
       var _this = this;
-      $(document).trigger('tap');
+      $('body').trigger('tap');
       if (this.open) {
         return this.closeDropdown();
       }
@@ -557,7 +557,7 @@
 
     windowHideDropdown: function () {
       var _this = this;
-      $(document).on('tap' + '.' + _this.uniqueId, function (e) {
+      $('body').on('tap' + '.' + _this.uniqueId, function (e) {
         if (!_this.open) {
           return;
         }
@@ -574,7 +574,7 @@
       this.$dropdown.find('.search-input').val('');
       this.$dropdownScroll.find('.hide').removeClass('hide');
       this.$element.removeClass('animate');
-      $(document).off('.' + _this.uniqueId);
+      $('body').off('.' + _this.uniqueId);
       setTimeout(function () {
         if (_this.open === false) {
           _this.$element.removeClass('active');
