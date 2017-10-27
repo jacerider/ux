@@ -60,6 +60,24 @@
       margin: 0;
       padding: 0;
     }
+
+    > .ux-form-element {
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    // Some items are not handled by the ux module and as a result we want
+    // to give them global margin.
+    > * {
+      margin-top: $global-margin;
+      margin-bottom: $global-margin;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .field-group-fieldset:not(.fieldgroup) {

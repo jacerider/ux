@@ -29,8 +29,11 @@
   padding: 0;
 }
 
-.ux-form .ux-form-widget .ux-form-element {
+.ux-form .ux-form-widget .ux-form-element:first-child {
   margin-top: 0;
+}
+
+.ux-form .ux-form-widget .ux-form-element:last-child {
   margin-bottom: 0;
 }
 
@@ -43,6 +46,13 @@
   position: relative;
 }
 
+.ux-form .ux-form-element-inner:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.ux-form label.form-required:after,
 .ux-form .required label:after,
 .ux-form .required .fieldset-legend:after {
   content: '*';
@@ -782,6 +792,10 @@
   margin-top: 1.25rem;
 }
 
+.ux-form table .ux-form-element {
+  margin: 0;
+}
+
 .ux-form .tabledrag-toggle-weight-wrapper {
   position: absolute;
   top: 1.25rem;
@@ -878,8 +892,45 @@
   padding: 0;
 }
 
+.ux-form-element-type-fieldset .fieldset-wrapper > .ux-form-element:last-child {
+  margin-bottom: 0;
+}
+
+.ux-form-element-type-fieldset .fieldset-wrapper > * {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.ux-form-element-type-fieldset .fieldset-wrapper > *:last-child {
+  margin-bottom: 0;
+}
+
 .ux-form-element-type-fieldset .field-group-fieldset:not(.fieldgroup).no-legend {
   margin-top: -1.25rem;
+}
+
+.ux-form.commerce-checkout-flow #edit-login {
+  display: -ms-flexbox;
+  display: flex;
+  overflow: visible;
+}
+
+.ux-form.commerce-checkout-flow #edit-login > .ux-form-container {
+  width: 50%;
+}
+
+.ux-form.commerce-checkout-flow #edit-login > .ux-form-container:first-child {
+  margin-right: 0.625rem;
+}
+
+.ux-form.commerce-checkout-flow #edit-login > .ux-form-container:last-child {
+  margin-left: 0.625rem;
+}
+
+.ux-form.commerce-checkout-flow .form-wrapper__guest-checkout,
+.ux-form.commerce-checkout-flow .form-wrapper__login-option {
+  width: auto;
+  float: none;
 }
 
 .ux-form-element .field--type-address details > div:last-child,

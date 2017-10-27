@@ -16,6 +16,7 @@ html {
   color: white;
 }
 
+.ux-form label.form-required:after,
 .ux-form .required label:after,
 .ux-form .required .fieldset-legend:after {
   color: #e54040;

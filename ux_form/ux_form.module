@@ -33,6 +33,26 @@ function ux_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     if (!empty($config['theme'])) {
       $form['#attached']['library'][] = 'ux_form/ux_form.theme.' . $config['theme'];
     }
+    ux_form_form_alter_process($form);
+  }
+}
+
+/**
+ * Process each field in a form.
+ *
+ * THis may seem redundant but when a field overrides the #process callback
+ * our defaults are not loaded. As a result, they are added back here.
+ */
+function ux_form_form_alter_process(&$element) {
+  if (isset($element['#type'])) {
+    $ux_form_plugin_manager = \Drupal::service('plugin.manager.ux_form');
+    if (isset($element['#process']) && $plugins = $ux_form_plugin_manager->getPluginsByType($element['#type'])) {
+      array_unshift($element['#process'], 'ux_form_process');
+    }
+  }
+  foreach (Element::children($element) as $id) {
+    $child_element = &$element[$id];
+    ux_form_form_alter_process($child_element);
   }
 }
 
@@ -157,9 +177,24 @@ function ux_form_get_config() {
  *     Properties used: #id, #attributes, #children.
  */
 function ux_form_preprocess_container(array &$variables) {
-
   if (isset($variables['attributes'])) {
-    ux_form_inline_convert($variables['attributes']);
+    ux_form_attribute_convert($variables['attributes'], $variables['element']);
+  }
+}
+
+/**
+ * Implements template_preprocess_fieldset().
+ */
+function ux_form_preprocess_fieldset(&$variables) {
+  if (isset($variables['attributes'])) {
+    ux_form_attribute_convert($variables['attributes'], $variables['element']);
+  }
+  if (!isset($variables['legend']['title'])) {
+    // Add a .no-legend class if no title is provided.
+    $variables['attributes']['class'][] = 'no-legend';
+  }
+  else {
+    $variables['attributes']['class'][] = 'has-legend';
   }
 }
 
@@ -185,6 +220,15 @@ function template_preprocess_ux_form_element_container(array &$variables) {
   }
   if (isset($element['#type'])) {
     $variables['attributes']['class'][] = 'ux-form-element-type-' . Html::getClass($element['#type']);
+    // Add container id to wrapper. The id is unset in the preprocess functions.
+    if (in_array($element['#type'], ['fieldset', 'container'])) {
+      if (isset($element['#id'])) {
+        $variables['attributes']['id'] = $element['#id'];
+      }
+      if (isset($element['#attributes']['id'])) {
+        $variables['attributes']['id'] = $element['#attributes']['id'];
+      }
+    }
   }
   if (isset($element['#name'])) {
     $variables['attributes']['class'][] = 'ux-form-element-name-' . Html::getClass($element['#name']);
@@ -192,23 +236,18 @@ function template_preprocess_ux_form_element_container(array &$variables) {
   elseif (isset($element['widget']['#field_name'])) {
     $variables['attributes']['class'][] = 'ux-form-element-name-' . Html::getClass($element['widget']['#field_name']);
   }
+  if (isset($element['#attributes']['class']) && is_array($element['#attributes']['class'])) {
+    foreach ($element['#attributes']['class'] as $key => $class) {
+      if (!in_array($class, ['form-wrapper', 'js-form-wrapper'])) {
+        // unset($attributes['class'][$key]);
+        $variables['attributes']['class'][] = 'ux-form-container-' . $class;
+      }
+    }
+  }
   if (isset($element['#ux_form_attributes']) && is_array($element['#ux_form_attributes'])) {
     $variables['attributes'] = NestedArray::mergeDeep($variables['attributes'], $element['#ux_form_attributes']);
   }
   $variables['children'] = $element['#children'];
-}
-
-/**
- * Implements template_preprocess_fieldset().
- */
-function ux_form_preprocess_fieldset(&$variables) {
-  if (!isset($variables['legend']['title'])) {
-    // Add a .no-legend class if no title is provided.
-    $variables['attributes']['class'][] = 'no-legend';
-  }
-  else {
-    $variables['attributes']['class'][] = 'has-legend';
-  }
 }
 
 /**
@@ -243,6 +282,24 @@ function ux_form_preprocess_field_multiple_value_form(&$variables) {
     }
     $variables['table'] = $fieldset;
   }
+}
+
+/**
+ * Remove inherited classes and ids from fieldset and container elements
+ *
+ * @param array $attributes
+ *   An attributes array.
+ * @param array $element
+ *   An element array.
+ */
+function ux_form_attribute_convert(array &$attributes, $element) {
+  // Remove ID if element is wrapped.
+  if (!empty($element['#ux_wrapper_supported'])) {
+    if (isset($attributes['id'])) {
+      unset($attributes['id']);
+    }
+  }
+  ux_form_inline_convert($attributes);
 }
 
 /**

@@ -82,7 +82,7 @@ class UxFormSettingsForm extends ConfigFormBase {
    */
   protected function getSetting($theme_id, $key) {
     $config = $this->config('ux_form.settings')->get('themes');
-    $theme_config = isset($config[$theme_id]) ? $config[$theme_id] : [];
+    $theme_config = isset($config[$theme_id]) && is_array($config[$theme_id]) ? $config[$theme_id] : [];
     $theme_config += $this->getThemeSettingDefaults();
     return isset($theme_config[$key]) ? $theme_config[$key] : NULL;
   }

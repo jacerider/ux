@@ -25,7 +25,12 @@ class Wrapper extends Container {
     $element['#ux_form_attributes']['class'][] = 'ux-form-wrapper-js';
     $element['#ux_form_is_wrapper'] = TRUE;
     if (!empty($element['#description'])) {
-      $element['#description'] = '<div class="ux-form-element-wrapper-description">' . $element['#description'] . '</div>';
+      if (is_array($element['#description'])) {
+
+      }
+      else {
+        $element['#description'] = '<div class="ux-form-element-wrapper-description">' . $element['#description'] . '</div>';
+      }
     }
   }
 

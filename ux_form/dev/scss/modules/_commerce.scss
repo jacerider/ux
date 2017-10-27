@@ -1,0 +1,26 @@
+
+.ux-form.commerce-checkout-flow {
+
+  #edit-login {
+    display: flex;
+    overflow: visible;
+
+    > .ux-form-container {
+      width: 50%;
+
+      &:first-child {
+        margin-right: $global-margin / 2;
+      }
+
+      &:last-child {
+        margin-left: $global-margin / 2;
+      }
+    }
+  }
+
+  .form-wrapper__guest-checkout,
+  .form-wrapper__login-option {
+    width: auto;
+    float: none;
+  }
+}

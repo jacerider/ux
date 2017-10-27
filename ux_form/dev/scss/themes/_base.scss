@@ -21,6 +21,7 @@ html {
     color: gray(0);
   }
 
+  label.form-required, // sass-lint:disable-line no-qualifying-elements
   .required label,
   .required .fieldset-legend {
 

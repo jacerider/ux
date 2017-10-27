@@ -25,8 +25,14 @@
   .ux-form-widget {
 
     .ux-form-element {
-      margin-top: 0;
-      margin-bottom: 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -37,8 +43,15 @@
 
   .ux-form-element-inner {
     position: relative;
+
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
   }
 
+  label.form-required, // sass-lint:disable-line no-qualifying-elements
   .required label,
   .required .fieldset-legend {
 
