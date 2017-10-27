@@ -93,7 +93,7 @@ class UxFormSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('ux_form.settings');
 
-    $themes = $themes = $this->themeHandler->listInfo();
+    $themes = $this->themeHandler->listInfo();
     uasort($themes, 'system_sort_modules_by_info_name');
 
     $form['themes'] = [
@@ -140,6 +140,7 @@ class UxFormSettingsForm extends ConfigFormBase {
           'dark' => $this->t('Dark'),
           'blue' => $this->t('Blue'),
           'blue.dark' => $this->t('Blue Dark'),
+          'olive' => $this->t('Olive'),
         ],
         '#default_value' => $this->getSetting($theme_id, 'theme'),
         '#states' => $states,

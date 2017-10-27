@@ -909,6 +909,10 @@
   margin-top: -1.25rem;
 }
 
+.ux-form-container-hide {
+  display: none;
+}
+
 .ux-form.commerce-checkout-flow #edit-login {
   display: -ms-flexbox;
   display: flex;
