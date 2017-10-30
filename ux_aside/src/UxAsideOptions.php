@@ -433,6 +433,22 @@ class UxAsideOptions extends UxOptionsBase {
       '#return_value' => TRUE,
     ];
 
+    // Timeout settings.
+    $form['content']['extras'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Extras'),
+      '#process' => [[get_class(), 'processParents']],
+    ];
+
+    // Extra settings.
+    $form['content']['extras']['focusInput'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Auto-focus on first input'),
+      '#description' => $this->t('Will be ignored if the input does not contain any form fields.'),
+      '#default_value' => $defaults['content']['focusInput'],
+      '#return_value' => TRUE,
+    ];
+
     return $form;
   }
 
