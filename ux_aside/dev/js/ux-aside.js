@@ -19,12 +19,13 @@
     attach: function (context, settings) {
       var _this = this;
       if (settings.ux && settings.ux.aside && settings.ux.aside.items) {
+        var $wrapper = $('#ux-asides');
         $(document).once('ux-aside').on('drupalViewportOffsetChange.ux-aside', _this.resize());
         _this.resize();
 
         for (var id in settings.ux.aside.items) {
           if (settings.ux.aside.items[id]) {
-            var $element = $('#ux-aside-' + id).once('ux-aside');
+            var $element = $('#ux-aside-' + id).once('ux-aside').appendTo($wrapper);
             if ($element.length) {
               var options = _this.getOptions(settings.ux.aside, id);
               $element.uxAside(options);

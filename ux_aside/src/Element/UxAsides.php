@@ -17,48 +17,21 @@ class UxAsides extends RenderElement {
   public function getInfo() {
     return [
       '#pre_render' => [
-        [get_class(), 'generateLazyBuilder'],
+        [get_class(), 'preRenderAsides'],
       ],
     ];
   }
 
   /**
-   * Build lazy builder.
+   * Builds the asides wrapper.
    *
    * @param array $element
    *   A renderable array.
    *
    * @return array
-   *   The updated renderable array containing the placeholder.
-   */
-  public static function generateLazyBuilder(array $element) {
-    $aside_manager = static::uxAsideManager();
-    $renderer = static::renderer();
-    $element = [
-      '#cache' => [
-        'keys' => ['ux-asides'],
-        'tags' => $aside_manager->getCacheTags(),
-        'contexts' => $aside_manager->getCacheContexts(),
-        'max-age' => $aside_manager->getCacheMaxAge(),
-      ],
-      '#lazy_builder' => [static::class . '::renderAsides', []],
-    ];
-    foreach ($aside_manager->getAll() as $id => $aside) {
-      $element['#cache']['keys'][] = $id;
-      $renderer->addCacheableDependency($element, $aside);
-    }
-    return \Drupal::service('render_placeholder_generator')->createPlaceholder($element);
-  }
-
-  /**
-   * Builds the asides as a structured array ready for drupal_render().
-   *
-   * @return array
    *   A renderable array.
    */
-  public static function renderAsides() {
-    $aside_manager = static::uxAsideManager();
-
+  public static function preRenderAsides(array $element) {
     $element = [
       '#theme' => 'ux_asides',
       '#attached' => [
@@ -73,44 +46,7 @@ class UxAsides extends RenderElement {
         ],
       ],
     ];
-
-    $asides = $aside_manager->getAll();
-    if (!empty($asides)) {
-      $options = $aside_manager->getOptions('content', TRUE, TRUE);
-      // Add base options.
-      $element['#attached']['drupalSettings']['ux']['aside']['options'] = $options;
-      if (!empty($options['theme'])) {
-        $element['#attached']['library'][] = 'ux_aside/ux_aside.theme.' . $options['theme'];
-      }
-
-      foreach ($aside_manager->getAll() as $id => $aside) {
-        $element['#content'][$id] = [
-          '#type' => 'ux_aside',
-          '#aside' => $aside,
-        ];
-      }
-    }
     return $element;
-  }
-
-  /**
-   * Wraps the aside manager.
-   *
-   * @return \Drupal\ux_aside\UxAsideManagerInterface
-   *   The UX Aside manager.
-   */
-  protected static function uxAsideManager() {
-    return \Drupal::service('ux_aside.manager');
-  }
-
-  /**
-   * Wraps the renderer.
-   *
-   * @return \Drupal\Core\Render\RendererInterface
-   *   The Drupal render service.
-   */
-  protected static function renderer() {
-    return \Drupal::service('renderer');
   }
 
 }

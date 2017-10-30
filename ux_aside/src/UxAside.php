@@ -220,10 +220,16 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
    *   An associative array suitable for a render array.
    */
   public function toRenderArray() {
-    return [
+    $element = [];
+    $element['trigger'] = [
       '#type' => 'ux_aside_trigger',
       '#aside' => $this,
     ];
+    $element['content'] = [
+      '#type' => 'ux_aside',
+      '#aside' => $this,
+    ];
+    return $element;
   }
 
   /**
