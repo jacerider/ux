@@ -32,6 +32,8 @@ class UxAsides extends RenderElement {
    *   A renderable array.
    */
   public static function preRenderAsides(array $element) {
+    $aside_manager = static::uxAsideManager();
+
     $element = [
       '#theme' => 'ux_asides',
       '#attached' => [
@@ -46,7 +48,23 @@ class UxAsides extends RenderElement {
         ],
       ],
     ];
+    $options = $aside_manager->getOptions('content', TRUE, TRUE);
+    // Add base options.
+    $element['#attached']['drupalSettings']['ux']['aside']['options'] = $options;
+    if (!empty($options['theme'])) {
+      $element['#attached']['library'][] = 'ux_aside/ux_aside.theme.' . $options['theme'];
+    }
     return $element;
+  }
+
+  /**
+   * Wraps the aside manager.
+   *
+   * @return \Drupal\ux_aside\UxAsideManagerInterface
+   *   The UX Aside manager.
+   */
+  protected static function uxAsideManager() {
+    return \Drupal::service('ux_aside.manager');
   }
 
 }
