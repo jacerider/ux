@@ -239,7 +239,6 @@ function template_preprocess_ux_form_element_container(array &$variables) {
   if (isset($element['#attributes']['class']) && is_array($element['#attributes']['class'])) {
     foreach ($element['#attributes']['class'] as $key => $class) {
       if (!in_array($class, ['form-wrapper', 'js-form-wrapper'])) {
-        // unset($attributes['class'][$key]);
         $variables['attributes']['class'][] = 'ux-form-container-' . $class;
       }
     }
@@ -285,14 +284,14 @@ function ux_form_preprocess_field_multiple_value_form(&$variables) {
 }
 
 /**
- * Remove inherited classes and ids from fieldset and container elements
+ * Remove inherited classes and ids from fieldset and container elements.
  *
  * @param array $attributes
  *   An attributes array.
  * @param array $element
  *   An element array.
  */
-function ux_form_attribute_convert(array &$attributes, $element) {
+function ux_form_attribute_convert(array &$attributes, array $element) {
   // Remove ID if element is wrapped.
   if (!empty($element['#ux_wrapper_supported'])) {
     if (isset($attributes['id'])) {
@@ -316,4 +315,29 @@ function ux_form_inline_convert(array &$attributes) {
       }
     }
   }
+}
+
+/**
+ * Get available themes.
+ */
+function ux_form_themes() {
+  return [
+    'light' => t('Light'),
+    'dark' => t('Dark'),
+    'blue' => t('Blue'),
+    'blue.dark' => t('Blue Dark'),
+    'olive' => t('Olive'),
+    'red' => t('Red'),
+  ];
+}
+
+/**
+ * Implements hook_library_info_build().
+ */
+function ux_form_library_info_build() {
+  $libraries = [];
+  foreach (ux_form_themes() as $theme => $label) {
+    $libraries['ux_form.theme.' . $theme]['css']['component']['css/themes/ux-form.' . $theme . '.css'] = [];
+  }
+  return $libraries;
 }

@@ -347,6 +347,10 @@
   width: auto;
 }
 
+.ux-form-input .ux-form-input-item {
+  width: 100%;
+}
+
 .ux-form-input .ux-form-input-line {
   display: block;
   height: 2px;
