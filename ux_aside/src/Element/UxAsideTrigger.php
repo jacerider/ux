@@ -4,6 +4,7 @@ namespace Drupal\ux_aside\Element;
 
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\ux_aside\UxAsideInterface;
+use Drupal\Component\Utility\NestedArray;
 
 /**
  * Provides a render element for an aside trigger.
@@ -39,12 +40,12 @@ class UxAsideTrigger extends RenderElement {
 
     if ($aside instanceof UxAsideInterface) {
       $aside->prepareToRender();
+      $element['#attributes'] = isset($element['#attributes']) ? $element['#attributes'] : [];
+      $element['#attributes'] = NestedArray::mergeDeep($aside->getTriggerAttributes(), $element['#attributes']);
+      $element['#attributes']['class'][] = 'ux-aside-trigger-' . $aside->id();
       $element['#cache']['keys'] = ['ux_asides', 'ux_aside', $aside->id()];
       $element['#cache']['tags'] = $aside->getCacheTags();
       $element['#cache']['contexts'] = $aside->getCacheContexts();
-      $element['#attributes']['data-ux-aside'] = $aside->id();
-      $element['#attributes']['class'][] = 'ux-aside-trigger';
-      $element['#attributes']['class'][] = 'ux-aside-trigger-' . $aside->id();
       $element['#label'] = $aside->getTrigger();
     }
 

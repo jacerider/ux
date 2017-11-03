@@ -214,22 +214,54 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
   }
 
   /**
-   * Returns the trigger for a render array.
+   * Returns the trigger and content as a render array.
    *
    * @return array
-   *   An associative array suitable for a render array.
+   *   An associative array suitable as a render array.
    */
   public function toRenderArray() {
     $element = [];
-    $element['trigger'] = [
+    $element['trigger'] = $this->toTriggerRenderArray();
+    $element['content'] = $this->toContentRenderArray();
+    return $element;
+  }
+
+  /**
+   * Returns the trigger as a render array.
+   *
+   * @return array
+   *   An associative array suitable as a render array.
+   */
+  public function toTriggerRenderArray() {
+    return [
       '#type' => 'ux_aside_trigger',
       '#aside' => $this,
     ];
-    $element['content'] = [
+  }
+
+  /**
+   * Returns the content as a render array.
+   *
+   * @return array
+   *   An associative array suitable as a render array.
+   */
+  public function toContentRenderArray() {
+    return [
       '#type' => 'ux_aside',
       '#aside' => $this,
     ];
-    return $element;
+  }
+
+  /**
+   * Get the attributes needed to turn an element into a trigger.
+   *
+   * @return array
+   *   An associative array suitable as an attribute array.
+   */
+  public function getTriggerAttributes() {
+    $attributes['data-ux-aside'] = $this->id();
+    $attributes['class'][] = 'ux-aside-trigger';
+    return $attributes;
   }
 
   /**
