@@ -20,7 +20,7 @@
       var _this = this;
       if (settings.ux && settings.ux.aside && settings.ux.aside.items) {
         var $wrapper = $('#ux-asides');
-        $(document).once('ux-aside').on('drupalViewportOffsetChange.ux-aside', _this.resize());
+        $(document).once('ux-aside').on('drupalViewportOffsetChange.ux-aside', _this.resize);
         _this.resize();
 
         for (var id in settings.ux.aside.items) {
