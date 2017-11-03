@@ -1,7 +1,0 @@
-name: UX | UI
-type: module
-description: Provides a collection of interface elements and fields.
-core: 8.x
-package: User Experience
-dependencies:
-  - ux
