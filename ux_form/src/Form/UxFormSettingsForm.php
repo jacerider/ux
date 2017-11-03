@@ -135,13 +135,7 @@ class UxFormSettingsForm extends ConfigFormBase {
       $element['theme'] = [
         '#type' => 'select',
         '#title' => $this->t('Theme'),
-        '#options' => [
-          'light' => $this->t('Light'),
-          'dark' => $this->t('Dark'),
-          'blue' => $this->t('Blue'),
-          'blue.dark' => $this->t('Blue Dark'),
-          'olive' => $this->t('Olive'),
-        ],
+        '#options' => ux_form_themes(),
         '#default_value' => $this->getSetting($theme_id, 'theme'),
         '#states' => $states,
       ];
