@@ -37,6 +37,14 @@
   margin-bottom: 0;
 }
 
+.ux-form .form-wrapper > .ux-form-element:first-child {
+  margin-top: 0;
+}
+
+.ux-form .form-wrapper > .ux-form-element:last-child {
+  margin-bottom: 0;
+}
+
 .ux-form .ux-form-element-float {
   margin-top: 2.875rem;
   margin-bottom: 1.25rem;

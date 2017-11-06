@@ -36,6 +36,21 @@
     }
   }
 
+  // May have side-effects but currently used to keep margins consistant.
+  .form-wrapper {
+
+    > .ux-form-element {
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
   .ux-form-element-float {
     margin-top: $global-margin + $label-height;
     margin-bottom: $global-margin;
