@@ -12,6 +12,23 @@ use Drupal\Core\Template\Attribute;
 class UxMenuLinkTree extends MenuLinkTree {
 
   /**
+   * Flag indicating if the parent menu item should be appended.
+   *
+   * @var bool
+   */
+  protected $prependParent = TRUE;
+
+  /**
+   * Set the parepend parent flag value.
+   *
+   * @param bool $value
+   *   The value to set.
+   */
+  public function setPrependParent($value = TRUE) {
+    $this->prependParent = $value;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build(array $tree) {
@@ -99,7 +116,7 @@ class UxMenuLinkTree extends MenuLinkTree {
         $data->submenu = $sublevel . '-' . $section;
 
         // Add parent to submenu if it is a URL.
-        if ($data->link->getUrlObject()->toString()) {
+        if ($this->prependParent && $data->link->getUrlObject()->toString()) {
           $parent_data = clone $data;
           $parent_data->isSubmenuParent = TRUE;
           $subtree = [$i => $parent_data] + $subtree;

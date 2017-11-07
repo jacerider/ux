@@ -24,7 +24,7 @@ use Drupal\ux_aside\UxAsideManagerInterface;
  *   deriver = "Drupal\ux_menu\Plugin\Derivative\UxMenuAsideBlock"
  * )
  */
-class UxMenuAsideBlock extends UxMenuBlock {
+class UxMenuAsideBlock extends UxMenuSlideBlock {
 
   /**
    * The aside manager.
