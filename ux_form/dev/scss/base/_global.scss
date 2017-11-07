@@ -39,14 +39,17 @@
   // May have side-effects but currently used to keep margins consistant.
   .form-wrapper {
 
-    > .ux-form-element {
+    &:not(.ux-form-inline) {
 
-      &:first-child {
-        margin-top: 0;
-      }
+      > .ux-form-element {
 
-      &:last-child {
-        margin-bottom: 0;
+        &:first-child {
+          margin-top: 0;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
   }

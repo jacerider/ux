@@ -37,11 +37,11 @@
   margin-bottom: 0;
 }
 
-.ux-form .form-wrapper > .ux-form-element:first-child {
+.ux-form .form-wrapper:not(.ux-form-inline) > .ux-form-element:first-child {
   margin-top: 0;
 }
 
-.ux-form .form-wrapper > .ux-form-element:last-child {
+.ux-form .form-wrapper:not(.ux-form-inline) > .ux-form-element:last-child {
   margin-bottom: 0;
 }
 
