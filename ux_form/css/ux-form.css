@@ -37,11 +37,11 @@
   margin-bottom: 0;
 }
 
-.ux-form .form-wrapper:not(.ux-form-inline) > .ux-form-element:first-child {
+.ux-form .form-wrapper > .ux-form-element:first-child {
   margin-top: 0;
 }
 
-.ux-form .form-wrapper:not(.ux-form-inline) > .ux-form-element:last-child {
+.ux-form .form-wrapper > .ux-form-element:last-child {
   margin-bottom: 0;
 }
 
@@ -145,6 +145,7 @@
   -ms-flex: auto;
       flex: auto;
   width: 100%;
+  margin: 0;
 }
 
 .ux-form-inline .fieldset-wrapper {
@@ -801,7 +802,7 @@
 }
 
 .ux-form .field-add-more-submit {
-  margin-top: 1.25rem;
+  margin-top: 0 !important;
 }
 
 .ux-form table .ux-form-element {
