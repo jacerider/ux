@@ -30,7 +30,7 @@
               var options = _this.getOptions(settings.ux.aside, id);
               $element.uxAside(options);
             }
-            var $trigger = $('[data-ux-aside="' + id + '"').once('ux-aside');
+            var $trigger = $('[data-ux-aside="' + id + '"]').once('ux-aside');
             if ($trigger.length) {
               $trigger.on('click', function (e) {
                 e.preventDefault();
