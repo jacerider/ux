@@ -66,6 +66,24 @@ class UxAsideOptions extends UxOptionsBase {
   /**
    * {@inheritdoc}
    */
+  public function optionsMerge(array $options, $is_processed = FALSE) {
+    $options = parent::optionsMerge($options, $is_processed);
+    // Strange issue where checkboxes that return TRUE are not being saved when
+    // submitted via AJAX. As a result, we turn them to strings 'true' and
+    // convert them here.
+    if (isset($options['content'])) {
+      foreach ($options['content'] as &$value) {
+        if ($value === 'true') {
+          $value = TRUE;
+        }
+      }
+    }
+    return $options;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function optionsForm(array $defaults = []) {
 
     $form = [
@@ -156,7 +174,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Display close button in the header.'),
       '#default_value' => $defaults['content']['closeButton'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
     ];
 
     // Position settings.
@@ -170,7 +188,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Attach to top of page'),
       '#default_value' => $defaults['content']['attachTop'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
       '#attributes' => [
         'class' => ['ux-aside-attach-top'],
       ],
@@ -191,7 +209,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Attach to bottom of page'),
       '#default_value' => $defaults['content']['attachBottom'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
       '#attributes' => [
         'class' => ['ux-aside-attach-bottom'],
       ],
@@ -212,7 +230,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Attach to left of page'),
       '#default_value' => $defaults['content']['attachLeft'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
       '#attributes' => [
         'class' => ['ux-aside-attach-left'],
       ],
@@ -233,7 +251,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Attach to right of page'),
       '#default_value' => $defaults['content']['attachRight'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
       '#attributes' => [
         'class' => ['ux-aside-attach-right'],
       ],
@@ -254,7 +272,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Force to open aside in fullscreen.'),
       '#default_value' => $defaults['content']['openFullscreen'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
       '#attributes' => [
         'class' => ['ux-aside-open-fullscreen'],
       ],
@@ -275,7 +293,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Show a button in aside header to allow full screen expanding.'),
       '#default_value' => $defaults['content']['fullscreen'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
       '#states' => [
         'disabled' => [
           '.ux-aside-open-fullscreen' => ['checked' => TRUE],
@@ -287,7 +305,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Force overflow hidden in the document when opening the aside, closing the aside, overflow will be restored.'),
       '#default_value' => $defaults['content']['bodyOverflow'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
     ];
 
     // Position settings.
@@ -310,16 +328,16 @@ class UxAsideOptions extends UxOptionsBase {
 
     $form['content']['style']['overlay'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable  background overlay.'),
+      '#title' => $this->t('Enable background overlay.'),
       '#default_value' => $defaults['content']['overlay'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
     ];
 
     $form['content']['style']['borderBottom'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable border bottom.'),
       '#default_value' => $defaults['content']['borderBottom'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
     ];
 
     $form['content']['style']['padding'] = [
@@ -416,7 +434,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('If true, the aside opens automatically with any user action.'),
       '#default_value' => $defaults['content']['autoOpen'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
     ];
 
     $form['content']['timeout']['timeout'] = [
@@ -430,7 +448,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Enable timeout progress bar.'),
       '#default_value' => $defaults['content']['timeoutProgressbar'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
     ];
 
     // Timeout settings.
@@ -446,7 +464,7 @@ class UxAsideOptions extends UxOptionsBase {
       '#title' => $this->t('Auto-focus on first input'),
       '#description' => $this->t('Will be ignored if the input does not contain any form fields.'),
       '#default_value' => $defaults['content']['focusInput'],
-      '#return_value' => TRUE,
+      '#return_value' => 'true',
     ];
 
     return $form;

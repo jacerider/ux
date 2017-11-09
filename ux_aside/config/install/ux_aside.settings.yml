@@ -30,7 +30,7 @@ options:
     history: false # Enable browsing history with hash.
     restoreDefaultContent: false # Reset the aside to default to be opened again.
     autoOpen: false # If true, the aside opens automatically with any user action. Or you can set a delay time (in milliseconds) to open.
-    bodyOverflow: false # Forcing overflow hidden in the document when opening the aside, closing the aside, overflow will be restored.
+    bodyOverflow: true # Forcing overflow hidden in the document when opening the aside, closing the aside, overflow will be restored.
     fullscreen: false # Show a button in aside header to expand.
     openFullscreen: false # Force to open aside in fullscreen.
     openTall: false # Force to open aside with 100% height

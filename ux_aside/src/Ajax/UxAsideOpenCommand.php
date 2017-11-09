@@ -5,7 +5,6 @@ namespace Drupal\ux_aside\Ajax;
 use Drupal\Core\Ajax\CommandInterface;
 use Drupal\Core\Ajax\CommandWithAttachedAssetsInterface;
 use Drupal\Core\Ajax\CommandWithAttachedAssetsTrait;
-use Drupal\Component\Render\PlainTextOutput;
 
 /**
  * Defines an AJAX command to open certain content in a aside.
@@ -33,8 +32,9 @@ class UxAsideOpenCommand implements CommandInterface, CommandWithAttachedAssetsI
   protected $content;
 
   /**
-   * Stores aside-specific options passed directly to asides. Any
-   * jQuery UI option can be used. See http://api.jqueryui.com/aside.
+   * Stores aside-specific options passed directly to asides.
+   *
+   * Any jQuery UI option can be used. See http://api.jqueryui.com/aside.
    *
    * @var array
    */
@@ -84,6 +84,7 @@ class UxAsideOpenCommand implements CommandInterface, CommandWithAttachedAssetsI
    * Returns the aside options.
    *
    * @return array
+   *   The options.
    */
   public function getOptions() {
     return $this->options + [
@@ -99,7 +100,7 @@ class UxAsideOpenCommand implements CommandInterface, CommandWithAttachedAssetsI
    *   Options to be passed to the aside implementation. Any jQuery UI option
    *   can be used. See http://api.jqueryui.com/aside.
    */
-  public function setOptions($options) {
+  public function setOptions(array $options) {
     $this->options = $options;
   }
 
@@ -139,6 +140,7 @@ class UxAsideOpenCommand implements CommandInterface, CommandWithAttachedAssetsI
       '#type' => 'ux_aside',
       '#aside' => $aside,
     ];
+    $this->content['#attached']['library'][] = 'ux_aside/ux_aside.ajax';
 
     return [
       'command' => 'uxAsideOpen',
