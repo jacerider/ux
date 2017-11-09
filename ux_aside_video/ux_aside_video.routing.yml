@@ -1,0 +1,8 @@
+
+ux_aside_video.view:
+  path: '/api/ux-aside-video/{entity_type}/{entity_id}/{langcode}/{view_mode}/{field_name}/{delta}'
+  defaults:
+    _controller: '\Drupal\ux_aside_video\Controller\UxAsideVideoController::view'
+    _title: 'View'
+  requirements:
+    _permission: 'access content'
