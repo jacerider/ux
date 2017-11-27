@@ -1,3 +1,12 @@
+.ux-form-element-type-radios {
+
+  .ux-form-radios {
+
+    .fieldset-wrapper > * {
+      margin-top: $global-margin / 4;
+    }
+  }
+}
 
 .ux-form-radio {
   position: relative;

@@ -508,6 +508,10 @@
   font-weight: 700;
 }
 
+.ux-form-element-type-radios .ux-form-radios .fieldset-wrapper > * {
+  margin-top: 0.3125rem;
+}
+
 .ux-form-radio {
   position: relative;
 }
