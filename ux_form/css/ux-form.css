@@ -142,8 +142,12 @@
 }
 
 .ux-form-inline > .ux-form-element {
-  -ms-flex: auto;
-      flex: auto;
+  -ms-flex-positive: 1;
+      flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: auto;
+      flex-basis: auto;
   width: 100%;
   margin: 0;
 }
@@ -159,6 +163,10 @@
   -ms-flex: auto !important;
       flex: auto !important;
   width: 100%;
+}
+
+.ux-form-element-type-checkboxes .ux-form-checkboxes .fieldset-wrapper > * {
+  margin-top: 0.3125rem;
 }
 
 .ux-form-checkbox {
@@ -299,6 +307,17 @@
 .ux-form-datetime-inline .ux-form-time {
   display: inline-block;
   padding-right: 0.625rem;
+}
+
+.picker select.picker__select--year,
+.picker select.picker__select--month {
+  font-size: inherit;
+  line-height: inherit;
+  -webkit-appearance: menulist;
+     -moz-appearance: menulist;
+          appearance: menulist;
+  margin: 0 2px;
+  padding: 0;
 }
 
 .ux-form-element .entity-meta {
@@ -992,25 +1011,27 @@
 
 .ux-form-element .field--type-address .address-container-inline > .ux-form-element,
 .ux-form-element .field--type-address3 .address-container-inline > .ux-form-element {
+  -ms-flex-positive: 1;
+      flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: 25%;
+      flex-basis: 25%;
   margin: 0;
   padding: 0 0.625rem;
 }
 
 .ux-form-element .field--type-address .address-container-inline > .ux-form-element:first-child,
 .ux-form-element .field--type-address3 .address-container-inline > .ux-form-element:first-child {
-  width: 100%;
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
   padding-left: 0;
 }
 
 .ux-form-element .field--type-address .address-container-inline > .ux-form-element:last-child,
 .ux-form-element .field--type-address3 .address-container-inline > .ux-form-element:last-child {
   padding-right: 0;
-}
-
-.ux-form-element .field--type-address .address-container-inline .ux-form-element-name-locality,
-.ux-form-element .field--type-address3 .address-container-inline .ux-form-element-name-locality {
-  -ms-flex: auto;
-      flex: auto;
+  width: 20%;
 }
 
 .ux-form-element .field--type-double-field .double-field-elements {
@@ -1019,7 +1040,8 @@
 }
 
 .ux-form-element .field--type-double-field .double-field-elements > div {
-  width: 50%;
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
   padding-top: 0.625rem;
 }
 
@@ -1037,24 +1059,10 @@
   margin: 0;
 }
 
-.ux-form-element .field--type-fieldception .fieldception-single .fieldception-group:first-child {
-  margin-top: 1.25rem;
-}
-
-.ux-form-element .field--type-fieldception .fieldception-multiple .field-multiple-table {
-  margin-top: 1.25rem;
-}
-
-.ux-form-element .field--type-fieldception .fieldception-multiple .fieldception-group:first-child {
-  border-top: 1px solid transparent;
-  margin-top: 1.25rem;
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr td {
+  border-top: 1px solid red;
   padding-top: 1.25rem;
-}
-
-.ux-form-element .field--type-fieldception .fieldception-multiple.fieldception-groups-0 .fieldception-group:first-child {
-  border-top: 0;
-  margin-top: 0.625rem;
-  padding-top: 0;
+  padding-bottom: 1.25rem;
 }
 
 .ux-form-element .field--type-fieldception .field-multiple-table tbody tr .fieldception-groups-0 .ux-form-inline label {
@@ -1067,6 +1075,7 @@
 
 .ux-form-element .field--type-fieldception .field-multiple-table tbody tr:first-child td {
   padding-top: 0;
+  border-top: 0 !important;
 }
 
 .ux-form-element .field--type-fieldception .field-multiple-table tbody tr:first-child .fieldception-group:first-child {
@@ -1077,6 +1086,10 @@
 
 .ux-form-element .field--type-fieldception .field-multiple-table tbody tr:first-child .fieldception-groups-0 .ux-form-inline label {
   display: block;
+}
+
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr:last-child td {
+  padding-bottom: 0;
 }
 
 /*# sourceMappingURL=ux-form.css.map */
