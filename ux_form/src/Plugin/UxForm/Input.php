@@ -11,7 +11,6 @@ namespace Drupal\ux_form\Plugin\UxForm;
  *   element_types = {
  *     "textfield",
  *     "number",
- *     "tel",
  *     "url",
  *     "email",
  *     "password",

@@ -62,16 +62,6 @@ ux_form.select:
     - ux_form/ux_form.input
     # - ux_form/ux_form.checkbox
 
-ux_form.picker:
-  version: VERSION
-  css:
-    component:
-      lib/pickadate/compressed/themes/default.css: {}
-  js:
-    lib/pickadate/compressed/picker.js: { minified: true }
-  dependencies:
-    - core/jquery
-
 ux_form.date:
   version: VERSION
   css:
@@ -82,7 +72,7 @@ ux_form.date:
     js/ux-form.date.js: { minified: true }
   dependencies:
     # - ux_form/ux_form
-    - ux_form/ux_form.picker
+    - ux_form/libraries.picker
 
 ux_form.time:
   version: VERSION
@@ -94,4 +84,31 @@ ux_form.time:
     js/ux-form.time.js: { minified: true }
   dependencies:
     # - ux_form/ux_form
-    - ux_form/ux_form.picker
+    - ux_form/libraries.picker
+
+ux_form.inputmask:
+  version: VERSION
+  js:
+    js/ux-form.inputmask.js: { minified: true }
+  dependencies:
+    - ux_form/libraries.inputmask
+
+libraries.picker:
+  version: VERSION
+  css:
+    component:
+      lib/pickadate/compressed/themes/default.css: {}
+  js:
+    lib/pickadate/compressed/picker.js: { minified: true }
+  dependencies:
+    - core/jquery
+
+libraries.inputmask:
+  version: VERSION
+  # css:
+  #   component:
+  #     lib/inputmask/inputmask.css: {}
+  js:
+    lib/inputmask/jquery.inputmask.bundle.min.js: { minified: true }
+  dependencies:
+    - core/jquery
