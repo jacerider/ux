@@ -16,6 +16,8 @@
         var datepickerSettings = {};
         var dateFormat = $element.data('drupalDateFormat');
         datepickerSettings.format = 'mmmm d, yyyy';
+        datepickerSettings.selectYears = true;
+        datepickerSettings.selectMonths = true;
         // The date format is saved in PHP style, we need to convert to jQuery
         // datepicker.
         datepickerSettings.formatSubmit = _this.formatDateAsString(dateFormat);
