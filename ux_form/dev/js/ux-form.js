@@ -4,7 +4,8 @@
 
   Drupal.behaviors.uxForm = {
     attach: function (context) {
-      this.setLastElement(context);
+      // $('.ux-form-element-js')
+      // this.setLastElement(context);
     },
 
     setLastElement: function (context) {
@@ -18,8 +19,8 @@
   var $document = $(document);
   $document.on('state:visible', function (e) {
     if (e.trigger) {
+      // Integrate with state API to hide parent wrapper elements.
       $(e.target).closest('.ux-form-element-js').toggle(e.value);
-      // Drupal.behaviors.uxForm.setLastElement($(e.target).closest('.ux-form'));
     }
   });
 
