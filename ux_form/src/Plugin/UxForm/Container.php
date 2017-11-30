@@ -21,6 +21,17 @@ class Container extends UxFormBase {
    * {@inheritdoc}
    */
   public function process(&$element) {
+
+    // Special langcode field wrapper.
+    if (isset($element['widget']['#field_name']) && $element['widget']['#field_name'] === 'langcode') {
+      if (!isset($element['widget'][0]['value']['#options'])) {
+        // Do not wraper langcode field as it is empty if it has no options.
+        // No options means the language module is not enabled or only a single
+        // language is enabled.
+        $element['#ux_wrapper_supported'] = FALSE;
+      }
+    }
+
     $children = Element::children($element);
     $element['#ux_form_attributes']['class'][] = 'ux-form-container';
     $element['#ux_form_attributes']['class'][] = 'ux-form-container-js';
