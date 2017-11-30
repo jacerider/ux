@@ -5,7 +5,7 @@
     display: flex;
 
     > div {
-      width: 50%;
+      flex-basis: 50%;
       padding-top: $global-padding / 2;
     }
   }

@@ -36,21 +36,21 @@
     display: flex;
 
     > .ux-form-element {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 25%;
       margin: 0;
       padding: 0 $global-padding / 2;
 
       &:first-child {
-        width: 100%;
+        flex-basis: 50%;
         padding-left: 0;
       }
 
       &:last-child {
         padding-right: 0;
+        width: 20%;
       }
-    }
-
-    .ux-form-element-name-locality {
-      flex: auto;
     }
   }
 }

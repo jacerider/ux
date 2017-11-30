@@ -25,3 +25,15 @@
     padding-right: $global-padding / 2;
   }
 }
+
+.picker {
+
+  select.picker__select--year,
+  select.picker__select--month {
+    font-size: inherit;
+    line-height: inherit;
+    appearance: menulist;
+    margin: 0 2px;
+    padding: 0;
+  }
+}

@@ -113,7 +113,9 @@
   width: 100%;
 
   > .ux-form-element {
-    flex: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
     width: 100%;
     margin: 0;
   }

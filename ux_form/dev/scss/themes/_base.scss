@@ -399,13 +399,15 @@ html {
 ////////////////////////////////////////////////////////////////////////////////
 .ux-form-element .field--type-fieldception {
 
-  .fieldception-multiple {
+  .field-multiple-table {
 
-    .fieldception-group {
+    tbody {
 
-      // Field with multiple groups should have more spacing between.
-      &:first-child {
-        border-top: $divider-style;
+      tr {
+
+        td {
+          border-top: $divider-style;
+        }
       }
     }
   }
