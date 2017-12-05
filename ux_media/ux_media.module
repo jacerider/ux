@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains ux_entity_browser.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ux_entity_browser_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ux_entity_browser module.
+    case 'help.page.ux_entity_browser':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides enhancements to Entity Browser.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

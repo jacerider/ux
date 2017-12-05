@@ -1,0 +1,12 @@
+name: UX | Media
+type: module
+description: Provides enhancements to media handling.
+core: 8.x
+package: User Experience
+dependencies:
+  - ux
+  - ux_aside
+  - media
+  - entity_browser
+  - dropzonejs
+  - entity_browser_enhanced
