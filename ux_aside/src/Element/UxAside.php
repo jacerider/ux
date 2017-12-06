@@ -48,6 +48,7 @@ class UxAside extends RenderElement {
       $element['#attributes'] = $aside->getContentAttributes()->toArray();
       $element['#attributes']['id'] = 'ux-aside-' . $aside->id();
       $element['#attributes']['class'][] = 'uxAside';
+      $element['#attributes']['class'][] = 'ux-aside-' . $aside->id();
       $element['#content'] = $aside->getContent();
       $element['#content_attributes']['class'][] = 'uxAside-inner';
       $element['#attached']['drupalSettings']['ux']['aside']['items'][$aside->id()] = $options;
