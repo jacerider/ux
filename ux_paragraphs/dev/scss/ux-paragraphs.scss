@@ -1,0 +1,34 @@
+@import '../../../dev/scss/util/*.scss'; // sass-lint:disable-line clean-import-paths
+@import '../../../dev/scss/base/variables';
+@import '../../../dev/scss/base/color';
+
+.ux-paragraph-add-more {
+  background: $black;
+
+  .uxAside-inner {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ux-button {
+    flex: 0 0 20%;
+    display: block;
+    color: $white;
+    padding: rem-calc(30);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background $global-speed;
+    box-sizing: border-box;
+
+    .micon {
+      display: block;
+      font-size: rem-calc(40);
+      padding-bottom: $global-padding / 2;
+    }
+
+    &:hover {
+      background: gray(80);
+    }
+  }
+}

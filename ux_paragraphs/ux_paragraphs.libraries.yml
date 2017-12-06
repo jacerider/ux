@@ -1,0 +1,5 @@
+ux_paragraphs:
+  version: VERSION
+  css:
+    component:
+      css/ux-paragraphs.css: {}

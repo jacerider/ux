@@ -1,0 +1,9 @@
+name: UX | Paragraphs
+type: module
+description: Provides enhancements to paragraphs module.
+core: 8.x
+package: User Experience
+dependencies:
+  - ux
+  - ux_aside
+  - paragraphs
