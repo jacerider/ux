@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Theme functions for ux aside.
+ */
+
+use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Template\Attribute;
+use Drupal\Component\Utility\NestedArray;
+
+/**
+ * Prepares variables for ux_aside_container element templates.
+ *
+ * Default template: ux-aside-container.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #attributes, #children, #description, #id, #title,
+ *     #value.
+ */
+function template_preprocess_ux_aside_container(&$variables) {
+  $uxAsideManager = \Drupal::service('ux_aside.manager');
+  $element = $variables['element'];
+  Element::setAttributes($element, ['id']);
+  RenderElement::setAttributes($element);
+
+  $variables['attributes'] = isset($element['#attributes']) ? $element['#attributes'] : [];
+  $variables['prefix'] = isset($element['#field_prefix']) ? $element['#field_prefix'] : NULL;
+  $variables['suffix'] = isset($element['#field_suffix']) ? $element['#field_suffix'] : NULL;
+  $aside = $uxAsideManager->create($element['#id'])
+    ->setContent(['#markup' => $element['#children']]);
+
+  // Options passed to UX aside.
+  $options = [];
+
+  $title = t('Trigger');
+  if (isset($element['#title']) && $element['#title'] !== '') {
+    $title = $element['#title'];
+    $options['content']['title'] = $title;
+  }
+
+  if (isset($element['#options']) && is_array($element['#options'])) {
+    $options = NestedArray::mergeDeep($element['#options'], $options);
+  }
+
+  // Content classes.
+  if (isset($element['#aside_attributes']) && is_array($element['#aside_attributes'])) {
+    $aside_attributes = $aside->getContentAttributes();
+    foreach ($element['#aside_attributes'] as $attribute => $value) {
+      $aside_attributes->setAttribute($attribute, $value);
+    }
+  }
+
+  // Trigger classes.
+  if (isset($element['#trigger_attributes']) && is_array($element['#trigger_attributes'])) {
+    $trigger_attributes = $aside->getTriggerAttributes();
+    foreach ($element['#trigger_attributes'] as $attribute => $value) {
+      $trigger_attributes->setAttribute($attribute, $value);
+    }
+  }
+
+  $aside->setTriggerText($title);
+  $aside->setOptions($options);
+
+  $variables['children'] = $aside->toRenderArray();
+
+  // Suppress error messages.
+  $variables['errors'] = NULL;
+}

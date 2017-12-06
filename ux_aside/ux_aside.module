@@ -29,6 +29,10 @@ function ux_aside_theme($existing, $type, $theme, $path) {
         'attributes' => [],
       ],
     ],
+    'ux_aside_container' => [
+      'render element' => 'element',
+      'file' => 'ux_aside.theme',
+    ],
   ];
 }
 
