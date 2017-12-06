@@ -1,0 +1,1 @@
+!function(t,u){"use strict";u.behaviors.uxButton={attach:function(u){t(".ux-button-trigger",u).once("ux-button").on("click",function(u){u.preventDefault(),t(this).closest(".ux-button").find('input[type="submit"]').trigger("mousedown").trigger("mouseup").trigger("click")})}}}(jQuery,Drupal);

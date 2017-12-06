@@ -47,6 +47,14 @@ ux.select_as_links:
     - core/jquery.once
     - core/drupal
 
+ux.button:
+  version: VERSION
+  js:
+    js/ux.button.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
 jquery.easing:
   version: VERSION
   js:
