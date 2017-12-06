@@ -32,6 +32,7 @@
   var $window = $(window),
     $document = $(document),
     PLUGIN_NAME = 'uxAside',
+    PLUGIN_NAME_LOWER = PLUGIN_NAME.toLowerCase(),
     STATES = {
       CLOSING: 'closing',
       CLOSED: 'closed',
@@ -105,7 +106,7 @@
       this.$overlay = $('<div class="' + PLUGIN_NAME + '-overlay" style="background-color:' + options.overlayColor + '"></div>');
       this.$navigate = $('<div class="' + PLUGIN_NAME + '-navigate"><div class="' + PLUGIN_NAME + '-navigate-caption">Use</div><button class="' + PLUGIN_NAME + '-navigate-prev"></button><button class="' + PLUGIN_NAME + '-navigate-next"></button></div>');
       this.group = {
-        name: this.$element.attr('data-' + PLUGIN_NAME + '-group'),
+        name: this.$element.attr('data-' + PLUGIN_NAME_LOWER + '-group'),
         index: null,
         ids: []
       };
@@ -119,14 +120,14 @@
 
       if (this.group.name === undefined && options.group !== "") {
         this.group.name = options.group;
-        this.$element.attr('data-' + PLUGIN_NAME + '-group', options.group);
+        this.$element.attr('data-' + PLUGIN_NAME_LOWER + '-group', options.group);
       }
       if (this.options.loop === true) {
-        this.$element.attr('data-' + PLUGIN_NAME + '-loop', true);
+        this.$element.attr('data-' + PLUGIN_NAME_LOWER + '-loop', true);
       }
 
       $.each(this.options, function(index, val) {
-        var attr = that.$element.attr('data-' + PLUGIN_NAME + '-' + index);
+        var attr = that.$element.attr('data-' + PLUGIN_NAME_LOWER + '-' + index);
         try {
           if (typeof attr !== typeof undefined) {
 
@@ -202,11 +203,11 @@
       this.$header = $('<div class="' + PLUGIN_NAME + '-header"><h2 class="' + PLUGIN_NAME + '-header-title">' + this.options.title + '</h2><div class="' + PLUGIN_NAME + '-header-subtitle">' + this.options.subtitle + '</div><div class="' + PLUGIN_NAME + '-header-buttons"></div></div>');
 
       if (this.options.closeButton === true) {
-        this.$header.find('.' + PLUGIN_NAME + '-header-buttons').append('<a href="javascript:void(0)" class="' + PLUGIN_NAME + '-button ' + PLUGIN_NAME + '-button-close" data-' + PLUGIN_NAME + '-close></a>');
+        this.$header.find('.' + PLUGIN_NAME + '-header-buttons').append('<a href="javascript:void(0)" class="' + PLUGIN_NAME + '-button ' + PLUGIN_NAME + '-button-close" data-' + PLUGIN_NAME_LOWER + '-close></a>');
       }
 
       if (this.options.fullscreen === true) {
-        this.$header.find('.' + PLUGIN_NAME + '-header-buttons').append('<a href="javascript:void(0)" class="' + PLUGIN_NAME + '-button ' + PLUGIN_NAME + '-button-fullscreen" data-' + PLUGIN_NAME + '-fullscreen></a>');
+        this.$header.find('.' + PLUGIN_NAME + '-header-buttons').append('<a href="javascript:void(0)" class="' + PLUGIN_NAME + '-button ' + PLUGIN_NAME + '-button-fullscreen" data-' + PLUGIN_NAME_LOWER + '-fullscreen></a>');
       }
 
       if (this.options.buttons !== "") {
@@ -256,12 +257,12 @@
       if (groupName !== undefined && groupName !== this.group.name) {
         group = groupName;
         this.group.name = group;
-        this.$element.attr('data-' + PLUGIN_NAME + '-group', group);
+        this.$element.attr('data-' + PLUGIN_NAME_LOWER + '-group', group);
       }
       if (group !== undefined && group !== "") {
 
         var count = 0;
-        $.each($('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME + '-group=' + group + ']'), function(index, val) {
+        $.each($('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME_LOWER + '-group=' + group + ']'), function(index, val) {
 
           that.group.ids.push($(this)[0].id);
 
@@ -299,10 +300,10 @@
       function bindEvents() {
 
         // Close when button pressed
-        that.$element.off('click', '[data-' + PLUGIN_NAME + '-close]').on('click', '[data-' + PLUGIN_NAME + '-close]', function(e) {
+        that.$element.off('mousedown', '[data-' + PLUGIN_NAME_LOWER + '-close]').on('mousedown', '[data-' + PLUGIN_NAME_LOWER + '-close]', function(e) {
           e.preventDefault();
 
-          var transition = $(e.currentTarget).attr('data-' + PLUGIN_NAME + '-transitionOut');
+          var transition = $(e.currentTarget).attr('data-' + PLUGIN_NAME_LOWER + '-transitionOut');
 
           if (transition !== undefined) {
             that.close({
@@ -314,7 +315,7 @@
         });
 
         // Expand when button pressed
-        that.$element.off('click', '[data-' + PLUGIN_NAME + '-fullscreen]').on('click', '[data-' + PLUGIN_NAME + '-fullscreen]', function(e) {
+        that.$element.off('mousedown', '[data-' + PLUGIN_NAME_LOWER + '-fullscreen]').on('mousedown', '[data-' + PLUGIN_NAME_LOWER + '-fullscreen]', function(e) {
           e.preventDefault();
           if (that.isFullscreen === true) {
             that.isFullscreen = false;
@@ -333,7 +334,7 @@
         that.$navigate.off('click', '.' + PLUGIN_NAME + '-navigate-next').on('click', '.' + PLUGIN_NAME + '-navigate-next', function(e) {
           that.next(e);
         });
-        that.$element.off('click', '[data-' + PLUGIN_NAME + '-next]').on('click', '[data-' + PLUGIN_NAME + '-next]', function(e) {
+        that.$element.off('click', '[data-' + PLUGIN_NAME_LOWER + '-next]').on('click', '[data-' + PLUGIN_NAME_LOWER + '-next]', function(e) {
           that.next(e);
         });
 
@@ -341,7 +342,7 @@
         that.$navigate.off('click', '.' + PLUGIN_NAME + '-navigate-prev').on('click', '.' + PLUGIN_NAME + '-navigate-prev', function(e) {
           that.prev(e);
         });
-        that.$element.off('click', '[data-' + PLUGIN_NAME + '-prev]').on('click', '[data-' + PLUGIN_NAME + '-prev]', function(e) {
+        that.$element.off('click', '[data-' + PLUGIN_NAME_LOWER + '-prev]').on('click', '[data-' + PLUGIN_NAME_LOWER + '-prev]', function(e) {
           that.prev(e);
         });
       }
@@ -423,14 +424,14 @@
             var loop;
             if (that.group.index === 0) {
 
-              loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME + '-loop]').length;
+              loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME_LOWER + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME_LOWER + '-loop]').length;
 
               if (loop === 0 && that.options.loop === false)
                 that.$navigate.find('.' + PLUGIN_NAME + '-navigate-prev').hide();
             }
             if (that.group.index + 1 === that.group.ids.length) {
 
-              loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME + '-loop]').length;
+              loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME_LOWER + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME_LOWER + '-loop]').length;
 
               if (loop === 0 && that.options.loop === false)
                 that.$navigate.find('.' + PLUGIN_NAME + '-navigate-next').hide();
@@ -671,8 +672,8 @@
       if (e !== undefined && typeof e !== 'object') {
         e.preventDefault();
         modal = $(e.currentTarget);
-        transitionIn = modal.attr('data-' + PLUGIN_NAME + '-transitionIn');
-        transitionOut = modal.attr('data-' + PLUGIN_NAME + '-transitionOut');
+        transitionIn = modal.attr('data-' + PLUGIN_NAME_LOWER + '-transitionIn');
+        transitionOut = modal.attr('data-' + PLUGIN_NAME_LOWER + '-transitionOut');
       } else if (e !== undefined) {
         if (e.transitionIn !== undefined) {
           transitionIn = e.transitionIn;
@@ -688,7 +689,7 @@
 
       setTimeout(function() {
 
-        var loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME + '-loop]').length;
+        var loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME_LOWER + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME_LOWER + '-loop]').length;
         for (var i = that.group.index + 1; i <= that.group.ids.length; i++) {
 
           try {
@@ -737,8 +738,8 @@
       if (e !== undefined && typeof e !== 'object') {
         e.preventDefault();
         modal = $(e.currentTarget);
-        transitionIn = modal.attr('data-' + PLUGIN_NAME + '-transitionIn');
-        transitionOut = modal.attr('data-' + PLUGIN_NAME + '-transitionOut');
+        transitionIn = modal.attr('data-' + PLUGIN_NAME_LOWER + '-transitionIn');
+        transitionOut = modal.attr('data-' + PLUGIN_NAME_LOWER + '-transitionOut');
 
       } else if (e !== undefined) {
 
@@ -756,7 +757,7 @@
 
       setTimeout(function() {
 
-        var loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME + '-loop]').length;
+        var loop = $('.' + PLUGIN_NAME + '[data-' + PLUGIN_NAME_LOWER + '-group="' + that.group.name + '"][data-' + PLUGIN_NAME_LOWER + '-loop]').length;
 
         for (var i = that.group.index; i >= 0; i--) {
 
@@ -810,8 +811,8 @@
       }
       this.$element.html(this.$element.find('.' + PLUGIN_NAME + '-content').html());
 
-      this.$element.off('click', '[data-' + PLUGIN_NAME + '-close]');
-      this.$element.off('click', '[data-' + PLUGIN_NAME + '-fullscreen]');
+      this.$element.off('click', '[data-' + PLUGIN_NAME_LOWER + '-close]');
+      this.$element.off('click', '[data-' + PLUGIN_NAME_LOWER + '-fullscreen]');
 
       this.$element
         .off('.' + PLUGIN_NAME)
@@ -1282,13 +1283,13 @@
     }
   });
 
-  $document.off('click', '[data-' + PLUGIN_NAME + '-open]').on('click', '[data-' + PLUGIN_NAME + '-open]', function(e) {
+  $document.off('click', '[data-' + PLUGIN_NAME_LOWER + '-open]').on('click', '[data-' + PLUGIN_NAME_LOWER + '-open]', function(e) {
     e.preventDefault();
 
     var modal = $('.' + PLUGIN_NAME + ':visible');
-    var openModal = $(e.currentTarget).attr('data-' + PLUGIN_NAME + '-open');
-    var transitionIn = $(e.currentTarget).attr('data-' + PLUGIN_NAME + '-transitionIn');
-    var transitionOut = $(e.currentTarget).attr('data-' + PLUGIN_NAME + '-transitionOut');
+    var openModal = $(e.currentTarget).attr('data-' + PLUGIN_NAME_LOWER + '-open');
+    var transitionIn = $(e.currentTarget).attr('data-' + PLUGIN_NAME_LOWER + '-transitionIn');
+    var transitionOut = $(e.currentTarget).attr('data-' + PLUGIN_NAME_LOWER + '-transitionOut');
 
     if (transitionOut !== undefined) {
       modal.uxAside('close', {
