@@ -38,6 +38,13 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
   protected $options = [];
 
   /**
+   * The trigger Attribute object.
+   *
+   * @var \Drupal\Core\Template\Attribute
+   */
+  protected $triggerAttributes;
+
+  /**
    * The content Attribute object.
    *
    * @var \Drupal\Core\Template\Attribute
@@ -53,6 +60,10 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
   public function __construct($id) {
     $this->id = $id;
     $this->options = self::uxAsideOptions()->getOptions();
+    $this->triggerAttributes = new Attribute([
+      'data-ux-aside' => $this->id(),
+      'class' => ['ux-aside-trigger'],
+    ]);
     $this->contentAttributes = new Attribute();
     $this->addCacheTags(['config:ux_aside.settings']);
   }
@@ -259,9 +270,35 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
    *   An associative array suitable as an attribute array.
    */
   public function getTriggerAttributes() {
-    $attributes['data-ux-aside'] = $this->id();
-    $attributes['class'][] = 'ux-aside-trigger';
-    return $attributes;
+    return $this->triggerAttributes;
+  }
+
+  /**
+   * Adds classes or merges them on to array of existing CSS classes.
+   *
+   * @param string|array ...
+   *   CSS classes to add to the class attribute array.
+   *
+   * @return $this
+   */
+  public function setTriggerClass($classes) {
+    $this->triggerAttributes->addClass($classes);
+    return $this;
+  }
+
+  /**
+   * Sets values for an attribute key.
+   *
+   * @param string $attribute
+   *   Name of the attribute.
+   * @param string|array $value
+   *   Value(s) to set for the given attribute key.
+   *
+   * @return $this
+   */
+  public function setTriggerAttribute($attribute, $value) {
+    $this->triggerAttributes->setAttribute($attribute, $value);
+    return $this;
   }
 
   /**
