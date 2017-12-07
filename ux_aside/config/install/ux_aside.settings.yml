@@ -21,6 +21,7 @@ options:
     radius: 3 # Border-radius that will be applied in aside.
     iframe: false # If true, an Iframe will be used inside the aside.
     iframeHeight: 400 #Fixed height of the iframe.
+    iframeAutosize: true #Automatically size the aside to fit the iframe contents.
     iframeURL: null # Address that will open in the iframe inside the aside, if not set, the user can alternatively use the href link responsible for opening it.
     focusInput: true # If set true, whenever you open a aside, the first visible field is active.
     group: '' # Create a group with same 'group' name, so can navigate between them.
