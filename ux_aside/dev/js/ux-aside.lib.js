@@ -102,6 +102,7 @@
       this.isFullscreen = false;
       this.headerHeight = 0;
       this.modalHeight = 0;
+      this.iframeImagesLoaded = 0;
       this.hasScroll = null;
       this.$overlay = $('<div class="' + PLUGIN_NAME + '-overlay" style="background-color:' + options.overlayColor + '"></div>');
       this.$navigate = $('<div class="' + PLUGIN_NAME + '-navigate"><div class="' + PLUGIN_NAME + '-navigate-caption">Use</div><button class="' + PLUGIN_NAME + '-navigate-prev"></button><button class="' + PLUGIN_NAME + '-navigate-next"></button></div>');
@@ -366,9 +367,11 @@
 
           this.$element.find('.' + PLUGIN_NAME + '-content').addClass(PLUGIN_NAME + '-content-loader');
 
-          this.$element.find('.' + PLUGIN_NAME + '-iframe').on('load', function() {
-            $(this).parent().removeClass(PLUGIN_NAME + '-content-loader');
-          });
+          if (this.options.iframeAutosize !== true) {
+            this.$element.find('.' + PLUGIN_NAME + '-iframe').on('load', function() {
+              $(this).parent().removeClass(PLUGIN_NAME + '-content-loader');
+            });
+          }
 
           var href = null;
           try {
@@ -1004,7 +1007,6 @@
     },
 
     recalcWidth: function() {
-
       var that = this;
 
       this.$element.css('max-width', this.options.width);
@@ -1150,6 +1152,22 @@
       if (this.state == STATES.OPENED || this.state == STATES.OPENING) {
 
         if (this.options.iframe === true) {
+
+          if (this.options.iframeAutosize === true) {
+            var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe').contents().find('.entity-browser-form');
+            if ($iframe.length) {
+              if (that.iframeImagesLoaded === 0){
+                that.iframeImagesLoaded = 1;
+                $iframe.waitForImages(function () {
+                  that.$element.find('.' + PLUGIN_NAME + '-content').removeClass(PLUGIN_NAME + '-content-loader');
+                  that.iframeImagesLoaded = 2;
+                });
+              }
+              if (that.iframeImagesLoaded === 2) {
+                this.options.iframeHeight = $iframe.height();
+              }
+            }
+          }
 
           // If the height of the window is smaller than the modal with iframe
           if (windowHeight < (this.options.iframeHeight + this.headerHeight + borderSize) || this.isFullscreen === true) {
@@ -1417,6 +1435,7 @@
     zindex: 999,
     iframe: false,
     iframeHeight: 400,
+    iframeAutosize: true,
     iframeURL: null,
     focusInput: true,
     group: '',
