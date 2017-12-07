@@ -1,0 +1,1 @@
+{"version":3,"sources":["ux-media.ux-aside-selection.css"],"names":[],"mappings":"AAAA;;;GAGG;AACH;EACE,cAAc;CACf","file":"ux-media.ux-aside-selection.css","sourcesContent":["/**\n * @file\n * Styles for the aside propagation step.\n */\nbody {\n  display: none;\n}\n"]}

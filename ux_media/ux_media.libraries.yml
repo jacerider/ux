@@ -1,0 +1,19 @@
+
+ux_aside:
+  version: VERSION
+  js:
+    js/ux-media.ux-aside.js: {}
+  dependencies:
+    - core/drupalSettings
+    - core/underscore
+    - ux/ux
+
+ux_aside_selection:
+  version: VERSION
+  css:
+    component:
+      css/ux-media.ux-aside-selection.css: {}
+  js:
+    js/ux-media.ux-aside-selection.js: { minified: true }
+  dependencies:
+    - core/drupalSettings
