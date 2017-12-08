@@ -364,12 +364,11 @@
         }
 
         if (this.options.iframe === true) {
-
-          this.$element.find('.' + PLUGIN_NAME + '-content').addClass(PLUGIN_NAME + '-content-loader');
+          this.startLoading();
 
           if (this.options.iframeAutosize !== true) {
             this.$element.find('.' + PLUGIN_NAME + '-iframe').on('load', function() {
-              $(this).parent().removeClass(PLUGIN_NAME + '-content-loader');
+            this.stopLoading();
             });
           }
 
@@ -981,10 +980,11 @@
       this.options.transitionOut = transition;
     },
 
-    startLoading: function() {
+    startLoading: function(doFadeIn) {
+      doFadeIn = doFadeIn !== false;
 
       if (!this.$element.find('.' + PLUGIN_NAME + '-loader').length) {
-        this.$element.append('<div class="' + PLUGIN_NAME + '-loader fadeIn"></div>');
+        this.$element.append('<div class="' + PLUGIN_NAME + '-loader' + (doFadeIn === true ? ' fadeIn': '') + '"></div>');
       }
       this.$element.find('.' + PLUGIN_NAME + '-loader').css({
         top: this.headerHeight,
@@ -998,12 +998,12 @@
 
       if (!$loader.length) {
         this.$element.prepend('<div class="' + PLUGIN_NAME + '-loader fadeIn"></div>');
-        $loader = this.$element.find('.' + PLUGIN_NAME + '-loader').css('border-radius', this.options.radius);
+        // $loader = this.$element.find('.' + PLUGIN_NAME + '-loader').css('border-radius', this.options.radius);
       }
       $loader.removeClass('fadeIn').addClass('fadeOut');
       setTimeout(function() {
         $loader.remove();
-      }, 600);
+      }, 300);
     },
 
     recalcWidth: function() {
@@ -1154,26 +1154,39 @@
         if (this.options.iframe === true) {
 
           if (this.options.iframeAutosize === true) {
-            var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe').contents().find('.entity-browser-form');
-            if ($iframe.length) {
-              if (that.iframeImagesLoaded === 0){
+            // Autosize the iframe. Step 0 it watches for iframed content to
+            // contain content. Step 1 it waits for any images inside to load.
+            // Step 2 it watches the content height and sizing the iframe.
+            var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe').contents().find('body');
+            if (that.iframeImagesLoaded === 0){
+              if ($iframe.text().length) {
                 that.iframeImagesLoaded = 1;
                 $iframe.waitForImages(function () {
-                  that.$element.find('.' + PLUGIN_NAME + '-content').removeClass(PLUGIN_NAME + '-content-loader');
                   that.iframeImagesLoaded = 2;
                 });
               }
-              if (that.iframeImagesLoaded === 2) {
-                this.options.iframeHeight = $iframe.height();
+            }
+            if (that.iframeImagesLoaded === 2) {
+              var iframeHeight = $iframe.outerHeight();
+              if (iframeHeight !== this.options.iframeHeight) {
+                that.startLoading(false);
+                that.$element.find('.' + PLUGIN_NAME + '-iframe').attr('scrolling', 'no');
+                setTimeout(function () {
+                  that.stopLoading();
+                  that.$element.find('.' + PLUGIN_NAME + '-iframe').removeAttr('scrolling');
+                }, 1000);
               }
+              this.options.iframeHeight = iframeHeight;
+              this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', this.options.iframeHeight);
             }
           }
-
-          // If the height of the window is smaller than the modal with iframe
-          if (windowHeight < (this.options.iframeHeight + this.headerHeight + borderSize) || this.isFullscreen === true) {
-            this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', windowHeight - (this.headerHeight + borderSize));
-          } else {
-            this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', this.options.iframeHeight);
+          else {
+            // If the height of the window is smaller than the modal with iframe
+            if (windowHeight < (this.options.iframeHeight + this.headerHeight + borderSize) || this.isFullscreen === true) {
+              this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', windowHeight - (this.headerHeight + borderSize));
+            } else {
+              this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', this.options.iframeHeight);
+            }
           }
         }
 
