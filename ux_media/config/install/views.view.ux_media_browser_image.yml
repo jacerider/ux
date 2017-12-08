@@ -1,4 +1,4 @@
-uuid: ae1aacf3-79a0-4d73-89e7-86c9659eb66e
+uuid: fe19ef8d-d7cb-4739-b23d-c5c9c57aa0d4
 langcode: en
 status: true
 dependencies:
@@ -10,8 +10,8 @@ dependencies:
     - media
     - svg_image
     - user
-id: ux_media_image_browser
-label: 'UX MEDIA | Image Browser'
+id: ux_media_browser_image
+label: 'UX MEDIA | Browser | Image'
 module: views
 description: ''
 tag: ''
@@ -391,6 +391,7 @@ display:
         operator: AND
         groups:
           1: AND
+      css_class: ux-media-browser
     cache_metadata:
       max-age: -1
       contexts:

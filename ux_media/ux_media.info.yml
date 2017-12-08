@@ -1,8 +1,8 @@
-name: UX | Media
+name: 'UX | Media'
 type: module
-description: Provides enhancements to media handling.
+description: 'Provides enhancements to media handling.'
 core: 8.x
-package: User Experience
+package: 'User Experience'
 dependencies:
   - ux
   - ux_aside

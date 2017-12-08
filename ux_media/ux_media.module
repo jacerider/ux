@@ -29,6 +29,24 @@ function ux_media_theme() {
 }
 
 /**
+ * Implements hook_preprocess_views_view().
+ */
+function ux_media_preprocess_views_view(&$variables) {
+  if (substr($variables['view']->id(), 0, 9) === 'ux_media_') {
+    $variables['view_array']['#attached']['library'][] = 'ux_media/view';
+  }
+}
+
+/**
+ * Implements hook_preprocess_html__entity_browser__modal().
+ *
+ * Tries to figure out where messages block lives and display it separately.
+ */
+function ux_media_preprocess_html__entity_browser__ux_aside(&$variables) {
+  $variables['html_attributes']->addClass('ux-media-view');
+}
+
+/**
  * Implements hook_preprocess_page__entity_browser__modal().
  *
  * Tries to figure out where messages block lives and display it separately.

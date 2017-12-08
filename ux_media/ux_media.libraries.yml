@@ -17,3 +17,9 @@ ux_aside_selection:
     js/ux-media.ux-aside-selection.js: { minified: true }
   dependencies:
     - core/drupalSettings
+
+view:
+  version: VERSION
+  css:
+    component:
+      css/ux-media.view.css: {}

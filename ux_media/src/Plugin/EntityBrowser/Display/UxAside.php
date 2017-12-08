@@ -65,7 +65,6 @@ class UxAside extends Modal {
       'attachTop' => TRUE,
       'transitionIn' => 'fadeInDown',
       'transitionOut' => 'fadeOutUp',
-      'padding' => 20,
       'iframe' => TRUE,
       'iframeURL' => $src,
     ];

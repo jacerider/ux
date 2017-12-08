@@ -828,17 +828,14 @@
     },
 
     getState: function() {
-
       return this.state;
     },
 
     getGroup: function() {
-
       return this.group;
     },
 
     setWidth: function(width) {
-
       this.options.width = width;
 
       this.recalcWidth();
@@ -848,40 +845,30 @@
         this.$navigate.find('.' + PLUGIN_NAME + '-navigate-prev').css('margin-left', -((modalWidth / 2) + 84)).show();
         this.$navigate.find('.' + PLUGIN_NAME + '-navigate-next').css('margin-right', -((modalWidth / 2) + 84)).show();
       }
-
     },
 
     setTop: function(top) {
-
       this.options.top = top;
-
       this.recalcVerticalPos(false);
     },
 
     setBottom: function(bottom) {
-
       this.options.bottom = bottom;
-
       this.recalcVerticalPos(false);
 
     },
 
     setLeft: function(left) {
-
       this.options.left = left;
-
       this.recalcHorizontalPos(false);
     },
 
     setRight: function(right) {
-
       this.options.right = right;
-
       this.recalcHorizontalPos(false);
     },
 
     setHeader: function(status) {
-
       if (status) {
         this.$element.find('.' + PLUGIN_NAME + '-header').show();
       } else {
@@ -891,7 +878,6 @@
     },
 
     setTitle: function(title) {
-
       this.options.title = title;
 
       if (this.headerHeight === 0) {
@@ -906,7 +892,6 @@
     },
 
     setSubtitle: function(subtitle) {
-
       if (subtitle === '') {
 
         this.$header.find('.' + PLUGIN_NAME + '-header-subtitle').remove();
@@ -920,13 +905,11 @@
         this.$header.removeClass(PLUGIN_NAME + '-noSubtitle');
 
       }
-
       this.$header.find('.' + PLUGIN_NAME + '-header-subtitle').html(subtitle);
       this.options.subtitle = subtitle;
     },
 
     setIcon: function(icon) {
-
       if (this.$header.find('.' + PLUGIN_NAME + '-header-icon').length === 0) {
         this.$header.prepend('<i class="' + PLUGIN_NAME + '-header-icon"></i>');
       }
@@ -935,7 +918,6 @@
     },
 
     setIconText: function(iconText) {
-
       this.$header.find('.' + PLUGIN_NAME + '-header-icon').html(iconText);
       this.options.iconText = iconText;
     },
@@ -949,7 +931,6 @@
     },
 
     setZindex: function(zIndex) {
-
       if (!isNaN(parseInt(this.options.zindex))) {
         this.options.zindex = zIndex;
         this.$element.css('z-index', zIndex);
@@ -959,7 +940,6 @@
     },
 
     setFullscreen: function(value) {
-
       if (value) {
         this.isFullscreen = true;
         this.$element.addClass('isFullscreen');
@@ -967,16 +947,13 @@
         this.isFullscreen = false;
         this.$element.removeClass('isFullscreen');
       }
-
     },
 
     setTransitionIn: function(transition) {
-
       this.options.transitionIn = transition;
     },
 
     setTransitionOut: function(transition) {
-
       this.options.transitionOut = transition;
     },
 
@@ -993,7 +970,6 @@
     },
 
     stopLoading: function() {
-
       var $loader = this.$element.find('.' + PLUGIN_NAME + '-loader');
 
       if (!$loader.length) {
@@ -1025,7 +1001,6 @@
     },
 
     recalcVerticalPos: function(first) {
-
       if (this.options.top !== null && this.options.top !== false) {
         this.$element.css('margin-top', this.options.top);
         if (this.options.top === 0) {
@@ -1058,11 +1033,9 @@
           });
         }
       }
-
     },
 
     recalcHorizontalPos: function(first) {
-
       if (this.options.left !== null && this.options.left !== false) {
         this.$element.css('margin-left', this.options.left);
         if (this.options.left === 0) {
@@ -1095,11 +1068,9 @@
           });
         }
       }
-
     },
 
     recalcLayout: function() {
-
       var that = this,
         windowHeight = $window.height() - that.options.offsets.top - that.options.offsets.bottom,
         modalHeight = this.$element.outerHeight(),
@@ -1247,7 +1218,6 @@
             that.$element.removeClass('hasShadow');
           }
         })();
-
       }
     },
 
@@ -1261,8 +1231,6 @@
     }
 
   };
-
-
 
   $window.off('hashchange.' + PLUGIN_NAME + ' load.' + PLUGIN_NAME).on('hashchange.' + PLUGIN_NAME + ' load.' + PLUGIN_NAME, function(e) {
 

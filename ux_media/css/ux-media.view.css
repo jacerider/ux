@@ -1,0 +1,59 @@
+.block-system-main-block {
+  padding: 1.25rem;
+}
+
+.ux-media-browser .view-filters .form--inline {
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.ux-media-browser .view-content {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.ux-media-browser .view-content > .views-row {
+  -ms-flex: 0 1 50%;
+      flex: 0 1 50%;
+  position: relative;
+  background: #1f1f1f;
+  padding: 5px;
+  margin: 1px;
+}
+
+.ux-media-browser .view-content img {
+  vertical-align: bottom;
+  width: 100%;
+  height: auto;
+}
+
+.ux-media-browser .views-field-entity-browser-select {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+.ux-media-browser .ux-media-info {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 5px 10px;
+}
+
+/** 600px > */
+@media screen and (min-width: 37.5em) {
+  .ux-media-browser .view-content > .views-row {
+    -ms-flex-preferred-size: 25%;
+        flex-basis: 25%;
+    background: #1f1f1f;
+  }
+}
+
+/*# sourceMappingURL=ux-media.view.css.map */

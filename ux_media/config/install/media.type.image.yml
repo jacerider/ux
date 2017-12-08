@@ -1,0 +1,21 @@
+uuid: 9b91f4c2-9135-4387-a3f7-41f8c14378d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - hide_revision_field
+third_party_settings:
+  hide_revision_field:
+    hide: true
+    personalizable: false
+_core:
+  default_config_hash: u7OxrscEED35iDR3R0akmw7QNvBSMEPJXFtKP57qBh8
+id: image
+label: Image
+description: 'Use local images for reusable media.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_image
+field_map: {  }
