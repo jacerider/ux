@@ -102,7 +102,8 @@
       this.isFullscreen = false;
       this.headerHeight = 0;
       this.modalHeight = 0;
-      this.iframeImagesLoaded = 0;
+      this.iframeLoad = 0;
+      this.iframeSizing = false;
       this.hasScroll = null;
       this.$overlay = $('<div class="' + PLUGIN_NAME + '-overlay" style="background-color:' + options.overlayColor + '"></div>');
       this.$navigate = $('<div class="' + PLUGIN_NAME + '-navigate"><div class="' + PLUGIN_NAME + '-navigate-caption">Use</div><button class="' + PLUGIN_NAME + '-navigate-prev"></button><button class="' + PLUGIN_NAME + '-navigate-next"></button></div>');
@@ -368,7 +369,7 @@
 
           if (this.options.iframeAutosize !== true) {
             this.$element.find('.' + PLUGIN_NAME + '-iframe').on('load', function() {
-            this.stopLoading();
+              that.stopLoading();
             });
           }
 
@@ -970,6 +971,10 @@
     },
 
     stopLoading: function() {
+      if (!this.$element || !this.$element.length) {
+        return;
+      }
+
       var $loader = this.$element.find('.' + PLUGIN_NAME + '-loader');
 
       if (!$loader.length) {
@@ -1129,23 +1134,25 @@
             // contain content. Step 1 it waits for any images inside to load.
             // Step 2 it watches the content height and sizing the iframe.
             var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe').contents().find('body');
-            if (that.iframeImagesLoaded === 0){
+            if (that.iframeLoad === 0){
               if ($iframe.text().length) {
-                that.iframeImagesLoaded = 1;
+                that.iframeLoad = 1;
                 $iframe.waitForImages(function () {
-                  that.iframeImagesLoaded = 2;
+                  that.iframeLoad = 2;
                 });
               }
             }
-            if (that.iframeImagesLoaded === 2) {
+            if (that.iframeLoad === 2) {
               var iframeHeight = $iframe.outerHeight();
-              if (iframeHeight !== this.options.iframeHeight) {
+              if (iframeHeight !== this.options.iframeHeight && !that.iframeSizing) {
+                that.iframeSizing = true;
                 that.startLoading(false);
                 that.$element.find('.' + PLUGIN_NAME + '-iframe').attr('scrolling', 'no');
                 setTimeout(function () {
+                  that.iframeSizing = false;
                   that.stopLoading();
                   that.$element.find('.' + PLUGIN_NAME + '-iframe').removeAttr('scrolling');
-                }, 1000);
+                }, 800);
               }
               this.options.iframeHeight = iframeHeight;
               this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', this.options.iframeHeight);
