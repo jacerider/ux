@@ -30,7 +30,7 @@
     > .views-row {
       flex: 0 1 50%;
       position: relative;
-      background: gray(88);
+      background: gray(10);
       padding: 5px;
       margin: 1px;
     }
@@ -66,6 +66,5 @@
 
   .ux-media-browser .view-content > .views-row {
     flex-basis: 25%;
-    background: gray(88);
   }
 }
