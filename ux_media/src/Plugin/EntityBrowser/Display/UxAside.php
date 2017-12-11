@@ -53,7 +53,13 @@ class UxAside extends Modal {
     $input = $form_state->getUserInput();
     $src = NestedArray::getValue($input, $parents);
 
+    $entity = $form_state->getFormObject()->getEntity();
     $field_name = $triggering_element['#parents'][0];
+    $cardinality = $entity->getFieldDefinition($field_name)->getFieldStorageDefinition()->getCardinality();
+
+    $content = [];
+    $content['#attached']['drupalSettings']['ux_media_aside']['cardinality'] = $cardinality;
+
     $element_name = $this->configuration['entity_browser_id'];
     $name = 'entity_browser_iframe_' . $element_name;
 
@@ -68,12 +74,9 @@ class UxAside extends Modal {
       'iframe' => TRUE,
       'iframeURL' => $src,
     ];
-    if (!empty($this->configuration['height']) && is_numeric($this->configuration['height']) && $this->configuration['height'] > 90) {
-      $content['#attributes']['height'] = $this->configuration['height'] - 90;
-    }
 
     $response = new AjaxResponse();
-    $response->addCommand(new UxAsideOpenCommand('', $options));
+    $response->addCommand(new UxAsideOpenCommand($content, $options));
     return $response;
   }
 

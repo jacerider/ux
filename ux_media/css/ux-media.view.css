@@ -14,19 +14,28 @@
       flex-wrap: wrap;
 }
 
-.ux-media-browser .view-content > .views-row {
+.ux-media-browser .view-content img {
+  vertical-align: bottom;
+  width: 100%;
+  height: auto;
+}
+
+.ux-media-browser .views-row {
   -ms-flex: 0 1 50%;
       flex: 0 1 50%;
   position: relative;
   background: #e6e6e6;
   padding: 5px;
   margin: 1px;
+  transition: background 350ms;
 }
 
-.ux-media-browser .view-content img {
-  vertical-align: bottom;
-  width: 100%;
-  height: auto;
+.ux-media-browser .views-row:hover {
+  background: #999999;
+}
+
+.ux-media-browser .views-row.checked {
+  background: #86c13d;
 }
 
 .ux-media-browser .views-field-entity-browser-select {
@@ -58,11 +67,11 @@
 /**
  * Checkmark
  */
-.views-row {
+.ux-media-browser .views-row {
   cursor: pointer;
 }
 
-.views-row .ux-media-check {
+.ux-media-browser .views-row .ux-media-check {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -75,20 +84,20 @@
   pointer-events: none;
 }
 
-.views-row.checked .ux-media-checkmark {
+.ux-media-browser .views-row.checked .ux-media-checkmark {
   opacity: 1;
-  animation: fillIn 0.4s ease-in-out 0.4s forwards, scaleIn 0.3s ease-in-out 0.9s both;
+  animation: fillIn 0.4s ease-in-out 0.4s forwards, scaleIn 0.6s ease-in-out 0.4s both;
 }
 
-.views-row.checked .ux-media-checkmark--circle {
-  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+.ux-media-browser .views-row.checked .ux-media-checkmark--circle {
+  animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
 
-.views-row.checked .ux-media-checkmark--check {
-  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+.ux-media-browser .views-row.checked .ux-media-checkmark--check {
+  animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
 
-.views-row.unchecked .ux-media-checkmark {
+.ux-media-browser .views-row.unchecked .ux-media-checkmark {
   opacity: 1;
   animation: fillOut 0.4s ease-in-out forwards, scaleOut 0.3s ease-in-out both;
 }

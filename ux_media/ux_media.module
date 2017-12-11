@@ -5,6 +5,8 @@
  * Contains ux_entity_browser.module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_theme().
  *
@@ -26,6 +28,14 @@ function ux_media_theme() {
       'preprocess functions' => ['template_preprocess_page'],
     ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function ux_media_preprocess_media(&$variables) {
+  // Always hide media names.
+  $variables['content']['name']['#access'] = FALSE;
 }
 
 /**

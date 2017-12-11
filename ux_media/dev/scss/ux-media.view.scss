@@ -27,18 +27,27 @@
     display: flex;
     flex-wrap: wrap;
 
-    > .views-row {
-      flex: 0 1 50%;
-      position: relative;
-      background: gray(10);
-      padding: 5px;
-      margin: 1px;
-    }
-
     img {
       vertical-align: bottom;
       width: 100%;
       height: auto;
+    }
+  }
+
+  .views-row {
+    flex: 0 1 50%;
+    position: relative;
+    background: gray(10);
+    padding: 5px;
+    margin: 1px;
+    transition: background $global-speed;
+
+    &:hover {
+      background: gray(40);
+    }
+
+    &.checked {
+      background: $success-color;
     }
   }
 
@@ -74,7 +83,7 @@
  */
 $curve: cubic-bezier(0.65, 0, 0.45, 1);
 
-.views-row {
+.ux-media-browser .views-row {
   cursor: pointer;
 
   .ux-media-check {
@@ -92,17 +101,17 @@ $curve: cubic-bezier(0.65, 0, 0.45, 1);
 
     .ux-media-checkmark {
       opacity: 1;
-      animation: fillIn 0.4s ease-in-out 0.4s forwards, scaleIn 0.3s ease-in-out 0.9s both;
+      animation: fillIn 0.4s ease-in-out 0.4s forwards, scaleIn 0.6s ease-in-out 0.4s both;
     }
 
     .ux-media-checkmark--circle {
       // animation-direction: normal;
-      animation: stroke 0.6s $curve forwards;
+      animation: stroke 0.4s $curve forwards;
     }
 
     .ux-media-checkmark--check {
       // animation-direction: normal;
-      animation: stroke 0.3s $curve 0.8s forwards;
+      animation: stroke 0.4s $curve forwards;
     }
   }
 
@@ -179,7 +188,6 @@ $curve: cubic-bezier(0.65, 0, 0.45, 1);
   }
 
   100% {
-    // opacity: 1;
     box-shadow: inset 0 0 0 30px $success-color, 0 0 30px $black;
   }
 }
