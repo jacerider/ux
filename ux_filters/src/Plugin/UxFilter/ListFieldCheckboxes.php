@@ -25,7 +25,12 @@ class ListFieldCheckboxes extends UxFilterBase {
    */
   public function exposedElementAlter(&$element, FormStateInterface $form_state, $context) {
     $element_id = $context['id'];
-    $element['#type'] = 'checkboxes';
+    if (empty($element['#multiple'])) {
+      $element['#type'] = 'radios';
+    }
+    else {
+      $element['#type'] = 'checkboxes';
+    }
     unset($element['#options']['All']);
     $user_input = $form_state->getUserInput();
     if ($user_input[$element_id] == 'All') {
