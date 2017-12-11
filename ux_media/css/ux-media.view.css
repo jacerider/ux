@@ -58,6 +58,10 @@
 /**
  * Checkmark
  */
+.views-row {
+  cursor: pointer;
+}
+
 .views-row .ux-media-check {
   display: -ms-flexbox;
   display: flex;
