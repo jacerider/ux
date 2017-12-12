@@ -53,9 +53,8 @@ class UxAside extends Modal {
     $input = $form_state->getUserInput();
     $src = NestedArray::getValue($input, $parents);
 
-    $entity = $form_state->getFormObject()->getEntity();
-    $field_name = $triggering_element['#parents'][0];
-    $cardinality = $entity->getFieldDefinition($field_name)->getFieldStorageDefinition()->getCardinality();
+    $element = NestedArray::getValue($form, array_slice($triggering_element['#array_parents'], 0, -2));
+    $cardinality = $element['#cardinality'];
 
     $content = [];
     $content['#attached']['drupalSettings']['ux_media_aside']['cardinality'] = $cardinality;

@@ -64,3 +64,24 @@ function ux_media_preprocess_html__entity_browser__ux_aside(&$variables) {
 function ux_media_preprocess_page__entity_browser__ux_aside(&$variables) {
   entity_browser_preprocess_page__entity_browser__iframe($variables);
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function ux_media_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (substr($form_id, 0, 24) === 'entity_browser_ux_media_') {
+    $form['#attributes']['class'][] = 'entity-browser-ux-media';
+    if (isset($form['widget']['inline_entity_form']['#entity_type']) && $form['widget']['inline_entity_form']['#entity_type'] == 'media') {
+      $form['widget']['inline_entity_form']['#after_build'][] = 'ux_media_inline_entity_form_after_build';
+    }
+  }
+}
+
+/**
+ * Implements after_build on an inline entity form contained in ux browser.
+ */
+function ux_media_inline_entity_form_after_build($element) {
+  // Disable revision textarea when adding via ux media entity browser.
+  $element['revision_log_message']['#access'] = FALSE;
+  return $element;
+}
