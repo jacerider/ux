@@ -92,6 +92,7 @@
       }
       this.classes = (this.$element.attr('class') !== undefined) ? this.$element.attr('class') : '';
       this.content = this.$element.html();
+      this.wrapper = this.$element.parent();
       this.state = STATES.CLOSED;
       this.options = options;
       this.width = 0;
@@ -152,6 +153,14 @@
 
       if (options.iframe === true) {
         this.$element.html('<div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content"><iframe class="' + PLUGIN_NAME + '-iframe"></iframe>' + this.content + "</div></div>");
+
+        if (options.iframeURL !== null && options.iframeAutosize === true) {
+          this.iframeIsVimeo = options.iframeURL.indexOf('https://player.vimeo.com') !== -1;
+          this.iframeIsYoutube = options.iframeURL.indexOf('https://www.youtube.com') !== -1;
+          if (this.iframeIsVimeo || this.iframeIsYoutube) {
+            options.width = options.iframeHeight = '100px';
+          }
+        }
 
         if (options.iframeHeight !== null) {
           this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', options.iframeHeight);
@@ -373,6 +382,15 @@
             });
           }
 
+          var isSameOrigin = function(url) {
+            var loc = window.location,
+            a = document.createElement('a');
+            a.href = url;
+            return a.hostname == loc.hostname &&
+                   a.port == loc.port &&
+                   a.protocol == loc.protocol;
+          }
+
           var href = null;
           try {
             href = $(param.currentTarget).attr('href') !== "" ? $(param.currentTarget).attr('href') : null;
@@ -385,6 +403,7 @@
           if (href === null || href === undefined) {
             throw new Error("Failed to find iframe URL");
           }
+          this.iframeIsLocal = isSameOrigin(href);
           this.$element.find('.' + PLUGIN_NAME + '-iframe').attr('src', href);
         }
 
@@ -976,15 +995,12 @@
       }
 
       var $loader = this.$element.find('.' + PLUGIN_NAME + '-loader');
-
-      if (!$loader.length) {
-        this.$element.prepend('<div class="' + PLUGIN_NAME + '-loader fadeIn"></div>');
-        // $loader = this.$element.find('.' + PLUGIN_NAME + '-loader').css('border-radius', this.options.radius);
+      if ($loader.length) {
+        $loader.removeClass('fadeIn').addClass('fadeOut');
+        setTimeout(function() {
+          $loader.remove();
+        }, 300);
       }
-      $loader.removeClass('fadeIn').addClass('fadeOut');
-      setTimeout(function() {
-        $loader.remove();
-      }, 300);
     },
 
     recalcWidth: function() {
@@ -1128,44 +1144,7 @@
       if (this.state == STATES.OPENED || this.state == STATES.OPENING) {
 
         if (this.options.iframe === true) {
-
-          if (this.options.iframeAutosize === true) {
-            // Autosize the iframe. Step 0 it watches for iframed content to
-            // contain content. Step 1 it waits for any images inside to load.
-            // Step 2 it watches the content height and sizing the iframe.
-            var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe').contents().find('body');
-            if (that.iframeLoad === 0){
-              if ($iframe.text().length) {
-                that.iframeLoad = 1;
-                $iframe.waitForImages(function () {
-                  that.iframeLoad = 2;
-                });
-              }
-            }
-            if (that.iframeLoad === 2) {
-              var iframeHeight = $iframe.outerHeight();
-              if (iframeHeight !== this.options.iframeHeight && !that.iframeSizing) {
-                that.iframeSizing = true;
-                that.startLoading(false);
-                that.$element.find('.' + PLUGIN_NAME + '-iframe').attr('scrolling', 'no');
-                setTimeout(function () {
-                  that.iframeSizing = false;
-                  that.stopLoading();
-                  that.$element.find('.' + PLUGIN_NAME + '-iframe').removeAttr('scrolling');
-                }, 800);
-              }
-              this.options.iframeHeight = iframeHeight;
-              this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', this.options.iframeHeight);
-            }
-          }
-          else {
-            // If the height of the window is smaller than the modal with iframe
-            if (windowHeight < (this.options.iframeHeight + this.headerHeight + borderSize) || this.isFullscreen === true) {
-              this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', windowHeight - (this.headerHeight + borderSize));
-            } else {
-              this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', this.options.iframeHeight);
-            }
-          }
+          this.recalcIframe(windowHeight, modalHeight, borderSize);
         }
 
         if (modalHeight == windowHeight) {
@@ -1225,6 +1204,179 @@
             that.$element.removeClass('hasShadow');
           }
         })();
+      }
+    },
+
+    recalcIframe: function (windowHeight, modalHeight, borderSize) {
+      var that = this;
+      var canAutosize = this.options.iframeAutosize === true && (this.iframeIsVimeo || this.iframeIsYoutube || this.iframeIsLocal);
+      if (canAutosize) {
+        if (that.iframeIsVimeo) {
+          that.recalcIframeVimeo(windowHeight, modalHeight, borderSize);
+        }
+        else if (that.iframeIsYoutube) {
+          that.recalcIframeYoutube(windowHeight, modalHeight, borderSize);
+        }
+        else {
+          that.recalcIframeLocal();
+        }
+      }
+      else {
+        // If the height of the window is smaller than the modal with iframe
+        if (windowHeight < (this.options.iframeHeight + this.headerHeight + borderSize) || this.isFullscreen === true) {
+          this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', windowHeight - (this.headerHeight + borderSize));
+        } else {
+          this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', this.options.iframeHeight);
+        }
+      }
+    },
+
+    recalcIframeLocal: function () {
+      var that = this;
+      // Autosize the iframe. Step 0 it watches for iframed content to
+      // contain content. Step 1 it waits for any images inside to load.
+      // Step 2 it watches the content height and sizing the iframe.
+      var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe').contents().find('body');
+      if (that.iframeLoad === 0){
+        if ($iframe.text().length) {
+          that.iframeLoad = 1;
+          $iframe.waitForImages(function () {
+            that.iframeLoad = 2;
+          });
+        }
+      }
+      if (that.iframeLoad === 2) {
+        var iframeHeight = $iframe.outerHeight();
+        if (iframeHeight !== this.options.iframeHeight && !that.iframeSizing) {
+          that.iframeSizing = true;
+          that.startLoading(false);
+          that.$element.find('.' + PLUGIN_NAME + '-iframe').attr('scrolling', 'no');
+          setTimeout(function () {
+            that.iframeSizing = false;
+            that.stopLoading();
+            that.$element.find('.' + PLUGIN_NAME + '-iframe').removeAttr('scrolling');
+          }, 800);
+        }
+        this.options.iframeHeight = iframeHeight;
+        this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', iframeHeight);
+      }
+    },
+
+    recalcIframeVimeo: function (windowHeight, modalHeight, borderSize) {
+      var that = this;
+      if (that.iframeLoad === 0){
+        that.iframeLoad = 1;
+        if (typeof Vimeo === 'undefined') {
+          // Load in Vimeo API.
+          var tag = document.createElement('script');
+          tag.src = 'https://player.vimeo.com/api/player.js';
+          tag.onload = $.proxy(function () {
+            that.iframeLoad = 2;
+          }, this);
+          var firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+        else {
+          that.iframeLoad = 2;
+        }
+      }
+      else if (that.iframeLoad === 2) {
+        that.iframeLoad = 3;
+        var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe');
+        that.videoPlayer = player = new Vimeo.Player($iframe[0]);
+      }
+      else if (that.iframeLoad === 3) {
+        that.videoPlayer.getVideoWidth().then(function(width) {
+          that.videoPlayer.getVideoHeight().then(function(height) {
+            that.videoWidth = width;
+            that.videoHeight = height;
+            that.iframeLoad = 4;
+          });
+        });
+      }
+      else if (that.iframeLoad === 4) {
+        that.iframeLoad = 5;
+        setTimeout(function () {
+          that.stopLoading();
+        }, 800);
+      }
+      else if (that.iframeLoad === 5) {
+        var wrapperWidth = that.wrapper.innerWidth() - 30;
+        var wrapperHeight = that.wrapper.innerHeight() - (this.headerHeight + borderSize + 30);
+        var wrapperRatio = wrapperWidth / wrapperHeight;
+        var videoRatio = that.videoWidth / that.videoHeight;
+        var iframeHeight = 0;
+        var iframeWidth = 0;
+        if (wrapperRatio > videoRatio) {
+          iframeHeight = wrapperHeight;
+          iframeWidth  = iframeHeight * (that.videoWidth / that.videoHeight);
+        }
+        else {
+          iframeWidth  = wrapperWidth;
+          iframeHeight = iframeWidth * (that.videoHeight / that.videoWidth);
+        }
+        if (iframeHeight !== that.options.iframeHeight) {
+          that.setWidth(iframeWidth);
+          that.options.iframeHeight = iframeHeight;
+          that.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', that.options.iframeHeight);
+        }
+      }
+    },
+
+    recalcIframeYoutube: function (windowHeight, modalHeight, borderSize) {
+      var that = this;
+      if (that.iframeLoad === 0){
+        that.iframeLoad = 1;
+        if (typeof YT === 'undefined') {
+          var tag = document.createElement('script');
+          tag.src = 'https://www.youtube.com/iframe_api';
+          var firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+          window.onYouTubeIframeAPIReady = $.proxy(function () {
+            that.iframeLoad = 2;
+          }, this);
+        }
+        else {
+          that.iframeLoad = 2;
+        }
+      }
+      else if (that.iframeLoad === 2) {
+        that.iframeLoad = 3;
+        var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe');
+        that.videoPlayer = new YT.Player($iframe[0]);
+      }
+      else if (that.iframeLoad === 3) {
+        var $video = $(that.videoPlayer.getVideoEmbedCode());
+        that.videoWidth = $video.width();
+        that.videoHeight = $video.height();
+        that.iframeLoad = 4;
+      }
+      else if (that.iframeLoad === 4) {
+        that.iframeLoad = 5;
+        setTimeout(function () {
+          that.stopLoading();
+        }, 800);
+      }
+      else if (that.iframeLoad === 5) {
+        var wrapperWidth = that.wrapper.innerWidth() - 30;
+        var wrapperHeight = that.wrapper.innerHeight() - (this.headerHeight + borderSize + 30);
+        var wrapperRatio = wrapperWidth / wrapperHeight;
+        var videoRatio = that.videoWidth / that.videoHeight;
+        var iframeHeight = 0;
+        var iframeWidth = 0;
+        if (wrapperRatio > videoRatio) {
+          iframeHeight = wrapperHeight;
+          iframeWidth  = iframeHeight * (that.videoWidth / that.videoHeight);
+        }
+        else {
+          iframeWidth  = wrapperWidth;
+          iframeHeight = iframeWidth * (that.videoHeight / that.videoWidth);
+        }
+        if (iframeHeight !== that.options.iframeHeight) {
+          that.setWidth(iframeWidth);
+          that.options.iframeHeight = iframeHeight;
+          that.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', that.options.iframeHeight);
+        }
       }
     },
 

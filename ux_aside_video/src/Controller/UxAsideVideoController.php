@@ -65,6 +65,13 @@ class UxAsideVideoController extends ControllerBase {
           // Field settings and set aside options.
           $settings = $renderer->getSettings();
           $options = isset($settings['aside']['content']) ? $settings['aside']['content'] : [];
+
+          // Use iframe functionality if possible.
+          if (isset($build['children']['#url'])) {
+            $options['iframe'] = TRUE;
+            $options['iframeURL'] = $build['children']['#url'];
+            $build = [];
+          }
         }
       }
     }
