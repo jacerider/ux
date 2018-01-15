@@ -45,6 +45,7 @@ class UxAsideVideoController extends ControllerBase {
    */
   public function view($entity_type, $entity_id, $langcode, $view_mode, $field_name, $delta) {
     $build = [];
+    $options = [];
 
     $entity = $this->entityTypeManager->getStorage($entity_type)->load($entity_id);
     if ($entity && $entity->hasField($field_name) && ($value = $entity->{$field_name}->get($delta))) {
