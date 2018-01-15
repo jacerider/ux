@@ -145,17 +145,16 @@ class UxAsideVideo extends FormatterBase implements ContainerFactoryPluginInterf
 
     foreach ($items as $delta => $item) {
 
+      $title = $this->getSetting('text');
+      if (($icon = $this->getSetting('icon')) && $icon_support) {
+        $title = micon($title)->setIcon($icon);
+      }
+
       // Build trigger contents.
       switch ($type) {
         case 'image':
-          $title = [];
+          $title = ['text' => ['#markup' => $title, '#weight' => 10]];
           $title['image'] = $thumbnails[$delta];
-          if (($icon = $this->getSetting('icon')) && $icon_support) {
-            $title['icon'] = [
-              '#theme' => 'micon',
-              '#icon' => $icon,
-            ];
-          }
           break;
 
         default:
@@ -228,13 +227,12 @@ class UxAsideVideo extends FormatterBase implements ContainerFactoryPluginInterf
 
     $element += $this->thumbnailFormatter->settingsForm([], $form_state);
     $element['image_style']['#states'] = $image_visibility;
-    $element['link_image_to']['#states'] = $image_visibility;
+    $element['link_image_to']['#access'] = FALSE;
 
     $element['text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Text'),
       '#default_value' => $this->getSetting('text'),
-      '#states' => $text_visibility,
     ];
 
     if ($icon_support) {
@@ -279,10 +277,10 @@ class UxAsideVideo extends FormatterBase implements ContainerFactoryPluginInterf
 
       case 'text':
         $summary[] = $this->t('Text that launches an aside.');
-        if ($value = $this->getSetting('text')) {
-          $summary[] = $this->t('Text: @value', ['@value' => $value]);
-        }
         break;
+    }
+    if ($value = $this->getSetting('text')) {
+      $summary[] = $this->t('Text: @value', ['@value' => $value]);
     }
     if (($value = $this->getSetting('icon')) && $this->moduleHandler->moduleExists('micon')) {
       $summary[] = $this->t('Icon: @value', ['@value' => micon()->setIcon($value)]);
