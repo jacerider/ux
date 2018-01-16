@@ -64,13 +64,14 @@ class UxAside extends Modal {
 
     $options = [
       'title' => $this->configuration['link_text'],
-      'subtitle' => 'subtitle',
+      'subtitle' => 'Select from library or upload new.',
       'icon' => 'fa-camera',
       'width' => '100%',
       'attachTop' => TRUE,
       'transitionIn' => 'fadeInDown',
       'transitionOut' => 'fadeOutUp',
       'iframe' => TRUE,
+      'iframeHeight' => 100,
       'iframeURL' => $src,
     ];
 

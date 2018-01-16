@@ -1091,7 +1091,7 @@
       }
     },
 
-    recalcLayout: function() {
+    recalcLayout: function(force) {
       var that = this,
         windowHeight = $window.height() - that.options.offsets.top - that.options.offsets.bottom,
         modalHeight = this.$element.outerHeight(),
@@ -1144,7 +1144,7 @@
       if (this.state == STATES.OPENED || this.state == STATES.OPENING) {
 
         if (this.options.iframe === true) {
-          this.recalcIframe(windowHeight, modalHeight, borderSize);
+          this.recalcIframe(windowHeight, modalHeight, borderSize, force);
         }
 
         if (modalHeight == windowHeight) {
@@ -1207,7 +1207,7 @@
       }
     },
 
-    recalcIframe: function (windowHeight, modalHeight, borderSize) {
+    recalcIframe: function (windowHeight, modalHeight, borderSize, force) {
       var that = this;
       var canAutosize = this.options.iframeAutosize === true && (this.iframeIsVimeo || this.iframeIsYoutube || this.iframeIsLocal);
       if (canAutosize) {
@@ -1218,7 +1218,7 @@
           that.recalcIframeYoutube(windowHeight, modalHeight, borderSize);
         }
         else {
-          that.recalcIframeLocal();
+          that.recalcIframeLocal(force);
         }
       }
       else {
@@ -1231,15 +1231,35 @@
       }
     },
 
-    recalcIframeLocal: function () {
+    recalcIframeLocal: function (force) {
+      // console.log('run');
       var that = this;
       // Autosize the iframe. Step 0 it watches for iframed content to
       // contain content. Step 1 it waits for any images inside to load.
       // Step 2 it watches the content height and sizing the iframe.
       var $iframe = this.$element.find('.' + PLUGIN_NAME + '-iframe').contents().find('body');
+
+      if (force === true) {
+        that.startLoading(false);
+        that.iframeLoad = 0;
+        this.options.iframeHeight += 0.1;
+      }
+      // If iframe watch is enabled, watch iframe for content changes and
+      // reset load event.
+      else if (this.options.iframeWatch !== null) {
+        var $watch = $iframe.find(this.options.iframeWatch);
+        if ($watch.length && !$watch.hasClass('ux-watch')) {
+          that.startLoading(false);
+          $watch.addClass('ux-watch');
+          that.iframeLoad = 0;
+          this.options.iframeHeight += 0.1;
+        }
+      }
+
       if (that.iframeLoad === 0){
         if ($iframe.text().length) {
           that.iframeLoad = 1;
+
           $iframe.waitForImages(function () {
             that.iframeLoad = 2;
           });
@@ -1250,15 +1270,14 @@
         if (iframeHeight !== this.options.iframeHeight && !that.iframeSizing) {
           that.iframeSizing = true;
           that.startLoading(false);
-          that.$element.find('.' + PLUGIN_NAME + '-iframe').attr('scrolling', 'no');
+          this.options.iframeHeight = iframeHeight;
+          this.$element.find('.' + PLUGIN_NAME + '-iframe').attr('scrolling', 'no').css('height', iframeHeight);
           setTimeout(function () {
             that.iframeSizing = false;
             that.stopLoading();
             that.$element.find('.' + PLUGIN_NAME + '-iframe').removeAttr('scrolling');
           }, 800);
         }
-        this.options.iframeHeight = iframeHeight;
-        this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', iframeHeight);
       }
     },
 
@@ -1491,6 +1510,13 @@
     }
   });
 
+  $document.off('uxAsideResize.' + PLUGIN_NAME).on('uxAsideResize.' + PLUGIN_NAME, function(event) {
+    var modal = $('.' + PLUGIN_NAME + ':visible');
+    if (modal.length) {
+      modal.uxAside('recalcLayout', true);
+    }
+  });
+
   $.fn[PLUGIN_NAME] = function(option, args) {
 
 
@@ -1577,6 +1603,7 @@
     iframeHeight: 400,
     iframeAutosize: true,
     iframeURL: null,
+    iframeWatch: null, // a jquery selector that can be used to watch for ajax changes within local iframe.
     focusInput: true,
     group: '',
     loop: false,

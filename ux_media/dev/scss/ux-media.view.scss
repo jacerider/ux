@@ -2,24 +2,30 @@
 @import '../../../dev/scss/base/variables';
 @import '../../../dev/scss/base/color';
 
-// .ux-media-view {
+$curve: cubic-bezier(0.65, 0, 0.45, 1);
+$aside-padding: 20px;
 
-//   body,
-//   .ux-content {
-//     background: $black;
-//   }
-// }
+/**
+ * Body
+ */
+.ux-media-view {
 
-// .block-system-main-block {
-//   padding: $global-padding;
-// }
+  form {
+    padding: $aside-padding;
 
+  }
+}
+
+/**
+ * View
+ */
 .ux-media-browser {
 
   .view-filters {
 
     .form--inline {
       display: flex;
+      align-items: flex-end;
     }
   }
 
@@ -35,19 +41,54 @@
   }
 
   .views-row {
-    flex: 0 1 50%;
+    flex: 0 1 auto;
     position: relative;
     background: gray(10);
-    padding: 5px;
+    padding: 4px;
     margin: 1px;
     transition: background $global-speed;
+    cursor: pointer;
 
     &:hover {
       background: gray(40);
     }
 
+    .ux-media-check {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+
     &.checked {
       background: $success-color;
+
+      .ux-media-checkmark {
+        opacity: 1;
+        animation: fillIn 0.4s ease-in-out 0.4s forwards, scaleIn 0.6s ease-in-out 0.4s both;
+      }
+
+      .ux-media-checkmark--circle {
+        // animation-direction: normal;
+        animation: stroke 0.4s $curve forwards;
+      }
+
+      .ux-media-checkmark--check {
+        // animation-direction: normal;
+        animation: stroke 0.4s $curve forwards;
+      }
+    }
+
+    &.unchecked {
+
+      .ux-media-checkmark {
+        opacity: 1;
+        animation: fillOut 0.4s ease-in-out forwards, scaleOut 0.3s ease-in-out both;
+      }
     }
   }
 
@@ -74,55 +115,14 @@
 @media screen and (min-width: 37.5em) {
 
   .ux-media-browser .view-content > .views-row {
-    flex-basis: 25%;
+    // flex-basis: 25%;
+    width: calc(20% - 10px);
   }
 }
 
 /**
  * Checkmark
  */
-$curve: cubic-bezier(0.65, 0, 0.45, 1);
-
-.ux-media-browser .views-row {
-  cursor: pointer;
-
-  .ux-media-check {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-  }
-
-  &.checked {
-
-    .ux-media-checkmark {
-      opacity: 1;
-      animation: fillIn 0.4s ease-in-out 0.4s forwards, scaleIn 0.6s ease-in-out 0.4s both;
-    }
-
-    .ux-media-checkmark--circle {
-      // animation-direction: normal;
-      animation: stroke 0.4s $curve forwards;
-    }
-
-    .ux-media-checkmark--check {
-      // animation-direction: normal;
-      animation: stroke 0.4s $curve forwards;
-    }
-  }
-
-  &.unchecked {
-
-    .ux-media-checkmark {
-      opacity: 1;
-      animation: fillOut 0.4s ease-in-out forwards, scaleOut 0.3s ease-in-out both;
-    }
-  }
-}
 
 .ux-media-checkmark {
   width: 56px;

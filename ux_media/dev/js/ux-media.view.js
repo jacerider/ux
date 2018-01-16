@@ -40,6 +40,13 @@
           $row.removeClass('checked').addClass('unchecked');
         }
       });
+
+      if (parent) {
+        $(document).once('ux-media-view').on('ajaxSuccess', function () {
+          // Tell parent to resize.
+          parent.jQuery(parent.document).trigger('uxAsideResize');
+        });
+      }
     }
   };
 
