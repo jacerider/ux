@@ -52,7 +52,9 @@ class UxParagraphsWidget extends ParagraphsWidget {
         $add_more_elements[$button_key]['#type'] = 'ux_button';
         $add_more_elements[$button_key]['#ajax']['event'] = 'click';
         $add_more_elements[$button_key]['#attributes']['data-uxaside-close'] = '';
-        $add_more_elements[$button_key]['#wrapper_attributes']['class'][] = 'button';
+        if ($add_mode != 'modal') {
+          $add_more_elements[$button_key]['#wrapper_attributes']['class'][] = 'button';
+        }
         if ($icon = micon($label)->addMatchPrefix('paragraphs')) {
           $add_more_elements[$button_key]['#label'] = $icon;
         }
