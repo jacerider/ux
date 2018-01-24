@@ -106,16 +106,11 @@
   &:after {
     display: block;
     content: '';
-    // position: absolute;
-    // top: $label-height + $input-height + rem-calc(1);
-    // left: 0;
     opacity: 0;
     font-size: $message-font-size;
     line-height: $label-font-size;
     text-transform: uppercase;
     z-index: 10;
-    // transform: $label-transform;
-    // white-space: nowrap;
     text-rendering: optimizeLegibility;
   }
 

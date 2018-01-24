@@ -328,6 +328,7 @@ function ux_form_themes() {
     'blue.dark' => t('Blue Dark'),
     'olive' => t('Olive'),
     'red' => t('Red'),
+    'orange' => t('Orange'),
   ];
 }
 

@@ -657,6 +657,7 @@
 
 .ux-form-select .ux-form-input-item {
   cursor: default;
+  text-overflow: ellipsis;
 }
 
 .ux-form-select .ajax-progress {
@@ -735,8 +736,6 @@
   position: absolute;
   left: 0;
   top: 0;
-  right: 0;
-  width: 100%;
   display: none;
   opacity: 0;
   z-index: 999;
@@ -763,6 +762,7 @@
   padding-right: 0.625rem;
   width: 100%;
   border: 0;
+  font-size: 0.875rem;
 }
 
 .ux-form-select .ux-form-select-dropdown .optgroup {
@@ -775,6 +775,11 @@
   cursor: default;
   line-height: 2.5rem;
   min-height: 2.5rem;
+}
+
+.ux-form-select .ux-form-select-dropdown .selector {
+  margin: 0;
+  white-space: nowrap;
 }
 
 .ux-form-select .ux-form-select-dropdown .selector.selected {

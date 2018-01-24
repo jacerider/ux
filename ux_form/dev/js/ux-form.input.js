@@ -139,6 +139,7 @@
       this.$element.removeClass('valid invalid').removeAttr('data-error');
       if (this.isValid()) {
         if (this.hasValue()) {
+          console.log(this.$field.val());
           this.$element.addClass('valid');
         }
       }
@@ -159,7 +160,8 @@
     Check if element has value.
      */
     hasValue: function () {
-      return this.$field.val().length > 0;
+      var value = this.$field.val();
+      return value.length > 0 && value !== '- Any -';
     },
 
     /*

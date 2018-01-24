@@ -136,7 +136,6 @@ html {
 
     .ux-form-input-line {
       background-image: linear-gradient($input-border-focus-color, $input-border-focus-color), linear-gradient($input-border-color, $input-border-color);
-      background-size: 100% 2px, 100% 1px;
     }
   }
 
@@ -324,11 +323,11 @@ html {
 
   .ux-form-select-dropdown {
     background-color: $select-bg-color;
-    box-shadow: $select-box-shadow;
 
     .close {
       color: $select-close-color;
       background-color: $select-bg-color;
+      box-shadow: $select-close-shadow;
 
       &:hover {
         color: $select-close-hover-color;
@@ -342,10 +341,6 @@ html {
     .selector {
       color: $select-item-color;
 
-      &.selected {
-        background: $select-hover-bg-color;
-      }
-
       > span {
 
         > label {
@@ -354,7 +349,7 @@ html {
       }
 
       &:hover {
-        background: $select-hover-bg-color;
+        background: darken($select-hover-bg-color, 5%);
       }
     }
 
@@ -369,6 +364,10 @@ html {
         }
       }
     }
+  }
+
+  .ux-form-select-scroll {
+    box-shadow: $select-box-shadow;
   }
 }
 
@@ -411,4 +410,11 @@ html {
       }
     }
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// noUi Slider
+////////////////////////////////////////////////////////////////////////////////
+.ux-form-element .noUi-connect {
+  background: $primary-color;
 }

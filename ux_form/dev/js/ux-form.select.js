@@ -235,7 +235,7 @@
         // TAB - switch to another input.
         if (e.which === 9) {
           // alert('hit');
-          // return;
+          return;
         }
 
         // ARROW DOWN WHEN SELECT IS CLOSED - open dropdown.
@@ -250,6 +250,18 @@
 
         if (e.which === 39 || e.which === 37) {
           e.preventDefault();
+          return;
+        }
+
+        // When user types letters.
+        var nonLetters = [9, 13, 27, 37, 38, 39, 40];
+        if ((nonLetters.indexOf(e.which) === -1)) {
+          e.preventDefault();
+          this.showDropdown();
+          var code = e.which || e.keyCode;
+          var character = String.fromCharCode(code).toLowerCase();
+          this.$dropdown.find('.search-input').val(character);
+          this.onSearchKeyup(e);
         }
       }
     },

@@ -27,7 +27,7 @@ html {
 }
 
 .ux-form .ux-ripple:after {
-  background: #98a526;
+  background: #f25623;
 }
 
 .ux-form :-ms-input-placeholder {
@@ -57,7 +57,7 @@ html {
 }
 
 .ux-form-input .ux-form-input-line {
-  background-image: linear-gradient(#98a526, #98a526), linear-gradient(#cccccc, #cccccc);
+  background-image: linear-gradient(#f25623, #f25623), linear-gradient(#cccccc, #cccccc);
 }
 
 .ux-form-input .ux-form-input-item, .ux-form-input .ux-form-input-item:focus, .ux-form-input .ux-form-input-item.picker__input,
@@ -87,15 +87,15 @@ html {
 }
 
 .ux-form-input.focus > label {
-  color: #98a526;
+  color: #f25623;
 }
 
 .ux-form-input.focus .ux-form-input-line {
-  background-image: linear-gradient(#98a526, #98a526), linear-gradient(#cccccc, #cccccc);
+  background-image: linear-gradient(#f25623, #f25623), linear-gradient(#cccccc, #cccccc);
 }
 
 .ux-form-input.valid .ux-form-input-line, .ux-form-input.valid.focus .ux-form-input-line {
-  background-image: linear-gradient(#98a526, #98a526), linear-gradient(#86c13d, #86c13d);
+  background-image: linear-gradient(#f25623, #f25623), linear-gradient(#86c13d, #86c13d);
 }
 
 .ux-form-input.invalid > label, .ux-form-input.invalid.focus > label {
@@ -149,8 +149,8 @@ html {
 }
 
 .ux-form-checkbox.active label.option:before {
-  border-color: #98a526;
-  background: #98a526;
+  border-color: #f25623;
+  background: #f25623;
 }
 
 .ux-form-checkbox.invalid:after, .ux-form-checkbox.invalid.focus:after {
@@ -162,7 +162,7 @@ html {
 }
 
 .ux-form-radio label.option:after {
-  background-color: #98a526;
+  background-color: #f25623;
 }
 
 .ux-form-radio label.option:before {
@@ -179,7 +179,7 @@ html {
 }
 
 .ux-form-radio.active label.option:before {
-  border-color: #98a526;
+  border-color: #f25623;
 }
 
 .ux-form-select select {
@@ -188,7 +188,7 @@ html {
 }
 
 .ux-form-select select:focus {
-  border-bottom-color: #98a526;
+  border-bottom-color: #f25623;
 }
 
 .ux-form-select .ux-form-select-caret {
@@ -231,11 +231,11 @@ html {
 
 .ux-form-select .ux-form-select-dropdown.is-single .selected {
   color: white;
-  background: #98a526;
+  background: #f25623;
 }
 
 .ux-form-select .ux-form-select-dropdown.is-single .selected:hover {
-  background: #859021;
+  background: #ed450e;
 }
 
 .ux-form-select .ux-form-select-scroll {
@@ -263,7 +263,7 @@ html {
 }
 
 .ux-form-element .noUi-connect {
-  background: #98a526;
+  background: #f25623;
 }
 
-/*# sourceMappingURL=ux-form.olive.css.map */
+/*# sourceMappingURL=ux-form.orange.css.map */
