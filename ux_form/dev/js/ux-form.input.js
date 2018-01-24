@@ -139,7 +139,6 @@
       this.$element.removeClass('valid invalid').removeAttr('data-error');
       if (this.isValid()) {
         if (this.hasValue()) {
-          console.log(this.$field.val());
           this.$element.addClass('valid');
         }
       }
