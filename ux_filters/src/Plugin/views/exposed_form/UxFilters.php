@@ -202,7 +202,7 @@ class UxFilters extends ExposedFormPluginBase {
     if (!empty($settings['general']['autosubmit'])) {
       $form = array_merge_recursive($form, ['#attributes' => ['data-ux-auto-submit-full-form' => '']]);
       $form['actions']['submit']['#attributes']['data-ux-auto-submit-click'] = '';
-      $form['#attached']['library'] = ['ux/ux.auto_submit'];
+      $form['#attached']['library'][] = 'ux/ux.auto_submit';
 
       if (!empty($settings['general']['autosubmit_hide'])) {
         $form['actions']['submit']['#attributes']['class'][] = 'js-hide';
