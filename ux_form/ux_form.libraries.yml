@@ -15,6 +15,14 @@ ux_form.reset:
   js:
     js/ux-form.reset.js: { minified: true }
 
+ux_form.autogrow:
+  version: VERSION
+  js:
+    js/ux-form.autogrow.js: { minified: true }
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+
 ux_form.dropdown:
   version: VERSION
   js:
@@ -72,6 +80,9 @@ ux_form.date:
     js/ux-form.date.js: { minified: true }
   dependencies:
     # - ux_form/ux_form
+    - core/drupal
+    - core/jquery.once
+    - core/drupalSettings
     - ux_form/libraries.picker
 
 ux_form.time:
@@ -84,6 +95,9 @@ ux_form.time:
     js/ux-form.time.js: { minified: true }
   dependencies:
     # - ux_form/ux_form
+    - core/drupal
+    - core/jquery.once
+    - core/drupalSettings
     - ux_form/libraries.picker
 
 ux_form.inputmask:
