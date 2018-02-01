@@ -106,7 +106,7 @@
     left: 0;
     top: 0;
     // right: 0;
-    // width: 100%;
+    min-width: 100%;
     display: none;
     opacity: 0;
     z-index: 999;
@@ -133,7 +133,6 @@
         padding-left: $global-padding / 2;
         padding-right: $global-padding / 2;
         width: 100%;
-        border: 0;
         font-size: $select-font-size;
       }
     }

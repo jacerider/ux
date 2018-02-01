@@ -328,6 +328,7 @@ html {
       color: $select-close-color;
       background-color: $select-bg-color;
       box-shadow: $select-close-shadow;
+      border-left: $input-border-right;
 
       &:hover {
         color: $select-close-hover-color;
@@ -417,4 +418,73 @@ html {
 ////////////////////////////////////////////////////////////////////////////////
 .ux-form-element .noUi-connect {
   background: $primary-color;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Date/time picker
+////////////////////////////////////////////////////////////////////////////////
+.picker {
+
+  .picker__select--month,
+  .picker__select--year {
+
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+
+  .picker__nav--prev,
+  .picker__nav--next {
+
+    &:hover {
+      background: lighten($primary-color, 35%);
+    }
+  }
+
+  .picker__day--today {
+
+    &:before {
+      border-top-color: $primary-color;
+    }
+  }
+
+  .picker__day--infocus,
+  .picker__day--outfocus {
+
+    &:hover {
+      background: lighten($primary-color, 40%);
+    }
+  }
+
+  .picker__day--highlighted {
+    border-color: $primary-color;
+  }
+
+  .picker__day--selected,
+  .picker__day--selected:hover,
+  &.picker--focused .picker__day--selected {
+    background: lighten($primary-color, 20%);
+  }
+
+  .picker__button--today,
+  .picker__button--clear,
+  .picker__button--close {
+
+    &:hover {
+      background: lighten($primary-color, 40%);
+      border-bottom-color: lighten($primary-color, 40%);
+    }
+
+    &:focus {
+      background: lighten($primary-color, 40%);
+      border-color: $primary-color;
+    }
+  }
+
+  .picker__button--today:before {
+
+    &:before {
+      border-top-color: $primary-color;
+    }
+  }
 }

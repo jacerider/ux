@@ -13,6 +13,16 @@
           padding-bottom: $global-padding;
         }
 
+        .fieldception-multiple {
+          display: flex;
+          align-items: flex-end;
+          flex-wrap: wrap;
+
+          .ux-form-container-ux-form-inline {
+            width: 100%;
+          }
+        }
+
         // Only hide labels for fields without grouping.
         .fieldception-groups-0 {
 
@@ -63,6 +73,17 @@
           }
         }
       }
+    }
+  }
+
+  .ux-form-element-type-actions {
+    width: 100%;
+
+    .close {
+      width: 100%;
+      padding: 4px;
+      font-size: rem-calc(12);
+      text-transform: uppercase;
     }
   }
 }

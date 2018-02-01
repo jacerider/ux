@@ -30,7 +30,8 @@
         margin-top: 0;
       }
 
-      &:last-child {
+      &:last-child,
+      &.ux-for-element-last {
         margin-bottom: 0;
       }
     }
@@ -108,26 +109,35 @@
 }
 
 .ux-form-inline {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 100%;
 
-  > .ux-form-element {
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-    margin: 0;
-    // Needed for IE but ignored.
-    width: rem-calc(100);
-  }
-
-  .fieldset-wrapper {
-    display: flex !important;
+  @include breakpoint(large) {
+    display: flex;
     flex-flow: row nowrap;
+    align-items: flex-end;
+    width: 100%;
 
-    .ux-form-container {
-      flex: auto !important;
-      width: 100%;
+    > .ux-form-element {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: auto;
+      margin: 0;
+      // Needed for IE but ignored.
+      width: rem-calc(100);
+
+      &.ux-form-element-type-actions {
+        flex-grow: 0;
+        width: auto;
+      }
+    }
+
+    .fieldset-wrapper {
+      display: flex !important;
+      flex-flow: row nowrap;
+
+      .ux-form-container {
+        flex: auto !important;
+        width: 100%;
+      }
     }
   }
 

@@ -86,6 +86,7 @@
   textarea {
 
     &.ux-form-input-item {
+      overflow: auto;
 
       &,
       &:focus {
