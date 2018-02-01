@@ -16,10 +16,10 @@
 .ux-form .ux-form-element .fieldgroup .fieldset-legend {
   display: block;
   font-size: 0.875rem;
-  line-height: 1.625rem;
+  line-height: 1.25rem;
   font-weight: normal;
   text-transform: none;
-  padding: 0;
+  padding: 0 0 3px;
   margin: 0;
 }
 
@@ -33,7 +33,7 @@
   margin-top: 0;
 }
 
-.ux-form .ux-form-widget .ux-form-element:last-child {
+.ux-form .ux-form-widget .ux-form-element:last-child, .ux-form .ux-form-widget .ux-form-element.ux-for-element-last {
   margin-bottom: 0;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .ux-form .ux-form-element-float {
-  margin-top: 2.875rem;
+  margin-top: 2.5rem;
   margin-bottom: 1.25rem;
 }
 
@@ -133,36 +133,48 @@
   opacity: 1 !important;
 }
 
-.ux-form-inline {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-flow: row nowrap;
-      flex-flow: row nowrap;
-  width: 100%;
+@media screen and (min-width: 64em) {
+  .ux-form-inline {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+    -ms-flex-align: end;
+        align-items: flex-end;
+    width: 100%;
+  }
+  .ux-form-inline > .ux-form-element {
+    -ms-flex-positive: 1;
+        flex-grow: 1;
+    -ms-flex-negative: 1;
+        flex-shrink: 1;
+    -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+    margin: 0;
+    width: 6.25rem;
+  }
+  .ux-form-inline > .ux-form-element.ux-form-element-type-actions {
+    -ms-flex-positive: 0;
+        flex-grow: 0;
+    width: auto;
+  }
+  .ux-form-inline .fieldset-wrapper {
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+  }
+  .ux-form-inline .fieldset-wrapper .ux-form-container {
+    -ms-flex: auto !important;
+        flex: auto !important;
+    width: 100%;
+  }
 }
 
-.ux-form-inline > .ux-form-element {
-  -ms-flex-positive: 1;
-      flex-grow: 1;
-  -ms-flex-negative: 1;
-      flex-shrink: 1;
-  -ms-flex-preferred-size: auto;
-      flex-basis: auto;
-  margin: 0;
-  width: 6.25rem;
-}
-
-.ux-form-inline .fieldset-wrapper {
-  display: -ms-flexbox !important;
-  display: flex !important;
-  -ms-flex-flow: row nowrap;
-      flex-flow: row nowrap;
-}
-
-.ux-form-inline .fieldset-wrapper .ux-form-container {
-  -ms-flex: auto !important;
-      flex: auto !important;
-  width: 100%;
+.ux-form .button,
+.ux-form .form-submit,
+.ux-form .form-submit.secondary {
+  margin-bottom: 1px;
 }
 
 .ux-form-element-type-checkboxes .ux-form-checkboxes .fieldset-wrapper > * {
@@ -432,6 +444,10 @@
   border-left: 0 !important;
 }
 
+.ux-form-input textarea.ux-form-input-item {
+  overflow: auto;
+}
+
 .ux-form-input textarea.ux-form-input-item, .ux-form-input textarea.ux-form-input-item:focus {
   padding-top: 0.8125rem;
   padding-bottom: 0.8125rem;
@@ -480,15 +496,15 @@
 .ux-form-element-float .ux-form-input > label {
   display: block;
   font-size: 0.875rem;
-  line-height: 1.625rem;
+  line-height: 1.25rem;
   font-weight: normal;
   text-transform: none;
-  padding: 0;
+  padding: 0 0 3px;
   margin: 0;
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateY(-1.625rem);
+  transform: translateY(-1.25rem);
   line-height: 2.5rem;
   font-size: 1rem;
   height: 2.5rem;
@@ -504,15 +520,15 @@
 .ux-form-element-float .ux-form-input.active > label, .ux-form-element-float .ux-form-input.force-active > label {
   display: block;
   font-size: 0.875rem;
-  line-height: 1.625rem;
+  line-height: 1.25rem;
   font-weight: normal;
   text-transform: none;
-  padding: 0;
+  padding: 0 0 3px;
   margin: 0;
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateY(-1.625rem);
+  transform: translateY(-1.25rem);
 }
 
 .password-strength .password-strength__title {
@@ -736,6 +752,7 @@
   position: absolute;
   left: 0;
   top: 0;
+  min-width: 100%;
   display: none;
   opacity: 0;
   z-index: 999;
@@ -761,7 +778,6 @@
   padding-left: 0.625rem;
   padding-right: 0.625rem;
   width: 100%;
-  border: 0;
   font-size: 0.875rem;
 }
 
@@ -1070,6 +1086,19 @@
   padding-bottom: 1.25rem;
 }
 
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr .fieldception-multiple {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: end;
+      align-items: flex-end;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.ux-form-element .field--type-fieldception .field-multiple-table tbody tr .fieldception-multiple .ux-form-container-ux-form-inline {
+  width: 100%;
+}
+
 .ux-form-element .field--type-fieldception .field-multiple-table tbody tr .fieldception-groups-0 .ux-form-inline label {
   display: none;
 }
@@ -1095,6 +1124,17 @@
 
 .ux-form-element .field--type-fieldception .field-multiple-table tbody tr:last-child td {
   padding-bottom: 0;
+}
+
+.ux-form-element .field--type-fieldception .ux-form-element-type-actions {
+  width: 100%;
+}
+
+.ux-form-element .field--type-fieldception .ux-form-element-type-actions .close {
+  width: 100%;
+  padding: 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
 /*# sourceMappingURL=ux-form.css.map */

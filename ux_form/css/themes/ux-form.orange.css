@@ -206,7 +206,8 @@ html {
 .ux-form-select .ux-form-select-dropdown .close {
   color: #b3b3b3;
   background-color: white;
-  box-shadow: 0px -2px 6px -3px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px -2px 6px -3px rgba(0, 0, 0, 0.2);
+  border-left: 1px solid #e0e0e0;
 }
 
 .ux-form-select .ux-form-select-dropdown .close:hover {
@@ -264,6 +265,53 @@ html {
 
 .ux-form-element .noUi-connect {
   background: #f25623;
+}
+
+.picker .picker__select--month:focus,
+.picker .picker__select--year:focus {
+  border-color: #f25623;
+}
+
+.picker .picker__nav--prev:hover,
+.picker .picker__nav--next:hover {
+  background: #fcd7cc;
+}
+
+.picker .picker__day--today:before {
+  border-top-color: #f25623;
+}
+
+.picker .picker__day--infocus:hover,
+.picker .picker__day--outfocus:hover {
+  background: #fdeae4;
+}
+
+.picker .picker__day--highlighted {
+  border-color: #f25623;
+}
+
+.picker .picker__day--selected,
+.picker .picker__day--selected:hover,
+.picker.picker--focused .picker__day--selected {
+  background: #f8a083;
+}
+
+.picker .picker__button--today:hover,
+.picker .picker__button--clear:hover,
+.picker .picker__button--close:hover {
+  background: #fdeae4;
+  border-bottom-color: #fdeae4;
+}
+
+.picker .picker__button--today:focus,
+.picker .picker__button--clear:focus,
+.picker .picker__button--close:focus {
+  background: #fdeae4;
+  border-color: #f25623;
+}
+
+.picker .picker__button--today:before:before {
+  border-top-color: #f25623;
 }
 
 /*# sourceMappingURL=ux-form.orange.css.map */
