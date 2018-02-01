@@ -12,6 +12,7 @@ use Drupal\Core\Render\Element;
  *   label = @Translation("Date"),
  *   element_types = {
  *     "datetime",
+ *     "ux_datetime",
  *   }
  * )
  */

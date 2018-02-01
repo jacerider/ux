@@ -35,17 +35,10 @@ class Date extends Input {
     switch ($type) {
       case 'date':
         $element['#wrapper_attributes']['class'][] = 'ux-form-date';
-        if (!empty($element['#attached']['library'])) {
-          $element['#attached']['library'] = array_filter($element['#attached']['library'], function ($library) {
-            return $library !== 'core/drupal.date';
-          });
-        }
-        $element['#attached']['library'][] = 'ux_form/ux_form.date';
         break;
 
       case 'time':
         $element['#wrapper_attributes']['class'][] = 'ux-form-time';
-        $element['#attached']['library'][] = 'ux_form/ux_form.time';
         break;
     }
   }

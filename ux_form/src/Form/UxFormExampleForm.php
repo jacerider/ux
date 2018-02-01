@@ -449,13 +449,22 @@ class UxFormExampleForm extends FormBase {
       '#date_timezone' => drupal_get_user_timezone(),
     ];
 
-    // $element['datetime2'] = [
-    //   '#type' => 'datetime',
-    //   '#title' => $this->t('Date & Time with Default'),
-    //   '#default_value' => DrupalDateTime::createFromTimestamp(time()),
-    //   '#date_increment' => 1,
-    //   '#date_timezone' => drupal_get_user_timezone(),
-    // ];
+    $element['ux_datetime'] = [
+      '#type' => 'ux_datetime',
+      '#title' => $this->t('UX Date & Time'),
+      '#default_value' => NULL,
+      '#date_increment' => 1,
+      '#date_timezone' => drupal_get_user_timezone(),
+    ];
+
+    $element['ux_datetime2'] = [
+      '#type' => 'ux_datetime',
+      '#title' => $this->t('UX Date & Time'),
+      '#default_value' => NULL,
+      '#date_increment' => 1,
+      '#date_timezone' => drupal_get_user_timezone(),
+      '#ux_mode' => 'full',
+    ];
 
     return $element;
   }
