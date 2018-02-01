@@ -156,10 +156,11 @@
         _this.$dropdown.on('tap' + '.' + _this._name, '.close', function (e) {
           _this.closeDropdown.call(_this);
         });
-        _this.$hidden.on('focus' + '.' + _this._name, function (e) {
+        // Use focusin for IE support.
+        _this.$hidden.on('focusin' + '.' + _this._name, function (e) {
           _this.$wrapper.addClass('focus');
           // Don't trigger dropdown when moving from the .search-input field.
-          if (e.relatedTarget && !_this.$dropdown.find(e.relatedTarget).length) {
+          if ((e.relatedTarget && !_this.$dropdown.find(e.relatedTarget).length)) {
             _this.populateDropdown.call(_this);
             _this.showDropdown.call(_this);
           }
@@ -627,13 +628,20 @@
     Check if device is supported.
      */
     isSupported: function () {
-      if (window.navigator.appName === 'Microsoft Internet Explorer') {
+      if (this.isIE()) {
         return document.documentMode >= 8;
       }
       if (/iP(od|hone)/i.test(window.navigator.userAgent) || /IEMobile/i.test(window.navigator.userAgent) || /Windows Phone/i.test(window.navigator.userAgent) || /BlackBerry/i.test(window.navigator.userAgent) || /BB10/i.test(window.navigator.userAgent) || /Android.*Mobile/i.test(window.navigator.userAgent)) {
         return false;
       }
       return true;
+    },
+
+    /*
+    Check if Internet Explorer
+     */
+    isIE: function () {
+      return window.navigator && window.navigator.appName && window.navigator.appName === 'Microsoft Internet Explorer';
     },
 
     htmlDecode: function (value) {
