@@ -203,7 +203,7 @@ abstract class UxOptionsBase implements UxOptionsInterface {
     $return = [];
     foreach ($options1 as $key => $value) {
       if (array_key_exists($key, $options2)) {
-        if (is_array($value)) {
+        if (is_array($value) && is_array($options2[$key])) {
           $aRecursiveDiff = $this->optionsDeepDiff($value, $options2[$key]);
           if (count($aRecursiveDiff)) {
             $return[$key] = $aRecursiveDiff;
