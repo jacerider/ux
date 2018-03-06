@@ -1,0 +1,54 @@
+uuid: 7498ce7b-3084-49e7-ba9b-4c6e9e4cc43a
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.image
+    - views.view.ux_media_browser_image
+  module:
+    - dropzonejs_eb_widget
+    - media
+    - ux_media
+    - views
+name: ux_media_image
+label: 'UX Media | Image'
+display: ux_aside
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: 'Image Library'
+  auto_open: 0
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  b0dc972d-2962-42b1-9ba4-c87f1b564453:
+    settings:
+      view: ux_media_browser_image
+      view_display: entity_browser_1
+      submit_text: Select
+      auto_select: false
+    uuid: b0dc972d-2962-42b1-9ba4-c87f1b564453
+    weight: 1
+    label: Library
+    id: view
+  0af16b57-e2c6-4883-8adc-8229936d5adf:
+    settings:
+      form_mode: default
+      media_type: image
+      upload_location: 'public://images'
+      dropzone_description: 'Drop images here to upload them'
+      max_filesize: 500M
+      extensions: 'jpg jpeg gif png'
+      clientside_resize: false
+      resize_width: null
+      resize_height: null
+      resize_quality: !!float 1
+      resize_method: contain
+      thumbnail_method: contain
+      submit_text: Select
+    uuid: 0af16b57-e2c6-4883-8adc-8229936d5adf
+    weight: 2
+    label: Upload
+    id: dropzonejs_media_entity_inline_entity_form
