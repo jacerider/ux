@@ -1,0 +1,43 @@
+uuid: 69922dc5-ace9-428c-b5f8-7342ec434532
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.ux_media_browser_video
+  module:
+    - entity_browser_entity_form
+    - ux_media
+    - views
+name: ux_media_video
+label: 'UX Media | Video'
+display: ux_aside
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: 'Video Library'
+  auto_open: 0
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  bb09a5f6-c3d4-4d6c-9b87-d5899dfa84ff:
+    settings:
+      view: ux_media_browser_video
+      view_display: entity_browser_1
+      submit_text: Select
+      auto_select: false
+    uuid: bb09a5f6-c3d4-4d6c-9b87-d5899dfa84ff
+    weight: 1
+    label: Library
+    id: view
+  076932d2-21b0-4cf4-8a52-8f82b8f85c00:
+    settings:
+      entity_type: media
+      bundle: video
+      form_mode: default
+      submit_text: 'Save and Select'
+    uuid: 076932d2-21b0-4cf4-8a52-8f82b8f85c00
+    weight: 2
+    label: Add
+    id: entity_form
