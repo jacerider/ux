@@ -8,7 +8,6 @@ dependencies:
   module:
     - entity_browser
     - media
-    - svg_image
     - user
 id: ux_media_browser_image
 label: 'UX MEDIA | Browser | Image'
@@ -136,10 +135,6 @@ display:
           settings:
             image_style: ux_media_thumbnail
             image_link: ''
-            svg_render_as_image: 1
-            svg_attributes:
-              width: '350'
-              height: '200'
           group_column: ''
           group_columns: {  }
           group_rows: true
