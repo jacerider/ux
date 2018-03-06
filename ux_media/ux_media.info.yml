@@ -9,4 +9,3 @@ dependencies:
   - media
   - entity_browser
   - dropzonejs
-  - hide_revision_field
