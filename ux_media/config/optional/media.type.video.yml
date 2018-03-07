@@ -1,14 +1,9 @@
-uuid: 6b9bc4b3-2f01-4465-98ee-9b7522123498
+uuid: d4eb8e5b-8b6f-4df5-8fb6-3d732c3d0f8e
 langcode: en
 status: true
 dependencies:
   module:
-    - hide_revision_field
     - video_embed_media
-third_party_settings:
-  hide_revision_field:
-    hide: true
-    personalizable: false
 id: video
 label: Video
 description: 'Use YouTube or Vimeo videos for reusable media.'
@@ -17,5 +12,4 @@ queue_thumbnail_downloads: false
 new_revision: false
 source_configuration:
   source_field: field_media_video_embed_field
-field_map:
-  source_name: name
+field_map: {  }

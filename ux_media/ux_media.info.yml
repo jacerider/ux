@@ -8,5 +8,7 @@ dependencies:
   - ux_aside
   - media
   - entity_browser
+  - entity_browser_entity_form
   - dropzonejs_eb_widget
   - inline_entity_form
+  - video_embed_media
