@@ -5,8 +5,23 @@
  * Views integration for UX Filters.
  */
 
-use Drupal\Core\Entity\ContentEntityType;
 use Drupal\field\FieldStorageConfigInterface;
+
+/**
+ * Implements hook_views_data().
+ */
+function ux_filters_views_data() {
+
+  $data['views']['ux_filters_summary'] = [
+    'title' => t('Filter Summary'),
+    'help' => t('Displays summary of active exposed filters.'),
+    'area' => [
+      'id' => 'ux_filters_summary',
+    ],
+  ];
+
+  return $data;
+}
 
 /**
  * Implements hook_field_views_data_alter().
@@ -47,17 +62,17 @@ function ux_filters_field_views_data_alter(array &$data, FieldStorageConfigInter
       $field_name = $field_storage->getName();
       foreach (['value', 'end_value'] as $column_name) {
         if (isset($table_data[$field_name . '_' . $column_name]['filter'])) {
-            $args = [
-              '@label' => $entity_type->getLabel(),
-              '@field_name' => $field_name . ':' . $column_name,
-            ];
-            $filter = $table_data[$field_name . '_' . $column_name]['filter'];
-            $pseudo_field_name = 'ux_filter__' . $entity_type_id . '__' . $field_name . '__' . $column_name;
+          $args = [
+            '@label' => $entity_type->getLabel(),
+            '@field_name' => $field_name . ':' . $column_name,
+          ];
+          $filter = $table_data[$field_name . '_' . $column_name]['filter'];
+          $pseudo_field_name = 'ux_filter__' . $entity_type_id . '__' . $field_name . '__' . $column_name;
 
-            $filter['title'] = t('UX Filter (@field_name)', $args);
-            $filter['id'] = 'ux_filter_date';
-            $filter['group'] = $entity_type->getLabel();
-            $data[$table_name][$pseudo_field_name]['filter'] = $filter;
+          $filter['title'] = t('UX Filter (@field_name)', $args);
+          $filter['id'] = 'ux_filter_date';
+          $filter['group'] = $entity_type->getLabel();
+          $data[$table_name][$pseudo_field_name]['filter'] = $filter;
         }
       }
     }
