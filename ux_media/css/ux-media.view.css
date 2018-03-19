@@ -78,7 +78,7 @@
   animation: fillOut 0.4s ease-in-out forwards, scaleOut 0.3s ease-in-out both;
 }
 
-.ux-media-browser .views-field-entity-browser-select {
+.ux-media-browser .views-row .views-field-entity-browser-select {
   position: absolute !important;
   height: 1px;
   width: 1px;
