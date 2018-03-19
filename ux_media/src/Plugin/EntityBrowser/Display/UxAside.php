@@ -26,6 +26,32 @@ class UxAside extends Modal {
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return [
+      'aside_description' => $this->t('Select from library or upload new.'),
+    ] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    $configuration = $this->getConfiguration();
+
+    $form = parent::buildConfigurationForm($form, $form_state);
+
+    $form['aside_description'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Aside description'),
+      '#default_value' => $configuration['aside_description'],
+    ];
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function displayEntityBrowser(array $element, FormStateInterface $form_state, array &$complete_form, array $persistent_data = []) {
     $display = parent::displayEntityBrowser($element, $form_state, $complete_form, $persistent_data);
     $display['open_modal']['#attached']['library'] = ['ux_media/ux_aside'];
@@ -64,7 +90,7 @@ class UxAside extends Modal {
 
     $options = [
       'title' => $this->configuration['link_text'],
-      'subtitle' => 'Select from library or upload new.',
+      'subtitle' => $this->configuration['aside_description'],
       'icon' => 'fa-camera',
       'width' => '100%',
       'attachTop' => TRUE,
