@@ -66,7 +66,7 @@
     float: function () {
       var _this = this;
       _this.$header.css({
-        display: 'none',
+        transitionDuration: '0ms',
         position: 'fixed',
         marginLeft: (_this.offset.left - displace.offsets.left),
         marginRight: (_this.offset.left - displace.offsets.right),
@@ -77,7 +77,7 @@
       });
       _this.$header.addClass('ux-header-hide ux-header-float ux-header-alt');
       setTimeout(function () {
-        _this.$header.css({display: ''});
+        _this.$header.css({transitionDuration: ''});
       }, 10);
     },
 
