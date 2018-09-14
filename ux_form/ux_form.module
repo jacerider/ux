@@ -177,6 +177,10 @@ function ux_form_get_config() {
  *     Properties used: #id, #attributes, #children.
  */
 function ux_form_preprocess_container(array &$variables) {
+  if (isset($variables['attributes']) && $variables['attributes'] instanceof Drupal\Core\Template\Attribute) {
+    $variables['attributes'] = $variables['attributes']->toArray();
+  }
+
   if (isset($variables['attributes'])) {
     ux_form_attribute_convert($variables['attributes'], $variables['element']);
   }
@@ -186,15 +190,20 @@ function ux_form_preprocess_container(array &$variables) {
  * Implements template_preprocess_fieldset().
  */
 function ux_form_preprocess_fieldset(&$variables) {
-  if (isset($variables['attributes'])) {
+  if (isset($variables['attributes']) && $variables['attributes'] instanceof Drupal\Core\Template\Attribute) {
+    $variables['attributes'] = $variables['attributes']->toArray();
+  }
+
+  if (isset($variables['attributes']) && is_array($variables['attributes'])) {
     ux_form_attribute_convert($variables['attributes'], $variables['element']);
-  }
-  if (!isset($variables['legend']['title'])) {
-    // Add a .no-legend class if no title is provided.
-    $variables['attributes']['class'][] = 'no-legend';
-  }
-  else {
-    $variables['attributes']['class'][] = 'has-legend';
+
+    if (!isset($variables['legend']['title'])) {
+      // Add a .no-legend class if no title is provided.
+      $variables['attributes']['class'][] = 'no-legend';
+    }
+    else {
+      $variables['attributes']['class'][] = 'has-legend';
+    }
   }
 }
 
