@@ -34,10 +34,9 @@ class ListFieldCheckboxes extends UxFilterBase {
     unset($element['#options']['All']);
     $user_input = $form_state->getUserInput();
     if ($user_input[$element_id] == 'All') {
-      $user_input[$element_id] = '';
+      $user_input[$element_id] = array();
       $form_state->setUserInput($user_input);
     }
-    // kint($element);
   }
 
 }
