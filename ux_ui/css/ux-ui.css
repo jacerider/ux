@@ -2137,7 +2137,6 @@
 .no-select, input[type=range],
 input[type=range] + .thumb {
   -webkit-user-select: none;
-     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
@@ -2703,7 +2702,6 @@ textarea.materialize-textarea {
   transition: .28s ease;
   /* webkit (konqueror) browsers */
   -webkit-user-select: none;
-     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
@@ -2833,7 +2831,6 @@ form p:last-child {
   line-height: 25px;
   font-size: 1rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
