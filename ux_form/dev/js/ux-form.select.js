@@ -41,6 +41,7 @@
      */
     buildCache: function () {
       this.$field = this.$element.find('select');
+      this.$error = this.$element.find('.field-error');
       this.$trigger = $('<input class="ux-form-input-item ux-form-input-item-js" ' + (this.isDisabled() ? 'disabled' : '') + ' readonly tabindex="-1"></input>');
       this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input ux-form-input-js"></div>');
       this.$caret = $('<span class="ux-form-select-caret">&#9660;</span>');
@@ -48,8 +49,13 @@
       this.placeholder = this.$field.attr('placeholder') || (this.multiple ? 'Select Multiple' : 'Select One');
       this.$trigger.addClass('ux-form-select-trigger');
       this.$trigger.attr('placeholder', this.placeholder);
-      this.$wrapper.insertAfter(this.$field);
-      this.isSupported = this.isSupported();
+      this.isSupported = this.checkIsSupported();
+
+      if (this.$error.length) {
+        // this.$error.appendTo(this.$wrapper);
+        // this.$wrapper.addClass('invalid').attr('data-error', this.$error.text());
+        // this.$error.remove();
+      }
 
       if (this.isSupported) {
         this.$hidden = $('<input class="ux-form-select-hidden"></input>');
@@ -60,14 +66,22 @@
         this.$field.attr('tabindex', '-1');
         this.$dropdown = $('<div class="ux-form-select-dropdown"></div>');
         this.$dropdownScroll = $('<ul class="ux-form-select-scroll"></div>').appendTo(this.$dropdown);
-        this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown).append(this.$field);
+        this.$wrapper.append(this.$caret).append(this.$hidden).append(this.$trigger).append(this.$dropdown);
         this.$dropdown.addClass((this.multiple ? 'is-multiple' : 'is-single'));
       }
       else {
-        this.$wrapper.append(this.$caret).append(this.$trigger).append(this.$field);
+        this.$wrapper.append(this.$caret).append(this.$trigger);
       }
 
-      Drupal.attachBehaviors(this.$element[0]);
+      // In order to avoid attachBehavior colisions we process the $wrapper
+      // content in its own wrapper. The states.js file was having issues
+      // because it processes data-drupal-states again when it shouldn't.
+      var $wrapped = $('<div></div>');
+      this.$wrapper.appendTo($wrapped);
+      Drupal.attachBehaviors($wrapped[0]);
+      this.$wrapper = $wrapped.contents();
+      this.$wrapper.insertAfter(this.$field);
+      this.$wrapper.append(this.$field);
     },
 
     /*
@@ -182,7 +196,7 @@
       this.$dropdown.off('.' + this._name);
       this.$dropdown.find('.search-input').off('.' + this._name);
       this.$field.off('.' + this._name);
-      $(document).off('.' + this._name);
+      $('body').off('.' + this._name);
     },
 
     /*
@@ -248,6 +262,13 @@
 
       // TAB - switch to another input.
       if (e.which === 9) {
+        // Select current item.
+        $item = this.$dropdown.find('.selector.selected');
+        if ($item.length) {
+          var option = $item.data('option');
+          this.changeSelected(option, 'add');
+        }
+
         // Focus on next visible field.
         var $inputs = this.$element.closest('form').find(':input:visible').not('.ignore');
         var $nextInput = $inputs.eq($inputs.index(e.target) + 1);
@@ -390,7 +411,7 @@
           li.html('<span>' + option.text + '</span>');
         }
         else if (this.multiple) {
-          li.addClass('selector ux-select-checkbox ready');
+          li.addClass('selector ux-form-checkbox ready');
           li.html('<span><input type="checkbox" class="form-checkbox ignore" data-ux-auto-submit-exclude><label class="option">' + option.text + '<div class="ux-ripple"></div></label></span>');
         }
         else {
@@ -458,12 +479,14 @@
 
     updateTrigger: function () {
       var value = this.getSelectedOptions('value').join('');
+
       if (value === null || value === '' || value === '_none') {
         this.$trigger.val('');
         this.$trigger.attr('placeholder', this.htmlDecode(this.getSelectedOptions('text').join(', ')));
       }
       else {
         this.$trigger.val(this.htmlDecode(this.getSelectedOptions('text').join(', '))).trigger('change');
+        this.$field.parents('.ux-form-select').find('label').text(this.prepareLabel(this.getSelectedOptions('text'), 20));
       }
     },
 
@@ -519,18 +542,20 @@
       }
 
       this.$field.val(this.getSelectedOptions('value'));
+      this.$field.parents('.ux-form-select').find('label').text(this.prepareLabel(this.getSelectedOptions('text'), 20));
       this.$field.trigger('change', [true]);
       this.$field.trigger('input', [true]);
     },
 
     showDropdown: function () {
       var _this = this;
-      $(document).trigger('tap');
+      $('body').trigger('tap');
       if (this.open) {
         return this.closeDropdown();
       }
       this.open = true;
 
+      this.$element.closest('.ux-form-container-form-select').addClass('static');
       this.$element.addClass('active');
       this.highlightScrollTo();
 
@@ -543,7 +568,7 @@
 
     windowHideDropdown: function () {
       var _this = this;
-      $(document).on('tap' + '.' + _this.uniqueId, function (e) {
+      $('body').on('tap' + '.' + _this.uniqueId, function (e) {
         if (!_this.open) {
           return;
         }
@@ -560,10 +585,11 @@
       this.$dropdown.find('.search-input').val('');
       this.$dropdownScroll.find('.hide').removeClass('hide');
       this.$element.removeClass('animate');
-      $(document).off('.' + _this.uniqueId);
+      $('body').off('.' + _this.uniqueId);
       setTimeout(function () {
         if (_this.open === false) {
           _this.$element.removeClass('active');
+          _this.$element.closest('.ux-form-container-form-select').removeClass('static');
           // _this.$hidden.focus();
         }
       }, 350);
@@ -593,18 +619,48 @@
     /*
     Check if device is supported.
      */
-    isSupported: function () {
+    checkIsSupported: function () {
       if (window.navigator.appName === 'Microsoft Internet Explorer') {
         return document.documentMode >= 8;
       }
-      if (/iP(od|hone)/i.test(window.navigator.userAgent) || /IEMobile/i.test(window.navigator.userAgent) || /Windows Phone/i.test(window.navigator.userAgent) || /BlackBerry/i.test(window.navigator.userAgent) || /BB10/i.test(window.navigator.userAgent) || /Android.*Mobile/i.test(window.navigator.userAgent)) {
+      if ((/iP(od|hone)/i.test(navigator.userAgent)) && !window.MSStream) {
         return false;
       }
       return true;
     },
 
+    prepareLabel: function (value, limit) {
+      var decoded = this.htmlDecode(value);
+
+      if (Array.isArray(decoded)) {
+        if (decoded.length > 1) {
+          return 'Multiple selected...';
+        }
+        decoded = decoded[0];
+      }
+      return this.truncateToFit(decoded, limit);
+    },
+
     htmlDecode: function (value) {
-      return $('<div/>').html(value).text();
+      var pattern = /\s&.*?;\s/g;
+      var check = pattern.test(value);
+
+      if (check) {
+        return $('<div/>').html(value).text();
+      }
+      return value;
+    },
+
+    truncateToFit: function (value, limit) {
+      var count = value.length;
+
+      if (count > limit) {
+        var diff = count - (limit + 3);
+        var regex = new RegExp('.{' + diff + '}$', 'g');
+
+        return value.replace(regex, '...');
+      }
+      return value;
     }
 
   });

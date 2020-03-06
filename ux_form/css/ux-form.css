@@ -172,7 +172,6 @@
   cursor: pointer;
   font-size: 0.8125rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   color: #333333;
@@ -606,7 +605,7 @@
   transition: all 350ms ease-out;
 }
 
-.ux-form ::-webkit-input-placeholder {
+.ux-form :-moz-placeholder {
   color: #4d4d4d;
   font-style: italic;
   font-weight: 200;
@@ -676,7 +675,6 @@
   cursor: pointer;
   font-size: 0.8125rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   color: #333333;
