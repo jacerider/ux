@@ -161,7 +161,12 @@ class UxMenuLinkTree extends MenuLinkTree {
       if (isset($items[$id])) {
         $element = &$items[$id];
         $options = $element['url']->getOptions();
-        $options['attributes']['class'][] = 'uxMenu-link';
+        if (isset($options['attributes']['class']) && is_string($options['attributes']['class'])) {
+          $options['attributes']['class'] = [$options['attributes']['class']];
+        }
+        if (!isset($options['attributes']['class']) || is_array($options['attributes']['class'])) {
+          $options['attributes']['class'][] = 'uxMenu-link';
+        }
         if ($data->submenu) {
           $options['attributes']['class'][] = 'uxMenu-link--has-submenu';
           $options['attributes']['data-submenu'] = 'submenu-' . $data->submenu;
