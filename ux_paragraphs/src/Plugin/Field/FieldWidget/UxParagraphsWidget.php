@@ -64,6 +64,7 @@ class UxParagraphsWidget extends ParagraphsWidget {
 
     if ($add_mode == 'modal') {
       unset($add_more_elements['add_modal_form_area']);
+      $add_more_elements['#type'] = 'ux_aside_container';
     }
 
     return $add_more_elements;
@@ -77,7 +78,7 @@ class UxParagraphsWidget extends ParagraphsWidget {
    */
   protected function buildModalAddForm(array &$element) {
     $subtitle = $this->t('to %type', ['%type' => $this->fieldDefinition->getLabel()]);
-    $element['#type'] = 'ux_aside_container';
+    // $element['#type'] = 'ux_aside_container';
     $element['#attached']['library'][] = 'ux_paragraphs/ux_paragraphs';
     $element['#attributes']['class'][] = 'ux-paragraph-add-more-trigger';
     $element['#options']['content']['icon'] = 'fa-plus-circle';
