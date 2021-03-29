@@ -408,12 +408,6 @@
           });
       }
       this.$dropdown.find('.search-input').attr('placeholder', 'Search...');
-      // if (this.$trigger.val()) {
-      //   this.$dropdown.find('.search-input').attr('placeholder', this.$trigger.val());
-      // }
-      // else {
-      //   this.$dropdown.find('.search-input').attr('placeholder', this.placeholder);
-      // }
       var options = this.getAllOptions();
       for (var i = 0; i < options.length; i++) {
         var option = options[i];

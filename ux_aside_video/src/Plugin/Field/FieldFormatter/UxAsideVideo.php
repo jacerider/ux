@@ -96,8 +96,8 @@ class UxAsideVideo extends FormatterBase implements ContainerFactoryPluginInterf
    *   The field formatter for thumbnails.
    * @param \Drupal\Core\Field\FormatterInterface $video_formatter
    *   The field formatter for videos.
-   * @param \Drupal\ux_aside\UxAsideManagerInterface $ux_aside_manager
-   *   The ux aside manager.
+   * @param \Drupal\exo\ExoSettingsInterface $exo_modal_settings
+   *   The eXo options service.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, ModuleHandlerInterface $module_handler, RendererInterface $renderer, FormatterInterface $thumbnail_formatter, FormatterInterface $video_formatter, UxAsideManagerInterface $ux_aside_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
