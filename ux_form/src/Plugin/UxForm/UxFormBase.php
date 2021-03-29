@@ -4,12 +4,13 @@ namespace Drupal\ux_form\Plugin\UxForm;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Base class for Delivery type plugins.
  */
-abstract class UxFormBase extends PluginBase implements UxFormPluginInterface {
+abstract class UxFormBase extends PluginBase implements UxFormPluginInterface, TrustedCallbackInterface {
   use StringTranslationTrait;
 
   /**
@@ -157,6 +158,13 @@ abstract class UxFormBase extends PluginBase implements UxFormPluginInterface {
    */
   protected function disableWrapper() {
     $this->wrapperSupported = FALSE;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function trustedCallbacks() {
+    return ['preRender'];
   }
 
 }

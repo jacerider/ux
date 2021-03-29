@@ -177,7 +177,7 @@ function ux_form_get_config() {
  *     Properties used: #id, #attributes, #children.
  */
 function ux_form_preprocess_container(array &$variables) {
-  if (isset($variables['attributes'])) {
+  if (isset($variables['attributes']) && is_array($variables['attributes'])) {
     ux_form_attribute_convert($variables['attributes'], $variables['element']);
   }
 }

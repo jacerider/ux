@@ -9,6 +9,6 @@ use Drupal\Core\Plugin\PluginFormInterface;
 /**
  * Defines an interface for Delivery type plugins.
  */
-interface UxFormPluginInterface extends ConfigurablePluginInterface, PluginFormInterface, PluginInspectionInterface {
+interface UxFormPluginInterface extends PluginFormInterface, PluginInspectionInterface {
 
 }
