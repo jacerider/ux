@@ -121,6 +121,12 @@
   transition: transform 0.5s, opacity 1s;
 }
 
+.ux-form :-moz-placeholder {
+  font-style: italic;
+  font-weight: 500;
+  opacity: 1 !important;
+}
+
 .ux-form :-ms-input-placeholder {
   font-style: italic;
   font-weight: 500;
@@ -209,7 +215,6 @@
   cursor: pointer;
   font-size: 0.9rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   font-weight: normal;
@@ -326,7 +331,6 @@
   font-size: inherit;
   line-height: inherit;
   -webkit-appearance: menulist;
-     -moz-appearance: menulist;
           appearance: menulist;
   margin: 0 2px;
   padding: 0;
@@ -575,7 +579,6 @@
   cursor: pointer;
   font-size: 0.9rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   font-weight: normal;

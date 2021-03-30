@@ -30,6 +30,10 @@ html {
   background: #c6362c;
 }
 
+.ux-form :-moz-placeholder {
+  color: #666666;
+}
+
 .ux-form :-ms-input-placeholder {
   color: #666666;
 }

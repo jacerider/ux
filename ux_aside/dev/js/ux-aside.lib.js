@@ -407,7 +407,6 @@
           this.$element.find('.' + PLUGIN_NAME + '-iframe').attr('src', href);
         }
 
-
         if (this.options.bodyOverflow || isMobile) {
           $('html').addClass(PLUGIN_NAME + '-isOverflow');
           if (isMobile) {
@@ -1366,8 +1365,8 @@
       }
       else if (that.iframeLoad === 3) {
         var $video = $(that.videoPlayer.getVideoEmbedCode());
-        that.videoWidth = $video.width();
-        that.videoHeight = $video.height();
+        that.videoWidth = $video.attr('width');
+        that.videoHeight = $video.attr('height');
         that.iframeLoad = 4;
       }
       else if (that.iframeLoad === 4) {
@@ -1518,7 +1517,6 @@
   });
 
   $.fn[PLUGIN_NAME] = function(option, args) {
-
 
     if (!$(this).length && typeof option == "object") {
 
