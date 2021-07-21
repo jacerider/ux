@@ -3,18 +3,6 @@
 
   &.fieldgroup {
     display: block;
-
-    > legend {
-
-      > .fieldset-legend {
-        @include label;
-        // @include label-active;
-      }
-    }
-
-    > .fieldset-wrapper {
-      margin: 0;
-    }
   }
 
   .ux-form-checkbox {
@@ -24,7 +12,6 @@
 
 .ux-form-checkbox,
 .ux-select-checkbox {
-  position: relative;
 
   // Hide input.
   .form-checkbox {
@@ -63,17 +50,14 @@
         top: ($checkbox-size - $checkbox-element-size) / 2;
         width: $checkbox-element-size;
         height: $checkbox-element-size;
-        z-index: 2;
+        z-index: 0;
         border: 2px solid $checkbox-border-color;
         box-sizing: border-box;
+        background-color: transparent;
       }
 
       &:before {
         border-radius: 2px;
-
-        .error & {
-          border-color: $error-color;
-        }
       }
 
       &:after {
@@ -119,16 +103,6 @@
     }
   }
 
-  &.focused {
-
-    label {
-
-      .ux-ripple {
-        @include ux-ripple-focus();
-      }
-    }
-  }
-
   &.form-disabled {
 
     label {
@@ -136,10 +110,6 @@
       &.option {
         color: $checkbox-disabled-color;
       }
-    }
-
-    .ux-ripple {
-      display: none;
     }
   }
 
@@ -154,30 +124,6 @@
           transition: all $form-item-speed ease;
         }
       }
-    }
-  }
-
-  ////// MESSAGE AREA
-  &:after {
-    display: block;
-    content: '';
-    opacity: 0;
-    font-size: $form-item-description-size;
-    line-height: $label-font-size;
-    color: $form-item-description-color;
-    text-transform: uppercase;
-    transition: opacity $form-item-speed ease-out;
-    white-space: nowrap;
-  }
-
-  ////// INVALID
-  &.invalid,
-  &.invalid.focus {
-
-    &:after {
-      content: attr(data-error);
-      color: $input-error-color;
-      opacity: 1;
     }
   }
 }

@@ -28,39 +28,29 @@
       var _this = this;
       // Initialize displace.
       displace();
-      var currentOffsets = displace.offsets;
-      var currentWidth = this.$window.width();
-      var currentHeight = this.$window.height();
-
       // Add document resize callback to resize event stack.
       _this.addResizeCallback($.proxy(_this.onResizeSetDocumentSize, _this));
-      _this.onResize();
-      // Adjust the document size. This event happens automatically on
-      // document resize debouce 200.
+      // Adjust the document size.
       _this.$document.on('drupalViewportOffsetChange.ux', function (event, offsets) {
-        // drupalViewportOffsetChange is called event with the sizing of the
-        // window nor the offsets have changed. We check for this so that we
-        // only call out resizing when necessary.
-        var width = _this.$window.width();
-        var height = _this.$window.height();
-        if (
-          offsets.top !== currentOffsets.top
-          || offsets.right !== currentOffsets.right
-          || offsets.bottom !== currentOffsets.bottom
-          || offsets.left !== currentOffsets.left
-          || width !== currentWidth
-          || height !== currentHeight
-        ) {
-          _this.onResize(event);
-          currentOffsets = offsets;
-        }
+        _this.onResizeSetDocumentSize();
       });
+
+      // Watch window for resizing and call onResizeCallbacks.
+      _this.onResize();
+      _this.$window.on('resize.ux', {}, debounce(function (event) {
+        _this.onResize(event);
+      }, 100));
 
       // Watch window for scroll and call onScrollCallbacks.
       _this.onScroll();
       _this.$window.on('scroll.ux', function (event) {
         _this.onScroll(event);
       });
+      // _this.$window.on('scroll.ux', {}, function (event) {
+      //   requestAnimationFrame(function () {
+      //     _this.onScroll(event);
+      //   });
+      // });
     },
 
     /**
@@ -123,15 +113,9 @@
      */
     onResizeSetDocumentSize: function (event) {
       var _this = this;
+      var height = _this.$body.height() - (_this.$uxWrapper.outerHeight() - _this.$uxWrapper.height());
 
-      _this.$body.waitForImages(function () {
-        var windowHeight = _this.$window.height();
-        var height = Math.max(_this.$body.height(), windowHeight);
-        height = height - (_this.$uxWrapper.outerHeight() - _this.$uxWrapper.height());
-        if (height < windowHeight) {
-          _this.$uxContent.css('min-height', height);
-        }
-      });
+      //_this.$uxContent.css('min-height', height);
     },
 
     /**

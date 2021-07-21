@@ -10,7 +10,6 @@ ux:
     - core/drupal
     - core/drupal.debounce
     - core/drupal.displace
-    - ux/jquery.waitforimages
 
 ux.ajax:
   version: VERSION
@@ -56,11 +55,6 @@ jquery.mobile-events:
   version: VERSION
   js:
     lib/mobile-events/jquery.mobile-events.min.js: {minified: true}
-
-jquery.waitforimages:
-  version: VERSION
-  js:
-    lib/waitforimages/jquery.waitforimages.min.js: {minified: true}
 
 gsap:
   version: VERSION

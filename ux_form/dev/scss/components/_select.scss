@@ -1,77 +1,10 @@
 
 .ux-form-select {
-  position: relative;
 
-  > label {
-    @include label-active;
-  }
-
-  select {
-    display: none;
-    background-color: transparent;
-    width: 100%;
-    box-sizing: border-box;
-    border: 0;
-    border-bottom: 1px solid $input-border-color;
-
-    &:focus {
-      border-bottom-color: $input-focus-color;
-    }
-
-    &.browser-default{
-      display: block;
-    }
-  }
-
-  &.invalid {
-
-    select {
-      display: block;
-    }
-  }
-
-  .ux-form-input-item {
-    cursor: default;
-  }
-
-  .ajax-progress {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 12px;
-    background: $white;
-    padding: 0 10px 0 20px;
-    border-radius: 3px;
-    height: $input-height;
-    line-height: $input-height;
-
-    .throbber {
-      padding: 0 16px 0 0;
-    }
-  }
-
-  ////// DISABLED
-  &.form-disabled {
-
-    > label {
-      color: $input-disabled-color;
-    }
-
-    .ux-form-input-item {
-      background-color: transparent;
-      color: $input-disabled-color;
-    }
-  }
+  select { display: none; }
 
   .ux-form-select-wrapper {
     position: relative;
-
-    &:hover {
-
-      .ux-form-select-caret {
-        opacity: 1;
-      }
-    }
   }
 
   .ux-form-select-caret {
@@ -84,9 +17,6 @@
     font-size: 10px;
     line-height: 10px;
     color: $select-caret-color;
-    pointer-events: none;
-    opacity: 0.7;
-    transition: opacity 300ms;
 
     &.disabled {
       color: $input-disabled-color;
@@ -99,15 +29,24 @@
     opacity: 0;
   }
 
-  .ux-form-select-scroll {
-    display: relative;
+  .ux-form-select-dropdown {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    min-width: 100px;
+    max-height: 650px;
+    background-color: $select-bg-color;
+    margin: 0;
+    display: none;
     overflow-y: auto;
+    opacity: 0;
+    z-index: 999;
+    will-change: width, height;
     list-style-type: none;
     padding: 0;
-    margin: 0;
-    min-width: 100px;
-    max-height: $select-item-height * 10;
-    will-change: width, height;
+    box-shadow: 0 4px 8px shade(20);
 
     li {
       display: block;
@@ -117,7 +56,7 @@
       font-size: $select-font-size;
       text-transform: none;
       color: $select-option-color;
-      // transition: all $form-item-speed;
+      transition: all $form-item-speed;
 
       > span {
         display: block;
@@ -128,21 +67,6 @@
         }
       }
     }
-  }
-
-  .ux-form-select-dropdown {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    width: 100%;
-    background-color: $select-bg-color;
-    display: none;
-    opacity: 0;
-    z-index: 999;
-    margin: 0;
-    padding: 0;
-    box-shadow: 0 1px 2px shade(30);
 
     .close {
       position: absolute;
@@ -166,7 +90,6 @@
     .search {
 
       input {
-        cursor: text;
         padding-left: $form-padding / 2;
         padding-right: $form-padding / 2;
       }
@@ -187,24 +110,6 @@
     .selector {
       color: $select-item-color;
 
-      &.selected {
-        background: $select-hover-color;
-        overflow: hidden;
-
-        label {
-          // color: $select-selected-color;
-
-          // &:before {
-          //   border-color: darken($select-selected-bg, 10%);
-          //   background: darken($select-selected-bg, 10%);
-          // }
-        }
-
-        // &:hover {
-        //   background: darken($select-selected-bg, 5%);
-        // }
-      }
-
       > span {
         cursor: pointer;
         line-height: $select-item-height;
@@ -217,11 +122,6 @@
 
       &:hover {
         background: $select-hover-color;
-      }
-
-      &.hide {
-        max-height: 0;
-        transition-duration: 0;
       }
     }
 

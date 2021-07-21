@@ -40,7 +40,7 @@
       var _this = this;
 
       this.$input.insertBefore(this.$field);
-      this.$element.addClass('ux-form-input-js').uxFormInput();
+      this.$element.addClass('ux-form-input').uxFormInput();
 
       setTimeout(function () {
         _this.$element.addClass('ready');
@@ -102,18 +102,15 @@
     attach: function (context) {
       var $context = $(context);
       $context.find('.ux-form-file').once('ux-form-file').uxFormFile();
+    },
+    detach: function (context) {
+      $(context).find('.ux-form-file').each(function () {
+        var plugin = $(this).data('uxFormFile');
+        if (plugin) {
+          plugin.destroy();
+        }
+      });
     }
-    // @see https://www.drupal.org/node/2692453
-    // detach: function (context, setting, trigger) {
-    //   if (trigger === 'unload') {
-    //     $(context).find('.ux-form-file').each(function () {
-    //       var plugin = $(this).data('uxFormFile');
-    //       if (plugin) {
-    //         plugin.destroy();
-    //       }
-    //     });
-    //   }
-    // }
   };
 
 })(jQuery, Drupal, window, document);

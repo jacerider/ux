@@ -1,4 +1,5 @@
 .ux-header {
+  position: fixed;
   z-index: 500;
   transition: transform 400ms;
   transform: translate3d(0, 0, 0);
@@ -6,6 +7,11 @@
 
 .ux-header.ux-header-hide {
   transform: translate3d(0, -100%, 0);
+}
+
+.ux-blur .ux-header {
+  position: static !important;
+  margin: 0 !important;
 }
 
 /*# sourceMappingURL=ux-header.css.map */

@@ -1,5 +1,5 @@
 ux_form.ux_form_settings_form:
-  title: 'UX Form'
+  title: 'Form'
   route_name: ux_form.ux_form_settings_form
   description: 'UX Form settings.'
   parent: system.admin_config_ux

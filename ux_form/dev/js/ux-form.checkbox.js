@@ -66,12 +66,6 @@
       var _this = this;
       _this.$field.on('change' + '.' + _this._name, function () {
         _this.onChange.call(_this);
-        _this.validate();
-      }).on('focus' + '.' + _this._name, function () {
-        _this.$element.addClass('focused');
-        _this.validate();
-      }).on('blur' + '.' + _this._name, function () {
-        _this.$element.removeClass('focused');
       });
     },
 
@@ -92,23 +86,6 @@
       else {
         this.$element.removeClass('active');
       }
-    },
-
-    /*
-    Validate the field.
-     */
-    validate: function () {
-      this.$element.removeClass('valid invalid').removeAttr('data-error');
-      if (!this.isValid()) {
-        this.$element.addClass('invalid').attr('data-error', this.$field[0].validationMessage);
-      }
-    },
-
-    /*
-    Check if element value is valid.
-     */
-    isValid: function () {
-      return this.$field[0].validity.valid === true;
     }
 
   });
@@ -128,18 +105,15 @@
     attach: function (context) {
       var $context = $(context);
       $context.find('.ux-form-checkbox').once('ux-form-checkbox').uxFormCheckbox();
+    },
+    detach: function (context) {
+      $(context).find('.ux-form-checkbox').each(function () {
+        var plugin = $(this).data('uxFormCheckbox');
+        if (plugin) {
+          plugin.destroy();
+        }
+      });
     }
-    // @see https://www.drupal.org/node/2692453
-    // detach: function (context, setting, trigger) {
-    //   if (trigger === 'unload') {
-    //     $(context).find('.ux-form-checkbox').each(function () {
-    //       var plugin = $(this).data('uxFormCheckbox');
-    //       if (plugin) {
-    //         plugin.destroy();
-    //       }
-    //     });
-    //   }
-    // }
   };
 
 })(jQuery, Drupal, window, document);

@@ -6,18 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\Html;
-
-/**
- * Provides theme registration for themes across .inc files.
- */
-function ux_form_theme() {
-  return [
-    'ux_form_element_container' => [
-      'render element' => 'element',
-    ],
-  ];
-}
+use Drupal\Core\Render\Markup;
 
 /**
  * Implements hook_preprocess_select().
@@ -30,19 +19,9 @@ function ux_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 }
 
 /**
- * Implements hook_library_info_alter().
- */
-function ux_form_library_info_alter(&$libraries, $extension) {
-  if ($extension == 'webform' && isset($libraries['webform.element.inputmask'])) {
-    $libraries['webform.element.inputmask']['js']['/' . drupal_get_path('module', 'ux_form') . '/js/modules/webform/webform.element.inputmask.js'] = $libraries['webform.element.inputmask']['js']['js/webform.element.inputmask.js'];
-    unset($libraries['webform.element.inputmask']['js']['js/webform.element.inputmask.js']);
-  }
-}
-
-/**
  * Check if ux_form should be used.
  *
- * @return bool
+ * @return boolean
  *   Returns TRUE if ux_form should be used.
  */
 function ux_form_access() {
@@ -62,36 +41,29 @@ function ux_form_access() {
  * Implements hook_element_info_alter().
  */
 function ux_form_element_info_alter(&$type) {
-  $input_elements = ['textfield', 'textarea', 'number', 'tel', 'url', 'email', 'password', 'date', 'search', 'commerce_number'];
+  $input_elements = ['textfield', 'textarea', 'number', 'tel', 'url', 'email', 'password', 'date'];
   foreach ($input_elements as $input_element) {
     if (isset($type[$input_element])) {
       $type[$input_element]['#process'][] = 'ux_form_input_process';
     }
   }
 
-  $input_elements = ['radio', 'radios', 'webform_entity_radios'];
+  $input_elements = ['radio', 'radios'];
   foreach ($input_elements as $input_element) {
     if (isset($type[$input_element])) {
       $type[$input_element]['#process'][] = 'ux_form_radio_process';
     }
   }
 
-  $input_elements = ['checkbox', 'checkboxes', 'webform_entity_checkboxes'];
+  $input_elements = ['checkbox', 'checkboxes'];
   foreach ($input_elements as $input_element) {
     if (isset($type[$input_element])) {
       $type[$input_element]['#process'][] = 'ux_form_checkbox_process';
     }
   }
 
-  $input_elements = ['select', 'webform_entity_select'];
-  foreach ($input_elements as $input_element) {
-    if (isset($type[$input_element])) {
-      $type[$input_element]['#process'][] = 'ux_form_select_process';
-    }
-  }
-
-  if (isset($type['text_format'])) {
-    $type['text_format']['#process'][] = 'ux_form_text_format_process';
+  if (isset($type['select'])) {
+    $type['select']['#process'][] = 'ux_form_select_process';
   }
 
   if (isset($type['date'])) {
@@ -113,11 +85,8 @@ function ux_form_element_info_alter(&$type) {
 function ux_form_input_process(&$element, FormStateInterface $form_state, &$complete_form) {
   if (ux_form_access()) {
     $type = $element['#type'];
-    $element['#theme_wrappers'][] = 'ux_form_element_container';
     $element['#wrapper_attributes']['class'][] = 'ux-form-input';
-    $element['#wrapper_attributes']['class'][] = 'ux-form-input-js';
     $element['#attributes']['class'][] = 'ux-form-input-item';
-    $element['#attributes']['class'][] = 'ux-form-input-item-js';
     $element['#attached']['library'][] = 'ux_form/ux_form.input';
     if ($type == 'textarea' && (!empty($element['#allowed_formats']) || !empty($element['#format']))) {
       $element['#wrapper_attributes']['class'][] = 'ux-form-format';
@@ -140,9 +109,7 @@ function ux_form_radio_process(&$element, FormStateInterface $form_state, &$comp
         $element['#title'] = '<div class="ux-ripple"></div>' . $element['#title'];
       }
     }
-    else {
-      // $element['#theme_wrappers'][] = 'ux_form_element_container';
-      $element['#attributes']['class'][] = 'ux-form-element';
+    if ($type == 'radios') {
       $element['#attributes']['class'][] = 'ux-form-radios';
     }
   }
@@ -155,16 +122,14 @@ function ux_form_radio_process(&$element, FormStateInterface $form_state, &$comp
 function ux_form_checkbox_process(&$element, FormStateInterface $form_state, &$complete_form) {
   if (ux_form_access()) {
     $type = $element['#type'];
+    $element['#wrapper_attributes']['class'][] = 'ux-form-checkbox';
+    $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
     if ($type == 'checkbox') {
-      $element['#wrapper_attributes']['class'][] = 'ux-form-checkbox';
-      $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
       if (!empty($element['#title'])) {
         $element['#title'] = '<div class="ux-ripple"></div>' . $element['#title'];
       }
     }
-    else {
-      // $element['#theme_wrappers'][] = 'ux_form_element_container';
-      $element['#attributes']['class'][] = 'ux-form-element';
+    if ($type == 'checkboxes') {
       $element['#attributes']['class'][] = 'ux-form-checkboxes';
     }
   }
@@ -176,14 +141,10 @@ function ux_form_checkbox_process(&$element, FormStateInterface $form_state, &$c
  */
 function ux_form_select_process(&$element, FormStateInterface $form_state, &$complete_form) {
   if (ux_form_access()) {
-    // Make sure this is not a UX | Select as links.
-    if (!isset($element['#theme']) || $element['#theme'] != 'ux_select_as_links') {
-      $element['#theme_wrappers'][] = 'ux_form_element_container';
-      $element['#wrapper_attributes']['class'][] = 'ux-form-select';
-      $element['#attached']['library'][] = 'ux_form/ux_form.select';
-      if (isset($element['#multiple']) && $element['#multiple']) {
-        $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
-      }
+    $element['#wrapper_attributes']['class'][] = 'ux-form-select';
+    $element['#attached']['library'][] = 'ux_form/ux_form.select';
+    if (isset($element['#multiple']) && $element['#multiple']) {
+      $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
     }
   }
   return $element;
@@ -193,18 +154,14 @@ function ux_form_select_process(&$element, FormStateInterface $form_state, &$com
  * Process date elements.
  */
 function ux_form_date_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  $element['#theme_wrappers'][] = 'ux_form_element_container';
-  $element['#wrapper_attributes']['class'][] = 'ux-form-date';
-  if (!empty($element['#attached']['library'])) {
-    $element['#attached']['library'] = array_filter($element['#attached']['library'], function ($library) {
-      return $library !== 'core/drupal.date';
-    });
-    $element['#attached']['library'][] = 'ux_form/ux_form.date';
-  }
   if (ux_form_access()) {
-    // We want to use ux date sitewide. But we only want the UX form library
-    // loaded when access is true.
-    $element['#attached']['library'][] = 'ux_form/ux_form';
+    $element['#wrapper_attributes']['class'][] = 'ux-form-date';
+    if (!empty($element['#attached']['library'])) {
+      $element['#attached']['library'] = array_filter($element['#attached']['library'], function ($library) {
+        return $library !== 'core/drupal.date';
+      });
+      $element['#attached']['library'][] = 'ux_form/ux_form.date';
+    }
   }
   return $element;
 }
@@ -213,17 +170,13 @@ function ux_form_date_process(&$element, FormStateInterface $form_state, &$compl
  * Process datetime elements.
  */
 function ux_form_datetime_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  $element['#wrapper_attributes']['class'][] = 'ux-form-time';
-  $element['#theme_wrappers'] = ['form_element'];
-  $element['#theme_wrappers'][] = 'ux_form_element_container';
-  $element['#attributes']['class'][] = 'ux-form-inline';
-  $element['#attached']['library'][] = 'ux_form/ux_form.time';
-  $element['date']['#attributes']['placeholder'] = t('Date');
-  $element['time']['#attributes']['placeholder'] = t('Time');
   if (ux_form_access()) {
-    // We want to use ux date sitewide. But we only want the UX form library
-    // loaded when access is true.
-    $element['#attached']['library'][] = 'ux_form/ux_form';
+    $element['#wrapper_attributes']['class'][] = 'ux-form-time';
+    $element['#theme_wrappers'] = ['form_element'];
+    $element['#attributes']['class'][] = 'ux-form-inline';
+    $element['#attached']['library'][] = 'ux_form/ux_form.time';
+    $element['date']['#attributes']['placeholder'] = t('Date');
+    $element['time']['#attributes']['placeholder'] = t('Time');
   }
   return $element;
 }
@@ -233,55 +186,8 @@ function ux_form_datetime_process(&$element, FormStateInterface $form_state, &$c
  */
 function ux_form_managed_file_process(&$element, FormStateInterface $form_state, &$complete_form) {
   if (ux_form_access()) {
-    // $element['#theme_wrappers'][] = 'ux_form_element_container';
-    // $element['#wrapper_attributes']['class'][] = 'ux-form-file';
-    // $element['#attached']['library'][] = 'ux_form/ux_form.file';
+    $element['#wrapper_attributes']['class'][] = 'ux-form-file';
+    $element['#attached']['library'][] = 'ux_form/ux_form.file';
   }
   return $element;
-}
-
-/**
- * Process text format elements.
- */
-function ux_form_text_format_process(&$element, FormStateInterface $form_state, &$complete_form) {
-  if (ux_form_access()) {
-    $element['format']['#attributes']['class'][] = 'ux-form-text-format';
-  }
-  return $element;
-}
-
-/**
- * Prepares variables for container templates.
- *
- * Default template: container.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- *     Properties used: #id, #attributes, #children.
- */
-function ux_form_preprocess_container(array &$variables) {
-  $element = $variables['element'];
-  if (isset($element['widget']['#field_name'])) {
-    $variables['attributes']['class'][] = 'field-wrapper';
-  }
-}
-
-/**
- * Prepares variables for container templates.
- *
- * Default template: ex-form-element-container.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- *     Properties used: #id, #attributes, #children.
- */
-function template_preprocess_ux_form_element_container(array &$variables) {
-  $element = $variables['element'];
-  $variables['attributes'] = [];
-  $variables['children'] = $element['#children'];
-  if (isset($element['#name'])) {
-    $variables['attributes']['class'][] = 'ux-element-' . Html::getClass($element['#name']);
-  }
 }

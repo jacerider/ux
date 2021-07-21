@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Contains ux.module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function ux_offcanvas_theme($existing, $type, $theme, $path) {
+  $themes = array();
+  $themes['ux_offcanvas'] = array(
+    'variables' => [
+      // An array of /ux_offcanvas/UxOffcanvas objects.
+      'children' => [],
+    ],
+    'file' => 'ux_offcanvas.theme.inc',
+  );
+  $themes['ux_offcanvas_trigger'] = array(
+    'variables' => [
+      // An single /ux_offcanvas/UxOffcanvas object.
+      'offcanvas' => NULL,
+      'attributes' => [],
+    ],
+    'file' => 'ux_offcanvas.theme.inc',
+  );
+  $themes['ux_offcanvas_item'] = array(
+    'variables' => [
+      // An single /ux_offcanvas/UxOffcanvas object.
+      'offcanvas' => NULL,
+    ],
+    'file' => 'ux_offcanvas.theme.inc',
+  );
+  return $themes;
+}
+
+/**
+ * Implements hook_preprocess_ux_wrapper().
+ */
+function ux_offcanvas_preprocess_ux_wrapper(&$variables) {
+  $variables['window_after']['offcanvas'] = \Drupal::service('ux_offcanvas.manager')->toLazyRenderable();
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+// function ux_offcanvas_preprocess_page(&$variables) {
+//   $uxOffcanvasManager = \Drupal::service('ux_offcanvas.manager');
+//   $content['#markup'] = 'Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World<br>Hello World';
+//   $nested = $uxOffcanvasManager->addOffcanvas('nested', 'Nested', 'Nested Markup')->setPosition('right');
+
+//   $variables['page']['content']['ux']['left'] = $uxOffcanvasManager
+//     ->addOffcanvas('left_of-cool', 'Left Trigger', $nested->toRenderableTrigger())
+//     ->setSize(500)
+//     ->toRenderableTrigger();
+
+//   $variables['page']['content']['ux']['right'] = $uxOffcanvasManager
+//     ->addOffcanvas('right_of-cool', 'Right Trigger', $content)
+//     ->setPosition('right')
+//     ->toRenderableTrigger();
+
+//   $variables['page']['content']['ux']['top'] = $uxOffcanvasManager
+//     ->addOffcanvas('top_of-cool', 'Top Trigger', $content)
+//     ->setPosition('top')
+//     ->setSize(500)
+//     ->toRenderableTrigger();
+
+//   $variables['page']['content']['ux']['bottom'] = $uxOffcanvasManager
+//     ->addOffcanvas('bottom_of-cool', 'Bottom Trigger', $content)
+//     ->setPosition('bottom')
+//     ->toRenderableTrigger();
+// }

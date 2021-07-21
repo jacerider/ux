@@ -1,9 +1,0 @@
-ux_menu.ux_menu_settings:
-  path: '/admin/config/ux/menu'
-  defaults:
-    _form: '\Drupal\ux_menu\Form\UxMenuSettingsForm'
-    _title: 'UX Menu Settings'
-  requirements:
-    _permission: 'administer ux menu settings'
-  options:
-    _admin_route: TRUE

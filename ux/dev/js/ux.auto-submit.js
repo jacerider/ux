@@ -45,7 +45,7 @@
     attach: function (context) {
       // 'this' references the form element.
       function triggerSubmit(e) {
-        $(this).find('[data-ux-auto-submit-click]').first().click();
+        $(this).find('[data-ux-auto-submit-click]').click();
       }
 
       // The change event bubbles so we only need to bind it to the outer form.

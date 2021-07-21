@@ -13,7 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
  *   label = @Translation("Links"),
  *   fieldTypes = {
  *     "taxonomy_index_tid",
- *     "taxonomy_index_machine_name",
  *   }
  * )
  */

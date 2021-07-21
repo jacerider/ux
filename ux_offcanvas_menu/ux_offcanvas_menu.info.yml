@@ -1,0 +1,7 @@
+name: UX | Offcanvas Menu
+type: module
+description: Provides an offcanvas menu block.
+core_version_requirement: ^8.8 || ^9
+package: User Experience
+dependencies:
+  - ux_offcanvas

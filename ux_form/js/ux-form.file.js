@@ -1,1 +1,116 @@
-!function(t,e,i,n){"use strict";function s(e,i){this.element=e,this._name=u,this._defaults=t.fn.uxFormFile.defaults,this.options=t.extend({},this._defaults,i),this.init()}var u="uxFormFile";t.extend(s.prototype,{init:function(){this.buildCache(),this.bindEvents(),this.buildElement()},destroy:function(){this.unbindEvents(),this.$element.removeData()},buildElement:function(){var t=this;this.$input.insertBefore(this.$field),this.$element.addClass("ux-form-input-js").uxFormInput(),setTimeout(function(){t.$element.addClass("ready")})},buildCache:function(){this.$element=t(this.element),this.$field=this.$element.find("input[type=file]"),this.$input=t('<input class="ux-form-file-path" type="text">')},bindEvents:function(){var t=this;t.$field.on("change."+t._name,function(){t.onChange.call(t)})},unbindEvents:function(){this.$element.off("."+this._name)},onChange:function(){for(var t=this.$field[0].files,e=[],i=0;i<t.length;i++)e.push(t[i].name)}}),t.fn.uxFormFile=function(e){return this.each(function(){t.data(this,u)||t.data(this,u,new s(this,e))}),this},t.fn.uxFormFile.defaults={},e.behaviors.uxFormFile={attach:function(e){t(e).find(".ux-form-file").once("ux-form-file").uxFormFile()}}}(jQuery,Drupal,window,document);
+
+(function ($, Drupal, window, document) {
+
+  'use strict';
+
+  var pluginName = 'uxFormFile';
+
+  function Plugin(element, options) {
+    this.element = element;
+    this._name = pluginName;
+    this._defaults = $.fn.uxFormFile.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.init();
+  }
+
+  // Avoid Plugin.prototype conflicts
+  $.extend(Plugin.prototype, {
+
+    /*
+    Initialize plugin instance.
+     */
+    init: function () {
+      this.buildCache();
+      this.bindEvents();
+      this.buildElement();
+    },
+
+    /*
+    Remove plugin instance complete.
+     */
+    destroy: function () {
+      this.unbindEvents();
+      this.$element.removeData();
+    },
+
+    /*
+    Process fields.
+     */
+    buildElement: function () {
+      var _this = this;
+
+      this.$input.insertBefore(this.$field);
+      this.$element.addClass('ux-form-input').uxFormInput();
+
+      setTimeout(function () {
+        _this.$element.addClass('ready');
+      });
+    },
+
+    /*
+    Cache DOM nodes for performance.
+     */
+    buildCache: function () {
+      this.$element = $(this.element);
+      this.$field = this.$element.find('input[type=file]');
+      this.$input = $('<input class="ux-form-file-path" type="text">');
+    },
+
+    /*
+    Bind events that trigger methods.
+    */
+    bindEvents: function () {
+      var _this = this;
+      _this.$field.on('change' + '.' + _this._name, function () {
+        _this.onChange.call(_this);
+      });
+    },
+
+    /*
+    Unbind events that trigger methods.
+    */
+    unbindEvents: function () {
+      this.$element.off('.' + this._name);
+    },
+
+    /*
+    On change event callback.
+     */
+    onChange: function () {
+      var files = this.$field[0].files;
+      var file_names = [];
+      for (var i = 0; i < files.length; i++) {
+        file_names.push(files[i].name);
+      }
+      // console.log(file_names);
+    }
+
+  });
+
+  $.fn.uxFormFile = function (options) {
+    this.each(function () {
+      if (!$.data(this, pluginName)) {
+        $.data(this, pluginName, new Plugin(this, options));
+      }
+    });
+    return this;
+  };
+
+  $.fn.uxFormFile.defaults = {};
+
+  Drupal.behaviors.uxFormFile = {
+    attach: function (context) {
+      var $context = $(context);
+      $context.find('.ux-form-file').once('ux-form-file').uxFormFile();
+    },
+    detach: function (context) {
+      $(context).find('.ux-form-file').each(function () {
+        var plugin = $(this).data('uxFormFile');
+        if (plugin) {
+          plugin.destroy();
+        }
+      });
+    }
+  };
+
+})(jQuery, Drupal, window, document);

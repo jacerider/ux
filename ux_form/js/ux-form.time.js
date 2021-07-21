@@ -1,1 +1,26 @@
-!function(t,i,n,o){"use strict";i.behaviors.uxFormTime={attach:function(i){t(i).find(".ux-form-time input.form-time").once("ux-form-time").each(function(){var i=t(this);i.on("focus.ux-form-time",function(i){t(this).blur()});var n={};n.formatSubmit="HH:i:00",n.container="#ux-content",i.data("value",i.val()),i.pickatime(n)})}}}(jQuery,Drupal,window,document);
+(function ($, Drupal, window, document) {
+
+  'use strict';
+
+  Drupal.behaviors.uxFormTime = {
+    attach: function (context) {
+      var $context = $(context);
+      $context.find('.ux-form-time input.form-time').once('ux-form-time').each(function () {
+        var $element = $(this);
+        var timepickerSettings = {};
+        timepickerSettings.formatSubmit = 'HH:i:00';
+        timepickerSettings.container = '#ux-content';
+        $element.data('value', $element.val());
+        $element.pickatime(timepickerSettings);
+      });
+    },
+    detach: function (context) {
+      var $context = $(context);
+      var plugin = $context.find('.ux-form-time input.form-time').pickatime('picker');
+      if (typeof plugin === 'object') {
+        plugin.stop();
+      }
+    }
+  };
+
+})(jQuery, Drupal, window, document);

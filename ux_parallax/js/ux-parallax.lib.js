@@ -1,1 +1,1138 @@
-!function(e,t,i){"use strict";var a;a={animation:"y",animate:"TweenLite",optimize:!0,initialAnimationDuration:1,orientation:"vertical",factor:.5,screen:{sm:0,md:640,lg:1024},perspective:800,perspectiveOrigin:"50% 50%",preload:!0,preloader:'<div class="ux-parallax-loader"><div class="ux-parallax-loader-inner"></div></div>',normalizeTop:!0,overflow:!1,anchor:"center",size:"auto",selector:{layer:".ux-parallax-layer",background:".ux-parallax-background",background_inside:".ux-parallax-background-inside",fit:".ux-parallax-fit"}},e.ux_parallax=function(s,n){this._defaults=a,this.settings=e.extend(!0,{},this._defaults,n),this.element=e(s),this.layers=e(this.settings.selector.layer,this.element),this.fit=e(this.settings.selector.fit,this.element),this.background=e(this.settings.selector.background,this.element),this.background.length||(this.background=e(this.settings.selector.background_inside,this.element).find("img:first").addClass("ux-parallax-background")),this.source=this.settings.source?this.settings.source:this.element,this.parent=this.settings.parent?this.settings.parent:this.element.parent(),this.window=e(t),this.wrapper=e("#ux-push"),this.document=e("#ux-document"),this.wrapper_width=this.wrapper.width(),this.background.length>0&&!this.settings.animateElement?this.settings.animateElement=!1:this.settings.animateElement=!0,this.debug=!1,this.size={wrapper:{},source:{},parent:{},element:{},background:{},layer:[]},this.position={wrapper:{},source:{},element:{},parent:{}},this.loaded=!1,this.initialize=function(e){return function(){e.set_element_id(),e.set_animator(),e.set_orientation(e.settings.orientation),e.set_layer_index(),e.init_animus(),e.set_data(),e.set_classes(),e.load(function(){e.set_size(),e.set_position(),e.set_responsive_context(),e.bind_resize(),e.bind_scroll(),e.scroll(),e.loaded=!0,e.element.triggerHandler("ux_parallax.load",[e.element]),e.source.addClass("ux-parallax-built"),e.log("UX Parallax has been initialized.")})}}(this),this.parallax=function(t){return function(){var i,a,s,n,r,o,l;i=e.ux_parallax.wrapper[t.param.middle]-t.position.source[t.param.middle],r=(e.ux_parallax.wrapper[t.param.end]-t.position.source[t.param.start])/t.size.source.spanning,s=i/t.size.source.spanning,t.position.source.beginning&&(a=t.size.wrapper.half-t.position.source[t.param.middle],o=a/t.size.source.spanning,r-=o,s-=o),l=i<=0,n=i>=0,t.loaded||(l=!1,n=!1,t.in_view||(i=0,r=0,s=0)),e.each(t.animation,function(a,o){var p,u,h;p={},h=o[0],u=o[1][t.current_responsive_size],e.each(u.state,function(a,o){var h,c,d,g,m,f,x,z,_,w,b,v;if("*"===u.state[a][0]){if(x=u.state[a][3],f="to-middle"===x||"from-middle"===x?2:1,v=Math.abs(o[1])+Math.abs(o[2]),"to-middle"===x&&n)return;return void("from-middle"===x?p[a]=l?o[1]:o[1]-v*(r-.5)*f:(b=v*r*f,o[1]>o[2]?p[a]=o[1]-b:p[a]=o[1]+b))}if(z=u.state[a][0],x=u.state[a][1],d=i*z,w=r*z,g=s*z,!("to-middle"===x&&n||"from-middle"===x&&l)||"opacity"===a)switch(a){case"opacity":"from-middle"===x?(p[a]=1-2*g,p[a]>1&&(p[a]=1)):"to-middle"===x?(p[a]=1+2*g,p[a]>1&&(p[a]=1)):p[a]=1-Math.abs(2*g);break;case"scale":case"scaleX":case"scaleY":case"scaleZ":u.state[a][2]&&(x=u.state[a][2]),p[a]="up"===x?1+w:"down"===x?1+.5*z-w:1+g;break;case"rotation":case"rotationX":case"rotationY":case"rotationZ":p[a]=180*(r-.5)*z;break;case"skewX":case"skewY":case"skewZ":p[a]=180*(r-.5)*z;break;case"x":case"y":t.background.length>0?t.size.source.same[t.param.size]&&a===t.param.axis?(_={},_[t.param.start]=(e.ux_parallax.wrapper[t.param.start]-t.position.source[t.param.start])/t.size.source[t.param.size],_[t.param.end]=(e.ux_parallax.wrapper[t.param.end]-t.position.source[t.param.end])/t.size.source[t.param.size],_.value=0,_[t.param.start]<0?_[t.param.start]=0:_.value=_[t.param.start],_[t.param.end]>0?_[t.param.end]=0:_.value=_[t.param.end],p[a]=_.value*t.size.source[t.param.size]*z):(m=t.size.source.difference*(1+z),m=t.size.source.difference/2,h=t.position.element[t.param.start]-d-m,c=h+t.size.element[t.param.size],h>t.position.source[t.param.start]&&c<t.position.source[t.param.end]||(p[a]=d)):p[a]=d;break;default:p[a]=d}}),p.onComplete=t.stop_ticking,t.loaded?t.animate.set(h,p):t.animate.to(h,t.settings.initialAnimationDuration,p)}),t.element.triggerHandler("ux_parallax.parallax",[r,i,s])}}(this),this.load=function(i){return function(a){var s,n,r;s=i.background.add(i.layers.filter("img")),s.length>0?(n=0,i.settings.preloader&&(r=e(i.settings.preloader),i.background.before(r)),s.each(function(o,l){var p,u,h,c,d;p=e(l),u=p.parent(),h=!1,d=null!=p.attr("data-ux-parallax-src")?p.attr("data-ux-parallax-src"):p.attr("src"),c=e("<img>"),u.is("picture")&&(u=u.clone(),u.find("img").remove().end(),u.append(c),h=!0),c.attr("src",d),h&&!t.HTMLPictureElement&&(t.respimage?t.respimage({elements:[$img[0]]}):t.picturefill?t.picturefill({elements:[$img[0]]}):d&&$img.attr("src",d)),c.on("load",function(){p.attr("src",d),(n+=1)===s.length&&(i.settings.preloader&&i.animate.to(r,1,{scale:2,opacity:0,onComplete:function(){r.remove()}}),a.call())}).on("error",function(){i.error('Image with src="'+d+'" failed to load.')})})):a.call()}}(this),this.init_animus=function(t){return function(){var i;i={duration:t.settings.animation.duration,easing:t.settings.animation.easing},t.animus=new e.animus(i),t.log("Initialized animus parser.")}}(this),this.set_data=function(t){return function(){t.animation=[],t.settings.animateElement&&t.animation.push([t.element,t.get_animation_data("element",t.element)]),t.background.length>0&&(t.animation.push([t.background,t.get_animation_data("background",t.background)]),t.size.background=t.get_size_data("background",t.background)),t.layers.length>0&&(t.animation.layer=[],t.layers.each(function(i,a){a=e(a),t.animation.push([a,t.get_animation_data("layer",a,i)]),t.size.layer.push(t.get_size_data("layer",a,i))})),t.log("UX Parallax data has been processed."),t.log(t.animation)}}(this),this.get_animation_data=function(t){return function(i,a,s){var n,r,o,l,p;return n={},r="",o=null,p=null!=a.attr("id")?"#"+a.attr("id"):"",l=null!=a.attr("class")?a.attr("class").split(" ").map(function(e){return"."+e}):[],null!=a.attr("data-ux-parallax")?r=a.attr("data-ux-parallax"):"string"==typeof t.settings.animation?r=t.settings.animation:"object"==typeof t.settings.animation&&("string"==typeof t.settings.animation[i]?r=t.settings.animation[i]:e.isArray(t.settings.animation[i])?"string"==typeof t.settings.animation[i][s]?r=t.settings.animation[i][s]:"object"==typeof t.settings.animation[i][s]&&(o=t.settings.animation[i][s],"string"==typeof t.settings.animation[i][s]["*"]&&(r=t.settings.animation[i]["*"])):"object"==typeof t.settings.animation[i]?(o=t.settings.animation[i],"string"==typeof t.settings.animation[i]["*"]?r=t.settings.animation[i]["*"]:"string"==typeof t.settings.animation[i][p]?r=t.settings.animation[i][p]:"object"==typeof t.settings.animation[i][p]?o=t.settings.animation[i][p]:e.each(l,function(e,a){"string"==typeof t.settings.animation[i][a]&&(r=t.settings.animation[i][a]),"object"==typeof t.settings.animation[i][a]&&(o=t.settings.animation[i][a])})):r="string"==typeof t.settings.animation["*"]?t.settings.animation["*"]:""),e.each(Object.keys(t.settings.screen),function(e,i){var a,s,l,p,u;n[i]={},s={},s=o&&"string"==typeof o[i]?o[i]:r,n[i]=t.animus.get(s),a=n[i].state;for(p in a)u=a[p],u=""+u,-1===u.indexOf("..")?(l=u.split(/\s+/),0===l.length?l.push(t.settings.factor):1===l.length&&(""===l[0]&&(l[1]="default",l[0]=t.settings.factor),isNaN(l[0])?(l[1]=l[0],l[0]=t.settings.factor):(l[1]="default",l[0]=parseFloat(l[0]))),n[i].state[p]=l):(l=["*"],u=u.split(/[\. ]+/),l[1]=parseFloat(u[0]),l[2]=parseFloat(u[1]),2===u.length?l[3]="default":l[3]=u[2],n[i].state[p]=l)}),n}}(this),this.get_size_data=function(t){return function(i,a,s){var n,r,o;return n={},null!=a.attr("id")?"#"+a.attr("id"):"",r=null!=a.attr("class")?a.attr("class").split(" ").map(function(e){return"."+e}):[],o=!1,null!=t.settings.canvas&&null!=t.settings.canvas[i]&&(null!=s?null!=t.settings.canvas[i][s]?o=t.settings.canvas[i][s]:null!=t.settings.canvas[i][id]?o=t.settings.canvas[i][id]:e.each(r,function(e,a){null!=t.settings.canvas[i][a]&&(o=t.settings.canvas[i][a])}):o=t.settings.canvas[i]),null!=a.attr("data-ux-parallax-width")?n.width=parseFloat(a.attr("data-ux-parallax-width")):o&&null!=o.width&&(n.width=parseFloat(t.delete_property(o,"width"))),null!=a.attr("data-ux-parallax-height")?n.height=parseFloat(a.attr("data-ux-parallax-height")):o&&null!=o.height&&(n.height=parseFloat(t.delete_property(o,"height"))),"layer"===i&&(n.position={},null!=a.attr("data-ux-parallax-top")?n.position.top=parseFloat(a.attr("data-ux-parallax-top")):o&&null!=o.top?n.position.top=parseFloat(t.delete_property(o,"top")):null!=a.attr("data-ux-parallax-bottom")?n.position.bottom=parseFloat(a.attr("data-ux-parallax-bottom")):o&&null!=o.bottom?n.position.bottom=parseFloat(t.delete_property(o,"bottom")):n.position.top=0,null!=a.attr("data-ux-parallax-left")?n.position.left=parseFloat(a.attr("data-ux-parallax-left")):o&&null!=o.left?n.position.left=parseFloat(t.delete_property(o,"left")):null!=a.attr("data-ux-parallax-right")?n.position.right=parseFloat(a.attr("data-ux-parallax-right")):o&&null!=o.right?n.position.right=parseFloat(t.delete_property(o,"right")):n.position.left=0),n}}(this),this.set_size=function(t){return function(){if(t.size.wrapper.width=t.wrapper.width(),t.size.wrapper.height=t.wrapper.height(),t.size.wrapper.half=t.size.wrapper[t.param.size]/2,t.fit.length?(t.fit.removeClass("ux-parallax-content"),t.source.height(t.fit.outerHeight(!0)),t.fit.addClass("ux-parallax-content")):"fullscreen"===t.settings.size?t.source.css({width:t.size.wrapper.width,height:t.size.wrapper.height,"max-width":t.size.wrapper.width,"max-height":t.size.wrapper.height}):"screenHeight"===t.settings.size?t.source.height(t.size.wrapper.height):"screenWidth"===t.settings.size&&t.source.width(t.size.wrapper.width),t.size.parent.width=t.parent.outerWidth(!0),t.size.parent.height=t.parent.outerHeight(!0),t.size.source.width=t.source.outerWidth(!0),t.size.source.height=t.source.outerHeight(!0),t.background.length>0){t.size.background=e.extend(t.get_image_size(t.background),t.size.background),t.size.element.width=t.size.source.width,t.size.element.height=t.size.source.width/t.size.background.width*t.size.background.height,t.size.source.height>t.size.element.height&&(t.size.element.width=t.size.source.height/t.size.background.height*t.size.background.width,t.size.element.height=t.size.source.height);var i=(t.size.wrapper.height+t.size.source.height)/2-t.size.element.height;i>0&&(t.size.element.width+=i,t.size.element.height+=i),t.loaded?t.animate.set(t.background,{height:t.size.element.height,width:t.size.element.width}):t.animate.to(t.background,t.settings.initialAnimationDuration,{height:t.size.element.height,width:t.size.element.width})}else t.size.element.width=t.element.outerWidth(!0),t.size.element.height=t.element.outerHeight(!0);t.layers.length>0&&t.layers.each(function(i,a){t.size.layer[i]=e.extend(t.get_image_size(e(a)),t.size.layer[i])}),t.size.source.same={width:t.size.source.width===t.size.element.width,height:t.size.source.height===t.size.element.height},t.size.source.ratio=t.size.wrapper[t.param.size]/t.size.source[t.param.size],t.size.source.difference=t.size.wrapper[t.param.size]-t.size.source[t.param.size],t.size.source.spanning=t.size.wrapper[t.param.size]+t.size.source[t.param.size],t.log("Element sizes have been set.")}}(this),this.setSize=this.set_size,this.set_position=function(e){return function(){e.position.source.top=e.source.offset().top-e.document.offset().top,e.position.source.bottom=e.position.source.top+e.size.source.height,e.position.source.vmiddle=(e.position.source.top+e.position.source.bottom)/2,e.position.source.left=e.source.offset().left-e.document.offset().left,e.position.source.right=e.position.source.left+e.size.source.width,e.position.source.hmiddle=(e.position.source.left+e.position.source.right)/2,e.position.element.top=e.element.offset().top-e.document.offset().top,e.position.element.bottom=e.position.element.top+e.size.element.height,e.position.element.left=e.element.offset().left-e.document.offset().left,e.position.element.right=e.position.element.left+e.size.element.width,e.background.length>0&&(e.position.background=e.position.element),e.position.parent.top=e.parent.offset().top-e.document.offset().top,e.position.parent.bottom=e.position.parent.top+e.size.parent.height,e.position.parent.left=e.parent.offset().left-e.document.offset().left,e.position.parent.right=e.position.parent.left+e.size.parent.width,e.settings.normalizeTop&&e.position.source[e.param.start]<e.size.wrapper[e.param.size]/2&&e.size.source[e.param.size]<e.size.wrapper[e.param.size]?e.position.source.beginning=!0:e.position.source.beginning=!1,(e.background.length>0||e.layers.length>0)&&e.set_canvas_position(),e.log("Element positions have been set.")}}(this),this.setPosition=this.set_position,this.set_canvas_position=function(t){return function(){var i,a,s,n;switch(t.settings.anchor){case"center":a=-(t.size.element.width-t.size.source.width)/2,s=-(t.size.element.height-t.size.source.height)/2;break;case"top":a=-(t.size.element.width-t.size.source.width)/2,s=0;break;case"bottom":a=-(t.size.element.width-t.size.source.width)/2,s=-(t.size.element.height-t.size.source.height);break;case"left":a=0,s=-(t.size.element.height-t.size.source.height);break;case"right":a=-(t.size.element.width-t.size.source.width),s=-(t.size.element.height-t.size.source.height)/2;break;case"top-left":a=0,s=0;break;case"bottom-left":a=0,s=-(t.size.element.height-t.size.source.height);break;case"top-right":a=-(t.size.element.width-t.size.source.width),s=0;break;case"bottom-right":a=-(t.size.element.width-t.size.source.width),s=-(t.size.element.height-t.size.source.height)}a>0&&(a=0),s>0&&(s=0),t.loaded?t.animate.set(t.background,{"margin-top":s,"margin-left":a}):t.animate.to(t.background,t.settings.initialAnimationDuration,{"margin-top":s,"margin-left":a}),n=t.size.element.width/t.size.background.width,i=t.size.element.height/t.size.background.height,t.layers.each(function(r,o){var l;o=e(o),l={},"top"in t.size.layer[r].position?l.top=i*t.size.layer[r].position.top+s:"bottom"in t.size.layer[r].position&&(l.bottom=i*t.size.layer[r].position.bottom+s),"left"in t.size.layer[r].position?l.left=n*t.size.layer[r].position.left+a:"right"in t.size.layer[r].position&&(l.right=n*t.size.layer[r].position.right+a),"width"in t.size.layer[r]&&(l.width=n*t.size.layer[r].width),"height"in t.size.layer[r]&&(l.height=i*t.size.layer[r].height),t.loaded?t.animate.set(o,l):t.animate.to(o,t.settings.initialAnimationDuration,l)})}}(this),this.set_layer_index=function(t){return function(){t.layers.each(function(i,a){e(a).css({"z-index":t.layers.length-i})})}}(this),this.set_orientation=function(e){return function(t){e.param={},"vertical"===t?(e.param.size="height",e.param.middle="vmiddle",e.param.start="top",e.param.end="bottom",e.param.axis="y",e.param.scroll="scrollTop",e.param.half="halfHeight"):(e.param.size="width",e.param.middle="hmiddle",e.param.start="left",e.param.end="right",e.param.axis="x",e.param.scroll="scrollLeft",e.param.half="halfWidth")}}(this),this.set_responsive_context=function(e){return function(){var t=e.current_responsive_size;e.size.wrapper.width>=e.settings.screen.xl?e.current_responsive_size="xl":e.size.wrapper.width>=e.settings.screen.lg?e.current_responsive_size="lg":e.size.wrapper.width>=e.settings.screen.md?e.current_responsive_size="md":e.size.wrapper.width>=e.settings.screen.sm?e.current_responsive_size="sm":e.current_responsive_size="xs",t&&t!==e.current_responsive_size?e.log("Responsive context is reset to "+e.current_responsive_size+"."):e.log("Responsive context is "+e.current_responsive_size+".")}}(this),this.set_classes=function(t){return function(){var a,s;0===e("#ux_parallax-style").length&&(a=".ux-parallax-parent { perspective: "+t.settings.perspective+"px; -moz-perspective: "+t.settings.perspective+"px; -webkit-perspective: "+t.settings.perspective+"px; perspective-origin: "+t.settings.perspectiveOrigin+"; -moz-perspective-origin: "+t.settings.perspectiveOrigin+"; -webkit-perspective-origin: "+t.settings.perspectiveOrigin+"; backface-visibility: hidden; -moz-backface-visibility: hidden; -webkit-backface-visibility: hidden; }",s=i.createElement("style"),s.id="ux-parallax-style",s.type="text/css",s.innerHTML=a,e("head")[0].appendChild(s)),t.settings.animateElement?t.parent.addClass("ux-parallax-parent"):t.element.addClass("ux-parallax-parent"),t.background.length>0&&t.element.addClass("ux-parallax-canvas"),t.element.addClass("ux-parallax-animated"),t.background.addClass("ux-parallax-animated"),t.layers.addClass("ux-parallax-animated")}}(this),this.bind_resize=function(e){return function(){e.window.resize(function(){e.set_size(),e.set_position(),e.set_responsive_context(),e.parallax()})}}(this),this.ticking=!1,this.stop_ticking=function(e){return function(){e.ticking=!1}}(this),this.settings.optimize?this.start_ticking=function(e){return function(){e.ticking=!0}}(this):this.start_ticking=function(e){return function(){e.ticking=!1}}(this),this.in_view_eariler=!1,this.scroll=function(t){return function(){var i,a;if(a=t.element[0]._gsTransform&&t.element[0]._gsTransform[t.param.axis]?t.element[0]._gsTransform[t.param.axis]:0,i=e.ux_parallax.wrapper[t.param.half]-a,t.in_view=!(e.ux_parallax.wrapper[t.param.end]-t.position.source[t.param.start]+i<0||e.ux_parallax.wrapper[t.param.start]-t.position.source[t.param.end]-i>0),t.in_view)t.in_view_eariler||(t.in_view_eariler=!0,t.element.addClass("ux-parallax-visible"),t.element.removeClass("ux-parallax-hidden"),t.element.triggerHandler("ux_parallax.visible",[t.in_view]));else if(t.in_view_eariler&&(t.in_view_eariler=!1,t.element.removeClass("ux-parallax-visible"),t.element.addClass("ux-parallax-hidden"),t.element.triggerHandler("ux_parallax.visible",[t.in_view])),t.loaded)return;t.ticking||(t.start_ticking(),t.parallax())}}(this),this.bind_scroll=function(e){return function(){e.wrapper.on("ux_parallax.scroll",e.scroll)}}(this),this.set_element_id=function(e){return function(){null!=e.element.attr("id")?e.id=e.element.attr("id"):(e.id=e.get_random_id("ux-parallax"),e.element.attr("id",e.id)),e.log("Element id has been set to "+e.id+".")}}(this),this.set_animator=function(e){return function(){e.animate=t[e.settings.animate],e.log("Animating using the "+e.settings.animate+" platform.")}}(this),this.get_random_id=function(e){return e+"-"+Math.floor(1e5*Math.random()+1)},this.get_image_size=function(e){return function(e){var t;return t={},t.width=null!=e[0].naturalWidth?e[0].naturalWidth:null!=e[0].width?e[0].width:null!=e.width?e.width():"auto",t.height=null!=e[0].naturalHeight?e[0].naturalHeight:null!=e[0].height?e[0].height:null!=e.height?e.height():"auto",t}}(),this.debounce=function(e,t,i){var a;return a=void 0,function(){var s,n,r,o;r=this,s=arguments,o=function(){a=null,i||e.apply(r,s)},n=i&&!a,clearTimeout(a),a=setTimeout(o,t),n&&e.apply(r,s)}},this.delete_property=function(e,t){var i;return i=e[t],delete e[t],i},this.extend_settings=function(t){return function(i,a){return null!=t.settings[i]?t.settings[i]=e.extend({},a,t.settings[i]):t.settings[i]=a}}(this),this.log=function(e){return function(t){e.debug&&("object"==typeof t?console.log("[UX Parallax "+e.id+"]",t):console.log("[UX Parallax "+e.id+"] "+t))}}(this),this.error=function(e){return function(t){"object"==typeof t?console.error("[UX Parallax "+e.id+"]",t):console.error("[UX Parallax "+e.id+"] "+t)}}(this),this.initialize()},e.ux_parallax.wrapper={},e.ux_parallax.resize=function(){var t;t=e("#ux-push"),e.ux_parallax.wrapper.height=t.height(),e.ux_parallax.wrapper.width=t.width(),e.ux_parallax.wrapper.halfHeight=e.ux_parallax.wrapper.height/2,e.ux_parallax.wrapper.halfWidth=e.ux_parallax.wrapper.width/2},e(t).on("resize",function(t){return function(){e.ux_parallax.resize()}}()),e.ux_parallax.resize(),e.ux_parallax.scroll=function(){var t;t=e("#ux-push"),e.ux_parallax.wrapper.top=t.scrollTop(),e.ux_parallax.wrapper.left=t.scrollLeft(),e.ux_parallax.wrapper.bottom=e.ux_parallax.wrapper.top+e.ux_parallax.wrapper.height,e.ux_parallax.wrapper.right=e.ux_parallax.wrapper.left+e.ux_parallax.wrapper.width,e.ux_parallax.wrapper.vmiddle=e.ux_parallax.wrapper.top+e.ux_parallax.wrapper.halfHeight,e.ux_parallax.wrapper.hmiddle=e.ux_parallax.wrapper.left+e.ux_parallax.wrapper.halfWidth},e("#ux-push").on("scroll",function(t){return function(){e.ux_parallax.scroll(),e("#ux-push").triggerHandler("ux_parallax.scroll")}}()),e.ux_parallax.scroll(),e.fn.ux_parallax=function(t){return this.each(function(i,a){if(!e.data(a,"ux_parallax"))return e.data(a,"ux_parallax",new e.ux_parallax(a,t))})}}(window.jQuery,window,document);
+/**
+ * @file
+ * Library ux_parallax javascript.
+ */
+
+/* eslint-disable */
+
+(function($, window, document) {
+  "use strict";
+  var _defaults;
+  _defaults = {
+    animation: "y",
+    animate: 'TweenLite',
+    optimize: true,
+    initialAnimationDuration: 1,
+    orientation: 'vertical',
+    factor: 0.5,
+    screen: {
+      sm: 0,
+      md: 640,
+      lg: 1024
+    },
+    perspective: 800,
+    perspectiveOrigin: "50% 50%",
+    preload: true,
+    preloader: '<div class="ux-parallax-loader"><div class="ux-parallax-loader-inner"></div></div>',
+    normalizeTop: true,
+    overflow: false,
+    anchor: 'center',
+    size: 'auto',
+    selector: {
+      layer: '.ux-parallax-layer',
+      background: '.ux-parallax-background',
+      background_inside: '.ux-parallax-background-inside',
+      fit: '.ux-parallax-fit'
+    }
+  };
+  $.ux_parallax = function(element, options) {
+    this._defaults = _defaults;
+    this.settings = $.extend(true, {}, this._defaults, options);
+    this.element = $(element);
+    this.layers = $(this.settings.selector.layer, this.element);
+    this.fit = $(this.settings.selector.fit, this.element);
+    this.background = $(this.settings.selector.background, this.element);
+    if (!this.background.length) {
+      this.background = $(this.settings.selector.background_inside, this.element).find('img:first').addClass('ux-parallax-background');
+    }
+    this.source = this.settings.source ? this.settings.source : this.element;
+    this.parent = this.settings.parent ? this.settings.parent : this.element.parent();
+    this.window = $(window);
+    this.wrapper = $('#ux-push');
+    this.document = $('#ux-document');
+    this.wrapper_width = this.wrapper.width();
+    if (this.background.length > 0 && !this.settings.animateElement) {
+      this.settings.animateElement = false;
+    } else {
+      this.settings.animateElement = true;
+    }
+    this.debug = false;
+    this.size = {
+      wrapper: {},
+      source: {},
+      parent: {},
+      element: {},
+      background: {},
+      layer: []
+    };
+    this.position = {
+      wrapper: {},
+      source: {},
+      element: {},
+      parent: {}
+    };
+    this.loaded = false;
+
+    /*
+    Initialize ux_parallax and gather all the data
+     */
+    this.initialize = (function(_this) {
+      return function() {
+        _this.set_element_id();
+        _this.set_animator();
+        _this.set_orientation(_this.settings.orientation);
+        _this.set_layer_index();
+        _this.init_animus();
+        _this.set_data();
+        _this.set_classes();
+        _this.load(function() {
+          _this.set_size();
+          _this.set_position();
+          _this.set_responsive_context();
+          _this.bind_resize();
+          _this.bind_scroll();
+          // Timeout to make sure things have loaded. Caused issue with delta
+          // in this.parallax not being set yet.
+          // setTimeout(function(){
+            _this.scroll();
+          // }, 10);
+          _this.loaded = true;
+          _this.element.triggerHandler('ux_parallax.load', [_this.element]);
+          _this.source.addClass('ux-parallax-built');
+          _this.log("UX Parallax has been initialized.");
+        });
+      };
+    })(this);
+
+    /*
+    Parallax images and content
+
+    @param position [Fixnum] Current scrolling position
+     */
+    this.parallax = (function(_this) {
+      return function() {
+        var delta, delta_difference, delta_progress, from_middle, progress, progress_difference, to_middle;
+        delta = $.ux_parallax.wrapper[_this.param.middle] - _this.position.source[_this.param.middle];
+        progress = ($.ux_parallax.wrapper[_this.param.end] - _this.position.source[_this.param.start]) / _this.size.source.spanning;
+        delta_progress = delta / _this.size.source.spanning;
+        if (_this.position.source.beginning) {
+          delta_difference = _this.size.wrapper.half - _this.position.source[_this.param.middle];
+          progress_difference = delta_difference / _this.size.source.spanning;
+          // Commented out as it caused weird y positioning.
+          // delta -= delta_difference;
+          progress -= progress_difference;
+          delta_progress -= progress_difference;
+        }
+        to_middle = delta <= 0;
+        from_middle = delta >= 0;
+        if (!_this.loaded) {
+          to_middle = false;
+          from_middle = false;
+          if (!_this.in_view) {
+            delta = 0;
+            progress = 0;
+            delta_progress = 0;
+          }
+        }
+        $.each(_this.animation, function(index, animatable) {
+          var animation, animation_data, animation_target;
+          animation = {};
+          animation_target = animatable[0];
+          animation_data = animatable[1][_this.current_responsive_size];
+          $.each(animation_data.state, function(key, value) {
+            var current_base, current_peak, delta_normalized, delta_progress_normalized, difference_normalized, middle_normalization, mode, normalization, progress_inner, progress_normalized, range_progress_normalized, total_range;
+            if (animation_data.state[key][0] !== '*') {
+              normalization = animation_data.state[key][0];
+              mode = animation_data.state[key][1];
+              delta_normalized = delta * normalization;
+              progress_normalized = progress * normalization;
+              delta_progress_normalized = delta_progress * normalization;
+              if ((mode === "to-middle" && from_middle || mode === "from-middle" && to_middle) && key !== 'opacity') {
+                return;
+              }
+              switch (key) {
+                case 'opacity':
+                  if (mode === "from-middle") {
+                    animation[key] = 1 - delta_progress_normalized * 2;
+                    if (animation[key] > 1) {
+                      animation[key] = 1;
+                    }
+                  } else if (mode === "to-middle") {
+                    animation[key] = 1 + delta_progress_normalized * 2;
+                    if (animation[key] > 1) {
+                      animation[key] = 1;
+                    }
+                  } else {
+                    animation[key] = 1 - Math.abs(delta_progress_normalized * 2);
+                  }
+                  break;
+                case 'scale':
+                case 'scaleX':
+                case 'scaleY':
+                case 'scaleZ':
+                  if (animation_data.state[key][2]) {
+                    mode = animation_data.state[key][2];
+                  }
+                  if (mode === "up") {
+                    animation[key] = 1 + progress_normalized;
+                  } else if (mode === "down") {
+                    animation[key] = 1 + 0.5 * normalization - progress_normalized;
+                  } else {
+                    animation[key] = 1 + delta_progress_normalized;
+                  }
+                  break;
+                case 'rotation':
+                case 'rotationX':
+                case 'rotationY':
+                case 'rotationZ':
+                  animation[key] = (180 * (progress - 0.5)) * normalization;
+                  break;
+                case 'skewX':
+                case 'skewY':
+                case 'skewZ':
+                  animation[key] = (180 * (progress - 0.5)) * normalization;
+                  break;
+                case 'x':
+                case 'y':
+                  if (_this.background.length > 0) {
+                    if (_this.size.source.same[_this.param.size] && key === _this.param.axis) {
+                      progress_inner = {};
+                      progress_inner[_this.param.start] = ($.ux_parallax.wrapper[_this.param.start] - _this.position.source[_this.param.start]) / _this.size.source[_this.param.size];
+                      progress_inner[_this.param.end] = ($.ux_parallax.wrapper[_this.param.end] - _this.position.source[_this.param.end]) / _this.size.source[_this.param.size];
+                      progress_inner.value = 0;
+                      if (progress_inner[_this.param.start] < 0) {
+                        progress_inner[_this.param.start] = 0;
+                      } else {
+                        progress_inner.value = progress_inner[_this.param.start];
+                      }
+                      if (progress_inner[_this.param.end] > 0) {
+                        progress_inner[_this.param.end] = 0;
+                      } else {
+                        progress_inner.value = progress_inner[_this.param.end];
+                      }
+                      animation[key] = progress_inner.value * _this.size.source[_this.param.size] * normalization;
+                    } else {
+                      difference_normalized = _this.size.source.difference * (1 + normalization);
+                      difference_normalized = _this.size.source.difference / 2;
+                      current_base = _this.position.element[_this.param.start] - delta_normalized - difference_normalized;
+                      current_peak = current_base + _this.size.element[_this.param.size];
+                      if (!(current_base > _this.position.source[_this.param.start] && current_peak < _this.position.source[_this.param.end])) {
+                        animation[key] = delta_normalized;
+                      }
+                    }
+                  } else {
+                    animation[key] = delta_normalized;
+                  }
+                  break;
+                default:
+                  animation[key] = delta_normalized;
+              }
+            } else {
+              mode = animation_data.state[key][3];
+              if (mode === 'to-middle' || mode === 'from-middle') {
+                middle_normalization = 2;
+              } else {
+                middle_normalization = 1;
+              }
+              total_range = Math.abs(value[1]) + Math.abs(value[2]);
+              if (mode === "to-middle" && from_middle) {
+                return;
+              } else if (mode === "from-middle") {
+                if (to_middle) {
+                  animation[key] = value[1];
+                } else {
+                  animation[key] = value[1] - total_range * (progress - 0.5) * middle_normalization;
+                }
+              } else {
+                range_progress_normalized = total_range * progress * middle_normalization;
+                if (value[1] > value[2]) {
+                  animation[key] = value[1] - range_progress_normalized;
+                } else {
+                  animation[key] = value[1] + range_progress_normalized;
+                }
+              }
+              return;
+            }
+          });
+          animation.onComplete = _this.stop_ticking;
+          if (_this.loaded) {
+            _this.animate.set(animation_target, animation);
+          } else {
+            _this.animate.to(animation_target, _this.settings.initialAnimationDuration, animation);
+          }
+        });
+        _this.element.triggerHandler('ux_parallax.parallax', [progress, delta, delta_progress]);
+      };
+    })(this);
+
+    /*
+    Load element
+     */
+    this.load = (function(_this) {
+      return function(callback) {
+        var loadables, loaded, preloader;
+        loadables = _this.background.add(_this.layers.filter('img'));
+        if (loadables.length > 0) {
+          loaded = 0;
+          if (_this.settings.preloader) {
+            preloader = $(_this.settings.preloader);
+            _this.background.before(preloader);
+          }
+          loadables.each(function(index, loadable) {
+            var image, parent, isResponsive, image_loader, src;
+            image = $(loadable);
+            parent = image.parent();
+            isResponsive = false;
+            if (image.attr('data-ux-parallax-src') != null) {
+              src = image.attr('data-ux-parallax-src');
+            } else {
+              src = image.attr('src');
+            }
+            image_loader = $("<img>");
+            if(parent.is('picture')){
+              parent = parent.clone();
+              parent.find('img').remove().end();
+              parent.append(image_loader);
+              isResponsive = true;
+            }
+            image_loader.attr('src', src);
+            if(isResponsive && !window.HTMLPictureElement){
+              if(window.respimage){
+                window.respimage({elements: [$img[0]]});
+              } else if(window.picturefill){
+                window.picturefill({elements: [$img[0]]});
+              } else if(src){
+                $img.attr('src', src);
+              }
+            }
+            image_loader.on('load', function() {
+              image.attr('src', src);
+              loaded += 1;
+              if (loaded === loadables.length) {
+                if (_this.settings.preloader) {
+                  _this.animate.to(preloader, 1, {
+                    scale: 2,
+                    opacity: 0,
+                    onComplete: function() {
+                      preloader.remove();
+                    }
+                  });
+                }
+                callback.call();
+              }
+            }).on('error', function() {
+              _this.error("Image with src=\"" + src + "\" failed to load.");
+            });
+          });
+        } else {
+          callback.call();
+        }
+      };
+    })(this);
+
+    /*
+    Set default animation parameters for UX Parallax animation objects
+    and create animus model
+     */
+    this.init_animus = (function(_this) {
+      return function() {
+        var override;
+        override = {
+          duration: _this.settings.animation.duration,
+          easing: _this.settings.animation.easing
+        };
+        _this.animus = new $.animus(override);
+        _this.log("Initialized animus parser.");
+      };
+    })(this);
+
+    /*
+    Get individual element animation data
+     */
+    this.set_data = (function(_this) {
+      return function() {
+        _this.animation = [];
+        if (_this.settings.animateElement) {
+          _this.animation.push([_this.element, _this.get_animation_data('element', _this.element)]);
+        }
+        if (_this.background.length > 0) {
+          _this.animation.push([_this.background, _this.get_animation_data('background', _this.background)]);
+          _this.size['background'] = _this.get_size_data('background', _this.background);
+        }
+        if (_this.layers.length > 0) {
+          _this.animation['layer'] = [];
+          _this.layers.each(function(index, layer) {
+            layer = $(layer);
+            _this.animation.push([layer, _this.get_animation_data('layer', layer, index)]);
+            _this.size['layer'].push(_this.get_size_data('layer', layer, index));
+          });
+        }
+        _this.log("UX Parallax data has been processed.");
+        _this.log(_this.animation);
+      };
+    })(this);
+
+    /*
+    Initialize element animation data
+     */
+    this.get_animation_data = (function(_this) {
+      return function(context, element, index) {
+        var animation, animation_default, animation_object, element_class, element_id;
+        animation = {};
+        animation_default = "";
+        animation_object = null;
+        if (element.attr('id') != null) {
+          element_id = '#' + element.attr('id');
+        } else {
+          element_id = "";
+        }
+        if (element.attr('class') != null) {
+          element_class = element.attr('class').split(' ').map(function(item) {
+            return "." + item;
+          });
+        } else {
+          element_class = [];
+        }
+        if (element.attr('data-ux-parallax') != null) {
+          animation_default = element.attr('data-ux-parallax');
+        } else if (typeof _this.settings.animation === 'string') {
+          animation_default = _this.settings.animation;
+        } else if (typeof _this.settings.animation === 'object') {
+          if (typeof _this.settings.animation[context] === 'string') {
+            animation_default = _this.settings.animation[context];
+          } else if ($.isArray(_this.settings.animation[context])) {
+            if (typeof _this.settings.animation[context][index] === 'string') {
+              animation_default = _this.settings.animation[context][index];
+            } else if (typeof _this.settings.animation[context][index] === 'object') {
+              animation_object = _this.settings.animation[context][index];
+              if (typeof _this.settings.animation[context][index]['*'] === 'string') {
+                animation_default = _this.settings.animation[context]['*'];
+              }
+            }
+          } else if (typeof _this.settings.animation[context] === 'object') {
+            animation_object = _this.settings.animation[context];
+            if (typeof _this.settings.animation[context]['*'] === 'string') {
+              animation_default = _this.settings.animation[context]['*'];
+            } else if (typeof _this.settings.animation[context][element_id] === 'string') {
+              animation_default = _this.settings.animation[context][element_id];
+            } else if (typeof _this.settings.animation[context][element_id] === 'object') {
+              animation_object = _this.settings.animation[context][element_id];
+            } else {
+              $.each(element_class, function(index, _class) {
+                if (typeof _this.settings.animation[context][_class] === 'string') {
+                  animation_default = _this.settings.animation[context][_class];
+                }
+                if (typeof _this.settings.animation[context][_class] === 'object') {
+                  animation_object = _this.settings.animation[context][_class];
+                }
+              });
+            }
+          } else if (typeof _this.settings.animation['*'] === 'string') {
+            animation_default = _this.settings.animation['*'];
+          } else {
+            animation_default = "";
+          }
+        }
+        $.each(Object.keys(_this.settings.screen), function(responsive_mode_index, responsive_mode) {
+          var ref, responsive_animation, scroll_transform, transform, value;
+          animation[responsive_mode] = {};
+          responsive_animation = {};
+          if (animation_object) {
+            if (typeof animation_object[responsive_mode] === 'string') {
+              responsive_animation = animation_object[responsive_mode];
+            } else {
+              responsive_animation = animation_default;
+            }
+          } else {
+            responsive_animation = animation_default;
+          }
+          animation[responsive_mode] = _this.animus.get(responsive_animation);
+          ref = animation[responsive_mode].state;
+          for (transform in ref) {
+            value = ref[transform];
+            value = "" + value;
+            if (value.indexOf("..") === -1) {
+              scroll_transform = value.split(/\s+/);
+              if (scroll_transform.length === 0) {
+                scroll_transform.push(_this.settings.factor);
+              } else if (scroll_transform.length === 1) {
+                if (scroll_transform[0] === "") {
+                  scroll_transform[1] = "default";
+                  scroll_transform[0] = _this.settings.factor;
+                }
+                if (isNaN(scroll_transform[0])) {
+                  scroll_transform[1] = scroll_transform[0];
+                  scroll_transform[0] = _this.settings.factor;
+                } else {
+                  scroll_transform[1] = "default";
+                  scroll_transform[0] = parseFloat(scroll_transform[0]);
+                }
+              }
+              animation[responsive_mode].state[transform] = scroll_transform;
+            } else {
+              scroll_transform = ['*'];
+              value = value.split(/[\. ]+/);
+              scroll_transform[1] = parseFloat(value[0]);
+              scroll_transform[2] = parseFloat(value[1]);
+              if (value.length === 2) {
+                scroll_transform[3] = "default";
+              } else {
+                scroll_transform[3] = value[2];
+              }
+              animation[responsive_mode].state[transform] = scroll_transform;
+            }
+          }
+        });
+        return animation;
+      };
+    })(this);
+
+    /*
+    Initialize element size data
+
+    canvas: {
+      background: {
+        width: 1100,
+        height: 500
+      },
+      layer: [
+        {
+          width: 500,
+          height: 600,
+          top: 500,
+          left: 500
+        }
+      ]
+    }
+     */
+    this.get_size_data = (function(_this) {
+      return function(context, object, index) {
+        var data, element_class, element_id, js_data;
+        data = {};
+        if (object.attr('id') != null) {
+          element_id = '#' + object.attr('id');
+        } else {
+          element_id = "";
+        }
+        if (object.attr('class') != null) {
+          element_class = object.attr('class').split(' ').map(function(item) {
+            return "." + item;
+          });
+        } else {
+          element_class = [];
+        }
+        js_data = false;
+        if ((_this.settings.canvas != null) && (_this.settings.canvas[context] != null)) {
+          if (index != null) {
+            if (_this.settings.canvas[context][index] != null) {
+              js_data = _this.settings.canvas[context][index];
+            } else if (_this.settings.canvas[context][id] != null) {
+              js_data = _this.settings.canvas[context][id];
+            } else {
+              $.each(element_class, function(index, _class) {
+                if (_this.settings.canvas[context][_class] != null) {
+                  js_data = _this.settings.canvas[context][_class];
+                }
+              });
+            }
+          } else {
+            js_data = _this.settings.canvas[context];
+          }
+        }
+        if (object.attr('data-ux-parallax-width') != null) {
+          data.width = parseFloat(object.attr('data-ux-parallax-width'));
+        } else if (js_data && (js_data.width != null)) {
+          data.width = parseFloat(_this.delete_property(js_data, 'width'));
+        }
+        if (object.attr('data-ux-parallax-height') != null) {
+          data.height = parseFloat(object.attr('data-ux-parallax-height'));
+        } else if (js_data && (js_data.height != null)) {
+          data.height = parseFloat(_this.delete_property(js_data, 'height'));
+        }
+        if (context === 'layer') {
+          data.position = {};
+          if (object.attr('data-ux-parallax-top') != null) {
+            data.position.top = parseFloat(object.attr('data-ux-parallax-top'));
+          } else if (js_data && (js_data.top != null)) {
+            data.position.top = parseFloat(_this.delete_property(js_data, 'top'));
+          } else if (object.attr('data-ux-parallax-bottom') != null) {
+            data.position.bottom = parseFloat(object.attr('data-ux-parallax-bottom'));
+          } else if (js_data && (js_data.bottom != null)) {
+            data.position.bottom = parseFloat(_this.delete_property(js_data, 'bottom'));
+          } else {
+            data.position.top = 0;
+          }
+          if (object.attr('data-ux-parallax-left') != null) {
+            data.position.left = parseFloat(object.attr('data-ux-parallax-left'));
+          } else if (js_data && (js_data.left != null)) {
+            data.position.left = parseFloat(_this.delete_property(js_data, 'left'));
+          } else if (object.attr('data-ux-parallax-right') != null) {
+            data.position.right = parseFloat(object.attr('data-ux-parallax-right'));
+          } else if (js_data && (js_data.right != null)) {
+            data.position.right = parseFloat(_this.delete_property(js_data, 'right'));
+          } else {
+            data.position.left = 0;
+          }
+        }
+        return data;
+      };
+    })(this);
+
+    /*
+    Set element and parent sizes
+     */
+    this.set_size = (function(_this) {
+      return function() {
+        _this.size.wrapper.width = _this.wrapper.width();
+        _this.size.wrapper.height = _this.wrapper.height();
+        _this.size.wrapper.half = _this.size.wrapper[_this.param.size] / 2;
+        if (_this.fit.length) {
+          _this.fit.removeClass('ux-parallax-content');
+          _this.source.height(_this.fit.outerHeight(true));
+          _this.fit.addClass('ux-parallax-content');
+        }
+        else if (_this.settings.size === 'fullscreen') {
+          _this.source.css({
+            'width': _this.size.wrapper.width,
+            'height': _this.size.wrapper.height,
+            'max-width': _this.size.wrapper.width,
+            'max-height': _this.size.wrapper.height
+          });
+        } else if (_this.settings.size === 'screenHeight') {
+          _this.source.height(_this.size.wrapper.height);
+        } else if (_this.settings.size === 'screenWidth') {
+          _this.source.width(_this.size.wrapper.width);
+        }
+        _this.size.parent.width = _this.parent.outerWidth(true);
+        _this.size.parent.height = _this.parent.outerHeight(true);
+        _this.size.source.width = _this.source.outerWidth(true);
+        _this.size.source.height = _this.source.outerHeight(true);
+
+        /*
+        Set the size for the element, based on whether it is used as background or
+        as a normal element on the site.
+         */
+        if (_this.background.length > 0) {
+          _this.size.background = $.extend(_this.get_image_size(_this.background), _this.size.background);
+          _this.size.element.width = _this.size.source.width;
+          _this.size.element.height = _this.size.source.width / _this.size.background.width * _this.size.background.height;
+          if (_this.size.source.height > _this.size.element.height) {
+            _this.size.element.width = _this.size.source.height / _this.size.background.height * _this.size.background.width;
+            _this.size.element.height = _this.size.source.height;
+          }
+          /**
+           * Adjust dimentions of element if source proprotions are different.
+           */
+          var offset = ((_this.size.wrapper.height + _this.size.source.height) / 2) - _this.size.element.height;
+          if (offset > 0) {
+            _this.size.element.width += offset;
+            _this.size.element.height += offset;
+          }
+          if (_this.loaded) {
+            _this.animate.set(_this.background, {
+              height: _this.size.element.height,
+              width: _this.size.element.width
+            });
+          } else {
+            _this.animate.to(_this.background, _this.settings.initialAnimationDuration, {
+              height: _this.size.element.height,
+              width: _this.size.element.width
+            });
+          }
+        } else {
+          _this.size.element.width = _this.element.outerWidth(true);
+          _this.size.element.height = _this.element.outerHeight(true);
+        }
+        if (_this.layers.length > 0) {
+          _this.layers.each(function(index, layer) {
+            _this.size.layer[index] = $.extend(_this.get_image_size($(layer)), _this.size.layer[index]);
+          });
+        }
+        _this.size.source.same = {
+          width: _this.size.source.width === _this.size.element.width,
+          height: _this.size.source.height === _this.size.element.height
+        };
+        _this.size.source.ratio = _this.size.wrapper[_this.param.size] / _this.size.source[_this.param.size];
+        _this.size.source.difference = _this.size.wrapper[_this.param.size] - _this.size.source[_this.param.size];
+        _this.size.source.spanning = _this.size.wrapper[_this.param.size] + _this.size.source[_this.param.size];
+        _this.log("Element sizes have been set.");
+      };
+    })(this);
+    this.setSize = this.set_size;
+
+    /*
+    Set element top and bottom positioning on the page
+     */
+    this.set_position = (function(_this) {
+      return function() {
+        _this.position.source.top = _this.source.offset().top - _this.document.offset().top;
+        _this.position.source.bottom = _this.position.source.top + _this.size.source.height;
+        _this.position.source.vmiddle = (_this.position.source.top + _this.position.source.bottom) / 2;
+        _this.position.source.left = _this.source.offset().left - _this.document.offset().left;
+        _this.position.source.right = _this.position.source.left + _this.size.source.width;
+        _this.position.source.hmiddle = (_this.position.source.left + _this.position.source.right) / 2;
+        _this.position.element.top = _this.element.offset().top - _this.document.offset().top;
+        _this.position.element.bottom = _this.position.element.top + _this.size.element.height;
+        _this.position.element.left = _this.element.offset().left - _this.document.offset().left;
+        _this.position.element.right = _this.position.element.left + _this.size.element.width;
+        if (_this.background.length > 0) {
+          _this.position.background = _this.position.element;
+        }
+        _this.position.parent.top = _this.parent.offset().top - _this.document.offset().top;
+        _this.position.parent.bottom = _this.position.parent.top + _this.size.parent.height;
+        _this.position.parent.left = _this.parent.offset().left - _this.document.offset().left;
+        _this.position.parent.right = _this.position.parent.left + _this.size.parent.width;
+        if (_this.settings.normalizeTop && _this.position.source[_this.param.start] < _this.size.wrapper[_this.param.size] / 2 && _this.size.source[_this.param.size] < _this.size.wrapper[_this.param.size]) {
+          _this.position.source.beginning = true;
+        } else {
+          _this.position.source.beginning = false;
+        }
+        if (_this.background.length > 0 || _this.layers.length > 0) {
+          _this.set_canvas_position();
+        }
+        _this.log("Element positions have been set.");
+      };
+    })(this);
+    this.setPosition = this.set_position;
+
+    /*
+    Position background according to anchor settings
+     */
+    this.set_canvas_position = (function(_this) {
+      return function() {
+        var height_ratio, margin_left, margin_top, width_ratio;
+        switch (_this.settings.anchor) {
+          case 'center':
+            margin_left = -(_this.size.element.width - _this.size.source.width) / 2;
+            margin_top = -(_this.size.element.height - _this.size.source.height) / 2;
+            break;
+          case 'top':
+            margin_left = -(_this.size.element.width - _this.size.source.width) / 2;
+            margin_top = 0;
+            break;
+          case 'bottom':
+            margin_left = -(_this.size.element.width - _this.size.source.width) / 2;
+            margin_top = -(_this.size.element.height - _this.size.source.height);
+            break;
+          case 'left':
+            margin_left = 0;
+            margin_top = -(_this.size.element.height - _this.size.source.height);
+            break;
+          case 'right':
+            margin_left = -(_this.size.element.width - _this.size.source.width);
+            margin_top = -(_this.size.element.height - _this.size.source.height) / 2;
+            break;
+          case 'top-left':
+            margin_left = 0;
+            margin_top = 0;
+            break;
+          case 'bottom-left':
+            margin_left = 0;
+            margin_top = -(_this.size.element.height - _this.size.source.height);
+            break;
+          case 'top-right':
+            margin_left = -(_this.size.element.width - _this.size.source.width);
+            margin_top = 0;
+            break;
+          case 'bottom-right':
+            margin_left = -(_this.size.element.width - _this.size.source.width);
+            margin_top = -(_this.size.element.height - _this.size.source.height);
+        }
+        if (margin_left > 0) {
+          margin_left = 0;
+        }
+        if (margin_top > 0) {
+          margin_top = 0;
+        }
+        if (_this.loaded) {
+          _this.animate.set(_this.background, {
+            'margin-top': margin_top,
+            'margin-left': margin_left
+          });
+        } else {
+          _this.animate.to(_this.background, _this.settings.initialAnimationDuration, {
+            'margin-top': margin_top,
+            'margin-left': margin_left
+          });
+        }
+        width_ratio = _this.size.element.width / _this.size.background.width;
+        height_ratio = _this.size.element.height / _this.size.background.height;
+        _this.layers.each(function(index, layer) {
+          var layer_css;
+          layer = $(layer);
+          layer_css = {};
+          if ('top' in _this.size.layer[index].position) {
+            layer_css.top = height_ratio * _this.size.layer[index].position.top + margin_top;
+          } else if ('bottom' in _this.size.layer[index].position) {
+            layer_css.bottom = height_ratio * _this.size.layer[index].position.bottom + margin_top;
+          }
+          if ('left' in _this.size.layer[index].position) {
+            layer_css.left = width_ratio * _this.size.layer[index].position.left + margin_left;
+          } else if ('right' in _this.size.layer[index].position) {
+            layer_css.right = width_ratio * _this.size.layer[index].position.right + margin_left;
+          }
+          if ('width' in _this.size.layer[index]) {
+            layer_css.width = width_ratio * _this.size.layer[index].width;
+          }
+          if ('height' in _this.size.layer[index]) {
+            layer_css.height = height_ratio * _this.size.layer[index].height;
+          }
+          if (_this.loaded) {
+            _this.animate.set(layer, layer_css);
+          } else {
+            _this.animate.to(layer, _this.settings.initialAnimationDuration, layer_css);
+          }
+        });
+      };
+    })(this);
+
+    /*
+    Set layer z-index for overlapping
+     */
+    this.set_layer_index = (function(_this) {
+      return function() {
+        _this.layers.each(function(index, layer) {
+          $(layer).css({
+            'z-index': _this.layers.length - index
+          });
+        });
+      };
+    })(this);
+
+    /*
+    Sets parameters based on orientation settings
+     */
+    this.set_orientation = (function(_this) {
+      return function(orientation) {
+        _this.param = {};
+        if (orientation === 'vertical') {
+          _this.param.size = 'height';
+          _this.param.middle = 'vmiddle';
+          _this.param.start = 'top';
+          _this.param.end = 'bottom';
+          _this.param.axis = 'y';
+          _this.param.scroll = 'scrollTop';
+          _this.param.half = 'halfHeight';
+        } else {
+          _this.param.size = 'width';
+          _this.param.middle = 'hmiddle';
+          _this.param.start = 'left';
+          _this.param.end = 'right';
+          _this.param.axis = 'x';
+          _this.param.scroll = 'scrollLeft';
+          _this.param.half = 'halfWidth';
+        }
+      };
+    })(this);
+
+    /*
+    Set current responsive range parameter as xs, sm, md, lg or xl
+     */
+    this.set_responsive_context = (function(_this) {
+      return function() {
+        var current_responsive_size = _this.current_responsive_size;
+        if (_this.size.wrapper.width >= _this.settings.screen.xl) {
+          _this.current_responsive_size = 'xl';
+        } else if (_this.size.wrapper.width >= _this.settings.screen.lg) {
+          _this.current_responsive_size = 'lg';
+        } else if (_this.size.wrapper.width >= _this.settings.screen.md) {
+          _this.current_responsive_size = 'md';
+        } else if (_this.size.wrapper.width >= _this.settings.screen.sm) {
+          _this.current_responsive_size = 'sm';
+        } else {
+          _this.current_responsive_size = 'xs';
+        }
+        if (current_responsive_size && current_responsive_size !== _this.current_responsive_size) {
+          _this.log("Responsive context is reset to " + _this.current_responsive_size + ".");
+          // Reset image sizes to support responsive images.
+          // _this.set_size();
+          // _this.set_position();
+        }
+        else {
+          _this.log("Responsive context is " + _this.current_responsive_size + ".");
+        }
+      };
+    })(this);
+
+    /*
+    Add dynamic element classes and
+     */
+    this.set_classes = (function(_this) {
+      return function() {
+        var ux_parallax_style, style;
+        if ($('#ux_parallax-style').length === 0) {
+          ux_parallax_style = ".ux-parallax-parent { perspective: " + _this.settings.perspective + "px; -moz-perspective: " + _this.settings.perspective + "px; -webkit-perspective: " + _this.settings.perspective + "px; perspective-origin: " + _this.settings.perspectiveOrigin + "; -moz-perspective-origin: " + _this.settings.perspectiveOrigin + "; -webkit-perspective-origin: " + _this.settings.perspectiveOrigin + "; backface-visibility: hidden; -moz-backface-visibility: hidden; -webkit-backface-visibility: hidden; }";
+          style = document.createElement('style');
+          style.id = 'ux-parallax-style';
+          style.type = 'text/css';
+          style.innerHTML = ux_parallax_style;
+          $('head')[0].appendChild(style);
+        }
+        if (_this.settings.animateElement) {
+          _this.parent.addClass('ux-parallax-parent');
+        } else {
+          _this.element.addClass('ux-parallax-parent');
+        }
+        if (_this.background.length > 0) {
+          _this.element.addClass('ux-parallax-canvas');
+        }
+        _this.element.addClass('ux-parallax-animated');
+        _this.background.addClass('ux-parallax-animated');
+        _this.layers.addClass('ux-parallax-animated');
+      };
+    })(this);
+
+    /*
+    Binds the wrapper resize event to cache current wrapper
+    width and height and to set the layout up
+     */
+    this.bind_resize = (function(_this) {
+      return function() {
+        _this.window.resize(function() {
+          _this.set_size();
+          _this.set_position();
+          _this.set_responsive_context();
+          _this.parallax();
+        });
+      };
+    })(this);
+
+    /*
+    Rendering performance optimization ticking for debouncing purposes
+     */
+    this.ticking = false;
+    this.stop_ticking = (function(_this) {
+      return function() {
+        _this.ticking = false;
+      };
+    })(this);
+    if (this.settings.optimize) {
+      this.start_ticking = (function(_this) {
+        return function() {
+          _this.ticking = true;
+        };
+      })(this);
+    } else {
+      this.start_ticking = (function(_this) {
+        return function() {
+          _this.ticking = false;
+        };
+      })(this);
+    }
+
+    /*
+    Scroll animation handler
+     */
+    this.in_view_eariler = false;
+    this.scroll = (function(_this) {
+      return function() {
+        var in_view_tolerance, translation;
+        if (_this.element[0]._gsTransform && _this.element[0]._gsTransform[_this.param.axis]) {
+          translation = _this.element[0]._gsTransform[_this.param.axis];
+        } else {
+          translation = 0;
+        }
+        in_view_tolerance = $.ux_parallax.wrapper[_this.param.half] - translation;
+        _this.in_view = !($.ux_parallax.wrapper[_this.param.end] - _this.position.source[_this.param.start] + in_view_tolerance < 0 || $.ux_parallax.wrapper[_this.param.start] - _this.position.source[_this.param.end] - in_view_tolerance > 0);
+        if (_this.in_view) {
+          if (!_this.in_view_eariler) {
+            _this.in_view_eariler = true;
+            _this.element.addClass('ux-parallax-visible');
+            _this.element.removeClass('ux-parallax-hidden');
+            _this.element.triggerHandler('ux_parallax.visible', [_this.in_view]);
+          }
+        } else {
+          if (_this.in_view_eariler) {
+            _this.in_view_eariler = false;
+            _this.element.removeClass('ux-parallax-visible');
+            _this.element.addClass('ux-parallax-hidden');
+            _this.element.triggerHandler('ux_parallax.visible', [_this.in_view]);
+          }
+          if (_this.loaded) {
+            return;
+          }
+        }
+        if (!_this.ticking) {
+          _this.start_ticking();
+          _this.parallax();
+        }
+      };
+    })(this);
+
+    /*
+    Bind the wrapper scroll event to fade content on scroll down
+     */
+    this.bind_scroll = (function(_this) {
+      return function() {
+        _this.wrapper.on('ux_parallax.scroll', _this.scroll);
+      };
+    })(this);
+
+    /*
+    Set the element id if it doesn't have one or
+    get the existing one
+     */
+    this.set_element_id = (function(_this) {
+      return function() {
+        if (_this.element.attr('id') != null) {
+          _this.id = _this.element.attr('id');
+        } else {
+          _this.id = _this.get_random_id('ux-parallax');
+          _this.element.attr('id', _this.id);
+        }
+        _this.log("Element id has been set to " + _this.id + ".");
+      };
+    })(this);
+
+    /*
+    Setup Animation Platform
+     */
+    this.set_animator = (function(_this) {
+      return function() {
+        _this.animate = window[_this.settings.animate];
+        _this.log("Animating using the " + _this.settings.animate + " platform.");
+      };
+    })(this);
+
+    /*
+    Get a random id by concatenating input string
+    with a random number
+     */
+    this.get_random_id = function(string) {
+      return string + '-' + Math.floor((Math.random() * 100000) + 1);
+    };
+
+    /*
+    Get the size of an image element
+     */
+    this.get_image_size = (function(_this) {
+      return function(image) {
+        var size;
+        size = {};
+        size.width = image[0].naturalWidth != null ? image[0].naturalWidth : image[0].width != null ? image[0].width : image.width != null ? image.width() : 'auto';
+        size.height = image[0].naturalHeight != null ? image[0].naturalHeight : image[0].height != null ? image[0].height : image.height != null ? image.height() : 'auto';
+        return size;
+      };
+    })(this);
+
+    /*
+    Debounce helper to make resize happen every n milliseconds
+     */
+    this.debounce = function(func, wait, immediate) {
+      var timeout;
+      timeout = void 0;
+      return function() {
+        var args, callNow, context, later;
+        context = this;
+        args = arguments;
+        later = function() {
+          timeout = null;
+          if (!immediate) {
+            func.apply(context, args);
+          }
+        };
+        callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) {
+          func.apply(context, args);
+        }
+      };
+    };
+
+    /*
+    Delete an object property and return its value
+     */
+    this.delete_property = function(object, property) {
+      var temporary;
+      temporary = object[property];
+      delete object[property];
+      return temporary;
+    };
+
+    /*
+    Extend given default settings with user input
+     */
+    this.extend_settings = (function(_this) {
+      return function(id, defaults) {
+        if (_this.settings[id] != null) {
+          return _this.settings[id] = $.extend({}, defaults, _this.settings[id]);
+        } else {
+          return _this.settings[id] = defaults;
+        }
+      };
+    })(this);
+
+    /*
+    Logger snippet within UX Parallax
+     */
+    this.log = (function(_this) {
+      return function(item) {
+        if (!_this.debug) {
+          return;
+        }
+        if (typeof item === 'object') {
+          console.log("[UX Parallax " + _this.id + "]", item);
+        } else {
+          console.log("[UX Parallax " + _this.id + "] " + item);
+        }
+      };
+    })(this);
+
+    /*
+    Error logger snippet within UX Parallax
+     */
+    this.error = (function(_this) {
+      return function(item) {
+        if (typeof item === 'object') {
+          console.error("[UX Parallax " + _this.id + "]", item);
+        } else {
+          console.error("[UX Parallax " + _this.id + "] " + item);
+        }
+      };
+    })(this);
+    this.initialize();
+  };
+  $.ux_parallax.wrapper = {};
+  $.ux_parallax.resize = function() {
+    var _wrapper;
+    _wrapper = $('#ux-push');
+    $.ux_parallax.wrapper.height = _wrapper.height();
+    $.ux_parallax.wrapper.width = _wrapper.width();
+    $.ux_parallax.wrapper.halfHeight = $.ux_parallax.wrapper.height / 2;
+    $.ux_parallax.wrapper.halfWidth = $.ux_parallax.wrapper.width / 2;
+  };
+  $(window).on('resize', (function(_this) {
+    return function() {
+      $.ux_parallax.resize();
+    };
+  })(this));
+  $.ux_parallax.resize();
+  $.ux_parallax.scroll = function() {
+    var _wrapper;
+    _wrapper = $('#ux-push');
+    $.ux_parallax.wrapper.top = _wrapper.scrollTop();
+    $.ux_parallax.wrapper.left = _wrapper.scrollLeft();
+    $.ux_parallax.wrapper.bottom = $.ux_parallax.wrapper.top + $.ux_parallax.wrapper.height;
+    $.ux_parallax.wrapper.right = $.ux_parallax.wrapper.left + $.ux_parallax.wrapper.width;
+    $.ux_parallax.wrapper.vmiddle = $.ux_parallax.wrapper.top + $.ux_parallax.wrapper.halfHeight;
+    $.ux_parallax.wrapper.hmiddle = $.ux_parallax.wrapper.left + $.ux_parallax.wrapper.halfWidth;
+  };
+  $('#ux-push').on('scroll', (function(_this) {
+    return function() {
+      $.ux_parallax.scroll();
+      $('#ux-push').triggerHandler('ux_parallax.scroll');
+    };
+  })(this));
+  $.ux_parallax.scroll();
+  return $.fn.ux_parallax = function(opts) {
+    return this.each(function(index, element) {
+      if (!$.data(element, "ux_parallax")) {
+        return $.data(element, "ux_parallax", new $.ux_parallax(element, opts));
+      }
+    });
+  };
+})(window.jQuery, window, document);
+
+//# sourceMappingURL=../../maps/ux_parallax/ux_parallax.js.map
+

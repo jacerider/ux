@@ -50,22 +50,9 @@
     Cache DOM nodes for performance.
      */
     buildCache: function () {
-      var _this = this;
-      _this.$element = $(this.element);
-      _this.input_selector = '.ux-form-input-item-js';
-      _this.$field = _this.$element.find(_this.input_selector);
-      _this.$field.each(function (e) {
-        var $suffix = _this.$element.find('.field-suffix');
-        if ($suffix.length) {
-          $suffix.after('<div class="ux-form-input-line" />');
-        }
-        else {
-          $(this).after('<div class="ux-form-input-line" />');
-        }
-      });
-      if (_this.hasError()) {
-        _this.$element.addClass('invalid');
-      }
+      this.$element = $(this.element);
+      this.input_selector = '.ux-form-input-item';
+      this.$field = this.$element.find(this.input_selector);
     },
 
     /*
@@ -153,13 +140,6 @@
     },
 
     /*
-    Check if element has error.
-     */
-    hasError: function () {
-      return this.$field.hasClass('error');
-    },
-
-    /*
     Check if element has bad input.
      */
     hasBadInput: function () {
@@ -205,19 +185,16 @@
   Drupal.behaviors.uxFormInput = {
     attach: function (context) {
       var $context = $(context);
-      $context.find('.ux-form-input-js').once('ux-form-input').uxFormInput();
+      $context.find('.ux-form-input').once('ux-form-input').uxFormInput();
+    },
+    detach: function (context) {
+      $(context).find('.ux-form-input').each(function () {
+        var plugin = $(this).data('uxFormInput');
+        if (plugin) {
+          plugin.destroy();
+        }
+      });
     }
-    // @see https://www.drupal.org/node/2692453
-    // detach: function (context, setting, trigger) {
-    //   if (trigger === 'unload') {
-    //     $(context).find('.ux-form-input-js').each(function () {
-    //       var plugin = $(this).data('uxFormInput');
-    //       if (plugin) {
-    //         plugin.destroy();
-    //       }
-    //     });
-    //   }
-    // }
   };
 
 })(jQuery, Drupal, window, document);

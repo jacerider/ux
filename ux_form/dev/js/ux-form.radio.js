@@ -61,10 +61,6 @@
       var _this = this;
       _this.$field.on('change' + '.' + _this._name, function () {
         _this.onChange.call(_this);
-      }).on('focus' + '.' + _this._name, function () {
-        _this.$element.addClass('focused');
-      }).on('blur' + '.' + _this._name, function () {
-        _this.$element.removeClass('focused');
       });
     },
 
@@ -79,9 +75,7 @@
     On change event callback.
      */
     onChange: function () {
-      // .form-wrapper is used as sometimes radios are wrapped in other
-      // elements.
-      this.$element.closest('.ux-form-radios, .form-wrapper').find('.ux-form-radio.active').removeClass('active');
+      this.$element.closest('.ux-form-radios').find('.ux-form-radio.active').removeClass('active');
       if (this.$field.is(':checked')) {
         this.$element.addClass('active');
       }
@@ -104,18 +98,15 @@
     attach: function (context) {
       var $context = $(context);
       $context.find('.ux-form-radio').once('ux-form-radio').uxFormRadio();
+    },
+    detach: function (context) {
+      $(context).find('.ux-form-radio').each(function () {
+        var plugin = $(this).data('uxFormRadio');
+        if (plugin) {
+          plugin.destroy();
+        }
+      });
     }
-    // @see https://www.drupal.org/node/2692453
-    // detach: function (context, setting, trigger) {
-    //   if (trigger === 'unload') {
-    //     $(context).find('.ux-form-radio').each(function () {
-    //       var plugin = $(this).data('uxFormRadio');
-    //       if (plugin) {
-    //         plugin.destroy();
-    //       }
-    //     });
-    //   }
-    // }
   };
 
 })(jQuery, Drupal, window, document);

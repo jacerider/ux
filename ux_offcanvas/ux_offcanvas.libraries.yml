@@ -1,0 +1,17 @@
+ux_offcanvas:
+  version: VERSION
+  css:
+    component:
+      css/ux-offcanvas.css: {}
+  js:
+    js/ux-offcanvas.js: { minified: true }
+    # js/ux-offcanvas.lib.js: { minified: true }
+    # js/ux-offcanvas.item.lib.js: { minified: true }
+  dependencies:
+    - ux/ux
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+    - core/drupal.displace
+    # - ux/gsap

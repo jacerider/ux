@@ -1,7 +1,0 @@
-ux_aside.ux_aside_settings:
-  title: 'UX Aside'
-  route_name: ux_aside.ux_aside_settings
-  description: 'UX Aside settings.'
-  parent: system.admin_config_ux
-  weight: 99
-
