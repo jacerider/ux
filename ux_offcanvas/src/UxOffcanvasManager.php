@@ -6,13 +6,14 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Security\TrustedCallbackInterface;
 
 /**
  * Class UxOffcanvas.
  *
  * @package Drupal\ux_offcanvas
  */
-class UxOffcanvasManager implements UxOffcanvasManagerInterface, RefinableCacheableDependencyInterface {
+class UxOffcanvasManager implements UxOffcanvasManagerInterface, RefinableCacheableDependencyInterface, TrustedCallbackInterface {
   use RefinableCacheableDependencyTrait;
 
   protected static $offcanvas = [];
@@ -99,6 +100,16 @@ class UxOffcanvasManager implements UxOffcanvasManagerInterface, RefinableCachea
     // in the render process.
     return [
       '#lazy_builder' => [static::class . '::lazyBuilder', []],
+    ];
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function trustedCallbacks() {
+    return [
+      'lazyBuilder',
+      'lazyItemBuilder',
     ];
   }
 
