@@ -34,15 +34,17 @@ function ux_offcanvas_menu_theme($module_path) {
       'header' => NULL,
       'footer' => NULL,
     ],
-    'file' => 'ux_offcanvas_menu.theme.inc',
+    'file' => 'ux_offcanvas_menu.theme',
   ];
   $themes['ux_offcanvas_menu'] = [
     'variables' => [
       'menu_name' => NULL,
       'items' => [],
       'attributes' => [],
+      // 'trail' => 'breadcrumb',
+      // 'animation' => 'slide',
     ],
-    'file' => 'ux_offcanvas_menu.theme.inc',
+    'file' => 'ux_offcanvas_menu.theme',
   ];
   return $themes;
 }

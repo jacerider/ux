@@ -11,6 +11,8 @@ use Drupal\Core\Menu\MenuActiveTrail;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\ux_offcanvas\UxOffcanvasManagerInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Menu\MenuLinkTreeElement;
+use Drupal\ux_offcanvas_menu\UxOffcanvasMenuLink;
 
 /**
  * Provides a 'UxOffcanvasMenu' block.
@@ -82,7 +84,7 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $this->menuActiveTrail = $menu_active_trail;
     $this->entityTypeManager = $entity_type_manager;
     $this->uxOffcanvasManager = $ux_offcanvas_manager;
-    $this->uxOffcanvas = $this->uxOffcanvasManager->addOffcanvas('offcanvas_menu')
+    $this->uxOffcanvas = $this->uxOffcanvasManager->addOffcanvas($plugin_id)
       ->addCacheTags($this->getCacheTags())
       ->addCacheContexts($this->getCacheContexts());
   }
@@ -109,11 +111,15 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     return [
       'menu' => 'main',
       'secondary_menu' => '',
+      'secondary_menu_title' => '',
       'depth' => 3,
+      'trail' => 'breadcrumb',
       'text' => $this->t('Menu'),
       'icon' => '',
       'icon_only' => FALSE,
       'position' => 'left',
+      'animation' => 'slide',
+      'size' => 320,
       'header' => '',
       'footer' => '',
     ] + parent::defaultConfiguration();
@@ -152,8 +158,21 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       '#type' => 'select',
       '#title' => $this->t('Secondary menu'),
       '#description' => $this->t('An additional menu that can be appended to the mobile menu.'),
-      '#options' => ['- None -'] + $this->getMenuOptions(),
+      '#options' => $this->getMenuOptions(),
+      '#empty_option' => $this->t('- None -'),
       '#default_value' => $this->configuration['secondary_menu'],
+    ];
+
+    $form['menus']['secondary_menu_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Secondary menu item title'),
+      '#description' => $this->t('The secondary menu can be contained within a root link.'),
+      '#default_value' => $this->configuration['secondary_menu_title'],
+      '#states' => [
+        'visible' => [
+          ':input[name="settings[menus][secondary_menu]"]' => ['!value' => ''],
+        ],
+      ],
     ];
 
     $form['menus']['depth'] = [
@@ -167,6 +186,28 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       '#required' => TRUE,
     ];
 
+    $form['menus']['trail'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Trail type'),
+      '#default_value' => $this->configuration['trail'],
+      '#options' => [
+        'breadcrumb' => $this->t('Breadcrumb'),
+        'back' => $this->t('Simple Back Link'),
+      ],
+      '#required' => TRUE,
+    ];
+
+    $form['menus']['animation'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Menu animation'),
+      '#default_value' => $this->configuration['animation'],
+      '#options' => [
+        'slide' => $this->t('Slide'),
+        'fade' => $this->t('Fade'),
+      ],
+      '#required' => TRUE,
+    ];
+
     if (!empty($block_options)) {
 
       $form['blocks'] = [
@@ -174,20 +215,20 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
         '#title' => $this->t('Blocks'),
         '#open' => TRUE,
       ];
-      $form['blocks']['header'] = array(
+      $form['blocks']['header'] = [
         '#type' => 'select',
         '#title' => t('Header'),
         '#description' => t('A block placed in the header of the mobile menu element.'),
         '#options' => ['' => t('- None -')] + $block_options,
         '#default_value' => $this->configuration['header'],
-      );
-      $form['blocks']['footer'] = array(
+      ];
+      $form['blocks']['footer'] = [
         '#type' => 'select',
         '#title' => t('Footer'),
         '#description' => t('A block placed in the footer of the mobile menu element.'),
         '#options' => ['' => t('- None -')] + $block_options,
         '#default_value' => $this->configuration['footer'],
-      );
+      ];
     }
 
     $form['offcanvas'] = [
@@ -231,6 +272,14 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
       '#required' => TRUE,
     ];
 
+    $form['offcanvas']['size'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Offcanvas element size'),
+      '#default_value' => $this->configuration['size'],
+      '#field_suffix' => 'px',
+      '#required' => TRUE,
+    ];
+
     return $form;
   }
 
@@ -253,6 +302,7 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $text = $this->configuration['text'];
     $icon = $this->configuration['icon'];
     $position = $this->configuration['position'];
+    $size = $this->configuration['size'];
     $header = $this->configuration['header'];
     $footer = $this->configuration['footer'];
 
@@ -278,6 +328,7 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     return $this->uxOffcanvas->setTriggerText($text)
       ->setContent($content)
       ->setPosition($position)
+      ->setSize($size)
       ->toRenderableTrigger();
   }
 
@@ -292,7 +343,14 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
 
     // If secondary menu is added.
     if ($secondary_menu_name = $this->configuration['secondary_menu']) {
-      $tree += $this->buildMenuTree($secondary_menu_name);
+      $secondary_tree = $this->buildMenuTree($secondary_menu_name);
+      if ($secondary_menu_title = $this->configuration['secondary_menu_title']) {
+        $link = new UxOffcanvasMenuLink($secondary_menu_title);
+        $secondary_tree = [
+          'ux-offcanvas-menu' => new MenuLinkTreeElement($link, (bool) count($secondary_tree), 0, FALSE, $secondary_tree),
+        ];
+      }
+      $tree += $secondary_tree;
       if (empty(array_filter($active_trail))) {
         $active_trail = $this->menuActiveTrail->getActiveTrailIds($secondary_menu_name);
       }
@@ -301,6 +359,13 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $menu = $this->menuLinkTree->build($tree);
     $menu['#theme'] = 'ux_offcanvas_menu';
     $menu['#attributes']['data-depth'] = count(array_filter($active_trail)) - 1;
+    // $menu['#trail'] = $this->configuration['trail'];
+    // $menu['#animation'] = $this->configuration['animation'];
+    $settings = [
+      'trail' => $this->configuration['trail'],
+      'animation' => $this->configuration['animation'],
+    ];
+    $menu['#attached']['drupalSettings']['ux']['offcanvasMenu']['items'][$this->uxOffcanvas->id()] = $settings;
 
     return $menu;
   }
@@ -314,14 +379,14 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
     $parameters->setMaxDepth($depth);
     $parameters->expandedParents = [];
     $tree = $this->menuLinkTree->load($menu_name, $parameters);
-    $manipulators = array(
+    $manipulators = [
       // Show links to nodes that are accessible for the current user.
-      array('callable' => 'menu.default_tree_manipulators:checkNodeAccess'),
+      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
       // Only show links that are accessible for the current user.
-      array('callable' => 'menu.default_tree_manipulators:checkAccess'),
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       // Use the default sorting of menu links.
-      array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
-    );
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
     return $this->menuLinkTree->transform($tree, $manipulators);
   }
 
@@ -336,7 +401,7 @@ class UxOffcanvasMenu extends BlockBase implements ContainerFactoryPluginInterfa
    */
   protected function getMenuOptions(array $menu_names = NULL) {
     $menus = $this->entityTypeManager->getStorage('menu')->loadMultiple($menu_names);
-    $options = array();
+    $options = [];
     /** @var \Drupal\system\MenuInterface[] $menus */
     foreach ($menus as $menu) {
       $options[$menu->id()] = $menu->label();

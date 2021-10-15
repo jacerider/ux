@@ -20,23 +20,26 @@
 .ux-offcanvas-menu-content {
   flex: auto;
   position: relative;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-misspelled-properties
+  overflow: hidden;
+
+  .current {
+
+    > [data-level] {
+      overflow: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-misspelled-properties
+    }
+  }
 }
 
 .ux-offcanvas-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
-  // @for $i from 1 to 10 {
-
-  //   &[data-depth='#{$i}'] > ul {
-  //     transform: translate3d(100%, 0, 0);
-  //     // transform: translate3d($offcanvas-size * -1, 0, 0);
-  //     // transform:
-  //   }
-  // }
-
-  ul {
+  [data-level] {
     position: absolute;
     top: 0;
     left: 0;
@@ -47,13 +50,19 @@
     list-style-type: none;
     width: 100%;
 
-    ul {
+    [data-level] {
       display: none;
+      // visibility: hidden;
       left: 100%;
+      // border:1px solid red;
     }
 
-    .active-trail > ul {
-      display: block;
+    .active-trail {
+
+      > [data-level] {
+        display: block;
+        // visibility: visible;
+      }
     }
   }
 
@@ -66,17 +75,22 @@
 
   a {
     display: inline-block;
+  }
 
-    &::after {
-      content: ':';
-      display: inline-block;
-    }
+  &.trail-type-breadcrumb {
 
-    &:last-child {
-      pointer-events: none;
-
+    a {
       &::after {
-        display: none;
+        content: ':';
+        display: inline-block;
+      }
+
+      &:last-child {
+        pointer-events: none;
+
+        &::after {
+          display: none;
+        }
       }
     }
   }

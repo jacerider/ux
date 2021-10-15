@@ -1,4 +1,13 @@
-<div{{ attributes }}>
+
+{%
+ set classes = [
+   'ux-offcanvas-item',
+   'ux-offcanvas-' ~ position,
+   'ux-offcanvas-' ~ id,
+ ]
+%}
+
+<div{{ attributes.addClass(classes) }}>
   <div class="ux-offcanvas-item-inner">
     {{ content }}
   </div>

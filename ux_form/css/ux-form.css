@@ -501,10 +501,56 @@
 
 .ux-form-select select {
   display: none;
+  background-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.ux-form-select select:focus {
+  border-bottom-color: #1c98c1;
+}
+
+.ux-form-select.invalid select {
+  display: block;
+}
+
+.ux-form-select .ux-form-input-item {
+  cursor: default;
+}
+
+.ux-form-select .ajax-progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  background: #fff;
+  padding: 0 10px 0 20px;
+  border-radius: 3px;
+  height: 2.5rem;
+  line-height: 2.5rem;
+}
+
+.ux-form-select .ajax-progress .throbber {
+  padding: 0 16px 0 0;
+}
+
+.ux-form-select.form-disabled > label {
+  color: #b3b3b3;
+}
+
+.ux-form-select.form-disabled .ux-form-input-item {
+  background-color: transparent;
+  color: #b3b3b3;
 }
 
 .ux-form-select .ux-form-select-wrapper {
   position: relative;
+}
+
+.ux-form-select .ux-form-select-wrapper:hover .ux-form-select-caret {
+  opacity: 1;
 }
 
 .ux-form-select .ux-form-select-caret {
@@ -517,6 +563,9 @@
   font-size: 10px;
   line-height: 10px;
   color: #b3b3b3;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 300ms;
 }
 
 .ux-form-select .ux-form-select-caret.disabled {

@@ -93,47 +93,47 @@ class UxFilters extends ExposedFormPluginBase {
      */
 
     // Add the 'autosbumit' functionality from Views 7.x.
-    $form['general']['autosubmit'] = array(
+    $form['general']['autosubmit'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Autosubmit'),
       '#description' => $this->t('Automatically submit the form once an element is changed.'),
       '#default_value' => $this->options['general']['autosubmit'],
-    );
+    ];
 
-    $form['general']['autosubmit_hide'] = array(
+    $form['general']['autosubmit_hide'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Hide submit button'),
       '#description' => $this->t('Hide submit button if javascript is enabled.'),
       '#default_value' => $this->options['general']['autosubmit_hide'],
-      '#states' => array(
-        'visible' => array(
-          ':input[name="exposed_form_options[general][autosubmit]"]' => array('checked' => TRUE),
-        ),
-      ),
-    );
+      '#states' => [
+        'visible' => [
+          ':input[name="exposed_form_options[general][autosubmit]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
 
-    $form['general']['allow_secondary'] = array(
+    $form['general']['allow_secondary'] = [
       '#type' => 'checkbox',
       '#title' => t('Enable secondary exposed form options'),
       '#default_value' => $this->options['general']['allow_secondary'],
       '#description' => t('Allows you to specify some exposed form elements as being secondary options and places those elements in a collapsible "details" element. Use this option to place some exposed filters in an "Advanced Search" area of the form, for example.'),
-    );
-    $form['general']['secondary_label'] = array(
+    ];
+    $form['general']['secondary_label'] = [
       '#type' => 'textfield',
       '#default_value' => $this->options['general']['secondary_label'],
       '#title' => t('Secondary options label'),
       '#description' => t(
         'The name of the details element to hold secondary options. This cannot be left blank or there will be no way to show/hide these options.'
       ),
-      '#states' => array(
-        'required' => array(
-          ':input[name="exposed_form_options[general][allow_secondary]"]' => array('checked' => TRUE),
-        ),
-        'visible' => array(
-          ':input[name="exposed_form_options[general][allow_secondary]"]' => array('checked' => TRUE),
-        ),
-      ),
-    );
+      '#states' => [
+        'required' => [
+          ':input[name="exposed_form_options[general][allow_secondary]"]' => ['checked' => TRUE],
+        ],
+        'visible' => [
+          ':input[name="exposed_form_options[general][allow_secondary]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
 
     // Go through each filter and add UX options.
     foreach ($this->view->display_handler->getHandlers('filter') as $id => $filter) {
@@ -150,30 +150,30 @@ class UxFilters extends ExposedFormPluginBase {
       ];
 
       $options = ['' => '- Default -'] + $this->uxFilterManager->getOptions($type);
-      $form[$id]['format'] = array(
+      $form[$id]['format'] = [
         '#type' => 'select',
-        '#title' => t('Display @identifier exposed filter as', array('@identifier' => $identifier)),
+        '#title' => t('Display @identifier exposed filter as', ['@identifier' => $identifier]),
         '#default_value' => $this->options[$id]['format'],
         '#options' => $options,
-      );
+      ];
       // Details element to keep the UI from getting out of hand.
-      $form[$id]['more'] = array(
+      $form[$id]['more'] = [
         '#type' => 'details',
-        '#title' => t('More options for @identifier', array('@identifier' => $identifier)),
-      );
+        '#title' => t('More options for @identifier', ['@identifier' => $identifier]),
+      ];
 
       // Allow any filter to be moved into the secondary options element.
-      $form[$id]['more']['is_secondary'] = array(
+      $form[$id]['more']['is_secondary'] = [
         '#type' => 'checkbox',
         '#title' => t('This is a secondary option'),
         '#default_value' => $this->options[$id]['more']['is_secondary'],
-        '#states' => array(
-          'visible' => array(
-            ':input[name="exposed_form_options[general][allow_secondary]"]' => array('checked' => TRUE),
-          ),
-        ),
+        '#states' => [
+          'visible' => [
+            ':input[name="exposed_form_options[general][allow_secondary]"]' => ['checked' => TRUE],
+          ],
+        ],
         '#description' => t('Places this element in the secondary options portion of the exposed form.'),
-      );
+      ];
     }
 
   }
@@ -190,17 +190,17 @@ class UxFilters extends ExposedFormPluginBase {
     // search options"). Place this after the exposed filters and before the
     // rest of the items in the exposed form.
     if ($allow_secondary) {
-      $secondary = array(
+      $secondary = [
         '#type' => 'details',
         '#title' => $this->options['general']['secondary_label'],
         '#weight' => 1000,
-      );
+      ];
       $form['actions']['#weight'] = 1001;
     }
 
     // Apply autosubmit values.
     if (!empty($settings['general']['autosubmit'])) {
-      $form = array_merge_recursive($form, array('#attributes' => array('data-ux-auto-submit-full-form' => '')));
+      $form = array_merge_recursive($form, ['#attributes' => ['data-ux-auto-submit-full-form' => '']]);
       $form['actions']['submit']['#attributes']['data-ux-auto-submit-click'] = '';
       $form['#attached']['library'] = ['ux/ux.auto_submit'];
 
@@ -226,7 +226,7 @@ class UxFilters extends ExposedFormPluginBase {
       }
       if ($allow_secondary && $this->options[$id]['more']['is_secondary']) {
         if (!empty($form[$identifier])) {
-          // Move exposed operators with exposed filters
+          // Move exposed operators with exposed filters.
           if (!empty($this->display->display_options['filters'][$identifier]['expose']['use_operator'])) {
             $op_id = $this->display->display_options['filters'][$identifier]['expose']['operator_id'];
             $secondary[$op_id] = $form[$op_id];

@@ -19,6 +19,13 @@ class UxOffcanvasManager implements UxOffcanvasManagerInterface, RefinableCachea
   protected static $offcanvas = [];
 
   /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks() {
+    return ['lazyBuilder', 'lazyItemBuilder'];
+  }
+
+  /**
    * Add an offcanvas object.
    *
    * @param string $id
@@ -100,16 +107,6 @@ class UxOffcanvasManager implements UxOffcanvasManagerInterface, RefinableCachea
     // in the render process.
     return [
       '#lazy_builder' => [static::class . '::lazyBuilder', []],
-    ];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public static function trustedCallbacks() {
-    return [
-      'lazyBuilder',
-      'lazyItemBuilder',
     ];
   }
 

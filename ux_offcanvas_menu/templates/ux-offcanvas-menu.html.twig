@@ -19,7 +19,7 @@
         set classes = [
           item.is_collapsed ? 'collapsed',
           item.in_active_trail ? 'active-trail',
-          item.below ? 'children'
+          item.below or item.has_children ? 'children'
         ]
       %}
       <li{{ item.attributes.addClass(classes) }}>

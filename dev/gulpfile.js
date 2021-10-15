@@ -83,7 +83,7 @@ gulp.task('js', function () {
       configFile: 'config/.eslintrc'
     }))
     .pipe(eslint.format())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(rename(function(path) {
       path.dirname = '../../' + path.dirname.replace('/dev/js', '/' + config.js.dest);
     }))

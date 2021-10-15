@@ -76,7 +76,8 @@
         _this.currentId = id;
         _this.$body.addClass('ux-offcanvas-active ux-offcanvas-' + instance.getPosition());
         instance.open();
-        _this.stopBodyScrolling(true);
+        // Not using as causes issues on mobile.
+        // _this.stopBodyScrolling(true);
         Drupal.Ux.blurContent();
         Drupal.Ux.showShadow(function (e) {
           _this.close();
@@ -190,7 +191,7 @@
       var _this = this;
       var position = _this.settings.position;
       var opposites = {left: 'right', right: 'left', top: 'bottom', bottom: 'top'};
-      var values = displace.offsets;
+      var values = jQuery.extend({}, displace.offsets);
       switch (position) {
         case 'top':
         case 'bottom':
@@ -206,14 +207,14 @@
     attach: function (context, settings) {
       if (settings.ux && settings.ux.offcanvas && settings.ux.offcanvas.items) {
         var $wrapper = $('#ux-offcanvas').once('ux-offcanvas');
-        var config;
         var $offcanvas;
         if ($wrapper.length) {
           for (var id in settings.ux.offcanvas.items) {
             if (settings.ux.offcanvas.items[id]) {
-              config = settings.ux.offcanvas.items[id];
-              $offcanvas = $('#ux-offcanvas-' + config.id, context);
-              UxOffcanvas.instances[id] = new UxOffcanvas($offcanvas, settings.ux.offcanvas.items[id]);
+              $offcanvas = $('#ux-offcanvas-' + id, context);
+              if ($offcanvas.length) {
+                UxOffcanvas.instances[id] = new UxOffcanvas($offcanvas, settings.ux.offcanvas.items[id]);
+              }
             }
           }
         }

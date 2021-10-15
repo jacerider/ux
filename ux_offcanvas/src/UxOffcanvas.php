@@ -4,7 +4,7 @@ namespace Drupal\ux_offcanvas;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
-// use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Template\Attribute;
 
 /**
  * Class UxOffcanvas.
@@ -36,6 +36,13 @@ class UxOffcanvas implements UxOffcanvasInterface, RefinableCacheableDependencyI
   protected $content = '';
 
   /**
+   * The Attribute object.
+   *
+   * @var \Drupal\Core\Template\Attribute
+   */
+  protected $attributes;
+
+  /**
    * The offcanvas options.
    *
    * @var array
@@ -57,13 +64,16 @@ class UxOffcanvas implements UxOffcanvasInterface, RefinableCacheableDependencyI
    *   The text of the trigger link.
    * @param mixed[] $content
    *   A render array to place within the offcanvas element.
+   * @param array $attributes
+   *   The attributes to add to the group wrapper.
    */
-  public function __construct($id, $trigger_text = NULL, $content = NULL) {
+  public function __construct($id, $trigger_text = NULL, array $content = NULL, array $attributes = []) {
     $this->id = $id;
     $this->options = $this->defaults;
     $this->options['id'] = $id;
     $this->setTriggerText($trigger_text);
     $this->setContent($content);
+    $this->attributes = new Attribute($attributes);
   }
 
   /**
@@ -86,13 +96,6 @@ class UxOffcanvas implements UxOffcanvasInterface, RefinableCacheableDependencyI
    */
   public function setContent($content) {
     $this->content = $content;
-    // kint($content);
-    if (is_array($content) && !empty($content['#cache'])) {
-      // dsm(CacheableMetadata::createFromRenderArray($content));
-      // CacheableMetadata::createFromRenderArray($build)
-      //   ->merge(CacheableMetadata::createFromRenderArray($content))
-      //   ->applyTo($build);
-    }
     return $this;
   }
 
@@ -194,6 +197,34 @@ class UxOffcanvas implements UxOffcanvasInterface, RefinableCacheableDependencyI
   }
 
   /**
+   * Adds classes or merges them on to array of existing CSS classes.
+   *
+   * @param string|array ...
+   *   CSS classes to add to the class attribute array.
+   *
+   * @return $this
+   */
+  public function addClass($classes) {
+    $this->attributes->addClass($classes);
+    return $this;
+  }
+
+  /**
+   * Sets values for an attribute key.
+   *
+   * @param string $attribute
+   *   Name of the attribute.
+   * @param string|array $value
+   *   Value(s) to set for the given attribute key.
+   *
+   * @return $this
+   */
+  public function setAttribute($attribute, $value) {
+    $this->attributes->setAttribute($attribute, $value);
+    return $this;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function toRenderableTrigger() {
@@ -217,7 +248,12 @@ class UxOffcanvas implements UxOffcanvasInterface, RefinableCacheableDependencyI
     $build = [
       '#theme' => 'ux_offcanvas_item',
       '#offcanvas' => $this,
+      '#attributes' => $this->attributes->toArray(),
       '#cache' => [
+        'keys' => [
+          'ux.offcanvas',
+          $this->id(),
+        ],
         'tags' => $this->getCacheTags(),
         'contexts' => $this->getCacheContexts(),
         'max-age' => $this->getCacheMaxAge(),

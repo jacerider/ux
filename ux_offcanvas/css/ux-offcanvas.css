@@ -1,5 +1,10 @@
 .ux-offcanvas-active {
   overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .ux-offcanvas {
@@ -18,6 +23,7 @@
   background: #f0f0f0;
   transition: all 300ms;
   overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .ux-offcanvas-item.active {
@@ -59,11 +65,11 @@
 .ux-offcanvas-item .ux-offcanvas-item-inner {
   position: absolute;
   top: 0;
-  right: -30px;
+  right: 0;
   bottom: 0;
   left: 0;
-  padding-right: 30px;
-  overflow-y: scroll;
+  overflow: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 

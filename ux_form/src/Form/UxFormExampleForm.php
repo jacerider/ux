@@ -188,12 +188,12 @@ class UxFormExampleForm extends FormBase {
       '#open' => FALSE,
     ];
 
-    // $element['select'] = [
-    //   '#type' => 'select',
-    //   '#title' => $this->t('Select'),
-    //   '#options' => ['One', 'Two', 'Three'],
-    //   '#empty_option' => '- None -',
-    // ];
+    $element['select'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select'),
+      '#options' => ['One', 'Two', 'Three'],
+      '#empty_option' => '- None -',
+    ];
 
     // $element['select2'] = [
     //   '#type' => 'select',

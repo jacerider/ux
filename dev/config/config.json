@@ -9,7 +9,6 @@
     "notify" : false
   },
   "css": {
-    "file" : "ux.scss",
     "dest": "css",
     "src": [
       "../ux*/dev/scss/**/*.scss"

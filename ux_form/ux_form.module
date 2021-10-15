@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Markup;
 
 /**
  * Implements hook_preprocess_select().
@@ -21,7 +20,7 @@ function ux_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 /**
  * Check if ux_form should be used.
  *
- * @return boolean
+ * @return bool
  *   Returns TRUE if ux_form should be used.
  */
 function ux_form_access() {
@@ -41,7 +40,7 @@ function ux_form_access() {
  * Implements hook_element_info_alter().
  */
 function ux_form_element_info_alter(&$type) {
-  $input_elements = ['textfield', 'textarea', 'number', 'tel', 'url', 'email', 'password', 'date'];
+  $input_elements = ['textfield', 'textarea', 'number', 'tel', 'url', 'email', 'password', 'date', 'search'];
   foreach ($input_elements as $input_element) {
     if (isset($type[$input_element])) {
       $type[$input_element]['#process'][] = 'ux_form_input_process';
@@ -141,10 +140,13 @@ function ux_form_checkbox_process(&$element, FormStateInterface $form_state, &$c
  */
 function ux_form_select_process(&$element, FormStateInterface $form_state, &$complete_form) {
   if (ux_form_access()) {
-    $element['#wrapper_attributes']['class'][] = 'ux-form-select';
-    $element['#attached']['library'][] = 'ux_form/ux_form.select';
-    if (isset($element['#multiple']) && $element['#multiple']) {
-      $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
+    // Make sure this is not a UX | Select as links.
+    if (!isset($element['#theme']) || $element['#theme'] != 'ux_select_as_links') {
+      $element['#wrapper_attributes']['class'][] = 'ux-form-select';
+      $element['#attached']['library'][] = 'ux_form/ux_form.select';
+      if (isset($element['#multiple']) && $element['#multiple']) {
+        $element['#attached']['library'][] = 'ux_form/ux_form.checkbox';
+      }
     }
   }
   return $element;

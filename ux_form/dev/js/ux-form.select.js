@@ -7,11 +7,18 @@
 
   function Plugin(element, options) {
     this.element = element;
-    this._name = pluginName;
-    this._defaults = $.fn.uxFormSelect.defaults;
-    this.options = $.extend({}, this._defaults, options);
-    this.uniqueId = Drupal.Ux.guid();
-    this.init();
+    this.$element = $(this.element);
+
+    if (this.isSupported()) {
+      this._name = pluginName;
+      this._defaults = $.fn.uxFormSelect.defaults;
+      this.options = $.extend({}, this._defaults, options);
+      this.uniqueId = Drupal.Ux.guid();
+      this.init();
+    }
+    else {
+      this.$element.addClass('invalid');
+    }
   }
 
   // Avoid Plugin.prototype conflicts
@@ -38,11 +45,10 @@
     Cache DOM nodes for performance.
      */
     buildCache: function () {
-      this.$element = $(this.element);
       this.$field = this.$element.find('select');
       this.$wrapper = $('<div class="ux-form-select-wrapper ux-form-input"></div>');
       this.$caret = $('<span class="ux-form-select-caret">&#9660;</span>');
-      this.$trigger = $('<input class="ux-form-input-item" readonly="true"></input>');
+      this.$trigger = $('<input class="ux-form-input-item" readonly="true" ' + ((this.$field.is(':disabled')) ? 'disabled' : '') + '></input>');
       this.$hidden = $('<input class="ux-form-select-hidden"></input>');
       this.$dropdown = $('<ul class="ux-form-select-dropdown"></ul>');
       this.multiple = (this.$field.attr('multiple')) ? true : false;
@@ -334,7 +340,7 @@
     },
 
     updateTrigger: function () {
-      this.$trigger.val(this.getSelectedOptions('text').join(', '));
+      this.$trigger.val(this.htmlDecode(this.getSelectedOptions('text').join(', ')));
     },
 
     updateSearch: function () {
@@ -407,7 +413,7 @@
         _this.$dropdown.focus();
       }, 50);
       _this.$hidden.attr('readonly', true);
-      // this.windowHideDropdown();
+      this.windowHideDropdown();
     },
 
     windowHideDropdown: function () {
@@ -428,13 +434,27 @@
       this.open = false;
       this.$dropdown.find('.search-input').val('');
       this.$element.removeClass('animate');
-      // $(document).off('.' + _this.uniqueId);
+      $(document).off('.' + _this.uniqueId);
       setTimeout(function () {
         if (_this.open === false) {
           _this.$element.removeClass('active');
         }
       }, 350);
       _this.$hidden.attr('readonly', false);
+    },
+
+    isSupported: function () {
+      if (window.navigator.appName === 'Microsoft Internet Explorer') {
+        return document.documentMode >= 8;
+      }
+      if (/iP(od|hone)/i.test(window.navigator.userAgent) || /IEMobile/i.test(window.navigator.userAgent) || /Windows Phone/i.test(window.navigator.userAgent) || /BlackBerry/i.test(window.navigator.userAgent) || /BB10/i.test(window.navigator.userAgent) || /Android.*Mobile/i.test(window.navigator.userAgent)) {
+        return false;
+      }
+      return true;
+    },
+
+    htmlDecode: function (value) {
+      return $('<div/>').html(value).text();
     }
 
   });

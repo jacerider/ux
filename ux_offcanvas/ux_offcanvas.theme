@@ -25,8 +25,9 @@ function template_preprocess_ux_offcanvas_trigger(&$variables) {
 function template_preprocess_ux_offcanvas_item(&$variables) {
   $offcanvas = $variables['offcanvas'];
   $variables['id'] = $offcanvas->id();
+  $variables['position'] = $offcanvas->getPosition();
   $variables['attributes']['id'] = 'ux-offcanvas-' . $variables['id'];
-  $variables['attributes']['class'][] = 'ux-offcanvas-item';
-  $variables['attributes']['class'][] = 'ux-offcanvas-' . $offcanvas->getPosition();
+  // $variables['attributes']['class'][] = 'ux-offcanvas-item';
+  // $variables['attributes']['class'][] = 'ux-offcanvas-' . $offcanvas->getPosition();
   $variables['content'] = $offcanvas->getContent();
 }
