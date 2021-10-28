@@ -499,6 +499,14 @@ class UxFilterEntityReference extends ManyToOne {
       $options[$settings_key]['view'] = $handler['views'][$this->options['handler_view']];
     }
 
+    // Support D9.
+    if ($this->options['type'] != self::AUTO_COMPLETE_TYPE) {
+      $options['sort'] = $options[$settings_key]['sort'];
+      if (isset($options[$settings_key]['target_bundles'])) {
+        $options['target_bundles'] = $options[$settings_key]['target_bundles'];
+      }
+    }
+
     return $options;
   }
 
