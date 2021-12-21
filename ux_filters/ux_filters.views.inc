@@ -33,7 +33,7 @@ function ux_filters_field_views_data_alter(array &$data, FieldStorageConfigInter
     // Adds a new filter type to entity reference fields that provides an entity
     // select or autocomplete field. Hopefully this will be provided by Drupal
     // core soon.
-    $entity_manager = \Drupal::entityManager();
+    $entity_manager = \Drupal::entityTypeManager();
     foreach ($data as $table_name => $table_data) {
       $entity_type_id = $field_storage->getTargetEntityTypeId();
       $entity_type = $entity_manager->getDefinition($entity_type_id);
@@ -55,7 +55,7 @@ function ux_filters_field_views_data_alter(array &$data, FieldStorageConfigInter
     }
   }
   if ($field_storage->getType() == 'daterange') {
-    $entity_manager = \Drupal::entityManager();
+    $entity_manager = \Drupal::entityTypeManager();
     foreach ($data as $table_name => $table_data) {
       $entity_type_id = $field_storage->getTargetEntityTypeId();
       $entity_type = $entity_manager->getDefinition($entity_type_id);
