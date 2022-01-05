@@ -14,6 +14,11 @@ use Drupal\views\FieldAPIHandlerTrait;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\ViewExecutable;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
+use Drupal\Console\Core\Utils\NestedArray;
+use Drupal\Core\Entity\ContentEntityType;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Filter handler which allows to search on multiple fields.
@@ -74,6 +79,11 @@ class UxFilterEntityReference extends ManyToOne {
    */
   protected $entityFieldManager;
 
+  /**
+   * The bundle info.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
   protected $entityBundleInfo;
 
   /**
@@ -122,7 +132,8 @@ class UxFilterEntityReference extends ManyToOne {
 
     // We add the option to configure the ones possible for filtering only if
     // there is an entity bundle type of the referenced entity.
-    if ($bundleType = $entityType->getBundleEntityType()) {
+    $bundleType = $entityType->getBundleEntityType() ?: $entityType->id();
+    if ($bundleType) {
       $bundles = $this->entityBundleInfo->getBundleInfo($entityType->id());
 
       $bundle_options = [];
@@ -130,14 +141,86 @@ class UxFilterEntityReference extends ManyToOne {
         $bundle_options[$bundle] = $bundles[$bundle]['label'];
       }
 
+      if (!$bundleType) {
+        $bundle_options[$entityType->id()] = $entityType->getLabel();
+      }
+
+      $fields = [];
+      if ($entityType->entityClassImplements(FieldableEntityInterface::class)) {
+        foreach (array_keys($bundle_options) as $bundle) {
+          $bundle_fields = array_filter($this->entityFieldManager->getFieldDefinitions($entityType->id(), $bundle), function ($field_definition) {
+            return !$field_definition->isComputed();
+          });
+          foreach ($bundle_fields as $field_name => $field_definition) {
+            /* @var \Drupal\Core\Field\FieldDefinitionInterface $field_definition */
+            $columns = $field_definition->getFieldStorageDefinition()->getColumns();
+            // If there is more than one column, display them all, otherwise just
+            // display the field label.
+            // @todo: Use property labels instead of the column name.
+            if (count($columns) > 1) {
+              foreach ($columns as $column_name => $column_info) {
+                $fields[$field_name . '.' . $column_name] = $this->t('@label (@column)', ['@label' => $field_definition->getLabel(), '@column' => $column_name]);
+              }
+            }
+            else {
+              $fields[$field_name] = $this->t('@label', ['@label' => $field_definition->getLabel()]);
+            }
+          }
+        }
+      }
+
       $form['target_bundles'] = [
         '#type' => 'checkboxes',
         '#title' => $this->t('@bundle targets', ['@bundle' => $this->entityTypeManger->getDefinition($bundleType)->getLabel()]),
         '#options' => $bundle_options,
         '#default_value' => $this->options['target_bundles'],
+        '#access' => $entityType instanceof ContentEntityType,
       ];
 
-      $form['target_bundles']['#states'] = [
+      $form['sort'] = [
+        '#type' => 'container',
+        '#id' => 'ux-filter-entity-reference-sort',
+      ];
+
+      $sort_field = NestedArray::getValue($form_state->getUserInput(), [
+        'options',
+        'sort',
+        'field',
+      ]) ?: $this->options['sort']['field'];
+      $form['sort']['field'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Sort by'),
+        '#options' => [
+          '_none' => $this->t('- None -'),
+        ] + $fields,
+        '#ajax' => [
+          'callback' => [get_class($this), 'sortAjax'],
+          'wrapper' => 'ux-filter-entity-reference-sort',
+        ],
+        '#limit_validation_errors' => [],
+        '#default_value' => $this->options['sort']['field'],
+      ];
+
+      $form['sort']['settings'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['entity_reference-settings']],
+        '#process' => [[EntityReferenceItem::class, 'formProcessMergeParent']],
+      ];
+
+      if ($sort_field != '_none') {
+        $form['sort']['settings']['direction'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Sort direction'),
+          '#required' => TRUE,
+          '#options' => [
+            'ASC' => $this->t('Ascending'),
+            'DESC' => $this->t('Descending'),
+          ],
+          '#default_value' => $this->options['sort']['direction'],
+        ];
+      }
+
+      $form['target_bundles']['#states'] = $form['sort']['#states'] = [
         'visible' => [
           ':input[name="options[value_selection_type]"]' => ['value' => static::BUNDLE_SELECTION_TYPE],
         ],
@@ -178,6 +261,13 @@ class UxFilterEntityReference extends ManyToOne {
         self::AUTO_COMPLETE_TYPE => $this->t('Autocomplete'),
       ],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function sortAjax($form, FormStateInterface $form_state) {
+    return NestedArray::getValue($form, array_slice($form_state->getTriggeringElement()['#array_parents'], 0, -1));
   }
 
   /**
@@ -305,7 +395,8 @@ class UxFilterEntityReference extends ManyToOne {
    *   The options.
    */
   protected function buildReferenceEntityOptions() {
-    $entities = $this->selectionPluginManager->getInstance($this->getHandlerOptions())->getReferenceableEntities();
+    $options = $this->getHandlerOptions();
+    $entities = $this->selectionPluginManager->getInstance($options)->getReferenceableEntities();
     $options = [];
 
     foreach ($entities as $bundle) {
@@ -415,7 +506,12 @@ class UxFilterEntityReference extends ManyToOne {
     $options = parent::defineOptions();
 
     $options['type'] = ['default' => self::AUTO_COMPLETE_TYPE];
-    $options['sort'] = ['default' => []];
+    $options['sort'] = [
+      'default' => [
+        'field' => '_none',
+        'direction' => 'ASC',
+      ],
+    ];
 
     $handler = $this->collectFieldsReferenceHandlers();
     $options['value_selection_type'] = ['default' => empty($handler['bundles']) ? static::VIEW_SELECTION_TYPE : static::BUNDLE_SELECTION_TYPE];
@@ -499,13 +595,8 @@ class UxFilterEntityReference extends ManyToOne {
       $options[$settings_key]['view'] = $handler['views'][$this->options['handler_view']];
     }
 
-    // Support D9.
-    if ($this->options['type'] != self::AUTO_COMPLETE_TYPE) {
-      $options['sort'] = $options[$settings_key]['sort'];
-      if (isset($options[$settings_key]['target_bundles'])) {
-        $options['target_bundles'] = $options[$settings_key]['target_bundles'];
-      }
-    }
+    // Drupal 9 support. Expects settings at root.
+    $options += $options[$settings_key];
 
     return $options;
   }
@@ -560,6 +651,13 @@ class UxFilterEntityReference extends ManyToOne {
         ]);
 
         $view_selection_handlers[$id] = $view_settings;
+      }
+      elseif ($field instanceof BaseFieldDefinition) {
+        $bundles = $this->entityBundleInfo->getBundleInfo($field->getSetting('target_type'));
+        $referenced_bundles = [];
+        foreach ($bundles as $key => $bundle) {
+          $referenced_bundles[$key] = $key;
+        }
       }
     }
 
