@@ -38,7 +38,7 @@ class Container extends UxFormBase {
     if (!$this->hasVisibleChildren($element)) {
       $element['#ux_form_attributes']['class'][] = 'ux-form-container-hide';
     }
-    if (count($children) || !empty($element['#ux_wrapper_supported'])) {
+    if (count($children) || !empty($element['#ux_wrapper_supported']) || isset($element['#group'])) {
       parent::process($element);
     }
   }
