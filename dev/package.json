@@ -9,7 +9,7 @@
     "browser-sync": "^2.23.6",
     "extend": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-eslint": "^3.0.1",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
