@@ -3,7 +3,7 @@
   .ux-form-radios {
 
     .fieldset-wrapper > * {
-      margin-top: $global-margin / 4;
+      margin-top: $global-margin * 0.25;
     }
   }
 }
@@ -20,8 +20,8 @@
 
   .ux-ripple {
     position: absolute;
-    top: (($radio-element-size / 2) * -1) + ($radio-size - $radio-element-size) / 2;
-    left: ($radio-element-size / 2) * -1;
+    top: (($radio-element-size * 0.5) * -1) + ($radio-size - $radio-element-size) * 0.5;
+    left: ($radio-element-size * 0.5) * -1;
     width: $radio-element-size * 2;
     height: $radio-element-size * 2;
   }
@@ -45,7 +45,7 @@
         content: '';
         position: absolute;
         left: 0;
-        top: ($radio-size - $radio-element-size) / 2;
+        top: ($radio-size - $radio-element-size) * 0.5;
         width: $radio-element-size;
         height: $radio-element-size;
         z-index: 2;
@@ -62,7 +62,7 @@
     }
 
     &:active .ux-ripple {
-      @include ux-ripple-active();
+      @include ux-ripple-active;
     }
   }
 
@@ -99,7 +99,7 @@
     label {
 
       .ux-ripple {
-        @include ux-ripple-focus();
+        @include ux-ripple-focus;
       }
     }
   }
@@ -147,6 +147,6 @@
 
   .ux-form-radio {
     display: inline-block;
-    padding-right: $global-padding / 2;
+    padding-right: $global-padding * 0.5;
   }
 }

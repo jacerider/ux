@@ -1,3 +1,4 @@
+/* stylelint-disable color-no-hex */
 @import '../../../../dev/scss/util/util';
 
 $white: #fff !default;
@@ -11,7 +12,7 @@ $error-color: #e54040 !default;
 /// Wrapper
 ////////////////////////////////////////////////////////////////////////////////
 $wrapper-bg-color: gray(90) !default;
-$wrapper-bg-2-color: gray(86) !default;
+$wrapper-bg-2-color: gray(86) !default; /* stylelint-disable-line scss/dollar-variable-pattern */
 $wrapper-box-shadow: 0 1px 5px shadow(10) !default;
 $wrapper-title-color: gray(10) !default;
 $wrapper-description-color: gray(10) !default;
@@ -75,7 +76,7 @@ $select-selected-bg-color: $primary-color !default;
 $select-selected-color: gray(100) !default;
 $select-hover-bg-color: shadow(8) !default;
 $select-close-color: gray(70) !default;
-$select-close-shadow: 0px -2px 6px -3px shadow(80) !default;
+$select-close-shadow: 0 -2px 6px -3px shadow(80) !default;
 $select-close-hover-color: gray(10) !default;
 $select-caret-color: gray(70) !default;
 $select-box-shadow: 0 1px 5px shadow(70) !default;

@@ -31,7 +31,7 @@ class UxDialogRenderer extends DialogRenderer {
    *   The renderer.
    */
   public function __construct(TitleResolverInterface $title_resolver, RendererInterface $renderer) {
-    parent::__construct($title_resolver, $renderer);
+    parent::__construct($title_resolver);
     $this->renderer = $renderer;
   }
 

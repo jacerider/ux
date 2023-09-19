@@ -1,9 +1,11 @@
+@use 'sass:math';
+
 .ux-form-element-type-checkboxes {
 
   .ux-form-checkboxes {
 
     .fieldset-wrapper > * {
-      margin-top: $global-margin / 4;
+      margin-top: $global-margin * 0.25;
     }
   }
 }
@@ -20,8 +22,8 @@
 
   .ux-ripple {
     position: absolute;
-    top: (($checkbox-element-size / 2) * -1) + ($checkbox-size - $checkbox-element-size) / 2;
-    left: ($checkbox-element-size / 2) * -1;
+    top: (($checkbox-element-size * 0.5) * -1) + ($checkbox-size - $checkbox-element-size) * 0.5;
+    left: ($checkbox-element-size * 0.5) * -1;
     width: $checkbox-element-size * 2;
     height: $checkbox-element-size * 2;
   }
@@ -45,7 +47,7 @@
         content: '';
         position: absolute;
         left: 0;
-        top: ($checkbox-size - $checkbox-element-size) / 2;
+        top: ($checkbox-size - $checkbox-element-size) * 0.5;
         width: $checkbox-element-size;
         height: $checkbox-element-size;
         z-index: 2;
@@ -58,10 +60,10 @@
       }
 
       &:after {
-        top: $checkbox-element-size / 7;
+        top: math.div($checkbox-element-size, 7);
         left: 0;
-        width: $checkbox-element-size / 2.5;
-        height: $checkbox-element-size / 1.2;
+        width: math.div($checkbox-element-size, 2.5);
+        height: math.div($checkbox-element-size, 1.2);
         border-top: 2px solid transparent;
         border-left: 2px solid transparent;
         border-right: 2px solid transparent;
@@ -76,7 +78,7 @@
     &:active {
 
       .ux-ripple {
-        @include ux-ripple-active();
+        @include ux-ripple-active;
       }
     }
   }
@@ -114,7 +116,7 @@
     label {
 
       .ux-ripple {
-        @include ux-ripple-focus();
+        @include ux-ripple-focus;
 
         &:after {
           border-radius: 3px;
@@ -167,6 +169,6 @@
 
   .ux-form-checkbox {
     display: inline-block;
-    padding-right: $global-padding / 2;
+    padding-right: $global-padding * 0.5;
   }
 }

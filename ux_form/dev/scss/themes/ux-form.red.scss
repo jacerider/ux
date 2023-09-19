@@ -1,7 +1,8 @@
+/* stylelint-disable color-no-hex */
 @import '../../../../dev/scss/util/util';
 
 $global-padding: rem-calc(30);
-$input-padding: 0 $global-padding / 2;
+$input-padding: 0 $global-padding * 0.5;
 $input-border: 1px solid gray(12);
 $input-border-bottom: none;
 $input-bg-color: gray(5);

@@ -32,26 +32,11 @@
   transition: margin-top 0.3s ease, height 0.3s ease, max-width 0.3s ease;
 
   &.isTall {
-    height: 100% !important;
-
-    // .uxAside-flex {
-    //   display: flex;
-    //   flex-direction: column;
-    //   position: absolute;
-    //   top: 0;
-    //   right: 0;
-    //   bottom: 0;
-    //   left: 0;
-    // }
-
-    // .uxAside-wrap {
-    //   flex: 1 1;
-    //   height: auto !important;
-    // }
+    height: 100% !important; /* stylelint-disable-line declaration-no-important */
   }
 
   &.isFullscreen {
-    height: 100% !important;
+    height: 100% !important; /* stylelint-disable-line declaration-no-important */
   }
 
   &.isAttachedTop {
@@ -109,7 +94,7 @@
     .uxAside-header > *,
     .uxAside-iframe,
     .uxAside-wrap {
-      animation: none !important;
+      animation: none !important; /* stylelint-disable-line declaration-no-important */
     }
   }
 }

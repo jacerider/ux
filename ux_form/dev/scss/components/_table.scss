@@ -1,36 +1,6 @@
-// .ux-form-table {
-
-//   thead {
-
-//     .field-label h4 {
-//       @include wrapper-label;
-//     }
-//   }
-
-//   .field-add-more-submit {
-//     margin-top: $global-margin;
-//   }
-// }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Specific table elements
-////////////////////////////////////////////////////////////////////////////////
-.ux-form {
-
-  .field-add-more-submit {
-    margin-top: 0 !important;
-  }
-
-  table {
-
-    .ux-form-element {
-      margin: 0;
-    }
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Generic table elements
 ////////////////////////////////////////////////////////////////////////////////
 .ux-form {
 
@@ -60,6 +30,17 @@
         height: rem-calc(30);
         background-position: center center;
       }
+    }
+  }
+
+  .field-add-more-submit {
+    margin-top: 0 !important; /* stylelint-disable-line declaration-no-important */
+  }
+
+  table {
+
+    .ux-form-element {
+      margin: 0;
     }
   }
 }
