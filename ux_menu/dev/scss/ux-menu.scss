@@ -1,10 +1,11 @@
-$white: #fff;
+$white: #fff; /* stylelint-disable-line color-no-hex */
 $white-o: rgba($white, 0.6);
 
 .uxMenu-menu {
   position: relative;
 
-  [class^='animate-'], [class*=' animate-'] {
+  [class^='animate-'],
+  [class*=' animate-'] {
     visibility: visible;
   }
 }
@@ -167,6 +168,7 @@ $white-o: rgba($white, 0.6);
 }
 
 @keyframes fadeIn {
+
   from {
     opacity: 0;
   }
@@ -177,6 +179,7 @@ $white-o: rgba($white, 0.6);
 }
 
 @keyframes fadeOut {
+
   from {
     opacity: 1;
   }
@@ -187,6 +190,7 @@ $white-o: rgba($white, 0.6);
 }
 
 @keyframes outToRight {
+
   to {
     opacity: 0;
     transform: translate3d(100%, 0, 0);
@@ -194,6 +198,7 @@ $white-o: rgba($white, 0.6);
 }
 
 @keyframes outToLeft {
+
   to {
     opacity: 0;
     transform: translate3d(-100%, 0, 0);
@@ -201,6 +206,7 @@ $white-o: rgba($white, 0.6);
 }
 
 @keyframes inFromLeft {
+
   from {
     opacity: 0;
     transform: translate3d(-100%, 0, 0);
@@ -213,6 +219,7 @@ $white-o: rgba($white, 0.6);
 }
 
 @keyframes inFromRight {
+
   from {
     opacity: 0;
     transform: translate3d(100%, 0, 0);

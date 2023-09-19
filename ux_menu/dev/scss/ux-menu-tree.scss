@@ -6,7 +6,8 @@
     position: relative;
   }
 
-  ol, ul {
+  ol,
+  ul {
     display: none;
   }
 
@@ -29,7 +30,8 @@
 
       > {
 
-        ol, ul {
+        ol,
+        ul {
           cursor: default;
           display: block;
         }

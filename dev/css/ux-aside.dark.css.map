@@ -1,0 +1,1 @@
+{"version":3,"sources":["ux_aside/dev/scss/themes/ux-aside.dark.scss"],"names":[],"mappings":"AAIA,qBACE,kBAHM","file":"ux-aside.dark.css","sourcesContent":["/* stylelint-disable color-no-hex */\n$white: #fff;\n$black: #1c1d22;\n\n.uxAside--theme-dark {\n  background: $black;\n}\n"]}

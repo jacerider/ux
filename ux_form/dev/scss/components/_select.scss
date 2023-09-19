@@ -8,7 +8,7 @@
     border: 0;
     border-bottom: 1px solid transparent;
 
-    &.browser-default{
+    &.browser-default {
       display: block;
     }
   }
@@ -92,7 +92,7 @@
 
       > span {
         display: block;
-        padding: 0 $global-padding / 2;
+        padding: 0 $global-padding * 0.5;
 
         > label {
           font-size: $select-font-size;
@@ -130,8 +130,8 @@
 
       input {
         cursor: text;
-        padding-left: $global-padding / 2;
-        padding-right: $global-padding / 2;
+        padding-left: $global-padding * 0.5;
+        padding-right: $global-padding * 0.5;
         width: 100%;
         font-size: $select-font-size;
       }

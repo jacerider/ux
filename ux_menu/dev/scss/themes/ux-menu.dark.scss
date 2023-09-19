@@ -1,4 +1,4 @@
-
+/* stylelint-disable color-no-hex */
 $white: #fff;
 $black: #1c1d22;
 $global-padding: 30px;
@@ -26,7 +26,7 @@ $global-padding: 30px;
 
   .uxMenu-breadcrumbs,
   .uxMenu-back {
-    padding: $global-padding / 2;
+    padding: $global-padding * 0.5;
   }
 
   .uxMenu-item {
@@ -41,7 +41,7 @@ $global-padding: 30px;
   }
 
   .uxMenu-link {
-    padding: $global-padding / 2;
+    padding: $global-padding * 0.5;
     font-weight: 600;
     transition: background 300ms;
 

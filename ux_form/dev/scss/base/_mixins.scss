@@ -35,7 +35,7 @@
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
   z-index: 10;
-  margin: $global-margin / 2 0;
+  margin: $global-margin * 0.5 0;
 }
 
 @mixin description() {
@@ -47,7 +47,7 @@
 @mixin placeholder() {
   font-style: italic;
   font-weight: 500;
-  opacity: 1 !important;
+  opacity: 1 !important; /* stylelint-disable-line declaration-no-important */
 }
 
 @mixin wrapper-label() {

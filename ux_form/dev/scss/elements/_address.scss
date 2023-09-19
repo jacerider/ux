@@ -40,7 +40,7 @@
       flex-shrink: 1;
       flex-basis: 25%;
       margin: 0;
-      padding: 0 $global-padding / 2;
+      padding: 0 $global-padding * 0.5;
 
       &:first-child {
         flex-basis: 50%;

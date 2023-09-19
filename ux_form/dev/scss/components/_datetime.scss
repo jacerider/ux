@@ -22,7 +22,7 @@
   .ux-form-date,
   .ux-form-time {
     display: inline-block;
-    padding-right: $global-padding / 2;
+    padding-right: $global-padding * 0.5;
   }
 }
 

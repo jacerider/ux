@@ -1,3 +1,4 @@
+/* stylelint-disable color-no-hex */
 @import '../../../../dev/scss/util/util';
 
 $white: #fff !default;
@@ -11,7 +12,7 @@ $error-color: #e54040 !default;
 /// Wrapper
 ////////////////////////////////////////////////////////////////////////////////
 $wrapper-bg-color: gray(0) !default;
-$wrapper-bg-2-color: gray(0) !default;
+$wrapper-bg-2-color: gray(0) !default; /* stylelint-disable-line scss/dollar-variable-pattern */
 $wrapper-box-shadow: 0 1px 5px shadow(15) !default;
 $wrapper-title-color: gray(90) !default;
 $wrapper-description-color: gray(90) !default;

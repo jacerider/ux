@@ -8,7 +8,7 @@
       tr {
 
         td {
-          border-top: 1px solid red;
+          border-top: 1px solid red; /* stylelint-disable-line color-named */
           padding-top: $global-padding;
           padding-bottom: $global-padding;
         }
@@ -42,7 +42,7 @@
 
           td {
             padding-top: 0;
-            border-top: 0 !important;
+            border-top: 0 !important; /* stylelint-disable-line declaration-no-important */
           }
 
           .fieldception-group {
@@ -50,7 +50,7 @@
             // The first row and the first group in that row.
             &:first-child {
               border-top: 0;
-              margin-top: $global-margin / 2;
+              margin-top: $global-margin * 0.5;
               padding-top: 0;
             }
           }

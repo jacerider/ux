@@ -1,8 +1,8 @@
-
+/* stylelint-disable selector-pseudo-class-no-unknown */
 .ux-form-element {
 
   .entity-meta {
-    border: 1px solid red;
+    border: 1px solid red; /* stylelint-disable-line color-named */
 
     .ux-form-element {
       margin: 0;
@@ -26,7 +26,7 @@
       }
 
       &:open {
-        background-image: none !important;
+        background-image: none !important; /* stylelint-disable-line declaration-no-important */
       }
     }
   }

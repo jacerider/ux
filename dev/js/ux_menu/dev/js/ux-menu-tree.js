@@ -1,0 +1,1 @@
+"use strict";!function(t,e){e.behaviors.uxMenuTree={_defaults:{},attach:function(e,u){t(".uxMenuTree:visible > .menu",e).uxMenuTree({animation:!0})},detach:function(e,u,n){"unload"===n&&t(e).find(".uxMenuTree").each(function(){var e=t(this).data("uxMenuTree");e&&e.destroy()})}}}(jQuery,Drupal,drupalSettings);

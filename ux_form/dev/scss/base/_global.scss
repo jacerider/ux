@@ -131,55 +131,13 @@
     }
 
     .fieldset-wrapper {
-      display: flex !important;
+      display: flex !important; /* stylelint-disable-line declaration-no-important */
       flex-flow: row nowrap;
 
       .ux-form-container {
-        flex: auto !important;
+        flex: auto !important; /* stylelint-disable-line declaration-no-important */
         width: 100%;
       }
     }
   }
-
-  // div {
-  //   display: block;
-  // }
-
-  // input {
-  //   width: 100%;
-  // }
-
-  // > div {
-  //   flex: auto !important;
-  //   width: 100%;
-
-  //   .ux-form-input-item {
-  //     width: 100%;
-  //   }
-  // }
 }
-
-// .ux-form-element-inner {
-//   background: transparent !important;
-// }
-
-// .ux-form-widget {
-//   background: pink !important;
-// }
-
-// .ux-form-element {
-//   background: pink !important;
-//   padding: 20px !important;
-
-//   .ux-form-element {
-//     background: red !important;
-
-//     .ux-form-element {
-//       background: blue !important;
-
-//       .ux-form-element {
-//         background: green !important;
-//       }
-//     }
-//   }
-// }
