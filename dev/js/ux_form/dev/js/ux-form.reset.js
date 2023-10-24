@@ -1,1 +1,0 @@
-"use strict";!function(e){Drupal.behaviors.uxFormReset={attach:function(t){e(window).once("ux-form-reset").on("pageshow",function(){e("form.ux-form :input[data-ux-form-reset]").each(function(){e(this).data("ux-form-reset")!==e(this).val()&&e(this).val(e(this).data("ux-form-reset")).trigger("change")})})}}}(jQuery);
