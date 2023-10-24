@@ -13,10 +13,11 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
+const rename = require('gulp-rename');
 let ddevStatus = false;
 let watchStatus = false;
 let drupalInfo;
-let url = process.env.DDEV_HOSTNAME || null;
+let url = process.env.DDEV_PROJECT + '.' + process.env.DDEV_TLD || null;
 let drushCommand = 'drush';
 let root = gutil.env.root;
 let gulpStylelint = require('gulp-stylelint');
@@ -54,7 +55,10 @@ function js(cb) {
         presets: ['@babel/preset-env']
     }))
     .pipe(uglify())
-    .pipe(gulp.dest(config.js.dest))
+    .pipe(rename(function(path) {
+      path.dirname = path.dirname.replace('/dev/js', '/' + config.js.dest);
+    }))
+    .pipe(gulp.dest('../'))
     .pipe(watchStatus ? browserSync.stream() : gutil.noop());
 }
 
@@ -71,7 +75,10 @@ function css(cb) {
       cascade: false
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(config.css.dest))
+    .pipe(rename(function(path) {
+      path.dirname = path.dirname.replace('/dev/scss', '/' + config.css.dest);
+    }))
+    .pipe(gulp.dest('../'))
     .pipe(watchStatus ? browserSync.stream() : gutil.noop())
     .on('finish', function () {
       return gulp
@@ -108,14 +115,14 @@ function enableWatch(cb) {
 
 function watch(cb) {
   if (watchStatus) {
-    browserSync.init({
-      ui: false,
-      proxy: config.browserSync.proxy,
-      port: config.browserSync.port,
-      open: config.browserSync.openAutomatically,
-      notify: config.browserSync.notify,
-      listen: url,
-    });
+    // browserSync.init({
+    //   ui: false,
+    //   proxy: config.browserSync.proxy,
+    //   port: config.browserSync.port,
+    //   open: config.browserSync.openAutomatically,
+    //   notify: config.browserSync.notify,
+    //   listen: url,
+    // });
     gulp.watch(config.css.src, css);
     gulp.watch(config.js.src, js);
   }

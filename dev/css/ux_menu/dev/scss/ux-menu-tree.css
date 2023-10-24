@@ -1,2 +1,0 @@
-.ux-menu-tree-list li{display:block;list-style:none;position:relative}.ux-menu-tree-list ol,.ux-menu-tree-list ul{display:none}.ux-menu-tree-list .ux-menu-tree-item{cursor:pointer}.ux-menu-tree-list .ux-menu-tree-item:before{content:"▶";display:inline-block;font-size:.8em;padding-right:5px;width:14px}.ux-menu-tree-list .ux-menu-tree-item.ux-menu-tree-expanded:before{content:"▼"}.ux-menu-tree-list .ux-menu-tree-item.ux-menu-tree-expanded>ol,.ux-menu-tree-list .ux-menu-tree-item.ux-menu-tree-expanded>ul{cursor:default;display:block}
-/*# sourceMappingURL=ux-menu-tree.css.map */

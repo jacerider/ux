@@ -1,1 +1,0 @@
-"use strict";!function(a){Drupal.AjaxCommands.prototype.uxAsideOpen=function(e,t,d){var i=a("<div></div>").html(t.data),i=(t.data=i.find(".uxAside")[0].outerHTML,a.extend({},t,{selector:"#ux-asides",method:"append"}));this.insert(e,i,d)}}(jQuery);

@@ -509,8 +509,8 @@
     // theme
     theme: '',
     relocateNav: '',
-     // callback: item that doesn´t have a submenu gets clicked -
-     // onItemClick([event], [inner HTML of the clicked item])
+    // callback: item that doesn´t have a submenu gets clicked -
+    // onItemClick([event], [inner HTML of the clicked item])
     onItemClick: null
   };
 

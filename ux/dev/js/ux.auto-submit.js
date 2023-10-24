@@ -76,7 +76,7 @@
         40, // down arrow
         9, // tab
         13, // enter
-        27  // esc
+        27 // esc
       ];
       // Don't wait for change event on textfields.
       $('[data-ux-auto-submit-full-form] input:text, input:text[data-ux-auto-submit]', context)

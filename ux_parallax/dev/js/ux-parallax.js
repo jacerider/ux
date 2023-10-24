@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /**
  * @file
  * Global ux_offcanvas javascript.

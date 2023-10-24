@@ -1,1 +1,1 @@
-!function(e,t){"use strict";t.AjaxCommands.prototype.uxAsideOpen=function(t,d,a){var i=e("<div></div>").html(d.data);d.data=i.find(".uxAside")[0].outerHTML;var n=e.extend({},d,{selector:"#ux-asides",method:"append"});this.insert(t,n,a)}}(jQuery,Drupal);
+"use strict";!function(a){Drupal.AjaxCommands.prototype.uxAsideOpen=function(e,t,d){var i=a("<div></div>").html(t.data),i=(t.data=i.find(".uxAside")[0].outerHTML,a.extend({},t,{selector:"#ux-asides",method:"append"}));this.insert(e,i,d)}}(jQuery);
