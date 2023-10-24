@@ -127,8 +127,7 @@
         // We blur as soon as the focus happens to avoid the cursor showing
         // momentarily within the field.
         $(this).blur();
-      })
-      .on('tap' + '.' + _this._name, function (e) {
+      }).on('tap' + '.' + _this._name, function (e) {
         if (_this.isSupported) {
           _this.populateDropdown.call(_this);
           _this.showDropdown.call(_this);
@@ -235,7 +234,6 @@
       if (!this.open) {
         // TAB - switch to another input.
         if (e.which === 9) {
-          // alert('hit');
           return;
         }
 
@@ -593,7 +591,6 @@
       setTimeout(function () {
         if (_this.open === false) {
           _this.$element.removeClass('active');
-          // _this.$hidden.focus();
         }
       }, 350);
       if (focus) {
@@ -601,7 +598,6 @@
           _this.$hidden.trigger('focus', [1]);
         });
       }
-      // _this.$trigger.blur();
     },
 
     /*
@@ -626,7 +622,7 @@
       if (this.isIE()) {
         return document.documentMode >= 8;
       }
-      if (/iP(od|hone)/i.test(window.navigator.userAgent) || /IEMobile/i.test(window.navigator.userAgent) || /Windows Phone/i.test(window.navigator.userAgent) || /BlackBerry/i.test(window.navigator.userAgent) || /BB10/i.test(window.navigator.userAgent)) {
+      if (/IEMobile/i.test(window.navigator.userAgent) || /Windows Phone/i.test(window.navigator.userAgent) || /BlackBerry/i.test(window.navigator.userAgent) || /BB10/i.test(window.navigator.userAgent)) {
         return false;
       }
       return true;
@@ -666,17 +662,6 @@
     attach: function (context) {
       $(context).find('.ux-form-select').once('ux-form-select').uxFormSelect();
     }
-    // @see https://www.drupal.org/node/2692453
-    // detach: function (context, setting, trigger) {
-    //   if (trigger === 'unload') {
-    //     $(context).find('.ux-form-select').each(function () {
-    //       var plugin = $(this).data('uxFormSelect');
-    //       if (plugin) {
-    //         plugin.destroy();
-    //       }
-    //     });
-    //   }
-    // }
   };
 
 })(jQuery, Drupal, window, document);

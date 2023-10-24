@@ -1,1 +1,1 @@
-!function(t,u){"use strict";u.behaviors.uxButton={attach:function(u){t(".ux-button-trigger",u).once("ux-button").on("click",function(u){u.preventDefault(),t(this).closest(".ux-button").find('input[type="submit"]').trigger("mousedown").trigger("mouseup").trigger("click")})}}}(jQuery,Drupal);
+"use strict";!function(u){Drupal.behaviors.uxButton={attach:function(t){u(".ux-button-trigger",t).once("ux-button").on("click",function(t){t.preventDefault(),u(this).closest(".ux-button").find('input[type="submit"]').trigger("mousedown").trigger("mouseup").trigger("click")})}}}(jQuery);
