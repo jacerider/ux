@@ -1,7 +1,7 @@
 name: UX | Aside Video
 type: module
 description: Provides video embed field aside functionality and formatters.
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: User Experience
 dependencies:
   - ux

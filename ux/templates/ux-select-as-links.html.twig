@@ -10,7 +10,7 @@
  * @see template_preprocess_select()
  */
 #}
-{% spaceless %}
+{% apply spaceless %}
   <div class="ux-select-as-links" data-ux-id="{{ name }}">
     <select{{ attributes }}>
       {% for option in options %}
@@ -33,4 +33,4 @@
       {% endfor %}
     </div>
   </div>
-{% endspaceless %}
+{% endapply %}

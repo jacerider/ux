@@ -109,7 +109,7 @@ function ux_form_element_process(&$element) {
   }
   $type = $element['#type'];
   foreach ($plugins = $ux_form_plugin_manager->getPluginsByType($type) as $id => $name) {
-    $instance = $ux_form_plugin_manager->createInstance($id, ux_form_get_config());
+    $instance = $ux_form_plugin_manager->createInstance($id, []);
     if ($instance->applies($element)) {
       $instance->process($element);
     }
@@ -161,7 +161,7 @@ function ux_form_get_config() {
   if (!isset($theme_config)) {
     $active_theme = \Drupal::theme()->getActiveTheme()->getName();
     $config = \Drupal::config('ux_form.settings')->get('themes');
-    $theme_config = isset($config[$active_theme]) ? $config[$active_theme] : NULL;
+    $theme_config = isset($config[$active_theme]) && !empty($config[$active_theme]) ? $config[$active_theme] : NULL;
   }
   return $theme_config;
 }

@@ -89,7 +89,7 @@ abstract class UxOptionsBase implements UxOptionsInterface {
    */
   public function getDefaults($process = FALSE) {
     if (!isset($this->defaults)) {
-      $file = drupal_get_path('module', $this->moduleId) . '/config/install/' . $this->configName . '.yml';
+      $file = \Drupal::service('extension.list.module')->getPath($this->moduleId) . '/config/install/' . $this->configName . '.yml';
       $options = Yaml::decode(file_get_contents($file));
       $this->defaults = isset($options['options']) ? $options['options'] : [];
     }

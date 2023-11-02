@@ -1,7 +1,7 @@
 name: UX | Filters
 type: module
 description: Provides advanced options for exposed Views widgets.
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: User Experience
 dependencies:
   - ux

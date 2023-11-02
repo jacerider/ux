@@ -1,7 +1,7 @@
 name: UX | Parallax
 type: module
 description: Provides a parallax API.
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: User Experience
 dependencies:
   - ux

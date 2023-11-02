@@ -46,7 +46,7 @@ class Input extends UxFormBase {
     if (!empty($element['#field_suffix'])) {
       $element['#wrapper_attributes']['class'][] = 'has-suffix';
     }
-    if ($this->getConfiguration()['float'] && $this->floatSupported) {
+    if (!empty($this->getConfiguration()['float']) && $this->floatSupported) {
       $element['#ux_form_attributes']['class'][] = 'ux-form-element-float';
     }
   }
