@@ -5,6 +5,7 @@ namespace Drupal\ux_form\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Extension\ThemeHandler;
 use Drupal\Core\Render\ElementInfoManager;
@@ -94,7 +95,7 @@ class UxFormSettingsForm extends ConfigFormBase {
     $config = $this->config('ux_form.settings');
 
     $themes = $this->themeHandler->listInfo();
-    uasort($themes, 'system_sort_modules_by_info_name');
+    uasort($themes, [ModuleExtensionList::class, 'sortByName']);
 
     $form['themes'] = [
       '#type' => 'container',
