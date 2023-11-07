@@ -295,7 +295,7 @@ function ux_form_attribute_convert(array &$attributes, array $element) {
   // Remove ID if element is wrapped.
   if (!empty($element['#ux_wrapper_supported'])) {
     if (isset($attributes['id'])) {
-      unset($attributes['id']);
+      $attributes['id'] = '';
     }
   }
   ux_form_inline_convert($attributes);
