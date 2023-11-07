@@ -3,6 +3,8 @@
 namespace Drupal\ux_aside\TwigExtension;
 
 use Drupal\ux_aside\UxAsideManagerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * A class providing UxAside Twig extensions.
@@ -10,7 +12,7 @@ use Drupal\ux_aside\UxAsideManagerInterface;
  * This provides a Twig extension that registers the
  * {{ aside(id, string, string) }} extension to Twig.
  */
-class UxAside extends \Twig_Extension {
+class UxAside extends AbstractExtension {
 
   /**
    * Constructs \Drupal\Core\Template\TwigExtension.
@@ -37,7 +39,7 @@ class UxAside extends \Twig_Extension {
    */
   public function getFunctions() {
     return [
-      new \Twig_SimpleFunction('aside', [$this, 'renderTrigger']),
+      new TwigFunction('aside', [$this, 'renderTrigger']),
     ];
   }
 
