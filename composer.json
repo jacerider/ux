@@ -1,5 +1,5 @@
 {
-  "name": "drupal/ux",
+  "name": "jacerider/ux",
   "type": "drupal-module",
   "description": "A suite of UI elements and components to improve user experience.",
   "keywords": ["Drupal"],
