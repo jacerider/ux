@@ -123,7 +123,7 @@ class UxMenuSlideBlock extends UxMenuBase {
       '#options' => $this->configuration['options'],
     ];
 
-    if ($block_id = $this->configuration['block']['header']) {
+    if (!empty($this->configuration['block']['header']) && ($block_id == $this->configuration['block']['header'])) {
       $block = $this->entityTypeManager->getStorage('block')->load($block_id);
       if ($block) {
         $build['#header'] = $this->buildBlock($block);
@@ -131,7 +131,7 @@ class UxMenuSlideBlock extends UxMenuBase {
       }
     }
 
-    if ($block_id = $this->configuration['block']['footer']) {
+    if (!empty($this->configuration['block']['footer']) && ($block_id == $this->configuration['block']['footer'])) {
       $block = $this->entityTypeManager->getStorage('block')->load($block_id);
       if ($block) {
         $build['#footer'] = $this->buildBlock($block);
@@ -180,10 +180,10 @@ class UxMenuSlideBlock extends UxMenuBase {
   public function getCacheTags() {
     $config = $this->configuration;
     $cache_tags = parent::getCacheTags();
-    if ($config['block']['header']) {
+    if (!empty($config['block']['header']) && ($config['block']['header'])) {
       $cache_tags[] = 'config:block.block.' . $config['block']['header'];
     }
-    if ($config['block']['footer']) {
+    if (!empty($config['block']['footer']) && ($config['block']['footer'])) {
       $cache_tags[] = 'config:block.block.' . $config['block']['footer'];
     }
     return Cache::mergeTags(parent::getCacheTags(), $cache_tags);

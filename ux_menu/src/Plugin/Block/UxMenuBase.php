@@ -270,7 +270,6 @@ abstract class UxMenuBase extends BlockBase implements ContainerFactoryPluginInt
         $parameters->setMaxDepth(min($level + $depth - 1, $this->menuTree->maxDepth()));
       }
     }
-
     $tree = $this->menuTree->load($menu_name, $parameters);
     $manipulators = [
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
