@@ -1,6 +1,6 @@
 {
   "name": "jacerider/ux",
-  "type": "drupal-module",
+  "type": "drupal-custom-module",
   "description": "A suite of UI elements and components to improve user experience.",
   "keywords": ["Drupal"],
   "license": "GPL-2.0+",
