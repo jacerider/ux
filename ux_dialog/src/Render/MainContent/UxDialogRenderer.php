@@ -16,26 +16,6 @@ use Drupal\ux_dialog\Ajax\OpenUxDialogCommand;
 class UxDialogRenderer extends DialogRenderer {
 
   /**
-   * The renderer.
-   *
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  protected $renderer;
-
-  /**
-   * Constructs a new UxDialogRenderer.
-   *
-   * @param \Drupal\Core\Controller\TitleResolverInterface $title_resolver
-   *   The title resolver.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer.
-   */
-  public function __construct(TitleResolverInterface $title_resolver, RendererInterface $renderer) {
-    parent::__construct($title_resolver);
-    $this->renderer = $renderer;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function renderResponse(array $main_content, Request $request, RouteMatchInterface $route_match) {
@@ -54,7 +34,7 @@ class UxDialogRenderer extends DialogRenderer {
 
     // Determine the title: use the title provided by the main content if any,
     // otherwise get it from the routing information.
-    $options = $request->request->get('dialogOptions', []);
+    $options = $this->getDialogOptions($request);
 
     $response->addCommand(new OpenUxDialogCommand($title, $content, $options));
     return $response;
