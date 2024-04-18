@@ -9,7 +9,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\ux_aside\Ajax\UxAsideOpenCommand;
 use Drupal\Core\Entity\EntityInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
  * Presents entity browser in an Modal.
