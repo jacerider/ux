@@ -5,7 +5,7 @@ ux_aside:
     js/ux-media.ux-aside.js: { minified: true }
   dependencies:
     - core/drupalSettings
-    - core/underscore
+    - core/internal.underscore
     - ux/ux
 
 ux_aside_selection:
