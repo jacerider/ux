@@ -75,6 +75,13 @@ abstract class UxOptionsBase implements UxOptionsInterface {
   protected $optionsProcessed;
 
   /**
+   * The options factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $optionsFactory;
+
+  /**
    * Constructs a new UxAsideOptions object.
    */
   public function __construct(ConfigFactoryInterface $options_factory) {

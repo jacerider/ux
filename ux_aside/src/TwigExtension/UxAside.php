@@ -15,6 +15,13 @@ use Twig\TwigFunction;
 class UxAside extends AbstractExtension {
 
   /**
+   * The aside manager.
+   *
+   * @var \Drupal\ux_aside\UxAsideManagerInterface
+   */
+  protected $uxAsideManager;
+
+  /**
    * Constructs \Drupal\Core\Template\TwigExtension.
    *
    * @param \Drupal\ux_aside\UxAsideManagerInterface $ux_aside_manager

@@ -19,6 +19,34 @@ class UxMenuLinkTree extends MenuLinkTree {
   protected $prependParent = TRUE;
 
   /**
+   * The level of the menu link tree.
+   *
+   * @var int
+   */
+  protected $level;
+
+  /**
+   * The submenu property.
+   *
+   * @var mixed
+   */
+  protected $submenu;
+  
+  /**
+   * Indicates whether the menu link is a parent of a submenu.
+   *
+   * @var bool
+   */
+  protected $isSubmenuParent;
+  
+  /**
+   * The submenu parent.
+   *
+   * @var mixed
+   */
+  protected $submenuParent;
+
+  /**
    * Set the parepend parent flag value.
    *
    * @param bool $value
