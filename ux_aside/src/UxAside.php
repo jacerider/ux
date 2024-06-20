@@ -38,6 +38,13 @@ class UxAside implements UxAsideInterface, RefinableCacheableDependencyInterface
   protected $options = [];
 
   /**
+   * Flag to indicate if the options have been prepared.
+   *
+   * @var bool
+   */
+  protected $prepared;
+
+  /**
    * The trigger Attribute object.
    *
    * @var \Drupal\Core\Template\Attribute

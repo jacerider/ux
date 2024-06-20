@@ -19,34 +19,6 @@ class UxMenuLinkTree extends MenuLinkTree {
   protected $prependParent = TRUE;
 
   /**
-   * The level of the menu link tree.
-   *
-   * @var int
-   */
-  protected $level;
-
-  /**
-   * The submenu property.
-   *
-   * @var mixed
-   */
-  protected $submenu;
-  
-  /**
-   * Indicates whether the menu link is a parent of a submenu.
-   *
-   * @var bool
-   */
-  protected $isSubmenuParent;
-  
-  /**
-   * The submenu parent.
-   *
-   * @var mixed
-   */
-  protected $submenuParent;
-
-  /**
    * Set the parepend parent flag value.
    *
    * @param bool $value
@@ -133,20 +105,20 @@ class UxMenuLinkTree extends MenuLinkTree {
       $id = $link->getPluginId();
       $subtree = $data->subtree;
 
-      $data->level = $key;
-      $data->submenu = NULL;
+      $data->options['level'] = $key;
+      $data->options['submenu'] = NULL;
       $data->subtree = [];
-      $data->isSubmenuParent = FALSE;
+      $data->options['isSubmenuParent'] = FALSE;
 
       if ($subtree) {
         $section++;
         $sublevel = $level + 1;
-        $data->submenu = $sublevel . '-' . $section;
+        $data->options['submenu'] = $sublevel . '-' . $section;
 
         // Add parent to submenu if it is a URL.
         if ($this->prependParent && $data->link->getUrlObject()->toString()) {
           $parent_data = clone $data;
-          $parent_data->isSubmenuParent = TRUE;
+          $parent_data->options['isSubmenuParent'] = TRUE;
           $subtree = [$i => $parent_data] + $subtree;
         }
 
@@ -195,11 +167,11 @@ class UxMenuLinkTree extends MenuLinkTree {
         if (!isset($options['attributes']['class']) || is_array($options['attributes']['class'])) {
           $options['attributes']['class'][] = 'uxMenu-link';
         }
-        if ($data->submenu) {
+        if ($data->options['submenu']) {
           $options['attributes']['class'][] = 'uxMenu-link--has-submenu';
-          $options['attributes']['data-submenu'] = 'submenu-' . $data->submenu;
+          $options['attributes']['data-submenu'] = 'submenu-' . $data->options['submenu'];
         }
-        if ($data->isSubmenuParent) {
+        if ($data->options['isSubmenuParent']) {
           $options['attributes']['class'][] = 'uxMenu-link--is-submenu-parent';
         }
         $element['url']->setOptions($options);
