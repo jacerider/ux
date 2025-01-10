@@ -166,7 +166,7 @@
           this.$element.find('.' + PLUGIN_NAME + '-iframe').css('height', options.iframeHeight);
         }
       } else {
-        this.$element.html('<div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content">' + this.content + '</div></div>');
+        this.$element.find('.' + PLUGIN_NAME + '-inner').wrap('<div class="' + PLUGIN_NAME + '-wrap"><div class="' + PLUGIN_NAME + '-content"></div></div>');
       }
 
       // this.$flex = this.$element.find('.' + PLUGIN_NAME + '-flex');
