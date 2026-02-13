@@ -6,7 +6,7 @@
  */
 
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 use Drupal\Core\Template\Attribute;
 use Drupal\Component\Utility\NestedArray;
 
@@ -25,7 +25,7 @@ function template_preprocess_ux_aside_container(&$variables) {
   $uxAsideManager = \Drupal::service('ux_aside.manager');
   $element = $variables['element'];
   Element::setAttributes($element, ['id']);
-  RenderElement::setAttributes($element);
+  RenderElementBase::setAttributes($element);
 
   $variables['attributes'] = isset($element['#attributes']) ? $element['#attributes'] : [];
   $variables['prefix'] = isset($element['#field_prefix']) ? $element['#field_prefix'] : NULL;

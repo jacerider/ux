@@ -31,7 +31,7 @@
             }
             var $trigger = $('[data-ux-aside="' + id + '"]').once('ux-aside');
             if ($trigger.length) {
-              $trigger.on('click.ux-aside', function (e) {
+              $trigger.on('click', function (e) {
                 e.preventDefault();
                 var $element = $('#ux-aside-' + $(this).data('ux-aside'));
                 if ($element.length) {
@@ -89,7 +89,6 @@
       uxAside.$element.once('ux-aside-moved').each(function () {
         var $wrapper = $('#ux-asides');
         uxAside.$element.appendTo($wrapper);
-        Drupal.attachBehaviors($wrapper.get(0), drupalSettings);
       });
 
       Drupal.behaviors.uxAside.openCount++;
