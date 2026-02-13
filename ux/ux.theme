@@ -2,7 +2,7 @@
 
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 
 /**
  * Implements hook_preprocess_ux_select_as_checkbox().
@@ -11,7 +11,7 @@ function template_preprocess_ux_select_as_checkbox(&$variables) {
   $element = $variables['element'];
   $variables['attributes']['type'] = 'checkbox';
   Element::setAttributes($element, array('id', 'name', 'size'));
-  RenderElement::setAttributes($element, array('form-select'));
+  RenderElementBase::setAttributes($element, array('form-select'));
 
   $id = $element['#id'];
 
@@ -53,7 +53,7 @@ function template_preprocess_ux_select_as_checkbox(&$variables) {
 function template_preprocess_ux_select_as_links(&$variables) {
   $element = $variables['element'];
   Element::setAttributes($element, array('id', 'name', 'size'));
-  RenderElement::setAttributes($element, array('form-select'));
+  RenderElementBase::setAttributes($element, array('form-select'));
 
   $variables['name'] = $element['#name'];
   $variables['attributes'] = $element['#attributes'];
