@@ -2,14 +2,14 @@
 
 namespace Drupal\ux_aside\Element;
 
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 
 /**
  * Provides a render element for the aside collection wrapper.
  *
  * @RenderElement("ux_asides")
  */
-class UxAsides extends RenderElement {
+class UxAsides extends RenderElementBase {
 
   /**
    * {@inheritdoc}
