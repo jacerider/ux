@@ -446,7 +446,7 @@ class UxFormExampleForm extends FormBase {
       '#title' => $this->t('Date & Time'),
       '#default_value' => NULL,
       '#date_increment' => 1,
-      '#date_timezone' => drupal_get_user_timezone(),
+      '#date_timezone' => date_default_timezone_get(),
     ];
 
     $element['ux_datetime'] = [
@@ -454,7 +454,7 @@ class UxFormExampleForm extends FormBase {
       '#title' => $this->t('UX Date & Time'),
       '#default_value' => NULL,
       '#date_increment' => 1,
-      '#date_timezone' => drupal_get_user_timezone(),
+      '#date_timezone' => date_default_timezone_get(),
     ];
 
     $element['ux_datetime2'] = [
@@ -462,7 +462,7 @@ class UxFormExampleForm extends FormBase {
       '#title' => $this->t('UX Date & Time'),
       '#default_value' => NULL,
       '#date_increment' => 1,
-      '#date_timezone' => drupal_get_user_timezone(),
+      '#date_timezone' => date_default_timezone_get(),
       '#ux_mode' => 'full',
     ];
 
@@ -525,11 +525,11 @@ class UxFormExampleForm extends FormBase {
     foreach ($form_state->getValues() as $key => $value) {
       if (is_array($value)) {
         foreach ($value as $i => $v) {
-          drupal_set_message($key . ':' . $i . ': ' . $v);
+          \Drupal::messenger()->addMessage($key . ':' . $i . ': ' . $v);
         }
       }
       else {
-        drupal_set_message($key . ': ' . $value);
+        \Drupal::messenger()->addMessage($key . ': ' . $value);
       }
     }
 

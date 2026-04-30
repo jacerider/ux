@@ -93,7 +93,7 @@ class UxAsideSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function resetForm(array &$form, FormStateInterface $form_state) {
-    $this->uxMenuOptions->saveOptions($this->uxAsideOptions->getDefaults());
+    $this->uxAsideOptions->saveOptions($this->uxAsideOptions->getDefaults());
   }
 
 }

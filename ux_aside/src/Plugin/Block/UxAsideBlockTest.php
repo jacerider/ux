@@ -5,7 +5,7 @@ namespace Drupal\ux_aside\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\ux_aside\UxAsideManagerInterface;
-use Drupal\ux_aside\UxAsideOptionsInterface;
+use Drupal\ux_aside\UxAsideOptions;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -32,7 +32,7 @@ class UxAsideBlockTest extends BlockBase implements ContainerFactoryPluginInterf
   /**
    * The aside options service.
    *
-   * @var \Drupal\ux_aside\UxAsideOptionsInterface
+   * @var \Drupal\ux_aside\UxAsideOptions
    */
   protected $uxAsideOptions;
 
@@ -66,7 +66,7 @@ class UxAsideBlockTest extends BlockBase implements ContainerFactoryPluginInterf
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, UxAsideManagerInterface $ux_aside_manager, UxAsideOptionsInterface $ux_aside_options, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, UxAsideManagerInterface $ux_aside_manager, UxAsideOptions $ux_aside_options, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->uxAsideManager = $ux_aside_manager;
     $this->uxAsideOptions = $ux_aside_options;

@@ -2,7 +2,7 @@
 
 namespace Drupal\ux_aside\Element;
 
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 use Drupal\ux_aside\UxAsideInterface;
 
 /**
@@ -10,7 +10,7 @@ use Drupal\ux_aside\UxAsideInterface;
  *
  * @RenderElement("ux_aside")
  */
-class UxAside extends RenderElement {
+class UxAside extends RenderElementBase {
 
   /**
    * {@inheritdoc}

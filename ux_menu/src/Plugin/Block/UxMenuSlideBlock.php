@@ -123,7 +123,8 @@ class UxMenuSlideBlock extends UxMenuBase {
       '#options' => $this->configuration['options'],
     ];
 
-    if (!empty($this->configuration['block']['header']) && ($block_id == $this->configuration['block']['header'])) {
+    if (!empty($this->configuration['block']['header'])) {
+      $block_id = $this->configuration['block']['header'];
       $block = $this->entityTypeManager->getStorage('block')->load($block_id);
       if ($block) {
         $build['#header'] = $this->buildBlock($block);
@@ -131,7 +132,8 @@ class UxMenuSlideBlock extends UxMenuBase {
       }
     }
 
-    if (!empty($this->configuration['block']['footer']) && ($block_id == $this->configuration['block']['footer'])) {
+    if (!empty($this->configuration['block']['footer'])) {
+      $block_id = $this->configuration['block']['footer'];
       $block = $this->entityTypeManager->getStorage('block')->load($block_id);
       if ($block) {
         $build['#footer'] = $this->buildBlock($block);

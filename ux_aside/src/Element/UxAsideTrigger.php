@@ -2,7 +2,7 @@
 
 namespace Drupal\ux_aside\Element;
 
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 use Drupal\ux_aside\UxAsideInterface;
 use Drupal\Component\Utility\NestedArray;
 
@@ -11,7 +11,7 @@ use Drupal\Component\Utility\NestedArray;
  *
  * @RenderElement("ux_aside_trigger")
  */
-class UxAsideTrigger extends RenderElement {
+class UxAsideTrigger extends RenderElementBase {
 
   /**
    * {@inheritdoc}
