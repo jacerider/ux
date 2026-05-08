@@ -21,7 +21,7 @@ class UxAsideTrigger extends RenderElementBase {
       '#theme' => 'ux_aside_trigger',
       '#aside' => NULL,
       '#pre_render' => [
-        [get_class(), 'preRenderAsideTrigger'],
+        [static::class, 'preRenderAsideTrigger'],
       ],
     ];
   }

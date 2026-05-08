@@ -20,7 +20,7 @@ class UxAside extends RenderElementBase {
       '#theme' => 'ux_aside',
       '#aside' => NULL,
       '#pre_render' => [
-        [get_class(), 'preRenderAside'],
+        [static::class, 'preRenderAside'],
       ],
     ];
   }

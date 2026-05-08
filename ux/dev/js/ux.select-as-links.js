@@ -3,13 +3,13 @@
  * Select as links javascript.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
   Drupal.behaviors.uxSelectAsLinks = {
     attach: function (context) {
-      $('.ux-select-as-links', context).once('ux-select-as-links').each(function () {
+      $(once('ux-select-as-links', '.ux-select-as-links', context)).each(function () {
         var $select = $(this).find('select').hide();
         var $links = $(this).find('a');
         var $trigger = $select.closest('form').find('.form-submit:visible').first();
@@ -30,4 +30,4 @@
     }
   };
 
-}(jQuery, Drupal));
+}(jQuery, Drupal, once));

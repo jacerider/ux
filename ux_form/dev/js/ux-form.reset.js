@@ -3,13 +3,13 @@
  * Reset form on back javascript.
  */
 
-(function ($) {
+(function ($, Drupal, once) {
 
   'use strict';
 
   Drupal.behaviors.uxFormReset = {
     attach: function (context) {
-      $(window).once('ux-form-reset').on('pageshow', function () {
+      $(once('ux-form-reset', window)).on('pageshow', function () {
         // Form elements with data-ux-form-reset will be reset to the value
         // of the data element when the page is returned to.
         $('form.ux-form :input[data-ux-form-reset]').each(function () {
@@ -22,4 +22,4 @@
     }
   };
 
-}(jQuery));
+}(jQuery, Drupal, once));

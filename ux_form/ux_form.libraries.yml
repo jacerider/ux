@@ -7,21 +7,25 @@ ux_form:
       css/ux-form.css: {}
   dependencies:
     - core/drupal
-    - core/jquery.once
+    - core/once
     - ux_form/ux_form.reset
 
 ux_form.reset:
   version: VERSION
   js:
-    js/ux-form.reset.js: { minified: true }
+    js/ux-form.reset.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
 
 ux_form.autogrow:
   version: VERSION
   js:
-    js/ux-form.autogrow.js: { minified: true }
+    js/ux-form.autogrow.js: {}
   dependencies:
     - core/drupal
-    - core/jquery.once
+    - core/once
 
 ux_form.dropdown:
   version: VERSION
@@ -34,28 +38,28 @@ ux_form.dropdown:
 ux_form.input:
   version: VERSION
   js:
-    js/ux-form.input.js: { minified: true }
+    js/ux-form.input.js: {}
   dependencies:
     - ux_form/ux_form
 
 ux_form.radio:
   version: VERSION
   js:
-    js/ux-form.radio.js: { minified: true }
+    js/ux-form.radio.js: {}
   dependencies:
     - ux_form/ux_form
 
 ux_form.checkbox:
   version: VERSION
   js:
-    js/ux-form.checkbox.js: { minified: true }
+    js/ux-form.checkbox.js: {}
   dependencies:
     - ux_form/ux_form
 
 ux_form.file:
   version: VERSION
   js:
-    js/ux-form.file.js: { minified: true }
+    js/ux-form.file.js: {}
   dependencies:
     - ux_form/ux_form
     - ux_form/ux_form.input
@@ -63,7 +67,7 @@ ux_form.file:
 ux_form.select:
   version: VERSION
   js:
-    js/ux-form.select.js: { minified: true }
+    js/ux-form.select.js: {}
   dependencies:
     - ux/jquery.mobile-events
     - ux_form/ux_form
@@ -77,11 +81,11 @@ ux_form.date:
       lib/pickadate/compressed/themes/default.date.css: {}
   js:
     lib/pickadate/compressed/picker.date.js: { minified: true }
-    js/ux-form.date.js: { minified: true }
+    js/ux-form.date.js: {}
   dependencies:
     # - ux_form/ux_form
     - core/drupal
-    - core/jquery.once
+    - core/once
     - core/drupalSettings
     - ux_form/libraries.picker
 
@@ -92,19 +96,20 @@ ux_form.time:
       lib/pickadate/compressed/themes/default.time.css: {}
   js:
     lib/pickadate/compressed/picker.time.js: { minified: true }
-    js/ux-form.time.js: { minified: true }
+    js/ux-form.time.js: {}
   dependencies:
     # - ux_form/ux_form
     - core/drupal
-    - core/jquery.once
+    - core/once
     - core/drupalSettings
     - ux_form/libraries.picker
 
 ux_form.inputmask:
   version: VERSION
   js:
-    js/ux-form.inputmask.js: { minified: true }
+    js/ux-form.inputmask.js: {}
   dependencies:
+    - core/once
     - ux_form/libraries.inputmask
 
 libraries.picker:

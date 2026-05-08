@@ -24,8 +24,9 @@ view:
     component:
       css/ux-media.view.css: {}
   js:
-    js/ux-media.view.js: { minified: true }
+    js/ux-media.view.js: {}
   dependencies:
     - core/jquery
+    - core/once
     - core/drupal
     - ux/ux

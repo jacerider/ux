@@ -17,7 +17,7 @@ class UxAsides extends RenderElementBase {
   public function getInfo() {
     return [
       '#pre_render' => [
-        [get_class(), 'preRenderAsides'],
+        [static::class, 'preRenderAsides'],
       ],
     ];
   }

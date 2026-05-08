@@ -1,1 +1,47 @@
-"use strict";!function(i,u){u.behaviors.uxMenu={_defaults:{},attach:function(u,e){var n;if(e.ux&&e.ux.menu&&e.ux.menu.items)for(var t in e.ux.menu.items)e.ux.menu.items[t]&&(n=i("#"+t+":visible",u).once("ux-menu")).length&&(t=this.getOptions(e.ux.menu,t),n.uxMenu(t))},detach:function(u,e,n){"unload"===n&&i(u).find(".uxMenu").each(function(){var u=i(this).data("uxMenu");u&&u.destroy()})},getOptions:function(u,e){return i.extend({},this._defaults,u.options,u.items[e])}}}(jQuery,Drupal,drupalSettings);
+/**
+ * @file
+ * Global ux_menu javascript.
+ */
+
+/* eslint-disable no-alert, no-console */
+(function ($, Drupal, drupalSettings, once) {
+
+  'use strict';
+
+  Drupal.behaviors.uxMenu = {
+    _defaults: {},
+
+    attach: function (context, settings) {
+      var _this = this;
+      if (settings.ux && settings.ux.menu && settings.ux.menu.items) {
+        for (var id in settings.ux.menu.items) {
+          if (settings.ux.menu.items[id]) {
+            var $element = $(once('ux-menu', '#' + id + ':visible', context));
+            if ($element.length) {
+              var options = _this.getOptions(settings.ux.menu, id);
+              $element.uxMenu(options);
+            }
+          }
+        }
+      }
+    },
+
+    detach: function (context, setting, trigger) {
+      if (trigger === 'unload') {
+        $(context).find('.uxMenu').each(function () {
+          var plugin = $(this).data('uxMenu');
+          if (plugin) {
+            plugin.destroy();
+          }
+        });
+      }
+    },
+
+    getOptions: function (settings, id) {
+      var _this = this;
+      var options = $.extend({}, _this._defaults, settings.options, settings.items[id]);
+      return options;
+    }
+  };
+
+})(jQuery, Drupal, drupalSettings, once);

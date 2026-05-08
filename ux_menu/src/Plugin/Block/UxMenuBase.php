@@ -146,7 +146,7 @@ abstract class UxMenuBase extends BlockBase implements ContainerFactoryPluginInt
       '#title' => $this->t('Menu levels'),
       // Open if not set to defaults.
       '#open' => $defaults['menu']['level'] != $config['menu']['level'] || $defaults['menu']['depth'] != $config['menu']['depth'],
-      '#process' => [[get_class(), 'processToParent']],
+      '#process' => [[static::class, 'processToParent']],
     ];
 
     $options = range(0, $this->menuTree->maxDepth());

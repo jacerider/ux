@@ -4,7 +4,7 @@
  * Provides a "form auto-submit" feature for the Better Exposed Filters module.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
@@ -49,10 +49,11 @@
       }
 
       // The change event bubbles so we only need to bind it to the outer form.
-      $('form[data-ux-auto-submit-full-form]', context)
-        .add('[data-ux-auto-submit]', context)
-        .filter('form, select, input:not(:text, :submit)')
-        .once('ux-auto-submit')
+      $(once('ux-auto-submit',
+        $('form[data-ux-auto-submit-full-form]', context)
+          .add('[data-ux-auto-submit]', context)
+          .filter('form, select, input:not(:text, :submit)')
+      ))
         .change(function (e) {
           // don't trigger on text change for full-form
           if ($(e.target).is(':not(:text, :submit, [data-ux-auto-submit-exclude])')) {
@@ -79,9 +80,11 @@
         27 // esc
       ];
       // Don't wait for change event on textfields.
-      $('[data-ux-auto-submit-full-form] input:text, input:text[data-ux-auto-submit]', context)
-        .filter(':not([data-ux-auto-submit-exclude])')
-        .once('ux-auto-submit', function () {
+      $(once('ux-auto-submit',
+        $('[data-ux-auto-submit-full-form] input:text, input:text[data-ux-auto-submit]', context)
+          .filter(':not([data-ux-auto-submit-exclude])')
+      ))
+        .each(function () {
           // each textinput element has his own timeout
           var timeoutID = 0;
           $(this)
@@ -106,4 +109,4 @@
     }
   };
 
-}(jQuery, Drupal));
+}(jQuery, Drupal, once));

@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable no-alert, no-console */
-(function ($, Drupal, drupalSettings, displace) {
+(function ($, Drupal, drupalSettings, displace, once) {
 
   'use strict';
 
@@ -19,17 +19,17 @@
     attach: function (context, settings) {
       var _this = this;
       if (settings.ux && settings.ux.aside && settings.ux.aside.items) {
-        $(document).once('ux-aside').on('drupalViewportOffsetChange.ux-aside', _this.resize);
+        $(once('ux-aside', document)).on('drupalViewportOffsetChange.ux-aside', _this.resize);
         _this.resize();
 
         for (var id in settings.ux.aside.items) {
           if (settings.ux.aside.items[id]) {
-            var $element = $('#ux-aside-' + id).once('ux-aside');
+            var $element = $(once('ux-aside', '#ux-aside-' + id));
             if ($element.length) {
               var options = _this.getOptions(settings.ux.aside, id);
               $element.uxAside(options);
             }
-            var $trigger = $('[data-ux-aside="' + id + '"]').once('ux-aside');
+            var $trigger = $(once('ux-aside', '[data-ux-aside="' + id + '"]'));
             if ($trigger.length) {
               $trigger.on('click', function (e) {
                 e.preventDefault();
@@ -46,7 +46,7 @@
 
     detach: function (context, setting, trigger) {
       if (trigger === 'unload') {
-        $(document).removeOnce('ux-aside').off('drupalViewportOffsetChange.ux-aside');
+        $(once.remove('ux-aside', document)).off('drupalViewportOffsetChange.ux-aside');
       }
     },
 
@@ -86,7 +86,7 @@
     },
 
     onOpening: function (uxAside) {
-      uxAside.$element.once('ux-aside-moved').each(function () {
+      $(once('ux-aside-moved', uxAside.$element)).each(function () {
         var $wrapper = $('#ux-asides');
         uxAside.$element.appendTo($wrapper);
       });
@@ -127,4 +127,4 @@
     }
   };
 
-})(jQuery, Drupal, drupalSettings, Drupal.displace);
+})(jQuery, Drupal, drupalSettings, Drupal.displace, once);

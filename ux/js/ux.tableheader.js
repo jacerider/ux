@@ -3,7 +3,7 @@
  * Sticky table headers.
  */
 
-(function ($, Drupal, displace) {
+(function ($, Drupal, once, displace) {
 
   'use strict';
 
@@ -27,7 +27,7 @@
 
   // Select and initialize sticky table headers.
   function tableHeaderInitHandler(e) {
-    var $tables = $(e.data.context).find('table.sticky-enabled').once('tableheader');
+    var $tables = $(once('tableheader', $(e.data.context).find('table.sticky-enabled')));
     var il = $tables.length;
     for (var i = 0; i < il; i++) {
       TableHeader.tables.push(new TableHeader($tables[i]));
@@ -313,4 +313,4 @@
   // Expose constructor in the public space.
   Drupal.TableHeader = TableHeader;
 
-}(jQuery, Drupal, window.parent.Drupal.displace));
+}(jQuery, Drupal, once, window.parent.Drupal.displace));

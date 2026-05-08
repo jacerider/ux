@@ -1,8 +1,8 @@
 summary:
   version: VERSION
   js:
-    js/ux-filters.summary.js: { minified: true }
+    js/ux-filters.summary.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal

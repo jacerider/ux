@@ -139,7 +139,7 @@ class UxAsideOptions extends UxOptionsBase {
     $form['content']['header'] = [
       '#type' => 'details',
       '#title' => $this->t('Header'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     $form['content']['header']['title'] = [
@@ -181,7 +181,7 @@ class UxAsideOptions extends UxOptionsBase {
     $form['content']['position'] = [
       '#type' => 'details',
       '#title' => $this->t('Position and Fullscreen'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     $form['content']['position']['attachTop'] = [
@@ -312,7 +312,7 @@ class UxAsideOptions extends UxOptionsBase {
     $form['content']['style'] = [
       '#type' => 'details',
       '#title' => $this->t('Style and Colors'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     $form['content']['style']['theme'] = [
@@ -386,7 +386,7 @@ class UxAsideOptions extends UxOptionsBase {
     $form['content']['transition'] = [
       '#type' => 'details',
       '#title' => $this->t('Transitions'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     $form['content']['transition']['transitionIn'] = [
@@ -427,7 +427,7 @@ class UxAsideOptions extends UxOptionsBase {
     $form['content']['timeout'] = [
       '#type' => 'details',
       '#title' => $this->t('Auto-open and Timeout'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     $form['content']['timeout']['autoOpen'] = [
@@ -455,7 +455,7 @@ class UxAsideOptions extends UxOptionsBase {
     $form['content']['extras'] = [
       '#type' => 'details',
       '#title' => $this->t('Extras'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     // Extra settings.

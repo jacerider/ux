@@ -4,7 +4,7 @@
  * Global ux_offcanvas javascript.
  */
 
-(function ($, Drupal, drupalSettings, displace) {
+(function ($, Drupal, drupalSettings, displace, once) {
 
   'use strict';
 
@@ -1182,7 +1182,7 @@
       if (settings.ux && settings.ux.parallax && settings.ux.parallax.items) {
         for (var id in settings.ux.parallax.items) {
           if (settings.ux.parallax.items[id]) {
-            var $parallax = $('.ux-parallax-' + id, context).once('ux-parallax');
+            var $parallax = $(once('ux-parallax', '.ux-parallax-' + id, context));
             if ($parallax.length) {
               UxParallax.instances[id] = new UxParallax($parallax, settings.ux.parallax.items[id]);
             }
@@ -1213,4 +1213,4 @@
   // Expose constructor in the public space.
   Drupal.UxParallax = UxParallax;
 
-})(jQuery, Drupal, drupalSettings, Drupal.displace);
+})(jQuery, Drupal, drupalSettings, Drupal.displace, once);

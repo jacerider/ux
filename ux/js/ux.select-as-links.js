@@ -1,1 +1,33 @@
-"use strict";!function(a){Drupal.behaviors.uxSelectAsLinks={attach:function(e){a(".ux-select-as-links",e).once("ux-select-as-links").each(function(){var i=a(this).find("select").hide(),t=a(this).find("a"),s=i.closest("form").find(".form-submit:visible").first();t.on("click",function(e){e.preventDefault();e=a(this).data("ux-value");i.val(e),i.trigger("change"),t.removeClass("active"),a(this).addClass("active"),s.length&&s.trigger("click")})})}}}(jQuery);
+/**
+ * @file
+ * Select as links javascript.
+ */
+
+(function ($, Drupal, once) {
+
+  'use strict';
+
+  Drupal.behaviors.uxSelectAsLinks = {
+    attach: function (context) {
+      $(once('ux-select-as-links', '.ux-select-as-links', context)).each(function () {
+        var $select = $(this).find('select').hide();
+        var $links = $(this).find('a');
+        var $trigger = $select.closest('form').find('.form-submit:visible').first();
+
+        $links.on('click', function (e) {
+          e.preventDefault();
+          var value = $(this).data('ux-value');
+          $select.val(value);
+          $select.trigger('change');
+          $links.removeClass('active');
+          $(this).addClass('active');
+
+          if ($trigger.length) {
+            $trigger.trigger('click');
+          }
+        });
+      });
+    }
+  };
+
+}(jQuery, Drupal, once));

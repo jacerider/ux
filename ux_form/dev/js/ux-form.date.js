@@ -1,4 +1,4 @@
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, once) {
 
   'use strict';
 
@@ -14,7 +14,7 @@
       if (settings.ux && settings.ux.date && settings.ux.date.items) {
         for (var id in settings.ux.date.items) {
           if (settings.ux.date.items[id]) {
-            var $elements = $('#' + id, context).once('ux-form-date');
+            var $elements = $(once('ux-form-date', '#' + id, context));
             for (var i = 0; i < $elements.length; i++) {
               self.init($elements[i], settings.ux.date.items[id]);
             }
@@ -61,4 +61,4 @@
 
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);

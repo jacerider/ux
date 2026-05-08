@@ -3,7 +3,7 @@
  * UX ajax utilities.
  */
 
-(function ($, Drupal, debounce, displace) {
+(function ($, Drupal, once, debounce, displace) {
 
   'use strict';
 
@@ -24,7 +24,7 @@
     attach: function (context, settings) {
 
       // Bind Ajax behaviors to all items showing the class.
-      $('.use-ux-ajax').once('ajax').each(function () {
+      $(once('ajax', '.use-ux-ajax', context)).each(function () {
         var element_settings = {};
         // Clicked links look better with the throbber than the progress bar.
         element_settings.progress = {type: 'fullscreen'};
@@ -46,4 +46,4 @@
     }
   };
 
-})(jQuery, Drupal, Drupal.debounce, Drupal.displace);
+})(jQuery, Drupal, once, Drupal.debounce, Drupal.displace);

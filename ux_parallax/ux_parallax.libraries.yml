@@ -5,10 +5,10 @@ ux_parallax:
       css/ux-parallax.css: {}
   js:
     js/ux-parallax.lib.js: { minified: true }
-    js/ux-parallax.js: { minified: true }
+    js/ux-parallax.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal
     - core/drupalSettings
     - ux/gsap

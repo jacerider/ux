@@ -1,5 +1,5 @@
 
-(function ($, Drupal, window, document) {
+(function ($, Drupal, once, window, document) {
 
   'use strict';
 
@@ -660,8 +660,8 @@
 
   Drupal.behaviors.uxFormSelect = {
     attach: function (context) {
-      $(context).find('.ux-form-select').once('ux-form-select').uxFormSelect();
+      $(once('ux-form-select', '.ux-form-select', context)).uxFormSelect();
     }
   };
 
-})(jQuery, Drupal, window, document);
+})(jQuery, Drupal, once, window, document);

@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable no-alert, no-console */
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, once) {
 
   'use strict';
 
@@ -16,7 +16,7 @@
       if (settings.ux && settings.ux.menu && settings.ux.menu.items) {
         for (var id in settings.ux.menu.items) {
           if (settings.ux.menu.items[id]) {
-            var $element = $('#' + id + ':visible', context).once('ux-menu');
+            var $element = $(once('ux-menu', '#' + id + ':visible', context));
             if ($element.length) {
               var options = _this.getOptions(settings.ux.menu, id);
               $element.uxMenu(options);
@@ -44,4 +44,4 @@
     }
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);

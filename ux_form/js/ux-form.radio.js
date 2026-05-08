@@ -1,1 +1,121 @@
-"use strict";!function(i,e){var n="uxFormRadio";function t(e,t){this.element=e,this._name=n,this._defaults=i.fn.uxFormRadio.defaults,this.options=i.extend({},this._defaults,t),this.init()}i.extend(t.prototype,{init:function(){this.buildCache(),this.bindEvents(),this.buildElement()},destroy:function(){this.unbindEvents(),this.$element.removeData()},buildElement:function(){var e=this;this.$field.is(":checked")&&this.$element.addClass("active"),setTimeout(function(){e.$element.addClass("ready")})},buildCache:function(){this.$element=i(this.element),this.$field=this.$element.find("input")},bindEvents:function(){var e=this;e.$field.on("change."+e._name,function(){e.onChange.call(e)}).on("focus."+e._name,function(){e.$element.addClass("focused")}).on("blur."+e._name,function(){e.$element.removeClass("focused")})},unbindEvents:function(){this.$field.off("."+this._name)},onChange:function(){this.$element.closest(".ux-form-radios, .form-wrapper").find(".ux-form-radio.active").removeClass("active"),this.$field.is(":checked")&&this.$element.addClass("active")}}),i.fn.uxFormRadio=function(e){return this.each(function(){i.data(this,n)||i.data(this,n,new t(this,e))}),this},i.fn.uxFormRadio.defaults={},e.behaviors.uxFormRadio={attach:function(e){i(e).find(".ux-form-radio").once("ux-form-radio").uxFormRadio()}}}(jQuery,Drupal,(window,document));
+
+(function ($, Drupal, once, window, document) {
+
+  'use strict';
+
+  var pluginName = 'uxFormRadio';
+
+  function Plugin(element, options) {
+    this.element = element;
+    this._name = pluginName;
+    this._defaults = $.fn.uxFormRadio.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.init();
+  }
+
+  // Avoid Plugin.prototype conflicts
+  $.extend(Plugin.prototype, {
+
+    /*
+    Initialize plugin instance.
+     */
+    init: function () {
+      this.buildCache();
+      this.bindEvents();
+      this.buildElement();
+    },
+
+    /*
+    Remove plugin instance complete.
+     */
+    destroy: function () {
+      this.unbindEvents();
+      this.$element.removeData();
+    },
+
+    /*
+    Process fields.
+     */
+    buildElement: function () {
+      var _this = this;
+      if (this.$field.is(':checked')) {
+        this.$element.addClass('active');
+      }
+      setTimeout(function () {
+        _this.$element.addClass('ready');
+      });
+    },
+
+    /*
+    Cache DOM nodes for performance.
+     */
+    buildCache: function () {
+      this.$element = $(this.element);
+      this.$field = this.$element.find('input');
+    },
+
+    /*
+    Bind events that trigger methods.
+    */
+    bindEvents: function () {
+      var _this = this;
+      _this.$field.on('change' + '.' + _this._name, function () {
+        _this.onChange.call(_this);
+      }).on('focus' + '.' + _this._name, function () {
+        _this.$element.addClass('focused');
+      }).on('blur' + '.' + _this._name, function () {
+        _this.$element.removeClass('focused');
+      });
+    },
+
+    /*
+    Unbind events that trigger methods.
+    */
+    unbindEvents: function () {
+      this.$field.off('.' + this._name);
+    },
+
+    /*
+    On change event callback.
+     */
+    onChange: function () {
+      // .form-wrapper is used as sometimes radios are wrapped in other
+      // elements.
+      this.$element.closest('.ux-form-radios, .form-wrapper').find('.ux-form-radio.active').removeClass('active');
+      if (this.$field.is(':checked')) {
+        this.$element.addClass('active');
+      }
+    }
+
+  });
+
+  $.fn.uxFormRadio = function (options) {
+    this.each(function () {
+      if (!$.data(this, pluginName)) {
+        $.data(this, pluginName, new Plugin(this, options));
+      }
+    });
+    return this;
+  };
+
+  $.fn.uxFormRadio.defaults = {};
+
+  Drupal.behaviors.uxFormRadio = {
+    attach: function (context) {
+      var $context = $(context);
+      $(once('ux-form-radio', $context.find('.ux-form-radio'))).uxFormRadio();
+    }
+    // @see https://www.drupal.org/node/2692453
+    // detach: function (context, setting, trigger) {
+    //   if (trigger === 'unload') {
+    //     $(context).find('.ux-form-radio').each(function () {
+    //       var plugin = $(this).data('uxFormRadio');
+    //       if (plugin) {
+    //         plugin.destroy();
+    //       }
+    //     });
+    //   }
+    // }
+  };
+
+})(jQuery, Drupal, once, window, document);

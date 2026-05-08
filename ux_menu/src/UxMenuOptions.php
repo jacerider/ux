@@ -61,7 +61,7 @@ class UxMenuOptions extends UxOptionsBase {
     $form['back'] = [
       '#type' => 'details',
       '#title' => $this->t('Back Nav'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     $form['back']['backNav'] = [
@@ -114,7 +114,7 @@ class UxMenuOptions extends UxOptionsBase {
     $form['breadcrumb'] = [
       '#type' => 'details',
       '#title' => $this->t('Breadcrumb Nav'),
-      '#process' => [[get_class(), 'processParents']],
+      '#process' => [[static::class, 'processParents']],
     ];
 
     $form['breadcrumb']['breadcrumbNav'] = [

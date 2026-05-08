@@ -5,6 +5,7 @@ namespace Drupal\ux_form\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Extension\ThemeHandler;
@@ -34,10 +35,10 @@ class UxFormSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ThemeHandler $theme_handler, ElementInfoManager $element_info_manager) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, ThemeHandler $theme_handler, ElementInfoManager $element_info_manager) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->themeHandler = $theme_handler;
-    $this->elementInfoManager = $theme_handler;
+    $this->elementInfoManager = $element_info_manager;
   }
 
   /**
@@ -46,6 +47,7 @@ class UxFormSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('theme_handler'),
       $container->get('plugin.manager.element_info')
     );

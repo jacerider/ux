@@ -1,0 +1,187 @@
+ux_aside.settings:
+  type: config_object
+  label: 'UX Aside settings'
+  mapping:
+    options:
+      type: mapping
+      label: 'Aside default options'
+      mapping:
+        trigger:
+          type: mapping
+          label: 'Trigger options'
+          mapping:
+            text:
+              type: label
+              label: "Aside trigger text"
+            icon:
+              type: string
+              label: 'Icon id displayed in trigger'
+              nullable: true
+            iconOnly:
+              type: boolean
+              label: 'Force trigger to only be an icon'
+        content:
+          type: mapping
+          label: 'Content options'
+          mapping:
+            title:
+              type: label
+              label: "Title in aside's header"
+              nullable: true
+            subtitle:
+              type: label
+              label: "Caption below aside's title"
+              nullable: true
+            headerColor:
+              type: string
+              label: 'Header background color'
+              nullable: true
+            theme:
+              type: string
+              label: 'Theme (dark/light)'
+              nullable: true
+            icon:
+              type: string
+              label: 'Icon class'
+              nullable: true
+            iconText:
+              type: string
+              label: 'Icon text (HTML)'
+              nullable: true
+            iconColor:
+              type: string
+              label: 'Header icon color'
+              nullable: true
+            width:
+              type: string
+              label: 'Fixed width of the aside'
+              nullable: true
+            top:
+              type: integer
+              label: 'Top static margin'
+              nullable: true
+            bottom:
+              type: integer
+              label: 'Bottom static margin'
+              nullable: true
+            left:
+              type: integer
+              label: 'Left static margin'
+              nullable: true
+            right:
+              type: integer
+              label: 'Right static margin'
+              nullable: true
+            borderBottom:
+              type: boolean
+              label: 'Enable border bottom'
+            padding:
+              type: integer
+              label: 'Aside inner margin'
+            radius:
+              type: integer
+              label: 'Border radius applied to aside'
+            iframe:
+              type: boolean
+              label: 'Use iframe inside aside'
+            iframeHeight:
+              type: integer
+              label: 'Fixed height of the iframe'
+            iframeAutosize:
+              type: boolean
+              label: 'Automatically size aside to fit iframe'
+            iframeURL:
+              type: string
+              label: 'Iframe address'
+              nullable: true
+            focusInput:
+              type: boolean
+              label: 'Focus first visible field on open'
+            group:
+              type: string
+              label: 'Group name for navigation'
+              nullable: true
+            loop:
+              type: boolean
+              label: 'Allow loop with asides of same group'
+            navigateCaption:
+              type: boolean
+              label: 'Display navigation arrows'
+            navigateArrows:
+              type: boolean
+              label: 'Position arrows for navigation'
+            history:
+              type: boolean
+              label: 'Enable browsing history with hash'
+            restoreDefaultContent:
+              type: boolean
+              label: 'Reset aside to default'
+            autoOpen:
+              type: boolean
+              label: 'Open aside automatically'
+            bodyOverflow:
+              type: boolean
+              label: 'Force document overflow hidden when open'
+            fullscreen:
+              type: boolean
+              label: 'Show button to expand to fullscreen'
+            openFullscreen:
+              type: boolean
+              label: 'Open aside in fullscreen'
+            openTall:
+              type: boolean
+              label: 'Open aside with 100% height'
+            closeOnEscape:
+              type: boolean
+              label: 'Close on escape key'
+            closeButton:
+              type: boolean
+              label: 'Display close button in header'
+            overlay:
+              type: boolean
+              label: 'Enable background overlay'
+            overlayClose:
+              type: boolean
+              label: 'Close aside when clicking outside'
+            overlayColor:
+              type: string
+              label: 'Overlay color'
+            timeout:
+              type: integer
+              label: 'Auto-close timeout in milliseconds'
+            timeoutProgressbar:
+              type: boolean
+              label: 'Enable timeout progress bar'
+            timeoutProgressbarColor:
+              type: string
+              label: 'Progress bar color'
+            pauseOnHover:
+              type: boolean
+              label: 'Pause progress bar on hover'
+            contentTransition:
+              type: boolean
+              label: 'Enable content transition animations'
+            transitionIn:
+              type: string
+              label: 'Aside opening transition'
+            transitionOut:
+              type: string
+              label: 'Aside closing transition'
+            transitionInOverlay:
+              type: string
+              label: 'Overlay opening transition'
+            transitionOutOverlay:
+              type: string
+              label: 'Overlay closing transition'
+            attachTop:
+              type: boolean
+              label: 'Attach to top of page'
+            attachBottom:
+              type: boolean
+              label: 'Attach to bottom of page'
+            attachLeft:
+              type: boolean
+              label: 'Attach to left of page'
+            attachRight:
+              type: boolean
+              label: 'Attach to right of page'

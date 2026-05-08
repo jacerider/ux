@@ -3,7 +3,7 @@
  * Global ux_offcanvas javascript.
  */
 
-(function ($, Drupal, displace) {
+(function ($, Drupal, displace, once) {
 
   'use strict';
 
@@ -144,10 +144,10 @@
 
   Drupal.behaviors.uxStickyHeader = {
     attach: function (context) {
-      $('#ux-content header').first().once('ux-header').each(function (e) {
+      $(once('ux-header', $('#ux-content header').first())).each(function (e) {
         new UxHeader($(this));
       });
     }
   };
 
-})(jQuery, Drupal, Drupal.displace);
+})(jQuery, Drupal, Drupal.displace, once);

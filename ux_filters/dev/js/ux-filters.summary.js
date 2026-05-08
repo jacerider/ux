@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable no-alert, no-console */
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
@@ -16,7 +16,7 @@
         $(this).closest('form').find('.form-actions [type="submit"]').first().trigger('click');
       }
 
-      $('.ux-filters-summary-item', context).once().each(function () {
+      $(once('ux-filters-summary', '.ux-filters-summary-item', context)).each(function () {
         var $item = $(this);
         var field = $item.data('ux-filters-summary-field');
         var $field = $(':input[name="' + field + '"]');
@@ -42,4 +42,4 @@
     }
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

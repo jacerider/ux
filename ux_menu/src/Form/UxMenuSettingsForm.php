@@ -5,6 +5,7 @@ namespace Drupal\ux_menu\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\ux_menu\UxMenuOptions;
 
@@ -25,8 +26,8 @@ class UxMenuSettingsForm extends ConfigFormBase {
   /**
    * Constructs a new UxMenuSettingsForm object.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, UxMenuOptions $ux_menu_options) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, UxMenuOptions $ux_menu_options) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->uxMenuOptions = $ux_menu_options;
   }
 
@@ -36,6 +37,7 @@ class UxMenuSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('ux_menu.options')
     );
   }

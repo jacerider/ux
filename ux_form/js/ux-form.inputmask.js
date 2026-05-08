@@ -1,1 +1,14 @@
-"use strict";!function(n){Drupal.behaviors.uxFormTel={attach:function(u){n.fn.inputmask&&n(u).find("input.ux-form-inputmask-js").once("ux-inputmask").inputmask()}}}(jQuery);
+(function ($, Drupal, once) {
+
+  'use strict';
+
+  Drupal.behaviors.uxFormTel = {
+    attach: function (context) {
+      if (!$.fn.inputmask) {
+        return;
+      }
+      $(once('ux-inputmask', 'input.ux-form-inputmask-js', context)).inputmask();
+    }
+  };
+
+})(jQuery, Drupal, once);

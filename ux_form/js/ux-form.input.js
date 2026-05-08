@@ -1,1 +1,234 @@
-"use strict";!function(a,t){var i="uxFormInput";function e(t,e){this.element=t,this._name=i,this._defaults=a.fn.uxFormInput.defaults,this.options=a.extend({},this._defaults,e),this.init()}a.extend(e.prototype,{init:function(){this.buildCache(),this.bindEvents(),this.buildElement()},destroy:function(){this.unbindEvents(),this.$element.removeData()},buildElement:function(){var t=this;(this.hasValue()||this.isAutofocus()||this.hasPlaceholder()||this.hasBadInput())&&this.$element.addClass("active"),setTimeout(function(){t.$element.addClass("ready")})},buildCache:function(){var s=this;s.$element=a(this.element),s.$error=s.$element.find(".field-error"),s.input_selector=".ux-form-input-item-js",s.$field=s.$element.find(s.input_selector),s.$field.each(function(t){var e=s.$element.find(".field-prefix"),i=s.$element.find(".field-suffix"),n=s.$element.find(".field-input");(i.length?i:e.length?n:a(this)).after('<div class="ux-form-input-line" />')}),s.hasError()&&s.$element.addClass("invalid"),s.$error.length},bindEvents:function(){var t=this;t.$field.on("change."+t._name,function(){t.onChange.call(t)}),t.$field.on("focus."+t._name,function(){t.onFocus.call(t)}),t.$field.on("blur."+t._name,function(){t.onBlur.call(t)})},unbindEvents:function(){this.$field.off("."+this._name)},onChange:function(){(this.hasValue()||this.hasPlaceholder())&&this.$element.addClass("active"),this.validate()},onFocus:function(){this.isReadonly()||this.$element.addClass("active focus")},onBlur:function(){var t="focus";this.hasValue()||!this.isValid()||this.hasPlaceholder()||(t+=" active"),this.$element.removeClass(t),this.validate()},validate:function(){this.$element.removeClass("valid invalid").removeAttr("data-error"),this.isValid()?this.hasValue()&&this.$element.addClass("valid"):this.$element.addClass("invalid").attr("data-error",this.$field[0].validationMessage)},hasPlaceholder:function(){var t=this.$field.attr("placeholder");return void 0!==t&&0<t.length},hasValue:function(){var t=this.$field.val();return 0<t.length&&"- Any -"!==t},hasError:function(){return this.$field.hasClass("error")},hasBadInput:function(){return!0===this.$field[0].validity.badInput},isValid:function(){return!0===this.$field[0].validity.valid},isAutofocus:function(){return void 0!==this.$field.attr("autofocus")},isReadonly:function(){return void 0!==this.$field.attr("readonly")}}),a.fn.uxFormInput=function(t){return this.each(function(){a.data(this,i)||a.data(this,i,new e(this,t))}),this},a.fn.uxFormInput.defaults={},t.behaviors.uxFormInput={attach:function(t){a(t).find(".ux-form-input-js").once("ux-form-input").uxFormInput()}}}(jQuery,Drupal,(window,document));
+
+(function ($, Drupal, once, window, document) {
+
+  'use strict';
+
+  var pluginName = 'uxFormInput';
+
+  function Plugin(element, options) {
+    this.element = element;
+    this._name = pluginName;
+    this._defaults = $.fn.uxFormInput.defaults;
+    this.options = $.extend({}, this._defaults, options);
+    this.init();
+  }
+
+  // Avoid Plugin.prototype conflicts
+  $.extend(Plugin.prototype, {
+
+    /*
+    Initialize plugin instance.
+     */
+    init: function () {
+      this.buildCache();
+      this.bindEvents();
+      this.buildElement();
+    },
+
+    /*
+    Remove plugin instance complete.
+     */
+    destroy: function () {
+      this.unbindEvents();
+      this.$element.removeData();
+    },
+
+    /*
+    Process fields.
+     */
+    buildElement: function () {
+      var _this = this;
+      if (this.hasValue() || this.isAutofocus() || this.hasPlaceholder() || this.hasBadInput()) {
+        this.$element.addClass('active');
+      }
+      setTimeout(function () {
+        _this.$element.addClass('ready');
+      });
+    },
+
+    /*
+    Cache DOM nodes for performance.
+     */
+    buildCache: function () {
+      var _this = this;
+      _this.$element = $(this.element);
+      _this.$error = _this.$element.find('.field-error');
+      _this.input_selector = '.ux-form-input-item-js';
+      _this.$field = _this.$element.find(_this.input_selector);
+      _this.$field.each(function (e) {
+        var $prefix = _this.$element.find('.field-prefix');
+        var $suffix = _this.$element.find('.field-suffix');
+        var $input = _this.$element.find('.field-input');
+        if ($suffix.length) {
+          $suffix.after('<div class="ux-form-input-line" />');
+        }
+        else if ($prefix.length) {
+          $input.after('<div class="ux-form-input-line" />');
+        }
+        else {
+          $(this).after('<div class="ux-form-input-line" />');
+        }
+      });
+      if (_this.hasError()) {
+        _this.$element.addClass('invalid');
+      }
+      if (_this.$error.length) {
+        // _this.$element.addClass('invalid').attr('data-error', _this.$error.text());
+        // _this.$error.remove();
+      }
+    },
+
+    /*
+    Bind events that trigger methods.
+    */
+    bindEvents: function () {
+      var _this = this;
+      _this.$field.on('change' + '.' + _this._name, function () {
+        _this.onChange.call(_this);
+      });
+      _this.$field.on('focus' + '.' + _this._name, function () {
+        _this.onFocus.call(_this);
+      });
+      _this.$field.on('blur' + '.' + _this._name, function () {
+        _this.onBlur.call(_this);
+      });
+    },
+
+    /*
+    Unbind events that trigger methods.
+    */
+    unbindEvents: function () {
+      this.$field.off('.' + this._name);
+    },
+
+    /*
+    On change event callback.
+     */
+    onChange: function () {
+      if (this.hasValue() || this.hasPlaceholder()) {
+        this.$element.addClass('active');
+      }
+      this.validate();
+    },
+
+    /*
+    On focus event callback.
+     */
+    onFocus: function () {
+      if (!this.isReadonly()) {
+        this.$element.addClass('active focus');
+      }
+    },
+
+    /*
+    On blur event callback.
+     */
+    onBlur: function () {
+      var classes = 'focus';
+      if (!this.hasValue() && this.isValid() && !this.hasPlaceholder()) {
+        classes += ' active';
+      }
+      this.$element.removeClass(classes);
+      this.validate();
+    },
+
+    /*
+    Validate the field.
+     */
+    validate: function () {
+      this.$element.removeClass('valid invalid').removeAttr('data-error');
+      if (this.isValid()) {
+        if (this.hasValue()) {
+          this.$element.addClass('valid');
+        }
+      }
+      else {
+        this.$element.addClass('invalid').attr('data-error', this.$field[0].validationMessage);
+      }
+    },
+
+    /*
+    Check if element has a placeholder.
+     */
+    hasPlaceholder: function () {
+      var placeholder = this.$field.attr('placeholder');
+      return typeof placeholder !== 'undefined' && placeholder.length > 0;
+    },
+
+    /*
+    Check if element has value.
+     */
+    hasValue: function () {
+      var value = this.$field.val();
+      return value.length > 0 && value !== '- Any -';
+    },
+
+    /*
+    Check if element has error.
+     */
+    hasError: function () {
+      return this.$field.hasClass('error');
+    },
+
+    /*
+    Check if element has bad input.
+     */
+    hasBadInput: function () {
+      return this.$field[0].validity.badInput === true;
+    },
+
+    /*
+    Check if element value is valid.
+     */
+    isValid: function () {
+      return this.$field[0].validity.valid === true;
+    },
+
+    /*
+    Check if element is set as autofocus..
+     */
+    isAutofocus: function () {
+      var autofocus = this.$field.attr('autofocus');
+      return typeof autofocus !== 'undefined';
+    },
+
+    /*
+    Check if element has a placeholder.
+     */
+    isReadonly: function () {
+      var readonly = this.$field.attr('readonly');
+      return typeof readonly !== 'undefined';
+    }
+
+  });
+
+  $.fn.uxFormInput = function (options) {
+    this.each(function () {
+      if (!$.data(this, pluginName)) {
+        $.data(this, pluginName, new Plugin(this, options));
+      }
+    });
+    return this;
+  };
+
+  $.fn.uxFormInput.defaults = {};
+
+  Drupal.behaviors.uxFormInput = {
+    attach: function (context) {
+      var $context = $(context);
+      $(once('ux-form-input', $context.find('.ux-form-input-js'))).uxFormInput();
+    }
+    // @see https://www.drupal.org/node/2692453
+    // detach: function (context, setting, trigger) {
+    //   if (trigger === 'unload') {
+    //     $(context).find('.ux-form-input-js').each(function () {
+    //       var plugin = $(this).data('uxFormInput');
+    //       if (plugin) {
+    //         plugin.destroy();
+    //       }
+    //     });
+    //   }
+    // }
+  };
+
+})(jQuery, Drupal, once, window, document);

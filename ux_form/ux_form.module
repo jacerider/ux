@@ -122,6 +122,19 @@ function ux_form_element_process(&$element) {
  */
 function ux_form_theme_registry_alter(&$theme_registry) {
   $theme_registry['fieldset']['path'] = \Drupal::service('extension.list.module')->getPath('ux_form') . '/templates';
+
+  // Move ux_form_preprocess_field_multiple_value_form to run last so that
+  // other modules (e.g. paragraphs) can still access $variables['table']['#rows']
+  // before we wrap the table in a fieldset.
+  if (!empty($theme_registry['field_multiple_value_form']['preprocess functions'])) {
+    $functions = &$theme_registry['field_multiple_value_form']['preprocess functions'];
+    $key = array_search('ux_form_preprocess_field_multiple_value_form', $functions, TRUE);
+    if ($key !== FALSE) {
+      unset($functions[$key]);
+      $functions[] = 'ux_form_preprocess_field_multiple_value_form';
+      $functions = array_values($functions);
+    }
+  }
 }
 
 /**
@@ -253,6 +266,13 @@ function template_preprocess_ux_form_element_container(array &$variables) {
  * Implements template_preprocess_field_multiple_value_form().
  */
 function ux_form_preprocess_field_multiple_value_form(&$variables) {
+  // Skip paragraphs widgets. Paragraphs manages its own field UX and our
+  // fieldset wrapping breaks paragraphs_preprocess_field_multiple_value_form()
+  // which expects $variables['table']['#rows'] to remain accessible.
+  if (!empty($variables['element']['#paragraphs_widget']) || !empty($variables['element']['#inline_paragraphs_widget'])) {
+    return;
+  }
+
   if ($variables['multiple']) {
     $table = $variables['table'];
     $button = $variables['button'];

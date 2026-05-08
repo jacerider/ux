@@ -1,5 +1,5 @@
 
-(function ($, Drupal, window, document) {
+(function ($, Drupal, once, window, document) {
 
   'use strict';
 
@@ -103,7 +103,7 @@
   Drupal.behaviors.uxFormRadio = {
     attach: function (context) {
       var $context = $(context);
-      $context.find('.ux-form-radio').once('ux-form-radio').uxFormRadio();
+      $(once('ux-form-radio', $context.find('.ux-form-radio'))).uxFormRadio();
     }
     // @see https://www.drupal.org/node/2692453
     // detach: function (context, setting, trigger) {
@@ -118,4 +118,4 @@
     // }
   };
 
-})(jQuery, Drupal, window, document);
+})(jQuery, Drupal, once, window, document);

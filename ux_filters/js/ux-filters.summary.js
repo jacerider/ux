@@ -1,1 +1,45 @@
-"use strict";!function(s){Drupal.behaviors.uxFiltersSummary={attach:function(t,a){function i(t){s(this).closest("form").find('.form-actions [type="submit"]').first().trigger("click")}s(".ux-filters-summary-item",t).once().each(function(){var t=s(this).data("ux-filters-summary-field"),e=s(':input[name="'+t+'"]');s(".ux-filters-summary-value",this).each(function(){s('<i class="fa-times"></i>').appendTo(s(this))}).on("click",function(t){t.preventDefault();var a=s(this).data("ux-filters-summary-value");switch(e.get(0).tagName){case"SELECT":s('option[value="'+a+'"]',e).prop("selected",!1),i.call(e);break;case"INPUT":e.val(""),i.call(e)}})})}}}(jQuery);
+/**
+ * @file
+ * Global ux_aside javascript.
+ */
+
+/* eslint-disable no-alert, no-console */
+(function ($, Drupal, once) {
+
+  'use strict';
+
+  Drupal.behaviors.uxFiltersSummary = {
+
+    attach: function (context, settings) {
+      // 'this' references the form element.
+      function triggerSubmit(e) {
+        $(this).closest('form').find('.form-actions [type="submit"]').first().trigger('click');
+      }
+
+      $(once('ux-filters-summary', '.ux-filters-summary-item', context)).each(function () {
+        var $item = $(this);
+        var field = $item.data('ux-filters-summary-field');
+        var $field = $(':input[name="' + field + '"]');
+
+        $('.ux-filters-summary-value', this).each(function () {
+          $('<i class="fa-times"></i>').appendTo($(this));
+        }).on('click', function (e) {
+          e.preventDefault();
+          var value = $(this).data('ux-filters-summary-value');
+          switch ($field.get(0).tagName) {
+            case 'SELECT':
+              $('option[value="' + value + '"]', $field).prop('selected', false);
+              triggerSubmit.call($field);
+              break;
+
+            case 'INPUT':
+              $field.val('');
+              triggerSubmit.call($field);
+              break;
+          }
+        });
+      });
+    }
+  };
+
+})(jQuery, Drupal, once);

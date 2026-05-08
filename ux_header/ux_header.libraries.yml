@@ -4,9 +4,9 @@ ux_header:
     component:
       css/ux-header.css: {}
   js:
-    js/ux-header.js: { minified: true }
+    js/ux-header.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal
     - ux/ux

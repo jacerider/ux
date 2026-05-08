@@ -1,4 +1,4 @@
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, once) {
 
   'use strict';
 
@@ -16,7 +16,7 @@
       if (settings.ux && settings.ux.time && settings.ux.time.items) {
         for (var id in settings.ux.time.items) {
           if (settings.ux.time.items[id]) {
-            var $elements = $('#' + id, context).once('ux-form-time');
+            var $elements = $(once('ux-form-time', '#' + id, context));
             for (var i = 0; i < $elements.length; i++) {
               self.init($elements[i], settings.ux.time.items[id]);
             }
@@ -61,4 +61,4 @@
     // }
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);

@@ -15,45 +15,46 @@ ux:
 ux.ajax:
   version: VERSION
   js:
-    js/ux.ajax.js: { minified: true }
+    js/ux.ajax.js: {}
   dependencies:
     - core/drupal.ajax
+    - core/once
 
 ux.auto_submit:
   version: VERSION
   js:
-    js/ux.auto-submit.js: { minified: true }
+    js/ux.auto-submit.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal
 
 ux.select_as_checkbox:
   version: VERSION
   js:
-    js/ux.select-as-checkbox.js: { minified: true }
+    js/ux.select-as-checkbox.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal
     - core/drupalSettings
 
 ux.select_as_links:
   version: VERSION
   js:
-    js/ux.select-as-links.js: { minified: true }
+    js/ux.select-as-links.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal
 
 ux.button:
   version: VERSION
   js:
-    js/ux.button.js: { minified: true }
+    js/ux.button.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
 
 jquery.easing:
   version: VERSION

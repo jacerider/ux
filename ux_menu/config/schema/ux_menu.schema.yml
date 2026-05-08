@@ -1,0 +1,46 @@
+ux_menu.settings:
+  type: config_object
+  label: 'UX Menu settings'
+  mapping:
+    options:
+      type: mapping
+      label: 'Menu default options'
+      mapping:
+        backNav:
+          type: boolean
+          label: 'Enable back navigation'
+        backText:
+          type: label
+          label: 'Back link text'
+        backIcon:
+          type: string
+          label: 'Back link icon'
+          nullable: true
+        breadcrumbNav:
+          type: boolean
+          label: 'Enable breadcrumb navigation'
+        breadcrumbText:
+          type: label
+          label: 'Breadcrumb root text'
+        breadcrumbIcon:
+          type: string
+          label: 'Breadcrumb root icon'
+          nullable: true
+        breadcrumbSeparatorIcon:
+          type: string
+          label: 'Breadcrumb separator icon'
+          nullable: true
+        itemIcon:
+          type: string
+          label: 'Default item icon'
+          nullable: true
+        itemDelayInterval:
+          type: integer
+          label: 'Item delay interval (ms)'
+        direction:
+          type: string
+          label: 'Direction'
+        theme:
+          type: string
+          label: 'Theme (dark/light)'
+          nullable: true

@@ -1,1 +1,40 @@
-"use strict";!function(n){Drupal.behaviors.uxFormAutogrow={attach:function(t,i){n.each(n("textarea[data-autogrow]",t).once(),function(){function t(t){var i=n(t),e=i.data("autogrow-max"),o=t.scrollHeight+a;e&&e<o?i.css({overflow:"auto",resize:"vertical"}):i.css({minHeight:"auto",overflow:"hidden",resize:"none"}).css("minHeight",t.scrollHeight+a)}var i=n(this),a=this.offsetHeight-this.clientHeight;t(this),i.on("keyup input",function(){t(this)})})}}}(jQuery);
+(function ($, Drupal, once) {
+
+  'use strict';
+
+  Drupal.behaviors.uxFormAutogrow = {
+
+    attach: function (context, settings) {
+      $.each($(once('ux-form-autogrow', 'textarea[data-autogrow]', context)), function () {
+        var $element = $(this);
+        var offset = this.offsetHeight - this.clientHeight;
+
+        var resizeTextarea = function (el) {
+          var $el = $(el);
+          var maxHeight = $el.data('autogrow-max');
+          var height = el.scrollHeight + offset;
+          if (maxHeight && height > maxHeight) {
+            $el.css({
+              overflow: 'auto',
+              resize: 'vertical'
+            });
+          }
+          else {
+            $el.css({
+              minHeight: 'auto',
+              overflow: 'hidden',
+              resize: 'none'
+            }).css('minHeight', el.scrollHeight + offset);
+          }
+        };
+
+        resizeTextarea(this);
+        $element.on('keyup input', function () {
+          resizeTextarea(this);
+        });
+      });
+    }
+
+  };
+
+})(jQuery, Drupal, once);

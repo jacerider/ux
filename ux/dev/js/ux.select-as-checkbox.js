@@ -3,7 +3,7 @@
  * Select as checkbox javascript.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
@@ -12,7 +12,7 @@
       if (settings.ux && settings.ux.theme && settings.ux.theme.select_as_checkbox) {
         for (var id in settings.ux.theme.select_as_checkbox) {
           if (settings.ux.theme.select_as_checkbox[id]) {
-            $('#' + id + '-checkbox', context).once('ux-select-as-checkbox').data('ux-select-as-checkbox', id).change(function () {
+            $(once('ux-select-as-checkbox', '#' + id + '-checkbox', context)).data('ux-select-as-checkbox', id).change(function () {
               var id = $(this).data('ux-select-as-checkbox');
               var $select = $('#' + id + '-select');
               if ($(this).is(':checked')) {
@@ -31,4 +31,4 @@
     }
   };
 
-}(jQuery, Drupal));
+}(jQuery, Drupal, once));

@@ -1,5 +1,5 @@
 
-(function ($, Drupal, window, document) {
+(function ($, Drupal, once, window, document) {
 
   'use strict';
 
@@ -216,7 +216,7 @@
   Drupal.behaviors.uxFormInput = {
     attach: function (context) {
       var $context = $(context);
-      $context.find('.ux-form-input-js').once('ux-form-input').uxFormInput();
+      $(once('ux-form-input', $context.find('.ux-form-input-js'))).uxFormInput();
     }
     // @see https://www.drupal.org/node/2692453
     // detach: function (context, setting, trigger) {
@@ -231,4 +231,4 @@
     // }
   };
 
-})(jQuery, Drupal, window, document);
+})(jQuery, Drupal, once, window, document);

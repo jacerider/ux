@@ -1,4 +1,4 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
@@ -7,8 +7,8 @@
       if (!$.fn.inputmask) {
         return;
       }
-      $(context).find('input.ux-form-inputmask-js').once('ux-inputmask').inputmask();
+      $(once('ux-inputmask', 'input.ux-form-inputmask-js', context)).inputmask();
     }
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

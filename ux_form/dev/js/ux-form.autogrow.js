@@ -1,11 +1,11 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
   Drupal.behaviors.uxFormAutogrow = {
 
     attach: function (context, settings) {
-      $.each($('textarea[data-autogrow]', context).once(), function () {
+      $.each($(once('ux-form-autogrow', 'textarea[data-autogrow]', context)), function () {
         var $element = $(this);
         var offset = this.offsetHeight - this.clientHeight;
 
@@ -37,4 +37,4 @@
 
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

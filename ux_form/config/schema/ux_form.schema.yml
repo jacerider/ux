@@ -1,0 +1,28 @@
+ux_form.settings:
+  type: config_object
+  label: 'UX Form settings'
+  mapping:
+    themes:
+      type: sequence
+      label: 'Theme settings'
+      sequence:
+        type: mapping
+        label: 'Per-theme settings'
+        mapping:
+          status:
+            type: boolean
+            label: 'Enabled'
+          float:
+            type: boolean
+            label: 'Float input labels over empty fields'
+          theme:
+            type: string
+            label: 'Theme'
+
+ux_form.uxformexample:
+  type: config_object
+  label: 'UX Form example settings'
+  mapping:
+    ux_form:
+      type: ignore
+      label: 'UX form data'

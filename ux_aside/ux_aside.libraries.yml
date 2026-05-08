@@ -6,11 +6,11 @@ ux_aside:
       css/ux-aside.css: {}
   js:
     js/ux-aside.lib.js: { minified: true }
-    js/ux-aside.js: { minified: true }
+    js/ux-aside.js: {}
   dependencies:
     - ux/ux
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal
     - core/drupalSettings
     - core/drupal.displace
