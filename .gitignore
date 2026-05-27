@@ -5,3 +5,4 @@
 /dev/node_modules
 /dev/config/config.local.json
 /dev/npm-debug.log
+**/.DS_Store
