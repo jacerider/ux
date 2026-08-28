@@ -16,7 +16,8 @@
       if (settings.ux && settings.ux.menu && settings.ux.menu.items) {
         for (var id in settings.ux.menu.items) {
           if (settings.ux.menu.items[id]) {
-            var $element = $(once('ux-menu', '#' + id + ':visible', context));
+            var $element = $('#' + id, context).filter(':visible');
+            $element = $(once('ux-menu', $element));
             if ($element.length) {
               var options = _this.getOptions(settings.ux.menu, id);
               $element.uxMenu(options);
