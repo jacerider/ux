@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Video;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
 use Drupal\ux_aside\UxAsideManagerInterface;
-use Drupal\core\Url;
+use Drupal\Core\Url;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**

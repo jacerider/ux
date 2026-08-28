@@ -3,6 +3,7 @@
 namespace Drupal\ux_filters\Plugin\views\filter;
 
 use Drupal\datetime\Plugin\views\filter\Date;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 
