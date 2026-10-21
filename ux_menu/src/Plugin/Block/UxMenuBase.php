@@ -287,7 +287,7 @@ abstract class UxMenuBase extends BlockBase implements ContainerFactoryPluginInt
    * @return array
    *   Keys are menu names (ids) values are the menu labels.
    */
-  protected function getMenuOptions(array $menu_names = NULL) {
+  protected function getMenuOptions(?array $menu_names = NULL) {
     $menus = $this->entityTypeManager->getStorage('menu')->loadMultiple($menu_names);
     $options = [];
     /** @var \Drupal\system\MenuInterface[] $menus */
