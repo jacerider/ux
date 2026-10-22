@@ -532,7 +532,7 @@ class UxFilterEntityReference extends ManyToOne {
   /**
    * {@inheritdoc}
    */
-  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
+  public function init(ViewExecutable $view, DisplayPluginBase $display, ?array &$options = NULL) {
     if (empty($this->definition['field_name'])) {
       $this->definition['field_name'] = $options['field'];
     }
