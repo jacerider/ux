@@ -1,14 +1,24 @@
 {
   "name": "jacerider/ux",
-  "type": "drupal-custom-module",
+  "type": "drupal-module",
   "description": "A suite of UI elements and components to improve user experience.",
   "keywords": ["Drupal"],
-  "license": "GPL-2.0+",
-  "homepage": "https://www.drupal.org/project/ux",
-  "minimum-stability": "dev",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://github.com/jacerider/ux",
+  "authors": [
+    {
+      "name": "Cyle Carlson (JaceRider)",
+      "email": "jacerider@gmail.com",
+      "role": "Maintainer"
+    }
+  ],
   "support": {
-    "issues": "https://www.drupal.org/project/issues/ux",
-    "source": "http://cgit.drupalcode.org/ux"
+    "issues": "https://github.com/jacerider/ux/issues",
+    "source": "https://github.com/jacerider/ux"
   },
-  "require": { }
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=8.1",
+    "drupal/core": "^10 || ^11"
+  }
 }
