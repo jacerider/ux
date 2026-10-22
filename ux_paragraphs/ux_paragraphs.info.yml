@@ -3,6 +3,7 @@ type: module
 description: Provides enhancements to paragraphs module.
 core_version_requirement: ^10 || ^11
 package: User Experience
+version: 6.0.0
 dependencies:
   - ux
   - ux_aside

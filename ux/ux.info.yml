@@ -3,3 +3,4 @@ type: module
 description: A suite of UI elements and components to improve user experience.
 core_version_requirement: ^10 || ^11
 package: User Experience
+version: 6.0.0

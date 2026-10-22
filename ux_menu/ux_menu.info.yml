@@ -3,5 +3,6 @@ type: module
 description: Provides advanced menu features.
 core_version_requirement: ^10 || ^11
 package: User Experience
+version: 6.0.0
 dependencies:
   - ux
