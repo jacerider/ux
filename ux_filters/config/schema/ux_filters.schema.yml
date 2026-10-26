@@ -30,3 +30,71 @@ views.filter_value.ux_filter_date:
     date_only:
       type: boolean
       label: 'Date only'
+
+# UX Filters keeps the core exposed form options plus one entry per filter,
+# keyed by the filter's id, so each key resolves to its own type.
+views.exposed_form.ux_filters:
+  type: sequence
+  label: 'UX Filters exposed form options'
+  sequence:
+    type: views.exposed_form.ux_filters.[%key]
+
+views.exposed_form.ux_filters.submit_button:
+  type: label
+  label: 'Submit button text'
+
+views.exposed_form.ux_filters.reset_button:
+  type: boolean
+  label: 'Include reset button'
+
+views.exposed_form.ux_filters.reset_button_label:
+  type: label
+  label: 'Reset button label'
+
+views.exposed_form.ux_filters.exposed_sorts_label:
+  type: label
+  label: 'Exposed sorts label'
+
+views.exposed_form.ux_filters.expose_sort_order:
+  type: boolean
+  label: 'Expose sort order'
+
+views.exposed_form.ux_filters.sort_asc_label:
+  type: label
+  label: 'Ascending'
+
+views.exposed_form.ux_filters.sort_desc_label:
+  type: label
+  label: 'Descending'
+
+views.exposed_form.ux_filters.general:
+  type: mapping
+  label: 'General'
+  mapping:
+    autosubmit:
+      type: boolean
+      label: 'Autosubmit'
+    autosubmit_hide:
+      type: boolean
+      label: 'Hide the submit button with autosubmit'
+    allow_secondary:
+      type: boolean
+      label: 'Allow secondary options'
+    secondary_label:
+      type: label
+      label: 'Secondary options label'
+
+views.exposed_form.ux_filters.*:
+  type: mapping
+  label: 'Filter options'
+  mapping:
+    format:
+      type: string
+      label: 'Format'
+    more:
+      type: mapping
+      label: 'More'
+      mapping:
+        is_secondary:
+          type: boolean
+          label: 'Secondary option'
