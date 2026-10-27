@@ -3,44 +3,117 @@ ux_menu.settings:
   label: 'UX Menu settings'
   mapping:
     options:
-      type: mapping
+      type: ux_menu_options
       label: 'Menu default options'
+
+ux_menu_options:
+  type: mapping
+  label: 'Menu default options'
+  mapping:
+    backNav:
+      type: boolean
+      label: 'Enable back navigation'
+    backText:
+      type: label
+      label: 'Back link text'
+    backIcon:
+      type: string
+      label: 'Back link icon'
+      nullable: true
+    breadcrumbNav:
+      type: boolean
+      label: 'Enable breadcrumb navigation'
+    breadcrumbText:
+      type: label
+      label: 'Breadcrumb root text'
+    breadcrumbIcon:
+      type: string
+      label: 'Breadcrumb root icon'
+      nullable: true
+    breadcrumbSeparatorIcon:
+      type: string
+      label: 'Breadcrumb separator icon'
+      nullable: true
+    itemIcon:
+      type: string
+      label: 'Default item icon'
+      nullable: true
+    itemDelayInterval:
+      type: integer
+      label: 'Item delay interval (ms)'
+    direction:
+      type: string
+      label: 'Direction'
+    theme:
+      type: string
+      label: 'Theme (dark/light)'
+      nullable: true
+
+ux_menu_selection:
+  type: mapping
+  label: 'Menu selection'
+  mapping:
+    primary:
+      type: string
+      label: 'Primary menu'
+    secondary:
+      type: string
+      label: 'Secondary menu'
+    level:
+      type: integer
+      label: 'Initial level'
+    child_level:
+      type: integer
+      label: 'Child level'
+    depth:
+      type: integer
+      label: 'Depth'
+    expand:
+      type: boolean
+      label: 'Expand all items'
+    prepend_parent:
+      type: boolean
+      label: 'Prepend the parent item'
+
+block.settings.ux_menu:
+  type: block_settings
+  label: 'UX menu block'
+  mapping:
+    menu:
+      type: ux_menu_selection
+
+block.settings.ux_menu_tree:
+  type: block.settings.ux_menu
+  label: 'UX menu tree block'
+
+block.settings.ux_menu_slide:
+  type: block.settings.ux_menu
+  label: 'UX menu slide block'
+  mapping:
+    block:
+      type: mapping
+      label: 'Block content'
+      nullable: true
       mapping:
-        backNav:
-          type: boolean
-          label: 'Enable back navigation'
-        backText:
-          type: label
-          label: 'Back link text'
-        backIcon:
-          type: string
-          label: 'Back link icon'
-          nullable: true
-        breadcrumbNav:
-          type: boolean
-          label: 'Enable breadcrumb navigation'
-        breadcrumbText:
-          type: label
-          label: 'Breadcrumb root text'
-        breadcrumbIcon:
-          type: string
-          label: 'Breadcrumb root icon'
-          nullable: true
-        breadcrumbSeparatorIcon:
-          type: string
-          label: 'Breadcrumb separator icon'
-          nullable: true
-        itemIcon:
-          type: string
-          label: 'Default item icon'
-          nullable: true
-        itemDelayInterval:
-          type: integer
-          label: 'Item delay interval (ms)'
-        direction:
-          type: string
-          label: 'Direction'
-        theme:
-          type: string
-          label: 'Theme (dark/light)'
-          nullable: true
+        header:
+          type: text
+          label: 'Header'
+        footer:
+          type: text
+          label: 'Footer'
+    options:
+      type: ux_menu_options
+
+block.settings.ux_menu_aside:*:
+  type: block.settings.ux_menu_slide
+  label: 'UX menu aside block'
+  mapping:
+    aside:
+      type: ux_aside_options
+
+block.settings.ux_menu_tree_aside:
+  type: block.settings.ux_menu_tree
+  label: 'UX menu tree aside block'
+  mapping:
+    aside:
+      type: ux_aside_options
